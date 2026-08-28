@@ -1,0 +1,43 @@
+# LaTeX build products for manuscripts compiled in Tex/.
+# Source files (*.tex and *.bib) remain tracked.
+/Tex/*.aux
+/Tex/*.bbl
+/Tex/*.bcf
+/Tex/*.blg
+/Tex/*.dvi
+/Tex/*.fdb_latexmk
+/Tex/*.fls
+/Tex/*.glg
+/Tex/*.glo
+/Tex/*.gls
+/Tex/*.glsdefs
+/Tex/*.idx
+/Tex/*.ilg
+/Tex/*.ind
+/Tex/*.ist
+/Tex/*.lof
+/Tex/*.log
+/Tex/*.lot
+/Tex/*.nav
+/Tex/*.out
+/Tex/*.pdf
+/Tex/*.ps
+/Tex/*.run.xml
+/Tex/*.snm
+/Tex/*.synctex
+/Tex/*.synctex.gz
+/Tex/*.thm
+/Tex/*.toc
+/Tex/*.vrb
+/Tex/*.xdv
+/Tex/_minted-*/
+
+# Common editor and TeX backup files beside the manuscript.
+/Tex/*.bak
+/Tex/*.sav
+/Tex/*.tmp
+/Tex/*~
+
+# Explicitly retain manuscript sources and bibliography databases.
+!/Tex/*.tex
+!/Tex/*.bib
