@@ -1,0 +1,477 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{amssymb,geometry,stmaryrd,color}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{fullpage}
+%\usepackage{showlabels}
+
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor={red},citecolor={blue},urlcolor={blue}}
+
+
+\usepackage{graphicx}
+\usepackage{caption}
+\begin{document}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}{Example}
+
+%\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+%\newtheorem{condition}[theorem]{Condition}
+%\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{question}[theorem]{Question}
+%\newtheorem{Argument}[theorem]{Argument}
+
+\numberwithin{equation}{section}
+
+
+
+
+\def\s{{\bf s}} 
+\def\t{{\bf t}} 
+\def\u{{\bf u}} 
+\def\x{{\bf x}} 
+\def\y{{\bf y}} 
+\def\z{{\bf z}} 
+\def\B{{\bf B}} 
+\def\C{{\bf C}} 
+\def\D{{\bf D}}
+\def\K{{\bf K}}
+\def\F{{\bf F}}
+\def\M{{\bf M}}
+\def\ML{{\bf ML}}
+\def\Nn{{\bf N}}
+\def\G{{\bf \Gamma}} 
+\def\W{{\bf W}}
+\def\X{{\bf X}}
+\def\U{{\bf U}}
+\def\V{{\bf V}}
+\def\Un{{\bf 1}}
+\def\Y{{\bf Y}}
+\def\Z{{\bf Z}}
+\def\P{{\bf P}}
+\def\Q{{\bf Q}}
+\def\S{{\bf S}}
+\def\L{{\bf L}}
+\def\T{{\bf T}}
+
+\def\cB{{\mathcal{B}}} 
+\def\cC{{\mathcal{C}}} 
+\def\cD{{\mathcal{D}}} 
+\def\cG{{\mathcal{G}}} 
+\def\cK{{\mathcal{K}}} 
+\def\cL{{\mathcal{L}}} 
+\def\cR{{\mathcal{R}}} 
+\def\cS{{\mathcal{S}}}
+\def\cU{{\mathcal{U}}}
+\def\cV{{\mathcal{V}}} 
+\def\cX{{\mathcal X}}
+\def\cY{{\mathcal Y}}
+\def\cZ{{\mathcal Z}}
+
+\def\Ea{E_\a}
+\def\eps{{\varepsilon}} 
+\def\esp{{\mathbb{E}}} 
+\def\Ga{{\Gamma}} 
+
+
+\def\lacc{\left\{}
+\def\lcr{\left[}
+\def\lpa{\left(}
+\def\lva{\left|}
+\def\racc{\right\}}
+\def\rpa{\right)}
+\def\rcr{\right]}
+\def\rva{\right|}
+
+\def\prst{{\leq_{st}}}
+\def\prost{{\prec_{st}}}
+\def\prcvx{{\prec_{cx}}}
+\def\Rr{{\bf R}}
+
+\def\CC{{\mathbb{C}}}
+\def\EE{{\mathbb{E}}}
+\def\NN{{\mathbb{N}}} 
+\def\QQ{{\mathbb{Q}}} 
+\def\PP{{\mathbb{P}}}
+\def\ZZ{{\mathbb{Z}}}
+\def\RR{{\mathbb{R}}}
+
+\def\Tt{{\bf \Theta}}
+\def\Ttt{{\tilde \Tt}}
+
+\def\a{\alpha}
+\def\A{{\bf A}}
+\def\AA{{\mathcal A}}
+\def\hAA{{\hat \AA}}
+\def\hL{{\hat L}}
+\def\hT{{\hat T}}
+
+\def\claw{\stackrel{(d)}{\longrightarrow}}
+\def\elaw{\stackrel{(d)}{=}}
+\def\pslaw{\stackrel{a.s.}{\longrightarrow}}
+\def\qed{\hfill$\square$}
+
+\newcommand*\pFqskip{8mu}
+\catcode`,\active
+\newcommand*\pFq{\begingroup
+        \catcode`\,\active
+        \def ,{\mskip\pFqskip\relax}%
+        \dopFq
+}
+\catcode`\,12
+\def\dopFq#1#2#3#4#5{%
+        {}_{#1}F_{#2}\biggl[\genfrac..{0pt}{}{#3}{#4};#5\biggr]%
+        \endgroup
+}
+
+
+
+\def\ii{{\rm i}}
+
+
+
+\title[Non-SD of alpha Cauchy]{On the self-decomposability of $\alpha$-Cauchy distributions}
+
+\author[M.~Wang]{Min Wang}
+
+\address{School of Mathematics and Statistics, Wuhan University of Technology,  Wuhan, 430063, China}
+
+\email{minwangmath@whut.edu.cn}
+
+\author[S. ~Yin]{Sheng Yin}
+
+\address{Harbin Institute of Technology, China}
+
+\email{sheng.yin@hit.edu.cn}
+
+\keywords{Infinite divisibility; $\alpha$-Cauchy distribution; Self-decomposability} 
+
+\subjclass[2020]{60E07, 60E05, 60E10}
+
+\begin{abstract} 
+   In 2009, Yano, Yano and Yor proposed the question of studying the infinite divisibility and self-decomposability of  the $\alpha$-Cauchy variable $\mathcal{C}_\alpha$ for $\alpha > 1$. The particular case $\mathcal{C}_2$ is the well-known standard Cauchy variable, which is infinitely divisible and self-decomposable. Recently, the first named author proved that $\mathcal{C}_\alpha$ is infinitely divisible if and only if $1 < \alpha \leq 2$. In this paper, we prove that $\mathcal{C}_\alpha$ is self-decomposable if and only if $\alpha = 2$. 
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+In 2009, Yano, Yano and Yor \cite{YYY09} introduced the $\alpha$-Cauchy variable to study the first hitting times of points for one-dimensional symmetric stable L\'evy processes.  
+The density of $\alpha$-Cauchy variable, denoted by $\mathcal{C}_\a$, is 
+\begin{equation}\label{eq density alpha Cauchy}
+    f_{\mathcal{C}_\a}(x) = \frac{\sin(\pi/\a)}{2\pi/\a}\frac{1}{1+|x|^\a}, \quad \alpha > 1, \,\, x \in \mathbb{R}. 
+\end{equation}
+Yano, Yano and Yor \cite[Remark 2.9]{YYY09} proposed questions of studying the infinite divisibility and self-decomposability of  $\mathcal{C}_\alpha$, $|\mathcal{C}_\alpha|$, and $|\mathcal{C}_\alpha|^{-p}$ for $ p>0$ and $\alpha > 1$. 
+the first author Wang \cite{Wan26+} proved that $\mathcal{C}_\alpha$ is infinitely divisible if and only if $1 < \alpha \leq 2$. 
+In this paper, we further study the self-decomposability of $\mathcal{C}_\a$. 
+
+\begin{theorem}\label{Theorem non-SD of alpha Cauchy}
+The $\alpha$-Cauchy variable $\mathcal{C}_\a$ is self-decomposable if and only if  $\alpha = 2$. 
+\end{theorem}
+
+
+The  $\alpha$-Cauchy variable and the first hitting times of points for one-dimensional symmetric stable L\'evy processes are closely related; cf. \cite{YYY09, LS14, LS19, Wan26+}. As an application of Theorem \ref{Theorem non-SD of alpha Cauchy}, we establish the following result. 
+
+
+\begin{corollary}\label{Corollary}
+    For $1<\alpha <2$, the first hitting time of point $a$ for symmetric stable L\'evy process of index $\alpha$ starting from zero is not self-decomposable. 
+\end{corollary}
+
+It’s already known that the first hitting times of points for one-dimensional Brownian motion can be expressed explicitly in terms of elementary functions, see formula (5.13) in \cite{YYY09}. Moreover, these laws are infinitely divisible, and in fact self-decomposable. 
+
+%In \cite{LS14}, Letemplier and Simon studied the first hitting time of zero $\tau(\alpha, \rho)$ for a real strictly $\alpha$-stable process (possibly asymmetric) starting from one, which is finite a.s. if and only if $\alpha > 1$. After Proposition 4.1 in \cite{LS19}, they conjectured that  $\tau(\alpha, \rho)$ is infinitely divisible for $\alpha \in (1,2]$ and $\rho \in [0,1]$. Note that $\tau(\alpha, \frac{1}{2})$ coincides with $T_{\{-1\}}(X_\alpha)$. Corollary \ref{Corollary} says  $\tau(\alpha, \frac{1}{2})$ is not self-decomposable for $1<\alpha <2$. 
+
+
+
+ We will prove Theorem \ref{Theorem non-SD of alpha Cauchy} in Section \ref{section proof}. A characterization of the characteristic function of $\alpha$-Cauchy variable given by Wang \cite{Wan26+} plays an important role. 
+
+%\textit{Notation.} Throughout, in any factorization of the type $X \elaw Y \times Z$, the random variables $Y,Z$ on the right-hand side will be assumed to be independent. We denote the Gamma random variable by $\G_{c}$, whose density is $ \frac{1}{\Gamma(c)}x^{c-1}e^{-x}\mathbf{1}_{(0, \infty)}(x). $
+
+
+
+
+\section{Proofs}
+\label{section proof}
+
+
+
+\subsection{Two key lemmas}
+
+
+\begin{lemma}\label{keyLemma1}
+Let $X$ be a symmetric and self-decomposable random variable. Let $\phi(z) := \mathbb{E}[e^{izX}]$ be its characteristic function. Its characteristic exponent $\Psi(z)$ is $ -\log \phi(z)$. If $z\Psi'(z)$ is bounded and $\lim_{z \rightarrow  \infty} z\Psi'(z)$ exists, we define a function
+\begin{equation}
+    \label{eq def J}
+    J(z) := 1 - \frac{z \Psi'(z)}{L},
+\end{equation}
+where 
+$$ L :=  \lim_{z \rightarrow  \infty} z\Psi'(z).$$
+ Then $J(z)$ is the characteristic function of a symmetric probability law. 
+\end{lemma}
+
+Note that $\phi(z) > 0$ for all real $z$ and then $\Psi(z)$ is well-defined, since an infinitely divisible characteristic function has no real zeros, see e.g. Lemma 7.5 in \cite{Sat99}. 
+
+
+\begin{proof}[Proof of Lemma \ref{keyLemma1}]
+Wolfe \cite{Wol82} and Jurek-Vervaat \cite{JV83} showed that the distribution of a random variable $X$ is self-decomposable if and only if
+\[
+X_1 \stackrel{d}{=} \int_0^\infty e^{-s} \, dY_s, \tag{2}
+\]
+for some L\'evy process $Y=(Y_s, s\ge 0)$ with $\mathbb{E}[\log(1\vee |Y_s|)]<\infty$ for all $s$.
+%The process $Y$ is called the \emph{background driving L\'evy process (BDLP)} of $X$. 
+By Theorem 17.5 in Sato \cite{Sat99}, we have 
+\begin{equation}
+    \Psi(z) =  \int_0^\infty \psi_{Y_1}(e^{-s}z)ds = \int_0^1 \psi_{Y_1}(uz) \frac{du}{u} = \int_0^z \psi_{Y_1}(t) \frac{dt}{t}, \quad z \in \mathbb{R},
+\end{equation}
+where $\psi_{Y_1}(z) = - \log \mathbb{E}[e^{izY_1}]$. Then we have 
+\begin{equation}
+   z \Psi'(z) =   \psi_{Y_1}(z), \quad z \in \mathbb{R}.
+\end{equation}
+Because $X$ is symmetric, we have $\Psi(z) = \Psi(-z)$ and then $\psi_{Y_1}(z) = z \Psi'(z) = -z \Psi'(-z) =\psi_{Y_1}(-z)$. This implies that $\mathbb{E}[e^{izY_1}] = \mathbb{E}[e^{iz(-Y_1)}]$, thus $Y_1$ is a symmetric infinitely divisible random variable. By Theorem 8.1 and Exercise 18.1 in Sato \cite{Sat99}, we have 
+\begin{equation}
+    \label{LK of Y}
+     z\Psi'(z) = \psi_{Y_1}(z) = \frac{1}{2}Az^2 + \int_{-\infty}^{\infty} (1-\cos (zx))\nu(dx),
+\end{equation}
+where $A \geq 0$ and $\nu$ is a symmetric measure on $\mathbb{R}$ satisfying 
+$$\nu(\{0\}) = 0 \quad \text{and} \quad \int_{\mathbb{R}} \min (|x|^2, 1) \, \nu(dx) < \infty. $$
+If $z\Psi'(z)$ is bounded, then $A = 0$. We next prove that $\nu(R)$ is finite. 
+\begin{align}
+    \nu(R) & = \int_\mathbb{R}  \lim_{M \rightarrow +\infty} (1 - \frac{\sin(Mx)}{Mx})  \nu(dx)  \\
+    \label{eq1}
+    &\leq \lim_{M \rightarrow +\infty}  \int_\mathbb{R} (1 - \frac{\sin(Mx)}{Mx})  \nu(dx)  \\
+    & = \lim_{M \rightarrow +\infty}  \int_\mathbb{R} \left[1 - \frac{1}{M} \int_0^M\cos(zx)dz\right]  \nu(dx) \\
+    & = \lim_{M \rightarrow +\infty}  \int_\mathbb{R} \left[ \frac{1}{M} \int_0^M (1-\cos(zx))dz\right]  \nu(dx)  \\
+    \label{eq2}
+    &= \lim_{M \rightarrow +\infty} \frac{1}{M} \int_0^M \left[  \int_\mathbb{R} (1-\cos(zx)) \nu(dx) \right] dz  \\
+    &= \lim_{M \rightarrow +\infty} \frac{1}{M} \int_0^M  z \Psi'(z) dz \\
+    \label{eq3}
+    & = \lim_{z \rightarrow  \infty} z\Psi'(z) = L.
+\end{align}
+\eqref{eq1} follows from Fatou's lemma. \eqref{eq2} follows from Tonelli's theorem. \eqref{eq3} is guaranteed by the assumption that $\lim_{z \rightarrow  \infty} z\Psi'(z)$ exists. 
+
+
+
+Then the function 
+\begin{align*}
+      J(z) &:= 1 - \frac{z \Psi'(z)}{L} = 1 - \frac{1}{L}  \int_{-\infty}^{\infty} (1-\cos (zx))\nu(dx) \\
+      &= \frac{1}{L}  \int_{-\infty}^{\infty} \cos (zx)\nu(dx) = \frac{1}{L}  \int_{-\infty}^{\infty} e^{izx}\nu(dx)
+\end{align*}
+Recall that $\nu$ is the L\'evy meausre of $Y_1$ and it is symmetric, see \eqref{LK of Y}. We can conclude that $J(z)$ is the characteristic function of a symmetric probability law. 
+\end{proof}
+
+
+
+\begin{lemma}\label{keyLemma on CF}
+    Let $\varphi(z) = \int e^{izx}\mu(dx)$ where $\mu$ is a probability measure. If $\int_\mathbb{R}|\varphi(z)|dz < \infty$, then $  \int_\mathbb{R} \varphi(z)dz \geq 0$. 
+\end{lemma}
+
+\begin{proof}[Proof of Lemma \ref{keyLemma on CF}]
+
+ If $\int_\mathbb{R}|\varphi(z)|dz < \infty$, then $\mu$ has bounded continuous density 
+$$f(y) = \frac{1}{2\pi} \int_\mathbb{R} e^{-izy} \varphi(z)dz,$$
+see e.g. Durrett \cite[Theorem 3.3.14]{Dur19} for its proof. In particular, setting $y = 0$, we have 
+$$  \int_\mathbb{R} \varphi(z)dz  =  2\pi f(0) \geq 0. $$
+\end{proof}
+
+\subsection{Proof of Theorem \ref{Theorem non-SD of alpha Cauchy}}  The particular case $\mathcal{C}_2$ is the well-known standard Cauchy variable, which is infinitely divisible and self-decomposable. Recently, Wang \cite{Wan26+} proved that $\mathcal{C}_\alpha$ is not infinitely divisible if $\alpha > 2$, thus $\mathcal{C}_\alpha$ is not self-decomposable if $\alpha > 2$. In the following, we focus on the case $1 < \alpha <2$. 
+
+
+
+Let 
+$$\phi_\a(z) := \mathbb{E}[e^{iz \mathcal{C}_\a }] \quad \text{and} \quad  \Psi_\a(z) := -\log \phi_\a (z). $$
+We need to prove that 
+\begin{center}
+    Claim 1: $z\Psi_\a'(z)$ is bounded and $\lim_{z \rightarrow  \infty} z\Psi_\a'(z)$ exists. 
+\end{center}
+Then we define 
+\begin{equation}
+    \label{eq def J_alpha}
+    J_\a(z) := 1 - \frac{z \Psi_\a'(z)}{L_\a},
+\end{equation}
+where 
+$$ L_\a :=  \lim_{z \rightarrow  \infty} z\Psi_\a'(z).$$
+We want to disprove the self-decomposability of $\mathcal{C}_\a$ by proving that 
+\begin{center}
+    Claim 2: $\int_\mathbb{R}|J_\a(z)|dz < \infty,  \quad$ and $\quad  \int_\mathbb{R} J_\a (z)dz < 0.$
+\end{center}
+Lemma \ref{keyLemma on CF} tells us that $ J_\a(z) $ is not a characteristic function, and Lemma \ref{keyLemma1} implies that 
+$\mathcal{C}_\a$ is not self-decomposable. It remains to prove claims 1 and 2. These two proofs depend on a characterization of the characteristic function of the $\alpha-$Cauchy variable: 
+\begin{equation}
+    \label{eq Laplace form for CF}
+    \phi_\a(z) = k_\a  \int_0^\infty  e^{-|z|y}  \frac{ y^\alpha}{  y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy, 
+\end{equation}
+where $k_\a$ is a normalization constant such that $ \phi_\a(0) = 1$; see Lemma 2.7 in Wang \cite{Wan26+}. 
+
+\subsubsection{Proof of Claim 1} The function $z \mapsto z \Psi_\a'(z)$ is even, we can let $z > 0$. 
+By \eqref{eq Laplace form for CF}, we have 
+\begin{equation}
+\label{eq ratio}
+    z \Psi_\a'(z) = - z \frac{\phi'_\a(z)}{\phi_\a(z)} = \frac{ z k_\a \int_0^\infty  e^{-zy}  \frac{ y^{\alpha+1}}{  y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy}{ k_\a \int_0^\infty  e^{-zy}  \frac{ y^\alpha}{  y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy}
+\end{equation}
+By Hardy–Littlewood Tauberian theorem, we have
+\begin{equation}
+\label{eq sym at 0}
+    z \Psi_\a'(z) \sim   k_\a \Gamma(2-\alpha) z^{\alpha -1} ,  \quad z \rightarrow 0. 
+\end{equation}
+Because $1< \alpha < 2$, $\lim_{z \rightarrow  0} z\Psi_\a'(z) = 0$. Using Watson's lemma to the numerator and denominator in \eqref{eq ratio} (see (2.3.7) and (2.3.8) in \cite{NIST}), we have 
+\begin{equation}
+    z \Psi_\a'(z) \rightarrow   z \frac{\Gamma(2+\alpha)z^{-2-\alpha}}{\Gamma(1+\alpha)z^{-1-\alpha}}  = 1 + \alpha,  \quad z \rightarrow \infty. 
+\end{equation}
+Therefore,  $z\Psi_\a'(z)$ is bounded and 
+$ L_\a =  \lim_{z \rightarrow  \infty} z\Psi_\a'(z) = 1+\alpha.$
+
+\subsubsection{Proof of Claim 2} 
+%Using \eqref{eq def J_alpha}, \eqref{eq ratio} and $L_\alpha = 1+\alpha$, we have \begin{equation}     J_\a(z) = 1 - \frac{z}{1+\alpha} \frac{\int_0^\infty  e^{-zy}  \frac{ y^{\alpha+1}}{  y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy}{  \int_0^\infty  e^{-zy}  \frac{ y^\alpha}{  y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy}. \end{equation}
+The function $z \mapsto J_\a(z)$ is also even, since $z \mapsto z \Psi_\a'(z)$ is even. We want to prove 
+$\int_0^\infty|J_\a(z)|dz < \infty,$ and $  \int_0^\infty J_\a (z)dz < 0.$
+Using Watson's lemma for the numerator and denominator in \eqref{eq ratio} again, we have 
+\begin{equation}
+\label{eq waston again}
+    z\Psi'_\a (z) \sim z \frac{ \Gamma(2+\alpha)z^{-2-\alpha } - 2 \cos(\pi \alpha/2) \Gamma(2 + 2\alpha) z^{-2-2\alpha}}{ \Gamma(1+\alpha)z^{-1-\alpha } - 2 \cos(\pi \alpha/2) \Gamma(1 + 2\alpha) z^{-1-2\alpha}}  , \quad z \rightarrow \infty. 
+\end{equation}
+by some calculation, this implies 
+\begin{equation}
+     z\Psi'_\a (z) \sim  1+\alpha + r_\alpha z ^{-\alpha}, \quad z \rightarrow \infty, 
+\end{equation}
+where $r_\alpha = - 2  \cos(\pi \alpha/2)  \alpha \Gamma(1+2\alpha)/\Gamma(1+\alpha) > 0.$ 
+\begin{equation}
+\label{eq sym at infty}
+    1 - \frac{z\Psi'_\a (z)}{1 + \a} \sim  - \frac{r_\alpha}{1+\alpha} z ^{-\alpha} , \quad z \rightarrow \infty. 
+\end{equation}
+Combining \eqref{eq sym at 0} and \eqref{eq sym at infty}, we have $\int_0^\infty|J_\a(z)|dz < \infty.$  
+
+\textbf{It remains to prove $\int_0^\infty J_\a (z)dz < 0.$ }
+
+\begin{align}
+    \int_0^\infty J_\a (z)dz = &  \int_0^\infty (1 - \frac{z\Psi'_\a (z)}{1 + \a}) dz \\
+    = &  \int_0^\infty \frac{z}{1 + \a}(\frac{1 + \a}{z} - \Psi'_\a (z)) dz   \\
+    = &  \int_0^\infty \frac{z}{1 + \a} d[(1 + \a)\log z - \Psi_\a (z) - \log (k_\alpha \Gamma(1+\alpha))]  \\
+    = &  \int_0^\infty \frac{z}{1 + \a} d \left[\log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)} \right]   \\
+    = &  \lim_{z\rightarrow \infty}  \frac{z}{1 + \a} \log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)}  - \lim_{z\rightarrow 0}  \frac{z}{1 + \a} \log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)}\\
+    \label{eq part}
+    & - \int_0^\infty  \left[\log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)} \right]  \frac{dz}{1 + \a}. 
+\end{align}
+We have used Watson's lemma for the denominator in \eqref{eq ratio} (see \eqref{eq waston again}), we rewrite it as follows
+\begin{equation}
+    \phi_\a (z) \sim k_\alpha \left[ \Gamma(1+\alpha)z^{-1-\alpha } - 2 \cos(\pi \alpha/2) \Gamma(1 + 2\alpha) z^{-1-2\alpha}\right]  , \quad z \rightarrow \infty. 
+\end{equation}
+This implies that 
+\begin{equation}
+    \log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)} \sim  - \cos(\pi \alpha/2) \Gamma(1 + 2\alpha)/\Gamma(1+\alpha) z^{-\alpha}  , \quad z \rightarrow \infty,
+\end{equation}
+and $1< \alpha <2$, then
+\begin{equation}
+     \lim_{z\rightarrow \infty}  \frac{z}{1 + \a} \log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)} = 0. 
+\end{equation}
+Because $\phi_\a(0 ) = 1$, we have 
+\begin{equation}
+     \lim_{z\rightarrow 0}  \frac{z}{1 + \a} \log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)} = 0. 
+\end{equation}
+Therefore, by \eqref{eq part},the inequality $\int_0^\infty J_\a (z)dz < 0$ is equivalent to 
+\begin{align}
+  0 > & - \int_0^\infty  \log \frac{z^{1+\a} \phi_\a(z)}{k_\alpha \Gamma(1+\alpha)}dz \\
+  = &  - \int_0^\infty \log \left[ \frac{z^{1+\a}}{\Gamma(1+\alpha)} \int_0^\infty  e^{-zy}  \frac{ y^\alpha}{  y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy \right] dz  \\
+    = &  -\int_0^\infty \log \left[ \frac{1}{\Gamma(1+\alpha)} \int_0^\infty  e^{-u}  \frac{ u^\alpha}{  (u/z)^{2\alpha} + 2\cos(\pi \alpha/2)(u/z)^\alpha + 1}du \right] dz \\
+    \label{eq bound}
+    = & -\int_0^\infty \log \mathbb{E}\left[ H_\alpha(\frac{\G_{1+\alpha}}{z})\right] dz, 
+\end{align}
+where $$   H_\alpha(y)
+    :=\frac{1}{y^{2\alpha}+2\cos(\pi \alpha/2)y^\alpha+1},
+    \qquad y>0,$$
+and $\G_{c}$ denotes the Gamma random variable, whose density is $ \frac{1}{\Gamma(c)}x^{c-1}e^{-x}\mathbf{1}_{(0, \infty)}(x). $
+
+For every fixed $z> 0$, $H_\alpha(\frac{\G_{1+\alpha}}{z})$ is an integrable random variable and $-\log$ is a convex function, we use Jensen's inequality to obtain 
+\begin{equation}
+    -\log \mathbb{E}\left[ H_\alpha(\frac{\G_{1+\alpha}}{z})\right] \leq   \mathbb{E}\left[ -\log H_\alpha(\frac{\G_{1+\alpha}}{z})\right].
+\end{equation}
+Note that the convex function $-\log$ is strictly convex, and the random variable $H_\alpha(\frac{\G_{1+\alpha}}{z})$ is not a constant, the above equality never holds, i.e. we have for every fixed $z > 0$, 
+\begin{equation}\label{eq bound2}
+    -\log \mathbb{E}\left[ H_\alpha(\frac{\G_{1+\alpha}}{z})\right] <   \mathbb{E}\left[ -\log H_\alpha(\frac{\G_{1+\alpha}}{z})\right].
+\end{equation}
+We next prove 
+\begin{equation}
+    \int_0^\infty  \mathbb{E}\left[ -\log H_\alpha(\frac{\G_{1+\alpha}}{z})\right] dz  = 0; 
+\end{equation}
+if this equality holds, combining \eqref{eq bound2}  and \eqref{eq bound}, we finish the proof. 
+\begin{align}
+   &  \int_0^\infty  \mathbb{E}\left[ -\log H_\alpha(\frac{\G_{1+\alpha}}{z})\right] dz \\
+ = &   \int_0^\infty \left[ \int_0^\infty  -\log H_\alpha(\frac{u}{z}) \frac{1}{\Gamma(1+\alpha) }u^\alpha e^{-u} du\right] dz\\
+= &    \int_0^\infty \left[ \int_0^\infty  \log ((u/z)^{2\alpha} + 2\cos(\pi \alpha/2)(u/z)^\alpha + 1) \frac{1}{\Gamma(1+\alpha) }u^\alpha e^{-u}du \right] dz\\
+= &   \int_0^\infty \left[ \int_0^\infty  \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) \frac{1}{\Gamma(1+\alpha) }(yz)^\alpha e^{-yz} zdy \right] dz \\
+\label{eq using Fubini}
+= & \int_0^\infty \left[ \int_0^\infty  \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) \frac{1}{\Gamma(1+\alpha) }(yz)^\alpha e^{-yz} zdz \right] dy  \\
+\label{eq last step}
+= &  \int_0^\infty  \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) \frac{1+\alpha}{y^2}  dy. 
+\end{align}
+The equality \eqref{eq using Fubini} follows from Fubini's Theorem, whose application is guaranteed by
+\begin{align}
+    &  \int_0^\infty \left[ \int_0^\infty | \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1)| \frac{1}{\Gamma(1+\alpha) }(yz)^\alpha e^{-yz} zdy \right] dz  \\
+    \label{eq using Tonelli}
+    = &  \int_0^\infty \left[ \int_0^\infty | \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1)| \frac{1}{\Gamma(1+\alpha) }(yz)^\alpha e^{-yz} zdz \right] dy \\
+    = &   \int_0^\infty  |\log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1)| \frac{1+\alpha}{y^2}  dy  < \infty. 
+\end{align}
+The equality \eqref{eq using Tonelli} follows from Tonelli's Theorem. 
+
+Finally, by \eqref{eq last step} we wish to prove 
+\begin{equation}
+     \int_0^\infty  \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) \frac{dy}{y^2}   =  0.   
+\end{equation}
+
+\begin{align}
+   &  \int_0^\infty  \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) \frac{dy}{y^2} \\
+   = & \int_0^\infty  \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) (-dy^{-1} ) \\
+   = & \lim_{y \rightarrow 0} \frac{ \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1)}{y} - \lim_{y \rightarrow \infty} \frac{ \log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1)}{y} \\
+   & + \int_0^\infty \frac{1}{y} d\log (y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1) \\
+   = & \alpha \int_0^\infty  \frac{ 2y^{2\alpha-2} + 2\cos(\pi \alpha/2) y^{\alpha-2}}{y^{2\alpha} + 2\cos(\pi \alpha/2)y^\alpha + 1}dy = \int_0^\infty  \frac{ 2 u + 2\cos(\pi \alpha/2) }{u^{2} + 2\cos(\pi \alpha/2)u + 1} u^{-1/\alpha} du \\
+   = &  \int_0^\infty \frac{u^{-1/\alpha} e^{i\pi \alpha/2} }{1 + e^{i\pi \alpha/2} u }+ \frac{u^{-1/\alpha} e^{- i\pi \alpha/2} }{1 + e^{-i\pi \alpha/2} u }   du   \\
+   = &  e^{i\pi \alpha/2} \int_0^\infty \frac{u^{-1/\alpha}  }{1 + e^{i\pi \alpha/2} u }  du  + e^{-i\pi \alpha/2} \int_0^\infty \frac{u^{-1/\alpha}  }{1 + e^{-i\pi \alpha/2} u }  du \\
+   \label{eq residue}
+   =& e^{i\pi/2} \int_0^\infty \frac{u^{-1/\alpha}  }{1 +  u }  du + e^{-i\pi/2} \int_0^\infty \frac{u^{-1/\alpha}  }{1 +  u }  du \\
+   =&  0. 
+\end{align}
+The equality \eqref{eq residue} follows from using Residue theorem for those two integral separately. We complete the proof. 
+
+\subsection{Proof of Corollary \ref{Corollary}}
+Recall that the $\alpha$-Cauchy variables were introduced to study the first hitting times of points for one-dimensional symmetric stable L\'evy processes. 
+Let $X_\alpha = (X_\alpha(t): t\geq 0)$ be the symmetric stable L\'evy process of index $\alpha$ starting from zero and \(\hat{X}_\alpha = (\hat{X}_\alpha(t) : t \geq 0)\) be an independent copy of \(X_\alpha\).
+Let $T_{\{a\}}(X_\alpha)$ denote the first hitting time of point $a$ for $X_\alpha$. We rewrite formula (5.12) in \cite{YYY09} here
+ \begin{equation}
+    \label{relation1}
+\hat{X}_{\alpha}(T_{\{a\}}(X_{\alpha})) \overset{\text{law}}{=} |a|C_{\alpha}. 
+ \end{equation}
+It is known that if the subordinand $\{X_t\}$ is strictly stable and the subordinator $\{Z_t\}$ is self-decomposable, and they are independent, then the subordinated process ${X_{Z_t}}$ is self-decomposable, see e.g. Theorem 5.1 in \cite{AS19}. 
+Using this subordination property, the formula \eqref{relation1} and Theorem \ref{Theorem non-SD of alpha Cauchy}, we obtain Corollary \ref{Corollary}.
+
+
+
+
+
+
+
+
+\bigskip
+
+\noindent
+\textbf{Acknowledgements.} .
+
+
+%\vspace{3mm}
+%\textbf{We state that there is no conflict of interest.}
+
+\bibliographystyle{plain} 
+\bibliography{ID}
+\end{document}
+
+
+
