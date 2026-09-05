@@ -27,7 +27,8 @@ mechanisms, and seven ranked routes toward a proof or counterexample.
   mathematical status record.
 - [CurrentGoal.md](CurrentGoal.md) states all seven candidate routes; Routes
   1--5 are the current active goal and Routes 6--7 are deferred.
-- [WIP.md](WIP.md) is the equation-level proof ledger.
+- [WIP.md](WIP.md) is the overall progress summary and master result index;
+  complete derivations live in the [project ledger](ledger/README.md).
 
 ## Scope
 
@@ -125,9 +126,12 @@ are versioned. The archived Lean plan is an independent audit layer: no
   audit, proved parameter slices, open gaps, and the central theorem ledger.
 - [CurrentGoal.md](CurrentGoal.md): ranked proof paths and their execution
   blueprints.
-- [WIP.md](WIP.md): live mathematical derivations and obstruction ledger.
+- [WIP.md](WIP.md): overall progress explanation and master index of stable
+  WIP identifiers.
+- [ledger/](ledger/README.md): complete mathematical derivations, organized
+  by object and proof mechanism, together with sources and checkpoints.
 - [computations/](computations/): exact-arithmetic and symbolic verification
-  scripts cited by the WIP.
+  scripts cited by ledger entries.
 - [notes/](notes/): GGC-specific structural and source audits.
 - [literature/](literature/): primary GGC and general analytic references,
   with a source ledger in [literature/README.md](literature/README.md).

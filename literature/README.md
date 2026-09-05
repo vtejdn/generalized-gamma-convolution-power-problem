@@ -6,8 +6,34 @@ This directory contains the primary sources and general analytic references
 used by the active GGC power project. A file's presence is not an endorsement
 of every claim in it. The exact theorem, hypotheses, page or equation, and
 version used must still be recorded at the point of use in
-[ResearchStatus.md](../ResearchStatus.md), [WIP.md](../WIP.md), or a source
-audit in [notes/](../notes/).
+[ResearchStatus.md](../ResearchStatus.md), the
+[project progress ledger](../ledger/README.md), or a source audit in
+[notes/](../notes/). Stable entry identifiers are collected in
+[WIP.md](../WIP.md).
+
+## Local PDF audit status
+
+The following files already had theorem-level notes or exact citations in
+the project ledger before the 2026-09-05 directory scan, so they were not
+read a second time in that pass:
+
+- `Bondesson2015.pdf`;
+- `James-Roynette-Yor-2008-GGC-Dirichlet-means.pdf`;
+- `Sjodin-2021-HMk-gamma-mixtures-GGC.pdf`;
+- `the-power-problem-for-generalized-gamma-convolutions-ggc-and-related-questions.pdf`;
+- `SSV.pdf`;
+- `Steutel.pdf`;
+- `Martin-Kearney-2010-self-convolutive-recurrence.pdf`;
+- `Dyachenko-Karp-2021-arXiv2103.13312v1.pdf`.
+
+The four previously unaudited local books were screened or audited on
+2026-09-05:
+
+- `Bondesson.pdf`: high direct value; theorem-level audit completed;
+- `Sato2.pdf`: high direct value for the Volterra/size-bias formulation;
+- `Zolotarev.pdf`: high value for stable Mellin and product factorizations;
+- `Bertoin.pdf`: relevant Poisson-process infrastructure, but no direct
+  Poisson--Kingman, Dirichlet-mean, or size-biased-residual theorem was found.
 
 The \(\alpha\)-Cauchy/SD-specific papers and their version-search log have
 been moved to the historical
@@ -19,7 +45,8 @@ been moved to the historical
    and Related Classes of Distributions and Densities*, Lecture Notes in
    Statistics 76, Springer. Local copy: [Bondesson.pdf](Bondesson.pdf).
    This is the principal reference for HCM/GGC representations, closure
-   results, Thorin measures, and weak approximation.
+   results, Thorin measures, and weak approximation. See the
+   [theorem-level monograph audit](../notes/bondesson-1992-ggc-hcm-foundational-infrastructure.md).
 
 2. **Bondesson (2015).** Lennart Bondesson, “A Class of Probability
    Distributions that is Closed with Respect to Addition as Well as
@@ -93,6 +120,22 @@ been moved to the historical
     divisibility, and stable-law steps that can arise in the active routes.
     They remain in the main literature directory because their role is not
     confined to the historical \(\alpha\)-Cauchy problem.
+
+### Audit notes for the three general references
+
+- **Sato.** [Sato2.pdf](Sato2.pdf), *Levy Processes and Infinitely
+  Divisible Distributions*, corrected printing with supplement. Theorem
+  51.1 supplies the measure-level Volterra identity; see the
+  [ID/Volterra/size-bias audit](../notes/sato-id-volterra-size-bias-ggc.md).
+- **Zolotarev.** [Zolotarev.pdf](Zolotarev.pdf), *One-dimensional Stable
+  Distributions*, AMS, 1986. Its Mellin, stable-composition, and
+  reciprocal-index gamma-product results are recorded in the
+  [stable tilt infrastructure note](../notes/stable-mellin-poisson-tilt-infrastructure.md).
+- **Bertoin.** [Bertoin.pdf](Bertoin.pdf), *Levy Processes*, Cambridge
+  University Press, 1996. Sections O.5 and III.1 provide Poisson-random-
+  measure, compensation, and subordinator normalization tools. The same
+  [stable tilt infrastructure note](../notes/stable-mellin-poisson-tilt-infrastructure.md)
+  records both the useful material and the negative screening result.
 
 ## Citation discipline
 

@@ -94,7 +94,8 @@ No post-2009 source located by this protocol proves SD of \(C_\alpha\) or \(|C_\
 ## Additional primary sources used by the GGC WIP
 
 The following sources were added and checked on **2026-09-05** for the
-active proof ledger [WIP.md](../../../WIP.md).
+active [GGC project ledger](../../../ledger/README.md); stable entry IDs are
+listed in the [WIP master index](../../../WIP.md).
 
 1. **Martin--Kearney (2010).** R. J. Martin and M. J. Kearney,
    “An Exactly Solvable Self-Convolutive Recurrence,” *Aequationes

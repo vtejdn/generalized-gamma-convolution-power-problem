@@ -332,9 +332,10 @@ compensation inequality for the full average.
 
 The ledger also gives exact Dirichlet-mean, phase, inverse-Stein,
 Bernstein-inversion, spectral, Abel, and Kontorovich--Lebedev formulations
-of the remaining problem.  See [WIP.md](WIP.md) for the proofs and open
-sign conditions; these are project derivations, not claims attributed to
-the cited literature.
+of the remaining problem. See the [master WIP index](WIP.md) and the
+[detailed progress ledger](ledger/README.md) for the proofs and open sign
+conditions; these are project derivations, not claims attributed to the
+cited literature.
 
 This status record supersedes older status sentences in
 `notes/classes-and-power-closure.md`,
@@ -632,7 +633,8 @@ but the project requires an analytic certificate.
 - [Sjödin (2021), \(HM_k\) gamma-mixture theorem](literature/Sjodin-2021-HMk-gamma-mixtures-GGC.pdf).
 - [Sjödin (2026), claimed solution under audit](literature/the-power-problem-for-generalized-gamma-convolutions-ggc-and-related-questions.pdf).
 - [Dyachenko--Karp (2021), hypergeometric-ratio Markov representation](literature/Dyachenko-Karp-2021-arXiv2103.13312v1.pdf).
-- [Current proof ledger](WIP.md).
+- [Master WIP result index](WIP.md).
+- [Detailed project progress ledger](ledger/README.md).
 - [Detailed Bondesson (2015) audit](notes/bondesson-2015-product-closure-audit.md).
 - [Class implications and power closure](notes/classes-and-power-closure.md).
 - [Beta-prime reduction from the alpha-Cauchy background case](background/alpha-cauchy-sd/notes/03-beta-prime-reduction.md).

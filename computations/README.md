@@ -1,10 +1,11 @@
 # Exact verification scripts
 
-These Python 3 scripts support explicitly cited steps in
-[WIP.md](../WIP.md). They use only the Python standard library and favor
-integer or rational arithmetic. Their outputs are certificates or consistency
-checks for stated formulas; a numerical run is never substituted for the
-analytic proof recorded in the WIP.
+These Python 3 scripts support explicitly cited steps in the
+[project progress ledger](../ledger/README.md), whose stable identifiers are
+collected in [WIP.md](../WIP.md). They use only the Python standard library
+and favor integer or rational arithmetic. Their outputs are certificates or
+consistency checks for stated formulas; a numerical run is never substituted
+for the analytic proof recorded in the ledger.
 
 The filename prefix identifies the corresponding route in
 [CurrentGoal.md](../CurrentGoal.md):

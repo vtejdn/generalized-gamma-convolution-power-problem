@@ -50,7 +50,8 @@ in [ResearchStatus.md](ResearchStatus.md). The principal sources are
 [Bondesson's monograph](literature/Bondesson.pdf), and the
 [Sjödin (2026) article under audit](literature/the-power-problem-for-generalized-gamma-convolutions-ggc-and-related-questions.pdf).
 Verified results and open obligations produced while executing this plan are
-recorded sequentially in [WIP.md](WIP.md).
+stored by mathematical module in the [project ledger](ledger/README.md) and
+resolved by stable identifier through the [WIP master index](WIP.md).
 
 ## Common reduction and notation
 
@@ -222,7 +223,8 @@ framework.
    shape pair; the corresponding active target has \(q\ne2\).  WIP-1.14
    now makes \(q=3/2\) the first exact test: its tilted-stable residual is
    \((3\sqrt3/2)\sqrt{VY}\), and the required Stieltjes function is the
-   Wright--beta logarithmic quotient (1.90) in WIP.md.  The residual itself
+   [Wright--beta logarithmic quotient (1.90)](ledger/02-route1-q-three-halves-wright-bessel.md#wip-1-14).
+   The residual itself
    is not ID, so product closure through a residual GGC is unavailable.
    WIP-1.17 nevertheless proves the two-half-gamma model is GGC on a
    nonexplicit open neighborhood of equal rates; arbitrary contrast is the
