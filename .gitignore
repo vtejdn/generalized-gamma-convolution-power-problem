@@ -8,3 +8,10 @@ __pycache__/
 !/background/alpha-cauchy-sd/manuscripts/**/
 !/background/alpha-cauchy-sd/manuscripts/**/*.tex
 !/background/alpha-cauchy-sd/manuscripts/**/*.bib
+
+# Active GGC manuscript: retain only TeX/BibTeX sources and source folders.
+# In particular, local compilation products and generated PDFs stay untracked.
+/manuscript/**
+!/manuscript/**/
+!/manuscript/**/*.tex
+!/manuscript/**/*.bib

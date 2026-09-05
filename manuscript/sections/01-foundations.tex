@@ -1,0 +1,374 @@
+\section{Thorin measures, Dirichlet means, and bounded phases}
+\label{sec:foundations}
+
+In this section, we recall the classical results needed in the proof: the Thorin representation and weak approximation of GGC distributions, gamma--Dirichlet identities, and the bounded phase representation of a Stieltjes transform.
+The statements below include the parameter and integrability assumptions needed later.
+Gamma distributions use the shape--rate convention of Section~\ref{sec:introduction}.
+We also write
+\[
+  \psi_0(r)=\frac{\Gamma'(r)}{\Gamma(r)},\qquad r>0,
+\]
+for the digamma function.
+
+\subsection{The rate-form Thorin representation}
+
+A probability law \(\rho\) on \([0,\infty)\) belongs to \(\GGC\) if and only if its Laplace transform has the representation
+\begin{equation}\label{eq:thorin-representation}
+  L_\rho(s):=\int_{[0,\infty)}e^{-sx}\rho(\dd x)
+  =\exp\left\{-as-\int_{(0,\infty)}
+                  \log(1+s/b)\,U(\dd b)\right\},\qquad s\ge0,
+\end{equation}
+where \(a\ge0\) and \(U\) is a positive Borel measure satisfying
+\begin{equation}\label{eq:thorin-admissibility}
+  \int_{(0,\infty)}\log(1+1/b)\,U(\dd b)<\infty.
+\end{equation}
+The measure \(U\) is the rate-form Thorin measure and \(a\) is the drift.
+In particular \(a=0\) is a restriction on the law, not a consequence of the finiteness of \(U\).
+This is Bondesson's representation \cite[Section~3.1, p.~29, equations~(3.1.1)--(3.1.2)]{Bondesson1992}, with the sign changed from a nonpositive moment-generating argument to a nonnegative Laplace argument.
+Condition \eqref{eq:thorin-admissibility} combines the usual integrability conditions at zero and infinity.
+It also implies that \(U\) is finite on compact subintervals of \((0,\infty)\).
+
+\begin{lemma}[Weak closure and finite-gamma approximation]
+\label{lem:ggc-closure}
+The class \(\GGC\) is closed under weak limits that are probability laws.
+Every law in \(\GGC\) is the weak limit of laws of the form
+\begin{equation}\label{eq:finite-gamma-approximation}
+  \Law\left(\sum_{j=1}^{m_n}\frac{G_{\beta_{n,j}}}{b_{n,j}}\right),
+  \qquad \beta_{n,j}>0,\quad b_{n,j}>0,
+\end{equation}
+where the gamma variables in each sum are independent.
+Thus the approximating laws may be chosen with zero drift and finite atomic Thorin measures, even when the limiting law has positive drift or an infinite Thorin measure.
+\end{lemma}
+
+\begin{proof}
+The first assertion is the forward implication of Bondesson's closure theorem \cite[Theorem~3.1.5, pp.~34--35]{Bondesson1992}.
+Its non-defective-limit hypothesis is included in our convention on weak convergence.
+The last paragraph on p.~35 of the same reference states the approximation assertion explicitly, with approximating drifts zero and approximating Thorin measures having finitely many atoms.
+The transform of a finite atomic measure \(U_n=\sum_j\beta_{n,j}\delta_{b_{n,j}}\) is the transform of the sum in \eqref{eq:finite-gamma-approximation}.
+If the target law is \(\delta_0\), a single gamma variable with a rate tending to infinity also supplies the asserted approximation.
+\end{proof}
+
+For a law with representation \eqref{eq:thorin-representation}, differentiation at \(s>0\) gives
+\begin{equation}\label{eq:ggc-log-derivative}
+  -\partial_s\log L_\rho(s)
+  =a+\int_{(0,\infty)}\frac{U(\dd b)}{s+b}.
+\end{equation}
+The differentiation follows from \eqref{eq:thorin-admissibility}, locally uniformly in positive \(s\).
+
+\subsection{Dirichlet processes and gamma means}
+
+Let \(U\) now be a nonzero finite positive measure on \((0,\infty)\), and put \(B=U((0,\infty))\).
+For a nonzero finite measure \(V\) on a Borel space \(E\), \(P\sim\DP(V)\) means that \(P\) is a \emph{Dirichlet process}: it is a random probability measure whose masses on any measurable finite partition of \(E\) have the Dirichlet distribution with parameters equal to the corresponding \(V\)-masses.
+For positive parameters \((\beta_1,\ldots,\beta_m)\), this Dirichlet distribution is the law of \((G_{\beta_i}/\sum_jG_{\beta_j})_{i=1}^m\), with independent gamma variables.
+A cell of zero base mass has zero random mass almost surely and is omitted from this vector.
+We use this notation both for rates, with \(E=(0,\infty)\), and for log rates, with \(E=\R\).
+The base measure may be atomic, nonatomic, or mixed.
+
+\begin{lemma}[Gamma--Dirichlet normalization and Markov--Krein identity]
+\label{lem:gamma-dirichlet}
+Let \(U\) be a nonzero finite positive measure on \((0,\infty)\), with total mass \(B\).
+Let \(P\sim\DP(U)\), and let \(G_B\) be independent of \(P\).
+Then the random measure \(G_BP\) is the gamma process with shape measure \(U\) and unit rate: its masses on disjoint sets are independent gamma variables with shapes equal to their \(U\)-masses, and sets of zero \(U\)-mass receive zero mass.
+In particular, if \(r\ge0\) is Borel measurable and
+\[
+  \int\log(1+r(b))\,U(\dd b)<\infty,
+\]
+then \(P(r):=\int r(b)P(\dd b)<\infty\) almost surely, and
+\begin{equation}\label{eq:markov-krein}
+  \E e^{-zG_BP(r)}
+  =\E(1+zP(r))^{-B}
+  =\exp\left\{-\int\log(1+zr(b))\,U(\dd b)\right\},
+  \qquad z\ge0.
+\end{equation}
+Consequently, if \(U\) satisfies \eqref{eq:thorin-admissibility}, the zero-drift GGC \(X\) with Thorin measure \(U\) admits the representation
+\begin{equation}\label{eq:gamma-dirichlet-untilted}
+  X\ \overset{\mathrm d}=\ G_B\int b^{-1}P(\dd b).
+\end{equation}
+For \(s>0\), let \(X_s\) denote the exponential tilt of \(X\):
+\[
+  \Law(X_s)(\dd x)
+  =\frac{e^{-sx}}{\E e^{-sX}}\,\Law(X)(\dd x).
+\]
+Then, with
+\[
+  M_P(s):=\int_{(0,\infty)}\frac{P(\dd b)}{s+b},
+\]
+one has
+\begin{equation}\label{eq:gamma-dirichlet-tilt}
+  X_s\ \overset{\mathrm d}=\ G_BM_P(s),\qquad G_B\ \text{independent of }P.
+\end{equation}
+The base law of \(P\) on the right is \(\DP(U)\) for every \(s\).
+\end{lemma}
+
+\begin{proof}
+The normalization, independence, logarithmic condition, and identity \eqref{eq:markov-krein} are recorded in \cite[Section~1, reprint p.~2, equations~(1)--(3)]{James2005}.
+We recall the proof for nonnegative functions, with the integrability assumptions needed below.
+For a finite partition with positive parameter vector \((\beta_1,\ldots,\beta_m)\), the change of variables \(x_j=tp_j\), with Jacobian \(t^{m-1}\), factors the joint density of independent unit-rate gamma variables into a \(\operatorname{Gamma}(B,1)\) density in \(t\) and a Dirichlet density in \((p_1,\ldots,p_m)\).
+Conversely, multiplying an independent Dirichlet vector by \(G_B\) gives these independent gamma variables.
+This verifies the gamma-process claim on all finite partitions.
+
+The Laplace functional for a nonnegative simple function is therefore the right side of \eqref{eq:markov-krein}.
+Increasing simple approximation proves the same identity for an arbitrary nonnegative Borel function, initially allowing an infinite integral.
+Under the stated logarithmic condition, the right side tends to one as \(z\downarrow0\), by dominated convergence with \(0\le z\le1\).
+It follows that \(G_BP(r)\), and hence \(P(r)\), is finite almost surely.
+Conditioning on \(P\) and integrating the gamma density gives the middle expression in \eqref{eq:markov-krein}.
+
+Taking \(r(b)=b^{-1}\) proves \eqref{eq:gamma-dirichlet-untilted}.
+For the tilted identity, \(r(b)=(s+b)^{-1}\) is bounded and
+\begin{align*}
+  \E e^{-vG_BM_P(s)}
+  &=\exp\left\{-\int
+       \log\left(1+\frac{v}{s+b}\right)U(\dd b)\right\}\\
+  &=\frac{\E e^{-(s+v)X}}{\E e^{-sX}},\qquad v\ge0.
+\end{align*}
+Uniqueness of Laplace transforms proves \eqref{eq:gamma-dirichlet-tilt}.
+Using the same auxiliary \((G_B,P)\) for different \(s\) is only a coupling of the tilted marginal laws; it does not identify the original tilting operations as a joint process.
+\end{proof}
+
+For later use, \(\operatorname{Beta}(1,B)\) denotes the distribution on \((0,1)\) with density \(B(1-z)^{B-1}\).
+The next identity expresses sampling a point from a Dirichlet process in terms of its posterior distribution after that observation.
+
+\begin{lemma}[One-observation posterior and Palm identity]
+\label{lem:dirichlet-posterior}
+Let \(U\) be a nonzero finite positive measure on \((0,\infty)\) with total mass \(B\).
+For every nonnegative jointly Borel function \(\Phi(b,P)\),
+\begin{equation}\label{eq:dirichlet-palm}
+  \E_{\DP(U)}\int\Phi(b,P)P(\dd b)
+  =\frac1B\int U(\dd b)\,
+          \E_{\DP(U+\delta_b)}\Phi(b,P).
+\end{equation}
+The identity also holds for a signed jointly Borel function whenever \(\E_{\DP(U)}\int|\Phi(b,P)|P(\dd b)<\infty\).
+A jointly measurable realization of the posterior laws is
+\begin{equation}\label{eq:palm-coupling}
+  P^{(b)}=(1-Z)Q+Z\delta_b,\qquad
+  Q\sim\DP(U),\quad Z\sim\operatorname{Beta}(1,B),
+  \qquad Q\ \text{independent of }Z,
+\end{equation}
+for which \(P^{(b)}\sim\DP(U+\delta_b)\).
+\end{lemma}
+
+\begin{proof}
+The posterior \(P\mid Y=b\), when \(Y\mid P\) has law \(P\), is \(\DP(U+\delta_b)\); see \cite[Section~2, reprint pp.~4--5, including equation~(8)]{James2005}.
+We give a proof using finite partitions.
+Multiplication of a Dirichlet density with parameter vector \((\beta_j)_j\) by its \(i\)-th coordinate changes the parameter to \((\beta_j+\mathbf1_{\{j=i\}})_j\), with multiplier \(\beta_i/B\).
+The assertion is trivial for a partition with one positive-mass cell.
+On a common finite partition this proves \eqref{eq:dirichlet-palm} for cylinder functions and simple functions of the sampled location.
+Refinement and the monotone-class theorem extend the identity to the stated jointly Borel functions.
+Zero-mass cells contribute nothing.
+This proof does not assume that \(U\) is diffuse.
+
+To obtain \eqref{eq:palm-coupling}, add an independent \(\operatorname{Gamma}(1,1)\) mass at \(b\) to the gamma process \(G_BQ\), and normalize its total mass.
+The new shape measure is \(U+\delta_b\).
+The fraction assigned by the added mass is \(\operatorname{Beta}(1,B)\), independently of \(Q\).
+The displayed formula, as a function of \((b,Q,Z)\), is a Borel map into the space of probability measures endowed with its weak Borel sigma-field.
+It therefore also specifies the required measurable posterior kernel.
+\end{proof}
+
+In particular, Lemma~\ref{lem:dirichlet-posterior} applies to atomic base measures.
+We will use it to replace an integral with respect to the random measure \(P\) by a deterministic rate integral and a posterior expectation.
+
+\begin{lemma}[Stick-breaking realization]\label{lem:stick-breaking}
+Let \(B>0\), let \(H\) be a probability on \(\R\), let \((Y_j)_{j\ge1}\) be independent with law \(H\), and let \((V_j)_{j\ge1}\) be independent \(\operatorname{Beta}(1,B)\) variables, independently of the locations.
+Then
+\begin{equation}\label{eq:stick-breaking}
+  Q=\sum_{j\ge1}W_j\delta_{Y_j},\qquad
+  W_j=V_j\prod_{i<j}(1-V_i),
+\end{equation}
+is a probability measure almost surely and has law \(\DP(BH)\).
+\end{lemma}
+
+\begin{proof}
+This is Sethuraman's construction \cite[Section~2, pp.~642--643, equation~(2.1), and Theorem~3.4, p.~645]{Sethuraman1994}.
+Note that the remaining mass after \(m\) terms is \(\prod_{j\le m}(1-V_j)\); it decreases to zero almost surely because its expectation is \((B/(B+1))^m\).
+
+For a finite partition with probabilities \(p_i\), a Dirichlet vector \(D\) with parameters \(Bp_i\) satisfies
+\[
+  D\ \overset{\mathrm d}=\ V e_J+(1-V)D',
+\]
+where \(e_i\) is the \(i\)-th coordinate unit vector, \(D'\) is an independent copy of \(D\), \(V\) has the displayed beta law, and \(J\) is independent with probabilities \(p_i\).
+Indeed, conditional on \(J=i\), gamma addition gives the Dirichlet parameters \(Bp_j+\mathbf1_{\{j=i\}}\).
+Its density relative to that of \(D\) is \(x_i/p_i\); mixing with weights \(p_i\) restores the original density.
+Again zero-probability cells are omitted and the one-cell case is immediate.
+This fixed point is unique: two initial probability vectors driven by the same \(V_j,J_j\) have \(\ell^1\) distance at most \(2\prod_{j\le m}(1-V_j)\) after \(m\) iterations.
+The partition vector defined by \eqref{eq:stick-breaking} satisfies this fixed-point equation and hence is Dirichlet.
+This proves the lemma on all finite partitions, including for atomic \(H\).
+\end{proof}
+
+We next give a jointly measurable construction in which the mass and base probability are allowed to vary.
+It is a measurable version of the preceding construction, not an additional assumption on the base measure.
+
+\begin{lemma}[A parameterized Dirichlet realization]
+\label{lem:parameterized-dirichlet}
+There is a fixed probability space \((\Omega,\mathcal A,\mathbb P)\) and jointly Borel maps
+\[
+ (B,F,\omega)\longmapsto Q(B,F,\omega),\qquad
+ (B,F,y,\omega)\longmapsto\widehat P(B,F,y,\omega)
+\]
+into \(\mathcal P(\R)\), for \(B>0\), \(F\in\mathcal P(\R)\), and \(y\in\R\), such that
+\[
+ Q(B,F,\cdot)\sim\DP(BF),\qquad
+ \widehat P(B,F,y,\cdot)\sim\DP(BF+\delta_y).
+\]
+The construction uses a single event of probability one on which the stick-breaking weights sum to one for every \(B>0\) and every \(F\).
+All spaces of probabilities carry their narrow Borel sigma-fields.
+\end{lemma}
+
+\begin{proof}
+For \(F\in\mathcal P(\R)\) and \(0<u<1\), define its quantile by
+\[
+ q_F(u)=\inf\{x\in\R:F((-\infty,x])\ge u\}.
+\]
+This is a finite real number.
+For every \(a\in\R\),
+\begin{equation}\label{eq:quantile-joint-borel}
+ \{(F,u):q_F(u)<a\}
+ =\bigcup_{\substack{r\in\mathbb Q\\r<a}}
+       \{(F,u):F((-\infty,r])\ge u\}.
+\end{equation}
+The evaluation \(F\mapsto F((-\infty,r])\) is Borel: the bounded continuous functions \((1-n(x-r)_+)_+\) decrease to the indicator of this half-line, so their integrals converge to that evaluation.
+Thus \((F,u)\mapsto q_F(u)\) is jointly Borel.
+Right continuity of distribution functions also gives \(\mathbb P\{q_F(S)\le x\}=F((-\infty,x])\) for a uniform \(S\) on \((0,1)\).
+
+Take \(\Omega=(0,1)^{\mathbb N}\times(0,1)^{\mathbb N}\times(0,1)\) with its product Borel sigma-field and product uniform probability.
+Write \((S_j)_j,(T_j)_j,T_*\) for its independent coordinate variables.
+Suppressing \(\omega\) in the formulas, put
+\begin{equation}\label{eq:parameterized-stick-breaking}
+ \begin{gathered}
+ Z_j(F)=q_F(S_j),\qquad V_j(B)=1-T_j^{1/B},\\
+ W_j(B)=V_j(B)\prod_{i<j}(1-V_i(B)).
+ \end{gathered}
+\end{equation}
+These are jointly Borel in their parameters and \(\omega\).
+The decreasing products \(\prod_{j\le m}T_j\) tend to zero almost surely: their expectations are \(2^{-m}\), so their nonnegative limit has expectation zero.
+Denote this Borel event by \(\Omega_0\).
+It does not depend on \(B,F\), and on it
+\[
+ R_m(B):=\prod_{j\le m}(1-V_j(B))
+        =\left(\prod_{j\le m}T_j\right)^{1/B}
+        \longrightarrow0\qquad\text{for every }B>0.
+\]
+In particular \(\sum_jW_j(B)=1\) simultaneously for all parameters on \(\Omega_0\); no intersection of parameter-dependent null sets is needed.
+
+The probability-valued maps
+\[
+ Q_m(B,F)=\sum_{j\le m}W_j(B)\delta_{Z_j(F)}+R_m(B)\delta_0
+\]
+are jointly Borel, since finite convex combinations and \(z\mapsto\delta_z\) are continuous in the narrow topology.
+On \(\Omega_0\) they converge narrowly to \(Q(B,F)=\sum_{j\ge1}W_j(B)\delta_{Z_j(F)}\); the tail error against a bounded continuous test is at most twice its supremum norm times \(R_m(B)\).
+Set both \(Q_m\) and \(Q\) equal to \(\delta_0\) on \(\Omega_0^c\).
+The resulting everywhere pointwise limit is a jointly Borel map into the metrizable space \(\mathcal P(\R)\).
+For each fixed \(B,F\), its law is \(\DP(BF)\) by Lemma~\ref{lem:stick-breaking}.
+
+Finally, set \(Z_*(B)=1-T_*^{1/B}\) and
+\[
+ \widehat P(B,F,y)=(1-Z_*(B))Q(B,F)+Z_*(B)\delta_y.
+\]
+This map is jointly Borel.
+For each fixed \(B,F\), the variable \(Z_*(B)\) is \(\operatorname{Beta}(1,B)\) and independent of \(Q(B,F)\).
+Lemma~\ref{lem:dirichlet-posterior}, in log-rate coordinates, therefore gives the stated posterior law.
+Passing through \(\exp_*\) supplies the corresponding jointly Borel realizations on positive rates as well.
+\end{proof}
+
+\subsection{A jointly measurable bounded Stieltjes phase}
+
+A Stieltjes function is a function \(S:(0,\infty)\to[0,\infty)\) with a representation
+\[
+  S(s)=\frac{c}{s}+d+\int_{(0,\infty)}
+                         \frac{\sigma(\dd t)}{s+t},
+  \qquad c,d\ge0,\qquad
+  \int\frac{\sigma(\dd t)}{1+t}<\infty,
+\]
+where \(\sigma\) is a positive Borel measure.
+The bounded phase representation used below is a consequence of two results in \citet[Theorems~6.10 and~7.3]{SSV2010}: if \(S\) is a nonzero Stieltjes function, its reciprocal \(f=1/S\) has the representation
+\begin{equation}\label{eq:ssv-exponential}
+  f(s)=\exp\left\{c_0+\int_0^\infty
+     \left(\frac{t}{1+t^2}-\frac1{s+t}\right)
+                           \xi(t)\,\dd t\right\},
+  \qquad 0\le\xi\le1,
+\end{equation}
+with \(c_0\in\R\) and \(\xi\) unique up to Lebesgue-null sets \cite[Theorem~6.10, pp.~58--59, and Theorem~7.3, p.~63]{SSV2010}.
+In the terminology of that reference, \(1/S\) is a complete Bernstein function.
+We need only the displayed representation and its uniqueness.
+In particular, they apply to the reciprocal of every resolvent mean considered below.
+
+\begin{lemma}[Measurable phase and anchor-one representation]
+\label{lem:phase}
+For every probability measure \(P\) on \((0,\infty)\), extend \(M_P\) to the slit plane by
+\[
+  M_P(z)=\int\frac{P(\dd b)}{z+b},
+  \qquad z\in\mathbb C\setminus(-\infty,0].
+\]
+There is a jointly Borel function \((P,t)\mapsto\xi_P(t)\in[0,1]\) such that
+\begin{equation}\label{eq:phase-anchor}
+  \log M_P(s)-\log M_P(1)
+  =\int_0^\infty\xi_P(t)
+       \left(\frac1{s+t}-\frac1{1+t}\right)\dd t,
+  \qquad s>0.
+\end{equation}
+Here the probability measures \(P\) carry the Borel sigma-field of the narrow topology.
+For each fixed \(P\), the density in this representation is unique Lebesgue-almost everywhere.
+A specific jointly Borel choice is
+\begin{equation}\label{eq:phase-representative}
+  \xi_P(t)=\limsup_{n\to\infty}
+       \frac{\arg(1/M_P(-t+i/n))}{\pi}
+       =\limsup_{n\to\infty}
+       \frac{-\arg M_P(-t+i/n)}{\pi},\qquad t>0,
+\end{equation}
+where \(n\) runs through the positive integers and \(\arg\) is the principal argument.
+The ordinary limit in \eqref{eq:phase-representative} exists for almost every \(t\).
+Both \eqref{eq:phase-anchor} and all its positive-order \(s\)-derivatives are absolutely convergent, locally uniformly in \(s>0\), uniformly over \(P\).
+\end{lemma}
+
+\begin{proof}
+The function \(M_P\) is a nonzero Stieltjes function, since \(\int(1+b)^{-1}P(\dd b)\le1\).
+For \(z\) in the upper half-plane,
+\[
+  \operatorname{Im}M_P(z)
+  =-\operatorname{Im}z\int|z+b|^{-2}P(\dd b)<0.
+\]
+Thus the arguments in \eqref{eq:phase-representative} are unambiguous principal arguments, with \(-\pi<\arg M_P(z)<0\).
+Apply \eqref{eq:ssv-exponential} to \(f=1/M_P\), and subtract its real logarithms at \(s\) and \(1\).
+Negating the resulting identity gives exactly the sign in \eqref{eq:phase-anchor}.
+The uniqueness assertion follows from uniqueness in \eqref{eq:ssv-exponential}: the value at \(1\) fixes the otherwise free multiplicative constant.
+
+Let \(\xi_P^0\) be any almost-everywhere phase initially provided by that representation.
+Analytic continuation of \eqref{eq:ssv-exponential} and its imaginary part give
+\[
+  \arg(1/M_P(-t+i\varepsilon))
+  =\int_0^\infty
+       \frac{\varepsilon\,\xi_P^0(u)}
+            {(u-t)^2+\varepsilon^2}\,\dd u,
+  \qquad \varepsilon>0.
+\]
+Extend \(\xi_P^0\) by zero to the negative half-line.
+The normalized integral is its Poisson approximate identity; at each Lebesgue point it tends to \(\xi_P^0(t)\).
+For completeness, this convergence follows by splitting the integral into a neighborhood of the point, where the Lebesgue-point averages of the error tend to zero, and its complement, whose Poisson mass tends to zero.
+Boundedness of \(\xi_P^0\) controls the complement.
+Hence \eqref{eq:phase-representative} agrees with \(\xi_P^0\) almost everywhere and preserves \eqref{eq:phase-anchor}.
+
+For fixed \(n\), the map \((P,t)\mapsto M_P(-t+i/n)\) is jointly Borel (in fact continuous).
+The kernel is bounded by \(n\), is continuous in the rate variable, and its dependence on \(t\) is locally uniform, with derivative bounded by \(n^2\).
+Taking a continuous argument on the strict lower half-plane and then a limsup proves joint Borel measurability of the specified representative.
+The minus sign remains inside the limsup in \eqref{eq:phase-representative}, so the definition is unambiguous also at exceptional boundary points.
+
+Finally,
+\[
+  \int_0^\infty
+   \left|\frac1{s+t}-\frac1{1+t}\right|\dd t=|\log s|,
+\]
+and, for every integer \(k\ge1\),
+\[
+  \partial_s^k\log M_P(s)
+  =(-1)^k k!\int_0^\infty
+                    \frac{\xi_P(t)}{(s+t)^{k+1}}\,\dd t,
+  \qquad
+  k!\int_0^\infty(s+t)^{-k-1}\dd t
+       =(k-1)!s^{-k}.
+\]
+These estimates prove the absolute convergence and justify all the stated differentiations.
+\end{proof}
+
+We have normalized the phase representation at \(1\).
+Neither \(M_P(0+)<\infty\) nor a logarithmic moment of the large rates is needed in Lemma~\ref{lem:phase}.
+The extra assumption for the zero-anchored variant in \cite[Remark~6.11, p.~60]{SSV2010} is therefore not used.
+We use the 2010 first-edition theorems with the authors' posted corrections; in particular we do not use the uncorrected equality at the end of that remark.

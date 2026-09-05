@@ -1,34 +1,82 @@
 # Generalized Gamma Convolution Power Problem
 
-Last structural update: **2026-09-05**.
+Last mathematical status update: **2026-09-06**.
 
-This repository studies Bondesson's power conjecture for positive
-generalized gamma convolutions:
+This repository records a project proof of Bondesson's power conjecture
+for nonnegative generalized gamma convolutions:
 
 \[
 \boxed{
 X\in GGC,\qquad q\ge 1
-\quad\stackrel{?}{\Longrightarrow}\quad
+\quad\Longrightarrow\quad
 X^q\in GGC.}
 \]
 
 Here \(X^q\) is an ordinary deterministic power. It is neither a
 convolution power nor a product of independent copies. The case \(q=1\)
-is trivial; the research problem is \(q>1\).
+is trivial; the substantive conclusion concerns every finite real \(q>1\).
 
-The full conjecture is **not resolved in this repository**. Bondesson
-(2015) states it as Conjecture 1. Sjödin (2026) claims a proof, but our
-audit finds that the proposed induction uses a false lemma, so that article
-is not treated here as establishing the conjecture. The project instead
-records independent partial theorems, exact reductions, failed proof
-mechanisms, and seven ranked routes toward a proof or counterexample.
+**Status: proved in project; internal mathematical audit complete.**
+The proof is assembled in
+[WIP-6.21](ledger/23-power-theorem-assembly-audit.md#wip-6-21);
+[WIP-6.23](ledger/25-mathematical-completion-audit.md#wip-6-23)
+records the completed requirement-by-requirement audit. The final theorem
+imposes no restriction on drift, Thorin mass, support size, shapes or
+moments beyond the input being a GGC probability law. This status concerns
+the written ledger proofs, not publication, external peer review, Lean verification
+or literature priority. A concrete mathematical objection must still be
+examined and may require a correction.
+
+Following the user's subsequent instruction on 2026-09-06, the
+[TeX manuscript](manuscript/ggc-power-closure.tex) has been completed for
+independent review, with its [bibliography](manuscript/references.bib).
+Cross-references, citation keys and source structure were statically checked;
+no compilation was run in this handoff. Typesetting does not itself validate the
+mathematical argument. No remote push was made in this handoff.
+
+The new [Lean formalization blueprint](formalization/README.md) records
+the source-audited mathlib APIs, missing infrastructure, implementation
+milestones and explicit external-literature axiom contracts. This is a
+plan and API audit, not an implemented or Lean-verified proof.
+
+Bondesson (2015) states the target as Conjecture 1. Sjödin (2026) claims
+a proof, but our audit finds a false lemma in that induction. The new
+log-rate evolution argument is independent of that claimed proof.
 
 - [ResearchStatus.md](ResearchStatus.md) is the detailed and current
   mathematical status record.
-- [CurrentGoal.md](CurrentGoal.md) states all seven candidate routes; Routes
-  1--5 are the current active goal and Routes 6--7 are deferred.
+- [CurrentGoal.md](CurrentGoal.md) records the proof-route blueprint and
+  its current disposition. Earlier P1--P7 rankings and legacy ledger IDs
+  retain their historical meaning; they are not outstanding obligations
+  for the now-completed power theorem.
 - [WIP.md](WIP.md) is the overall progress summary and master result index;
   complete derivations live in the [project ledger](ledger/README.md).
+- [BigPicture.md](BigPicture.md) records the overall mathematical
+  assessment, structural lessons and remaining independent questions,
+  separately from proofs.
+
+An independent phase proof now gives GGC square membership for every
+finite gamma convolution of total shape at most two, with no support-size
+restriction: [WIP-5.49--5.50](ledger/18-four-rate-balanced-phase.md#wip-5-49).
+The general proof instead uses the
+[log-rate generator](ledger/20-finite-thorin-positive-steps.md),
+[positive finite-time Euler evolution](ledger/21-log-thorin-euler-evolution.md),
+and [identification with actual powers](ledger/22-power-flow-identification.md).
+[WIP-6.22](ledger/24-direct-log-generator-resolvent.md#wip-6-22)
+also gives a direct, absolutely convergent verification of the generator's
+resolvent action. It is an alternative interface proof, not a second
+independent solution of the full conjecture.
+
+The classical inputs are Bondesson's Thorin representation and weak
+closure/density theorems, James's gamma--Dirichlet and posterior
+identities, the SSV bounded Stieltjes phase, and Sethuraman's
+stick-breaking construction. Their precise hypotheses and checked
+versions are saved in the
+[primary-interface audit](notes/log-rate-power-proof-primary-interfaces.md).
+The logarithmic generator, positive Euler evolution, dynamic
+identification and full-quantifier assembly are project deductions.
+Bondesson's stronger integral Conjecture 2 and general fractional-peeling
+closure are separate questions, not consequences claimed here.
 
 ## Scope
 
@@ -117,22 +165,36 @@ Each independently checkable step should have:
 Exact or numerical calculations state the software, precision, and identity
 being tested. Exact-arithmetic scripts are preferred for certificates.
 Generated TeX products are ignored; only manuscript and bibliography sources
-are versioned. The archived Lean plan is an independent audit layer: no
-`sorry`, added axiom, or untracked normalization repair counts as completion.
+are versioned. Under the user's current formalization policy, precisely
+referenced external mathematical theorems may be declared as axioms.
+The project's new deductions must be proved relative to that explicit
+whitelist; no `sorry`, unregistered axiom, hidden core assumption or
+untracked normalization repair counts as completion. See the
+[axiom boundary](formalization/axiom-boundary.md). The archived SD plan
+is a separate historical document, not the policy for this GGC engineering task.
 
 ## Repository map
 
-- [ResearchStatus.md](ResearchStatus.md): reliable baseline, 2026 claim
-  audit, proved parameter slices, open gaps, and the central theorem ledger.
-- [CurrentGoal.md](CurrentGoal.md): ranked proof paths and their execution
-  blueprints.
+- [ResearchStatus.md](ResearchStatus.md): completed project theorem,
+  reliable baseline, preserved 2026 claim audit, historical parameter
+  slices, and remaining independent questions.
+- [CurrentGoal.md](CurrentGoal.md): proof paths, their historical
+  execution blueprints and current disposition.
 - [WIP.md](WIP.md): overall progress explanation and master index of stable
   WIP identifiers.
+- [BigPicture.md](BigPicture.md): strategic assessment, scope of the
+  completed proof and explicit triggers for revising the research outlook.
 - [ledger/](ledger/README.md): complete mathematical derivations, organized
   by object and proof mechanism, together with sources and checkpoints.
 - [computations/](computations/): exact-arithmetic and symbolic verification
   scripts cited by ledger entries.
 - [notes/](notes/): GGC-specific structural and source audits.
+- [manuscript/ggc-power-closure.tex](manuscript/ggc-power-closure.tex):
+  complete manuscript source, with six included sections and
+  [references.bib](manuscript/references.bib); compilation remains user-controlled.
+- [formalization/](formalization/README.md): Lean blueprint, pinned mathlib
+  API source audit, missing infrastructure and external axiom contracts;
+  no Lean implementation yet.
 - [literature/](literature/): primary GGC and general analytic references,
   with a source ledger in [literature/README.md](literature/README.md).
 - [background/alpha-cauchy-sd/](background/alpha-cauchy-sd/): completed

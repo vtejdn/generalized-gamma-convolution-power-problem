@@ -137,6 +137,47 @@ been moved to the historical
   [stable tilt infrastructure note](../notes/stable-mellin-poisson-tilt-infrastructure.md)
   records both the useful material and the negative screening result.
 
+## Additional online sources checked on 2026-09-05
+
+The following versioned primary sources were read online. Their theorem
+statements, hypotheses and project connections are saved in notes; no local
+PDF download is claimed.
+
+11. **James (2006).** L. F. James, *Gamma Tilting Calculus for GGC and
+    Dirichlet means with applications to Linnik processes and Occupation
+    Time Laws for Randomly Skewed Bessel Processes and Bridges*,
+    [arXiv:math/0610218v3](https://arxiv.org/pdf/math/0610218v3),
+    7 November 2006. Theorem 4.1(i),(iv), PDF p. 13; Proposition 5.7(i),
+    pp. 21--22; Proposition 5.14, p. 24.
+    [Notation and gap audit](../notes/james-dirichlet-means-stable-scaling.md).
+
+12. **James--Lijoi--Prünster (2008).** L. F. James, A. Lijoi and
+    I. Prünster, “Distributions of linear functionals of two parameter
+    Poisson--Dirichlet random measures,” *Annals of Applied Probability*
+    **18** (2008), 521--551,
+    [DOI 10.1214/07-AAP462](https://doi.org/10.1214/07-AAP462).
+    Checked [arXiv:math/0609488v4](https://arxiv.org/pdf/math/0609488v4),
+    31 March 2008, Theorem 2.1 and equations (13)--(14), reprint/PDF p. 8.
+    The matched positive-linear-PD-mean conversion is recorded in the
+    [James note](../notes/james-dirichlet-means-stable-scaling.md).
+
+13. **James (2010).** L. F. James, “Dirichlet mean identities and laws of
+    a class of subordinators,” *Bernoulli* **16** (2010), 361--388,
+    [DOI 10.3150/09-BEJ224](https://doi.org/10.3150/09-BEJ224).
+    Checked [arXiv:1010.1639v1](https://arxiv.org/pdf/1010.1639v1),
+    8 October 2010. Theorem 2.1, PDF p. 8; Theorem 3.1, pp. 12--13;
+    Remark 3.1, p. 15. Used for matched beta scaling and posterior tilting,
+    not arbitrary replacement of gamma shapes.
+
+14. **Sokal (2010).** A. D. Sokal, “Real-variables characterization of
+    generalized Stieltjes functions,” *Expositiones Mathematicae* **28**
+    (2010), 179--185,
+    [DOI 10.1016/j.exmath.2009.06.004](https://doi.org/10.1016/j.exmath.2009.06.004).
+    Checked [arXiv:0902.0065v2](https://arxiv.org/pdf/0902.0065v2),
+    6 May 2009. Theorem 1, pp. 2--3; Hausdorff proof, equations
+    (13)--(16), pp. 5--6.
+    [Source audit and tilted-cumulant application](../notes/sokal-stieltjes-hausdorff-criterion.md).
+
 ## Citation discipline
 
 - Bondesson's independent-product closure theorem cannot be applied to a

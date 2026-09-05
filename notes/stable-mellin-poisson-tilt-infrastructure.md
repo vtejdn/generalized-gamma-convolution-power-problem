@@ -3,7 +3,8 @@ title: "Stable Mellin, product, and Poisson infrastructure for negative tilts"
 sources:
   - "../literature/Zolotarev.pdf"
   - "../literature/Bertoin.pdf"
-source_type: "research monographs"
+  - "https://arxiv.org/pdf/math/0610218v3"
+source_type: "research monographs with supplementary primary preprint attribution"
 status: "audited"
 last_verified: "2026-09-05"
 source_sha256:
@@ -27,11 +28,16 @@ Primary sources:
   Society, 1986.
 - Jean Bertoin, [*Levy Processes*](../literature/Bertoin.pdf), Cambridge
   Tracts in Mathematics 121, Cambridge University Press, 1996.
+- L. F. James, *Gamma Tilting Calculus for GGC and Dirichlet means...*,
+  [arXiv:math/0610218v3](https://arxiv.org/pdf/math/0610218v3),
+  7 November 2006. The notation conversion and audited implications are in
+  [the James source note](james-dirichlet-means-stable-scaling.md).
 
 ## 0. Reading contract
 
 - **[SOURCE-Z]** is stated in Zolotarev.
 - **[SOURCE-B]** is stated in Bertoin.
+- **[SOURCE-J]** is stated in the supplementary James preprint.
 - **[PROJECT DERIVATION]** is proved here from the cited source formulas; it
   is not attributed to either book and is not claimed to be new to the
   literature.
@@ -81,6 +87,10 @@ n^n\prod_{k=1}^{n-1}G_{(B+k)/n}.
 
 Formula (1.2) exactly reconciles the tilted-stable factorization in Route 1
 with Gauss multiplication in the rational/integer-power route.
+The supplementary source audit identifies (1.1) as James (2006),
+Proposition 5.14, and the general gamma-power stable factorization as
+his Theorem 4.1(iv). The independent project proofs remain useful; these
+two identities are established literature results.
 
 Bertoin has lower direct value but supplies rigorous Poisson-random-measure
 infrastructure.  It yields a useful gamma mixture of tempered-stable Poisson
@@ -169,7 +179,11 @@ an infinite-product version under its explicit convergence assumptions.
 
 ### 3.2 Negative tilts inherit the stable composition law
 
-**[PROJECT DERIVATION: STABLE-L2]** Let all right-hand factors below be
+**[SOURCE-J; PROJECT REDERIVATION: STABLE-L2]** James (2006), Proposition
+5.14, PDF p. 24, gives this identity after converting his tilt exponent
+to the project's total-shape parameter; see equation (J.4) in
+[the James source note](james-dirichlet-means-stable-scaling.md).
+Let all right-hand factors below be
 independent.  Then
 
 \[
@@ -270,8 +284,14 @@ G_B^{1/\rho}\overset d=G_{\rho B}/T_{\rho,B}
 \]
 
 at every integer \(1/\rho=n\).  It also shows that the Route 1 stable factor
-and the deferred Route 6 gamma-product factorization are the same structure,
-not competing explanations.
+and the historical Route 6 gamma-product factorization (current P7) are the
+same structure, not competing explanations. Both remain available under
+the revised unrestricted program.
+
+**[SOURCE-J]** The displayed general factorization is James (2006),
+Theorem 4.1(iv), PDF p. 13, with
+\(T_{\rho,B}=T^{\rm James}_{\rho,\rho B}\). Formula (4.4) remains its
+independent integer-power verification.
 
 ## 5. Poisson construction of the negative tilt
 
@@ -434,13 +454,20 @@ book's notation.
 
 1. Neither source proves that
    \(M^q/T_{\rho,B}\) is an ordinary Dirichlet mean.
+   James (2006), Proposition 5.7, does identify this residual after
+   multiplication by an additional independent \(S_\rho\).
+   James--Lijoi--Prünster (2008), Theorem 2.1, supplies an ordinary-DM
+   conversion for matched positive linear PD means, if that particular
+   representation can first be established; see the supplementary note.
 2. Stable multiplication and multiplicative ID do not imply additive GGC.
 3. Bertoin's Section O.5 gives compensation and an exponential formula, but
    not the full Mecke--Slivnyak add-one identity needed for a Palm proof.
 4. The indexes of Bertoin contain no dedicated Poisson--Kingman,
    size-biased deletion, or Dirichlet-mean theorem.
-5. Zolotarev's reciprocal-index formula settles integer \(q\), not general
-   rational or real \(q\).  A positive Barnes-beta certificate is still
+5. Zolotarev's reciprocal-index formula settles the reciprocal
+   tilted-stable factorization for integer \(q\); it does not by itself
+   prove powers of arbitrary finite gamma convolutions. The corresponding
+   positive Barnes-beta certificate for general rational powers is still
    missing.
 
 ## 8. Recommended use

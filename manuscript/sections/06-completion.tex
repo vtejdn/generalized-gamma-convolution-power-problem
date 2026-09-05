@@ -1,0 +1,34 @@
+\section{Proof of the main theorem}
+\label{sec:completion}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\emph{Step 1: finite gamma convolutions.}
+We first consider the finite-gamma input \eqref{eq:finite-input} and fix any real $q>1$.
+Its log-rate probability $F_0$ has finite support and hence belongs to $\Ptwo$.
+We apply Theorem~\ref{thm:evolution} on the finite interval $[0,T]$ with $T=\log q$.
+It gives a narrowly continuous probability curve $F_t$ with uniformly bounded second log-rate moments, satisfying the exact weak generator equation and $B_t=B_0e^{-t}$.
+By \eqref{eq:log-moment-admissibility}, each $U_t=B_t\exp_*F_t$ is a positive admissible Thorin measure, so it defines a zero-drift GGC law $\mu_t$.
+
+The initial law is $\mu_0=\Law(X)$.
+The weak equation and the uniform second-moment bound supplied by the construction are precisely the hypotheses of Theorem~\ref{thm:identification}.
+It follows that
+\[
+ \mu_t=\Law(X^{e^t})\quad(0\leq t\leq T).
+\]
+In particular $\Law(X^q)\in\GGC$.
+The exponent $q>1$ and all parameters in \eqref{eq:finite-input} were arbitrary.
+Coincident rates require no special argument.
+There is no need to approximate real powers by integers or rationals.
+The case $q=1$ is immediate.
+
+\emph{Step 2: arbitrary GGC distributions.}
+We now consider an arbitrary nonnegative GGC random variable $X$ and fix any $q\geq1$.
+By Lemma~\ref{lem:ggc-closure} there are finite gamma convolutions $X_m\Rightarrow X$.
+Each $X_m^q$ is GGC by the first part.
+The function $x\mapsto x^q$ is continuous on $[0,\infty)$, so $X_m^q\Rightarrow X^q$.
+The conclusion follows from weak closure of the GGC class.
+The approximation in Lemma~\ref{lem:ggc-closure} includes deterministic drift and infinite Thorin mass; neither a finite mass nor a second log-rate moment is an assumption on this final $X$.
+The zero constant is also included, and the limit is the probability distribution of the nonnegative real-valued random variable $X^q$.
+The second-moment and Euler constants need not be uniform over the approximating index $m$: membership of each powered approximant has already been established separately.
+Similarly, each finite real $q$ requires only its own finite horizon $T=\log q$, not a single preconstructed evolution on an infinite time interval.
+\end{proof}

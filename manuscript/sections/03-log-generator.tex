@@ -1,0 +1,241 @@
+\section{A positive generator in logarithmic rate coordinates}
+\label{sec:generator}
+
+We now construct an operator on log rates whose averaged action reproduces the power derivative in Lemma~\ref{lem:tangent}.
+We will prove that its jump kernel is nonnegative and that its coefficients satisfy bounds independent of the rate distribution.
+
+\subsection{Coefficients and uniform estimates}
+
+Let $B>0$ and let $F$ be any probability on $\R$.
+Set $U=B\exp_*F$.
+For the coefficient construction we do not yet require $U$ to satisfy the Thorin integrability condition.
+For $b=e^y$ use the posterior probability
+\[
+ P^{(b)}=(1-Z)Q+Z\delta_b,\qquad
+ Q\sim\DP(U),\quad Z\sim\operatorname{Beta}(1,B),\quad Q\perp Z,
+\]
+from \eqref{eq:palm-coupling}.
+For a measurable function $A$ of a probability measure, write
+\[
+ \E^{(b)}A(P):=\E[A(P^{(b)})]
+             =\E_{\DP(U+\delta_b)}A(P)
+\]
+whenever the expectation exists.
+Let $\xi_P$ be the jointly measurable phase in Lemma~\ref{lem:phase}.
+Define the reference jump measure $\nu_0$, the correction kernel $K$, the jump acceptance function $k_{B,F}$, and the drift $a_{B,F}$ by
+\begin{align}
+ \nu_0(\dd v)&=\frac{e^v}{(e^v-1)^2}\,\dd v
+             =\frac{\dd v}{4\sinh^2(v/2)},\qquad v\ne0,
+             \label{eq:universal-jumps}\\
+ K(u)&=\frac1{1+u}-\frac1{u-1}+\frac{\log u}{(u-1)^2},
+       \quad u\ne1,\qquad K(1)=0,\label{eq:K}\\
+ k_{B,F}(y,v)&=\E^{(b)}\xi_P(be^v),\label{eq:acceptance}\\
+ a_{B,F}(y)&=y-\psi_0(B+1)-1
+ +\E^{(b)}\left[-\log\{bM_P(b)\}
+                +\int_0^\infty\xi_P(bu)K(u)\,\dd u\right].
+ \label{eq:log-drift}
+\end{align}
+Here $u>0$, $y,v\in\R$, and $b=e^y$; the measure $\nu_0$ has no atom at zero.
+The expression defining $K$ is taken as a whole before integration.
+Its apparent singularity at one is removable.
+Although $\nu_0$ has infinite mass near zero, its second moment is finite, as the next lemma shows.
+
+\begin{lemma}[Uniform coefficient bounds]
+\label{lem:bounds}
+The coefficients are finite and Borel measurable, with $0\leq k_{B,F}\leq1$.
+Moreover
+\begin{align}
+ \int_0^1 K(u)\,\dd u&=-(1-\log2),&
+ \int_1^\infty K(u)\,\dd u&=1-\log2,\label{eq:K-integrals}\\
+ \int_{\R}v^2\nu_0(\dd v)&=4\sum_{n=1}^\infty n^{-2}
+ =:m_2<\infty,\label{eq:m2}\\
+ y-\psi_0(B+1)-2+\log2
+ &\leq a_{B,F}(y)\leq y-\psi_0(1).
+ \label{eq:drift-bounds}
+\end{align}
+In particular $|a_{B,F}(y)-y|\leq C_B$, where $C_B$ can be chosen uniformly bounded on compact subintervals of $0<B<\infty$, independently of $F$.
+
+For every twice continuously differentiable $\varphi$ with bounded second derivative, define the absolutely convergent integral
+\begin{equation}
+ \mathcal G_{B,F}\varphi(y)
+ =a_{B,F}(y)\varphi'(y)
+ +\int_{\R}\{
+   \varphi(y+v)-\varphi(y)-v\varphi'(y)
+   \}k_{B,F}(y,v)\nu_0(\dd v).
+ \label{eq:generator}
+\end{equation}
+It satisfies
+\begin{equation}
+ |\mathcal G_{B,F}\varphi(y)|
+ \leq (|y|+C_B)|\varphi'(y)|
+      +\tfrac12m_2\|\varphi''\|_\infty.
+ \label{eq:generator-bound}
+\end{equation}
+For the identity function $\iota(y)=y$ and its square, the values are
+\begin{align}
+ \mathcal G_{B,F}\iota(y)&=a_{B,F}(y),\label{eq:linear-test}\\
+ \mathcal G_{B,F}(\iota^2)(y)&=2ya_{B,F}(y)
+          +\int v^2k_{B,F}(y,v)\nu_0(\dd v),\label{eq:quadratic-test}\\
+ |\mathcal G_{B,F}(\iota^2)(y)|&\leq3y^2+C_B^2+m_2.
+ \label{eq:quadratic-bound}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: the deterministic kernels.}
+Multiplying by $(u-1)^2$, we obtain
+\[
+ (u-1)^2K(u)=\log u-\frac{2(u-1)}{u+1}.
+\]
+The derivative of the right-hand side is $(u-1)^2/[u(u+1)^2]$.
+The right-hand side itself vanishes at $u=1$, is negative below one and positive above one.
+The apparent singularity of $K$ is removable, with value zero.
+An antiderivative is
+\[
+ H(u)=\log(1+u^{-1})-\frac{\log u}{u-1},\qquad
+ H(0+)=H(+\infty)=0,\quad H(1)=\log2-1.
+\]
+It follows that \eqref{eq:K-integrals} holds and that $\int|K|=2(1-\log2)$.
+The density of $\nu_0$ is even, and on $v>0$ it equals $\sum_{n\geq1}ne^{-nv}$.
+Tonelli's theorem gives \eqref{eq:m2}, since $\int_0^\infty v^2e^{-nv}\dd v=2/n^3$.
+Only the finiteness of this series is needed in the proof.
+
+\emph{Step 2: the posterior drift.}
+The posterior atom at $b$ implies
+\[
+ Z/2\leq bM_{P^{(b)}}(b)\leq1.
+\]
+Differentiating the beta integral gives
+\[
+ 0\leq\E^{(b)}[-\log\{bM_P(b)\}]
+ \leq\log2+\E[-\log Z]
+ =\log2+\psi_0(B+1)-\psi_0(1).
+\]
+The differentiation is legitimate because $|\log z|(1-z)^{B-1}$ is integrable on $(0,1)$.
+Since $0\leq\xi_P\leq1$, its integral against $K$ lies in $[-(1-\log2),1-\log2]$.
+Substituting these bounds into \eqref{eq:log-drift}, we obtain \eqref{eq:drift-bounds}.
+For example, take
+\[
+ C_B=\max\{|\psi_0(1)|,
+                 |\psi_0(B+1)+2-\log2|\}.
+\]
+Lemma~\ref{lem:parameterized-dirichlet}, followed by the rate pushforward, realizes all posterior probabilities on one fixed probability space as a jointly Borel function of $(B,F,y)$ and the auxiliary randomness.
+Together with Lemma~\ref{lem:phase}, this makes the phase integrands jointly Borel, also in $v$ or $u$ as appropriate.
+Integration over that fixed space preserves measurability.
+The logarithmic expectation is finite by the displayed beta bound, and the phase correction is absolutely bounded by $\|K\|_1$; their positive and negative parts may therefore be integrated separately.
+Thus $a_{B,F}(y)$ and $k_{B,F}(y,v)$ are jointly Borel in all their displayed parameters, as well as finite.
+
+\emph{Step 3: the compensated operator.}
+Taylor's formula bounds the jump remainder in absolute value by $\frac12\|\varphi''\|_\infty v^2$, proving \eqref{eq:generator-bound} and absolute convergence.
+Linear and quadratic remainders are respectively zero and $v^2$, proving the remaining assertions by $2|y|(|y|+C_B)\leq3y^2+C_B^2$.
+\end{proof}
+
+\subsection{Action on the resolvent tests}
+
+We next compute the action on resolvent tests, which explains the choice of $K$ and of the drift.
+The compensation terms cancel so that the resulting expression is exactly the logarithmic power derivative computed earlier.
+
+\begin{lemma}[Direct resolvent action]
+\label{lem:generator}
+Assume in addition that $U$ satisfies \eqref{eq:finite-admissible}.
+Let $g$ and $h_U$ be the functions associated with $U$ in Lemma~\ref{lem:tangent}.
+For $s>0$ put $\varphi_s(y)=(s+e^y)^{-1}$.
+Then
+\begin{equation}
+ F(\mathcal G_{B,F}\varphi_s)
+ =\frac{h_U(s)+g(s)}B.
+ \label{eq:generator-tangent}
+\end{equation}
+The generator is integrable against $F$ for $\varphi\in C_c^2(\R)$ and for $\varphi_s$, without assuming a log-rate moment.
+It annihilates constants and satisfies the positive minimum property: if a test in its domain attains a global minimum at $y$, then $\mathcal G_{B,F}\varphi(y)\ge0$.
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: the test domain.}
+For compactly supported tests, $(1+|y|)|\varphi'(y)|$ is bounded.
+For $\varphi_s$ it is also bounded, since $\varphi_s'(y)=-e^y/(s+e^y)^2$ decays exponentially at both ends; its second derivative is bounded.
+Integrability follows from \eqref{eq:generator-bound}.
+Constants have zero generator.
+At a global minimum the derivative vanishes and the remaining jump integral is nonnegative.
+
+\emph{Step 2: cancellation for a fixed probability measure.}
+Fix $b=e^y$ and a deterministic probability $P$ on positive rates.
+Define the sample drift
+\[
+ \widehat a_P(y)
+ =-\psi_0(B+1)-1-\log M_P(b)
+       +\int_0^\infty\xi_P(bu)K(u)\,\dd u,
+\]
+whose posterior expectation is $a_{B,F}(y)$.
+In the jump term set $u=e^v$, so $\nu_0(\dd v)=\dd u/(u-1)^2$.
+Let $\widehat{\mathcal G}_P$ denote the operator in \eqref{eq:generator} with drift $\widehat a_P$ and jump acceptance $\xi_P(be^v)$.
+The elementary identity
+\begin{multline}
+ \frac{(s+bu)^{-1}-(s+b)^{-1}
+                  +b\log u/(s+b)^2}{(u-1)^2}
+       -\frac{b}{(s+b)^2}K(u)\\
+ =\frac{b}{(s+b)^2}
+          \left\{\frac{b}{s+bu}-\frac1{1+u}\right\}
+ \label{eq:direct-resolvent-cancellation}
+\end{multline}
+holds for $u>0$, $u\ne1$, and extends by continuity at one.
+The first term is absolutely integrable: it is the log-coordinate Taylor remainder just estimated.
+The $K$ term is absolutely integrable.
+The bracketed kernel on the right has absolute integral $|\log(s/b)|$; the full right-hand side has absolute integral $b(s+b)^{-2}|\log(s/b)|$.
+Thus their integrals may be combined as written, without a principal value or a subtraction of divergent integrals.
+
+Subtracting the phase representations at $s$ and $b$ and changing variables $t=bu$ gives
+\[
+ \log M_P(s)-\log M_P(b)
+ =\int_0^\infty\xi_P(bu)
+       \left\{\frac{b}{s+bu}-\frac1{1+u}\right\}\dd u.
+\]
+Since $\varphi_s'(y)=-b/(s+b)^2$, the sample drift and jump terms therefore sum to
+\begin{equation}
+ \widehat{\mathcal G}_P\varphi_s(y)
+ =\frac{b}{(s+b)^2}
+            \{\psi_0(B+1)+1+\log M_P(s)\}.
+ \label{eq:sample-resolvent}
+\end{equation}
+
+\emph{Step 3: posterior averaging and the Palm identity.}
+We take posterior expectations and then integrate in $F(\dd y)$.
+The application of the Palm identity to the signed right-hand side is justified first by Tonelli for its absolute value: the resulting expectation is
+\[
+ \E_{\DP(U)}\left[
+ W_P(s)|\psi_0(B+1)+1+\log M_P(s)|\right]<\infty,
+\]
+because $W_P\leq M_P\leq1/s$ and $M_P(1+|\log M_P|)$ is uniformly bounded.
+For the left-hand side, absolute sample integrability, not only a bound on the averaged drift, is needed.
+The posterior atom estimate gives
+\begin{equation}
+ \E^{(b)}|\widehat a_P(y)-y|
+ \leq |\psi_0(B+1)+1|+\log2+\psi_0(B+1)-\psi_0(1)+\|K\|_1
+ =:C'_B<\infty.
+ \label{eq:absolute-posterior-drift}
+\end{equation}
+Hence the expected absolute sample drift term is bounded by $(|y|+C'_B)|\varphi_s'(y)|$, a bounded function of $y$.
+The absolute sample jump integral is at most $m_2\|\varphi_s''\|_\infty/2$.
+These estimates justify both the posterior expectations and the signed Palm interchange without a log-rate moment hypothesis.
+We obtain
+\[
+ F(\mathcal G_{B,F}\varphi_s)
+ =\E_{\DP(U)}\left[
+ W_P(s)\{\psi_0(B+1)+1+\log M_P(s)\}\right].
+\]
+By \eqref{eq:normalized-tangent}, we obtain \eqref{eq:generator-tangent}.
+The parameter $B$ in the digamma term has not changed under the posterior disintegration.
+\end{proof}
+
+\begin{remark}[Domain for the construction]
+If $F\in\Ptwo$, then $U=B\exp_*F$ is Thorin-admissible, since
+\begin{equation}
+ \int\log(1+b^{-1})\,U(\dd b)
+ =B F\bigl(\log(1+e^{-y})\bigr)
+ \leq B\{\log2+F(|y|)\}<\infty.
+ \label{eq:log-moment-admissibility}
+\end{equation}
+This is a sufficient domain, not a necessary condition for a finite Thorin measure.
+Every finite-gamma input lies in it.
+The construction below starts there and controls its second moment on finite intervals; it does not assume moments of the unlogged positive rates.
+\end{remark}

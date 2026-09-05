@@ -60,7 +60,8 @@ X^*\overset d=X+R
 
 where \(X^*\) is the size-biased version of \(X\).  This unifies the
 Stieltjes log derivative, the completely monotone Volterra kernel, and the
-deferred size-bias route.
+size-bias construction branch, now available across current programs
+P1, P3 and P5.
 
 The book also supplies exact stable negative moments and a rigorous
 light-tail obstruction to infinite divisibility.  It does not supply a
@@ -301,8 +302,9 @@ X^*=X+R\text{ independently with }R\in ME.
 \]
 
 **[PROJECT CONNECTION]** SATO-SB2 completes the recognition-theorem part of
-deferred Route 7, but not the power problem.  For \(Y=X^q\), the remaining
-task is to prove that the unique transform
+historical Route 7, now available as a supporting construction branch of
+P5 and the analytic programs. It does not solve the power problem.
+For \(Y=X^q\), the remaining task is to prove that the unique transform
 
 \[
 \widehat\eta_Y(s)=
@@ -442,7 +444,9 @@ divisible.
 
 1. Cite Theorem 51.1 whenever the Volterra equation is used, including drift
    and measure-level hypotheses.
-2. Treat (3.15) as the common dictionary joining Route 2 to deferred Route 7.
+2. Treat (3.15) as the common dictionary joining the analytic programs
+   to the size-bias/Palm branch; historical route numbers impose no
+   eligibility restriction under the revised CurrentGoal.
 3. For a finite gamma convolution \(X\) and \(Y=X^q\), calculate the unique
    residual transform (3.16); the proof target is exactly \(ME\) membership.
 4. Use (5.2) for all stable-tilt normalizations.

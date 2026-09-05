@@ -1,0 +1,446 @@
+\section{Identification with the deterministic power flow}
+\label{sec:identification}
+
+We now identify the distributions associated with the Thorin measures constructed in Section~\ref{sec:evolution}.
+We first transfer the weak equation for log rates to a weak equation for the value distributions, and then solve the resulting transport equation after taking logarithms of those values.
+
+\begin{theorem}[Identification of the weak evolution]
+\label{thm:identification}
+Let $B_0>0$ and $0\le T<\infty$.
+Let $(F_t)_{0\le t\le T}$ be a narrowly continuous curve of probability measures on $\R$ satisfying
+\begin{equation}
+ K_T=\sup_{0\le t\le T}\int_\R y^2F_t(\dd y)<\infty.
+ \label{eq:id-assumptions}
+\end{equation}
+Set $B_t=B_0e^{-t}$ and $U_t=B_t\exp_*F_t$.
+Assume that the operator $\mathcal G$ defined in \eqref{eq:generator} satisfies, for every $t\in[0,T]$ and every $\varphi\in C_c^2(\R)$,
+\begin{equation}
+ F_t(\varphi)-F_0(\varphi)
+ =\int_0^t F_u(\mathcal G_{B_u,F_u}\varphi)\,\dd u.
+ \label{eq:id-weak-rate}
+\end{equation}
+Then each $U_t$ is an admissible finite Thorin measure.
+Let $\mu_t$ be its zero-drift GGC law.
+If $X_0$ has law $\mu_0$, then
+\begin{equation}
+ \mu_t=\Law(X_0^{e^t}),\qquad 0\le t\le T.
+ \label{eq:id-conclusion}
+\end{equation}
+\end{theorem}
+
+Theorem~\ref{thm:evolution} supplies these hypotheses.
+We divide the proof into three parts.
+Steps~1--2 establish admissibility, continuity, and a uniform logarithmic moment.
+Steps~3--6 transfer the weak log-rate equation to the Laplace transforms of the value distributions.
+Steps~7--8 extend the test class and identify the resulting transport equation.
+
+\begin{proof}
+For $T=0$, admissibility follows from \eqref{eq:log-moment-admissibility} and the distributional identity is immediate.
+We may therefore assume $T>0$.
+Throughout the proof, $F_t$ is a probability on logarithmic \emph{rates}, whereas $\mu_t$ is a probability on positive random-variable \emph{values}.
+Lemma~\ref{lem:bounds}, on the compact mass interval $I=[B_0e^{-T},B_0]$, gives a constant $C_T<\infty$ such that
+\begin{equation}
+ |a_{B_t,F_t}(y)-y|\le C_T,\qquad 0\le k_{B_t,F_t}(y,v)\le1,
+ \qquad m_2:=\int_\R v^2\nu_0(\dd v)<\infty.
+ \label{eq:id-generator-bounds}
+\end{equation}
+The compensation in $\mathcal G$ is over the whole jump line.
+
+\paragraph{Step 1: admissibility and continuity of the transforms.}
+For $s>0$, define
+\begin{equation}
+ \begin{aligned}
+ \ell_s(y)&=\log(1+se^{-y}),&
+ \Psi_t(s)&=B_tF_t(\ell_s),\\
+ L_t(s)&=\exp\{-\Psi_t(s)\},&
+ g_t(s)&=B_t\int_\R\frac{F_t(\dd y)}{s+e^y}.
+ \end{aligned}
+ \label{eq:id-transforms}
+\end{equation}
+The elementary bound
+\begin{equation}
+ 0\le\ell_s(y)\le\log(1+s)+y_-
+ \label{eq:id-log-test-bound}
+\end{equation}
+shows that $\int\log(1+1/b)\,U_t(\dd b)<\infty$.
+Consequently $U_t$ defines the asserted GGC law $\mu_t$, with transform $L_t$, and differentiation at positive $s$ gives $g_t=\partial_s\Psi_t=-\partial_s\log L_t$.
+In particular, no first moment of the positive rate $e^y$ is needed.
+
+The moment assumption implies, uniformly in $t$,
+\begin{equation}
+ F_t\{|y|>R\}\le\frac{K_T}{R^2},\qquad
+ \int_{|y|>R}|y|F_t(\dd y)\le\frac{K_T}{R},\qquad R>0.
+ \label{eq:id-rate-tails}
+\end{equation}
+Truncating the continuous function $\ell_s$, whose growth is at most linear, therefore shows that $t\mapsto\Psi_t(s)$ and $t\mapsto L_t(s)$ are continuous.
+For each fixed $t$, dominated convergence, with dominating function $\ell_1$ when $s\le1$, gives $\Psi_t(s)\downarrow0$ as $s\downarrow0$.
+Thus $L_t(0)=1$.
+
+\paragraph{Step 2: a logarithmic moment bound and continuity of the laws.}
+The following estimate controls both the behavior near zero and the upper tail of the value distributions:
+\begin{equation}
+ \sup_{0\le t\le T}\int_{(0,\infty)}|\log x|\,\mu_t(\dd x)
+ \le C_{\log,T}<\infty,
+ \label{eq:id-log-moment}
+\end{equation}
+where the constant depends only on $B_0,T,K_T$.
+Only this logarithmic moment will be needed; the stronger moment $\int|x\log x|\,\mu_t(\dd x)$ may be infinite.
+
+For each fixed $t$, let $X_t$ have distribution $\mu_t$; no joint process $(X_t)$ is assumed.
+For the negative part, Lemma~\ref{lem:gamma-dirichlet}, applied in log-rate coordinates, gives
+\[
+ X_t\overset{d}=G_{B_t}M_t,\qquad
+ M_t=\int_\R e^{-y}Q_t(\dd y),\qquad
+ Q_t\sim\DP(B_tF_t),
+\]
+with $G_{B_t}$ independent of $Q_t$.
+The logarithmic integrability already verified makes $M_t$ finite almost surely, and it is strictly positive.
+In particular, $\mu_t((0,\infty))=1$.
+Moreover, $\E\int |y|\,Q_t(\dd y)=F_t(|y|)<\infty$.
+On this almost-sure integrability event, put $m=\int y\,Q_t(\dd y)$ and integrate $e^{-(y-m)}\ge1-(y-m)$ to obtain $e^mM_t\ge1$.
+Hence
+\[
+ (\log M_t)^-\le\left(\int y\,Q_t(\dd y)\right)^+
+ \le\int y_+\,Q_t(\dd y),
+ \qquad \E(\log M_t)^-\le\sqrt{K_T}.
+\]
+For the gamma factor,
+\[
+ \E(\log G_B)^-
+ \le\frac1{\Gamma(B)}\int_0^1(-\log x)x^{B-1}\,\dd x
+ =\frac1{\Gamma(B)B^2}.
+\]
+This is bounded uniformly for $B\in I$.
+Since $(\log X_t)^-\le(\log G_{B_t})^-+(\log M_t)^-$ under this coupling, the negative part of \eqref{eq:id-log-moment} is controlled.
+
+For the positive part, Tonelli's theorem and the elementary identity
+\[
+ \log(1+x)=\int_0^\infty\frac{e^{-r}}r(1-e^{-rx})\,\dd r
+ \qquad (x\ge0)
+\]
+give, using $1-e^{-z}\le z$ for $z\ge0$,
+\begin{equation}
+ \begin{aligned}
+ \E\log(1+X_t)
+ &=\int_0^\infty\frac{e^{-r}}r(1-L_t(r))\,\dd r
+ \le\int_{(0,\infty)}\mathcal{I}(b)\,U_t(\dd b),\\
+ \mathcal{I}(b)&:=\int_0^\infty\frac{e^{-r}}r\log(1+r/b)\,\dd r
+ \le4\{1+(\log_+(1/b))^2\}.
+ \end{aligned}
+ \label{eq:id-positive-log}
+\end{equation}
+Here the logarithmic identity follows, for example, by writing $(1-e^{-rx})/r=\int_0^x e^{-rz}\,\dd z$ and integrating first in $r$.
+We next prove the bound on $\mathcal{I}$ for all positive rates.
+If $b\ge1$, then $\mathcal{I}(b)\le1/b$, by $\log(1+r/b)\le r/b$.
+If $0<b<1$, put $a=\log(1/b)$.
+The part $0<r<b$ is at most one.
+On $b<r<1$, use $\log(1+r/b)\le\log2+\log(r/b)$; its integral after replacing $e^{-r}$ by one is at most $a\log2+a^2/2$.
+On $r>1$, use
+\[
+ \log(1+r/b)\le\log(1+r)+a\le r+a,\qquad r^{-1}\le1,
+\]
+which bounds this part by $e^{-1}(1+a)$.
+The sum is at most $4(1+a^2)$.
+Thus \eqref{eq:id-positive-log} is bounded by $4B_0(1+K_T)$.
+Combining this bound with the negative-part estimate, we obtain \eqref{eq:id-log-moment}; one possible choice is
+\[
+ C_{\log,T}=
+ \sup_{B\in I}\frac1{\Gamma(B)B^2}
+ +\sqrt{K_T}+4B_0(1+K_T).
+\]
+
+The family $(\mu_t)$ is narrowly continuous on $(0,\infty)$.
+Indeed, \eqref{eq:id-log-moment} bounds its mass outside $[e^{-R},e^R]$ by $C_{\log,T}/R$.
+If $t_n\to t$, tightness and diagonal selection of distribution functions give a weakly convergent subsequence, and this tail bound ensures that its limit is a probability on $(0,\infty)$.
+Its transform is $L_t$, by the transform continuity proved above.
+These transforms determine a probability uniquely: push the measure forward by $x\mapsto e^{-x}$ to $[0,1]$; the transform values at positive integers give all its positive integer moments, and its zeroth moment is one.
+Uniform polynomial approximation of continuous functions then gives uniqueness.
+An elementary Bernstein polynomial proof of that approximation is included in Step~7.
+Every subsequential limit is therefore $\mu_t$, proving narrow continuity.
+
+\paragraph{Step 3: extending the log-rate test class.}
+The resolvent tests used in the next step are not compactly supported.
+We therefore first justify their use in the weak equation.
+The weak equation \eqref{eq:id-weak-rate} extends to every $\varphi\in C^2(\R)$ with at most linear growth and with bounded first and second derivatives.
+Choose $\chi\in C_c^\infty(\R)$ equal to one on $[-1,1]$ and zero outside $[-2,2]$, and set $\varphi_R(y)=\chi(y/R)\varphi(y)$ for $R\ge1$.
+The functions $\varphi_R'$ and $\varphi_R''$ are bounded uniformly in $R$: in the product rule the extra factors $R^{-1}$ and $R^{-2}$ multiply a function of at most linear growth on $|y|\le2R$.
+Taylor's formula with full linear compensation therefore gives
+\begin{equation}
+ \begin{aligned}
+ |\mathcal G_{B_t,F_t}\varphi_R(y)|
+ &\le (|y|+C_T)|\varphi_R'(y)|
+       +\frac{m_2}{2}\|\varphi_R''\|_\infty
+ \le C_{T,\varphi}(1+|y|),\\
+ \mathcal G_{B_t,F_t}\varphi_R(y)
+ &\longrightarrow\mathcal G_{B_t,F_t}\varphi(y).
+ \end{aligned}
+ \label{eq:id-domain-extension}
+\end{equation}
+For the second assertion, the jump remainder is dominated by a constant times $v^2$ on the \emph{entire} jump line; consequently \eqref{eq:id-generator-bounds} justifies dominated convergence at both the small-jump singularity and the two tails.
+Dominated convergence in $F_t$ and then in time, using $\sup_tF_t(|y|)\le\sqrt{K_T}$, proves the extended weak equation.
+The left side converges by the same linear-growth bound.
+Also \eqref{eq:id-rate-tails} makes $F_t(\varphi)$ continuous in time.
+The extended equation is thus an absolutely continuous scalar identity.
+
+In particular, this applies to
+\[
+ \varphi_s(y)=(s+e^y)^{-1},\qquad \ell_s(y)=\log(1+se^{-y}),\qquad s>0.
+\]
+The first function and its first two derivatives are bounded.
+For the second, $|\ell_s'|\le1$ and $|\ell_s''|\le1/4$.
+Thus the logarithmic test defining $\Psi_t$ is legitimate as well as the resolvent used below.
+
+\paragraph{Step 4: the resolvent evolution.}
+Let $X$ denote the coordinate variable on $(0,\infty)$, and write $\E_t H(X)=\int H(x)\mu_t(\dd x)$.
+For an integrable test under the exponentially tilted law, set
+\[
+ \E_{t,s}H(X)=\frac{\int H(x)e^{-sx}\,\mu_t(\dd x)}{L_t(s)}
+ \qquad(s>0)
+\]
+Thus $\E_{t,s}$ is expectation under the normalized exponential tilt of $\mu_t$.
+Put
+\begin{equation}
+ \begin{aligned}
+ A_t(s)&=\E_{t,s}[X\log X],\\
+ h_t(s)&=\left.\frac{\partial}{\partial q}
+ \left[-\partial_s\log\E_t e^{-sX^q}\right]\right|_{q=1}
+ =\frac{\dd}{\dd s}\{sA_t(s)\}.
+ \end{aligned}
+ \label{eq:id-current-tangent}
+\end{equation}
+These are tangents of the \emph{current} law $\mu_t$, without any assumed relation to the powers of $X_0$.
+The tangent formula is Lemma~\ref{lem:tangent}; its last identity also follows by differentiating the exponentially tilted expectation.
+All derivatives involved are bounded functions of $x$ after multiplication by $e^{-sx^q}$ when $s$ and $q$ range over compact positive intervals.
+
+By Lemma~\ref{lem:generator}, the normalized resolvent identity is
+\[
+ F_t(\mathcal G_{B_t,F_t}\varphi_s)=\frac{h_t(s)+g_t(s)}{B_t}.
+\]
+Since $g_t(s)=B_tF_t(\varphi_s)$, the extended weak equation and $B_t'=-B_t$ imply
+\begin{equation}
+ g_t(s)-g_0(s)=\int_0^t h_u(s)\,\dd u,
+ \qquad s>0.
+ \label{eq:id-resolvent-evolution}
+\end{equation}
+The derivative of the total mass cancels the extra $g_t(s)$ term.
+Keeping that derivative is essential to identifying the desired flow.
+
+\paragraph{Step 5: integration down to the zero Laplace argument.}
+To recover the Laplace exponent from its $s$-derivative, we must integrate \eqref{eq:id-resolvent-evolution} down to $s=0$.
+We first establish absolute integrability and the required boundary condition, so that the normalization is preserved.
+Differentiating a normalized tilt in \eqref{eq:id-current-tangent} gives
+\begin{equation}
+ h_t(s)=A_t(s)-s\E_{t,s}[X^2\log X]
+                  +s\E_{t,s}[X]A_t(s).
+ \label{eq:id-tangent-expanded}
+\end{equation}
+We first record joint measurability in time and the Laplace argument.
+Fix $0<\sigma<S<\infty$.
+If $f_s(x)$ is any one of
+\[
+ e^{-sx},\quad xe^{-sx},\quad
+             x\log x\,e^{-sx},\quad x^2\log x\,e^{-sx},
+\]
+the map $s\mapsto f_s$ is continuous in the supremum norm on $(0,\infty)$ for $s\in[\sigma,S]$.
+Indeed, differentiation in $s$ adds one factor $-x$, and the resulting derivatives are bounded uniformly in $x>0$ and $s\in[\sigma,S]$; the mean value theorem then gives the assertion.
+If $(t_n,s_n)\to(t,s)$ in $[0,T]\times[\sigma,S]$, narrow continuity of the value laws from Step~2 gives
+\[
+ |\mu_{t_n}(f_{s_n})-\mu_t(f_s)|
+ \le\|f_{s_n}-f_s\|_\infty
+       +|\mu_{t_n}(f_s)-\mu_t(f_s)|\longrightarrow0.
+\]
+Since $L_t(s)>0$, division by the jointly continuous denominator $L_t(s)$ preserves continuity.
+Equation~\eqref{eq:id-tangent-expanded} therefore shows that $(t,s)\mapsto A_t(s)$ and $(t,s)\mapsto h_t(s)$ are jointly continuous on $[0,T]\times(0,\infty)$, and in particular jointly Borel.
+No continuity at $s=0$ is being claimed here.
+
+Also, $t\mapsto\mu_t$ is a Borel probability kernel: evaluation on an open set is measurable by bounded continuous approximation, and the monotone-class theorem extends this to every Borel set.
+Thus nonnegative Borel integrands may be integrated against $\dd t\,\dd s\,\mu_t(\dd x)$ using Tonelli's theorem.
+This supplies the measurability needed for the estimates below, including those with the unbounded test $|\log x|$.
+
+Fix $s_0>0$.
+Equations \eqref{eq:id-transforms} and \eqref{eq:id-log-test-bound} give the uniform lower bound
+\begin{equation}
+ D:=\exp\{-B_0[\log(1+s_0)+\sqrt{K_T}]\}
+ \le L_t(s_0)\le L_t(s),\qquad 0<s\le s_0.
+ \label{eq:id-transform-lower-bound}
+\end{equation}
+For every $x>0$,
+\[
+ \int_0^{s_0}xe^{-sx}\,\dd s\le1,\qquad
+ \int_0^{s_0}sx^2e^{-sx}\,\dd s\le1,\qquad
+ sx e^{-sx}\le e^{-1}.
+\]
+Taking absolute values before applying Tonelli therefore yields
+\begin{equation}
+ \begin{aligned}
+ \int_0^{s_0}|A_t(s)|\,\dd s
+       &\le D^{-1}\E_t|\log X|,\\
+ \int_0^{s_0}s\E_{t,s}[X^2|\log X|]\,\dd s
+       &\le D^{-1}\E_t|\log X|,\\
+ s\E_{t,s}X&\le(eD)^{-1},\\
+ \int_0^T\int_0^{s_0}|h_t(s)|\,\dd s\,\dd t
+       &\le T\left(\frac2D+\frac1{eD^2}\right)C_{\log,T}<\infty.
+ \end{aligned}
+ \label{eq:id-absolute-fubini}
+\end{equation}
+The last bound includes the product term in \eqref{eq:id-tangent-expanded}; it follows by multiplying the first bound by $(eD)^{-1}$.
+No independence of the two tilted expectations is used.
+Together with the joint measurability just proved, this establishes that $h(t,s):=h_t(s)$ belongs to $L^1([0,T]\times(0,s_0))$.
+Fubini's theorem therefore applies on every subrectangle $[0,t]\times(0,s)$ with $t\le T$ and $s\le s_0$.
+
+For every fixed $t$,
+\begin{equation}
+ \lim_{s\downarrow0}sA_t(s)=0,
+ \qquad |sA_t(s)|\le\frac{\E_t|\log X|}{eD}\quad(0<s\le s_0).
+ \label{eq:id-zero-endpoint}
+\end{equation}
+Indeed, $sx e^{-sx}\log x\to0$ pointwise, and its absolute value is at most $|\log x|/e$.
+Dominated convergence under $\mu_t$, followed by division by $L_t(s)\ge D$, proves the limit.
+The bound in \eqref{eq:id-log-moment} also permits passage of this limit through a time integral.
+No uniform-in-$t$ endpoint limit is asserted merely from a uniform bound on logarithmic moments.
+
+The fundamental theorem of calculus applied to \eqref{eq:id-current-tangent} on $[\varepsilon,s]$, followed by \eqref{eq:id-zero-endpoint}, gives
+\[
+ \int_0^s h_t(r)\,\dd r=sA_t(s).
+\]
+The integral is absolutely convergent, and \eqref{eq:id-absolute-fubini} justifies its time--Laplace Fubini exchange.
+This argument has not required an untilted $\E_t|X\log X|$ moment.
+
+\paragraph{Step 6: the Laplace evolution.}
+The nonnegative Thorin representation and Tonelli's theorem give $\int_0^s g_t(r)\,\dd r=\Psi_t(s)$.
+Integrating \eqref{eq:id-resolvent-evolution}, with the absolute bounds just proved, therefore yields
+\begin{equation}
+ \Psi_t(s)-\Psi_0(s)=\int_0^t sA_u(s)\,\dd u.
+ \label{eq:id-exponent-evolution}
+\end{equation}
+There is no undetermined normalization constant: the exponent in \eqref{eq:id-transforms} is zero at $s=0$, and \eqref{eq:id-zero-endpoint} removes the boundary term in its tangent.
+Applying the absolutely continuous chain rule to $L_t=e^{-\Psi_t}$ gives
+\begin{equation}
+ L_t(s)-L_0(s)
+ =-\int_0^t s\int_{(0,\infty)}x\log x\,e^{-sx}\,\mu_u(\dd x)\,\dd u,
+ \qquad s>0.
+ \label{eq:id-laplace-evolution}
+\end{equation}
+Here $L_u(s)A_u(s)=\E_u[X\log X e^{-sX}]$ has removed the tilt normalization.
+For each fixed $s>0$, the function $x\log x\,e^{-sx}$ is bounded and continuous and tends to zero at both endpoints.
+Narrow continuity of $(\mu_u)$ makes the time integrand in \eqref{eq:id-laplace-evolution} continuous.
+
+\paragraph{Step 7: from exponentials to compactly supported tests.}
+We next derive the weak equation for the value distributions.
+Uniform approximation of test functions alone is insufficient: their derivatives must also be controlled in the transport operator.
+Let $H\in C_c^1((0,\infty))$.
+On $0<u<1$, set $J(u)=H(-\log u)$.
+Because $H$ vanishes near zero and infinity, $J$ extends by zero to a $C^1$ function on $[0,1]$, vanishing near both endpoints.
+There are polynomials $p_n$ satisfying
+\begin{equation}
+ \|p_n-J\|_{\infty,[0,1]}+
+ \|p_n'-J'\|_{\infty,[0,1]}\longrightarrow0.
+ \label{eq:id-c1-polynomials}
+\end{equation}
+We construct these polynomials as follows.
+For each integer $n\ge1$, form the Bernstein polynomial of $J'$,
+\[
+ q_n(u)=\sum_{j=0}^n J'(j/n)\binom{n}{j}u^j(1-u)^{n-j}.
+\]
+For a binomial random variable $N$ with parameters $(n,u)$, their error is bounded by $\E|J'(N/n)-J'(u)|$.
+On $|N/n-u|\le\delta$ use the modulus of continuity of $J'$; on its complement use $2\|J'\|_\infty$ and
+\[
+ \mathbb P\{|N/n-u|>\delta\}
+ \le\frac{u(1-u)}{n\delta^2}\le\frac1{4n\delta^2}.
+\]
+First choosing small $\delta$ and then large $n$ proves uniform convergence of $q_n$ to $J'$.
+The polynomials $p_n(u)=J(0)+\int_0^u q_n(v)\,\dd v$ prove \eqref{eq:id-c1-polynomials}.
+The same Bernstein estimate applied to any continuous function, without differentiating it, proves the uniform polynomial approximation used above for transform uniqueness.
+
+Put $H_n(x)=p_n(e^{-x})$ and define the value-space transport operator by
+\[
+ \mathscr{B}H(x)=x\log x\,H'(x),\qquad x>0.
+\]
+In the following estimates, norms of $H_n,H$ are taken on $(0,\infty)$, whereas norms of $p_n,J$ and their derivatives are taken on $[0,1]$:
+\begin{equation}
+ \begin{aligned}
+ \|H_n-H\|_\infty&\le\|p_n-J\|_\infty,\\
+ \|\mathscr{B}H_n-\mathscr{B}H\|_\infty
+ &\le\left(\sup_{x>0}|x\log x|e^{-x}\right)
+                   \|p_n'-J'\|_\infty\longrightarrow0.
+ \end{aligned}
+ \label{eq:id-generator-norm}
+\end{equation}
+The displayed supremum is finite, because its integrand is continuous and vanishes at zero and infinity.
+Each $H_n$ is a finite linear combination of a constant and the functions $e^{-jx}$ for positive integers $j$.
+Its weak evolution is therefore supplied by \eqref{eq:id-laplace-evolution}; the constant has zero evolution since each $\mu_u$ is a probability.
+Both uniform limits in \eqref{eq:id-generator-norm} can be passed through probability integrals and the finite time integral.
+We obtain
+\begin{equation}
+ \mu_t(H)-\mu_0(H)
+ =\int_0^t\mu_u(x\log x\,H'(x))\,\dd u,
+ \qquad H\in C_c^1((0,\infty)).
+ \label{eq:id-value-weak}
+\end{equation}
+The derivative is controlled in the generator norm in this step; static uniqueness of Laplace transforms alone would not establish \eqref{eq:id-value-weak}.
+
+\paragraph{Step 8: identification by transport of logarithmic values.}
+The gamma--Dirichlet representation shows that $\mu_t$ gives full mass to $(0,\infty)$.
+Define $\lambda_t=(\log)_*\mu_t$.
+This probability concerns logarithmic \emph{values}, not the logarithmic rates described by $F_t$.
+It is narrowly continuous, since logarithm is a continuous map on $(0,\infty)$, and \eqref{eq:id-log-moment} gives a uniform first moment of $\lambda_t$.
+
+For $\zeta\in C_c^1(\R)$, the function $H(x)=\zeta(\log x)$ lies in $C_c^1((0,\infty))$.
+Substitution into \eqref{eq:id-value-weak} gives
+\begin{equation}
+ \lambda_t(\zeta)-\lambda_0(\zeta)
+ =\int_0^t\lambda_u(z\zeta'(z))\,\dd u.
+ \label{eq:id-log-transport}
+\end{equation}
+It remains to prove uniqueness for this linear transport equation.
+The identity at $t=0$ is immediate.
+Fix $0<t\le T$ and $\zeta\in C_c^\infty(\R)$, and set
+\begin{equation}
+ \zeta_u(z)=\zeta(e^{t-u}z),\qquad 0\le u\le t.
+ \quad\text{Then}\quad
+ \partial_u\zeta_u+z\partial_z\zeta_u=0.
+ \label{eq:id-backward-test}
+\end{equation}
+All these tests and their derivatives have support in one compact interval, and their time and spatial derivatives are jointly continuous.
+
+We justify these time-dependent tests directly from the fixed-test equation.
+Take a partition $0=t_0<\cdots<t_N=t$ and decompose each increment as
+\[
+ \begin{aligned}
+ &\lambda_{t_{i+1}}(\zeta_{t_{i+1}})
+       -\lambda_{t_i}(\zeta_{t_i})\\
+ &\quad=\lambda_{t_{i+1}}(\zeta_{t_{i+1}}-\zeta_{t_i})
+       +\lambda_{t_{i+1}}(\zeta_{t_i})
+       -\lambda_{t_i}(\zeta_{t_i})\\
+ &\quad=\int_{t_i}^{t_{i+1}}
+          \lambda_{t_{i+1}}(\partial_u\zeta_u)\,\dd u
+       +\int_{t_i}^{t_{i+1}}
+          \lambda_u(z\partial_z\zeta_{t_i})\,\dd u,
+ \end{aligned}
+\]
+where the second integral uses the fixed-test identity \eqref{eq:id-log-transport}.
+Joint continuity, common compact support, and narrow continuity of $\lambda$ imply joint continuity of $(r,u)\mapsto\lambda_r(\partial_u\zeta_u)$ and of the analogous spatial-derivative pairing.
+For example, joint continuity follows by adding a supremum-norm difference of the test functions to the weak continuity term for one fixed test.
+On the compact time square it is uniform.
+Consequently, as the mesh tends to zero, the summed integrals converge to
+\[
+ \int_0^t\lambda_u(\partial_u\zeta_u+z\partial_z\zeta_u)\,\dd u=0.
+\]
+The telescoped left side is $\lambda_t(\zeta)-\lambda_0(\zeta(e^t\,\cdot))$.
+Thus
+\[
+ \lambda_t(\zeta)=\lambda_0(\zeta(e^t\,\cdot)),
+ \qquad \zeta\in C_c^\infty(\R).
+\]
+Compactly supported smooth tests determine finite Borel measures on $\R$, as follows by approximating compactly supported continuous functions uniformly by smooth ones and then approximating interval indicators.
+Therefore
+\begin{equation}
+ \lambda_t=(z\mapsto e^t z)_*\lambda_0,
+ \qquad
+ \mu_t=(x\mapsto x^{e^t})_*\mu_0=\Law(X_0^{e^t}).
+ \label{eq:id-transport-identification}
+\end{equation}
+The changes of variables are legitimate because the value laws are supported on $(0,\infty)$ and their logarithmic tails were controlled in Step~2.
+Therefore, \eqref{eq:id-conclusion} holds on the entire interval $[0,T]$.
+This completes the proof.
+\end{proof}

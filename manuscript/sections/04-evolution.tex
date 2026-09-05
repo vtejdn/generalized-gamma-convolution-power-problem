@@ -1,0 +1,483 @@
+\section{Continuity and construction of the logarithmic evolution}
+\label{sec:evolution}
+
+In this section, we construct the evolution of the normalized log-rate measure.
+We use continuity of the averaged generator with respect to the current distribution and an explicit discrete approximation that preserves positivity and total mass.
+
+For \(B>0\) and \(F\in\mathcal P(\R)\), retain the coefficients of Section~\ref{sec:generator} and the relation \(U=B\exp_*F\).
+Recall that
+\begin{equation}
+ \mathcal G_{B,F}\varphi(y)
+ =a_{B,F}(y)\varphi'(y)
+  +\int_{\R}\bigl[
+       \varphi(y+v)-\varphi(y)-v\varphi'(y)
+    \bigr]k_{B,F}(y,v)\,\nu_0(\dd v),
+ \qquad
+ \nu_0(\dd v)=\frac{\dd v}{4\sinh^2(v/2)}.
+ \label{eq:evolution-generator}
+\end{equation}
+The compensation in this expression is over all jump sizes.
+Lemma~\ref{lem:bounds} gives, for every compact interval \(I\subset(0,\infty)\), a constant \(C_I<\infty\) such that
+\begin{equation}
+ 0\le k_{B,F}(y,v)\le1,\qquad
+ |a_{B,F}(y)-y|\le C_I,\qquad
+ m_2:=\int_{\R}v^2\,\nu_0(\dd v)<\infty,
+ \qquad B\in I.
+ \label{eq:evolution-uniform-bounds}
+\end{equation}
+These bounds hold for every probability \(F\), without a moment assumption.
+We first prove the continuity needed to pass through the nonlinear dependence on \(F\), and then construct a positive weak evolution.
+
+\subsection{Weak continuity of the averaged generator}
+
+\begin{lemma}[Joint continuity of the averaged generator]\label{lem:continuity}
+Let \(B_n,B>0\), \(F_n,F\in\mathcal P(\R)\), and \(y_n,y\in\R\).
+Suppose \(B_n\to B\), \(F_n\Rightarrow F\), and \(y_n\to y\).
+Then
+\[
+ a_{B_n,F_n}(y_n)\longrightarrow a_{B,F}(y).
+ \]
+For every \(\varphi\in C_c^2(\R)\),
+\begin{equation}
+ \mathcal G_{B_n,F_n}\varphi(y_n)
+   \longrightarrow\mathcal G_{B,F}\varphi(y).
+ \label{eq:generator-joint-continuity}
+\end{equation}
+Moreover, \(\mathcal G_{B,F}\varphi(y)\) is bounded uniformly over all probabilities \(F\), all \(y\in\R\), and \(B\) in a fixed compact positive interval.
+Consequently the scalar functional
+\begin{equation}
+ H_\varphi(B,F):=F(\mathcal G_{B,F}\varphi)
+ \label{eq:averaged-generator-functional}
+\end{equation}
+is continuous for the usual topology on \(B>0\) and the narrow topology on probabilities \(F\).
+It is uniformly bounded when \(B\) is restricted to a compact positive interval.
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1: coupling the Dirichlet probabilities.}
+We use the fixed probability space and the quantile maps of Lemma~\ref{lem:parameterized-dirichlet}.
+For a probability \(F\) on \(\R\), put \(Z_j=q_F(S_j)\) and \(V_j=1-T_j^{1/B}\).
+Thus the locations have law \(F\), the break fractions have law \(\operatorname{Beta}(1,B)\), and the two sequences are independent.
+On the common full-probability event in that lemma, the resulting stick-breaking probability has the form
+\begin{equation}
+ W_j=V_j\prod_{i<j}(1-V_i),
+ \qquad
+ Q=\sum_{j\ge1}W_j\delta_{Z_j}.
+ \label{eq:evolution-stick-breaking}
+\end{equation}
+The remaining mass \(R_m=\prod_{j\le m}(1-V_j)\) decreases to zero on the common full-probability event specified in that lemma, and \(Q\) has law \(\DP(BF)\), including for atomic base probabilities.
+
+For the sequence \((B_n,F_n)\), set \(Z_{n,j}=q_{F_n}(S_j)\).
+Then \(Z_{n,j}\to Z_j\) almost surely for every \(j\).
+For completeness, convergence of the inverse distribution functions holds at every continuity point of the limiting inverse: it follows by bracketing that inverse between continuity points of the limiting distribution function and using \(F_n\Rightarrow F\).
+The exceptional set has Lebesgue measure zero because an inverse distribution function is monotone.
+Also use common uniforms \(T_j\) to set
+\[
+ V_{n,j}=1-T_j^{1/B_n},
+ \qquad V_j=1-T_j^{1/B}.
+ \]
+Every fixed finite set of weights and locations then converges almost surely.
+On that event, for a bounded continuous function \(f\), the difference between the two stick-breaking integrals is bounded by the difference of their first \(m\) terms plus \(\|f\|_\infty(R_{n,m}+R_m)\).
+First letting \(n\to\infty\), and then \(m\to\infty\), proves
+\[
+ Q_n\Rightarrow Q\quad\hbox{almost surely}.
+ \]
+The event just used concerns only the countably many weights and locations, so it gives weak convergence of the random measures, not merely convergence for one chosen test function.
+
+Use the independent uniform \(T_*\) from the same probability space and put
+\[
+ Z_n^*=1-T_*^{1/B_n},\qquad Z^*=1-T_*^{1/B}.
+ \]
+By the posterior coupling \eqref{eq:palm-coupling}, the log-rate probabilities
+\[
+ \widehat P_n=(1-Z_n^*)Q_n+Z_n^*\delta_{y_n},
+ \qquad
+ \widehat P=(1-Z^*)Q+Z^*\delta_y
+ \]
+have laws \(\DP(B_nF_n+\delta_{y_n})\) and \(\DP(BF+\delta_y)\), respectively.
+They converge weakly almost surely.
+Their rate-coordinate pushforwards \(P_n=\exp_*\widehat P_n\) and \(P=\exp_*\widehat P\) are the posterior probabilities appearing in the coefficients.
+
+\emph{Step 2: weak-star convergence of the boundary phases.}
+For each coupled sample, set \(b_n=e^{y_n}\), \(b=e^y\), and
+\begin{equation}
+ \begin{split}
+ R_n(s)&=b_nM_{P_n}(b_ns)
+       =\int_{\R}\frac{\widehat P_n(\dd z)}
+                           {s+e^{z-y_n}},\\
+ \eta_n(u)&=\xi_{P_n}(b_nu),\qquad
+ R(s)=\int_{\R}\frac{\widehat P(\dd z)}
+                         {s+e^{z-y}},\qquad
+ \eta(u)=\xi_P(bu).
+ \end{split}
+ \label{eq:scaled-posterior-transform}
+\end{equation}
+For fixed \(s>0\), the integrand defining \(R_n(s)\) is bounded and continuous in \(z\).
+Its derivative with respect to \(y_n\) has absolute value at most \(1/(4s)\), uniformly in \(z\).
+Hence \(R_n(s)\to R(s)>0\).
+The anchored phase representation \eqref{eq:phase-anchor}, after scaling the rate variable, gives
+\begin{equation}
+ \log R_n(s)-\log R_n(1)
+   =\int_0^\infty\eta_n(u)
+       \left(\frac1{s+u}-\frac1{1+u}\right)\dd u,
+ \qquad 0\le\eta_n\le1.
+ \label{eq:scaled-phase-anchor}
+\end{equation}
+
+These identities imply \(\eta_n\to\eta\) weak-star in \(L^\infty(0,\infty)\); explicitly,
+\[
+ \int_0^\infty f(u)\eta_n(u)\,\dd u
+ \longrightarrow\int_0^\infty f(u)\eta(u)\,\dd u
+ \qquad\text{for every }f\in L^1(0,\infty).
+\]
+We prove this assertion by compactness and uniqueness.
+Since \(L^1(0,\infty)\) is separable, any subsequence has a further subsequence whose integrals converge on a countable dense set of \(L^1\) tests.
+The uniform bound one extends the limits to a bounded linear functional on \(L^1\), represented by a function \(\eta_*\) with \(0\le\eta_*\le1\).
+The kernels in \eqref{eq:scaled-phase-anchor} belong to \(L^1\).
+Passing to the limit shows that \(\eta_*\) represents \(\log R(s)-\log R(1)\).
+Uniqueness of the exponential Stieltjes phase representation, equivalently that for the reciprocal complete Bernstein function, gives \(\eta_*=\eta\) almost everywhere; see \cite[Theorems~6.10 and~7.3]{SSV2010}.
+Every subsequential limit is therefore the same, which proves convergence against every \(L^1\) kernel.
+No pointwise convergence of the boundary phases has been used.
+In particular, exceptional values in their measurable versions do not affect the argument, including after the positive rate scaling.
+
+\emph{Step 3: passing through the posterior averages.}
+The drift formula \eqref{eq:log-drift} takes the form
+\begin{equation}
+ a_{B_n,F_n}(y_n)
+ =y_n-\psi_0(B_n+1)-1
+   +\E\left[-\log R_n(1)
+           +\int_0^\infty\eta_n(u)K(u)\,\dd u\right].
+ \label{eq:continuity-drift-formula}
+\end{equation}
+Here \(\psi_0\) is the digamma function and \(K\in L^1(0,\infty)\) is the correction kernel in \eqref{eq:K}.
+The coefficient \(\psi_0(B_n+1)\) retains the original mass parameter \(B_n\) under posterior averaging.
+The phase integrals converge almost surely by weak-star convergence and are bounded in absolute value by \(\|K\|_1\).
+Moreover,
+\[
+ \frac{Z_n^*}{2}\le R_n(1)\le1.
+ \]
+Choose \(B_*<\infty\) with \(B_n\le B_*\) for all \(n\).
+The common-uniform coupling gives the integrable bound
+\[
+ 0\le-\log R_n(1)
+ \le\log2-\log(1-T_*^{1/B_*}).
+ \]
+Integrability follows from the logarithmic moment of a \(\operatorname{Beta}(1,B_*)\) variable.
+Dominated convergence in \eqref{eq:continuity-drift-formula} proves continuity of the drift.
+
+For the jump part, put \(u=e^v\).
+The integral against a single posterior phase has kernel
+\begin{equation}
+ J_\varphi(y,u)
+ =\frac{\varphi(y+\log u)-\varphi(y)
+              -\log u\,\varphi'(y)}{(u-1)^2}.
+ \label{eq:continuity-jump-kernel}
+\end{equation}
+Taylor's theorem gives
+\[
+ |J_\varphi(y,u)|
+ \le\frac{\|\varphi''\|_\infty}{2}
+                 \frac{(\log u)^2}{(u-1)^2}.
+ \]
+The dominating function is integrable on \((0,\infty)\): at \(u=1\) the quotient has a removable finite limit, and at zero and infinity it is bounded by integrable multiples of \((\log u)^2\) and \((\log u)^2/u^2\), respectively.
+Consequently \(J_\varphi(y_n,\cdot)\to J_\varphi(y,\cdot)\) in \(L^1\).
+This convergence and the weak-star convergence of \(\eta_n\) imply convergence of the random jump integrals.
+Their uniform bound permits taking expectations.
+This proves \eqref{eq:generator-joint-continuity}.
+
+\emph{Step 4: integrating against the varying log-rate law.}
+For \(\varphi\in C_c^2(\R)\),
+\begin{equation}
+ |\mathcal G_{B,F}\varphi(y)|
+ \le (|y|+C_I)|\varphi'(y)|
+       +\frac{m_2}{2}\|\varphi''\|_\infty.
+ \label{eq:compact-test-generator-bound}
+\end{equation}
+Its right side is bounded uniformly in \(y\).
+Joint continuity implies that \(\mathcal G_{B_n,F_n}\varphi\to\mathcal G_{B,F}\varphi\) uniformly on compact \(y\)-sets: otherwise a sequence of points violating uniform convergence has a convergent subsequence contradicting \eqref{eq:generator-joint-continuity}.
+Tightness of \(F_n\), this local uniform convergence, the uniform global bound, and weak convergence against the bounded continuous limiting function give \(H_\varphi(B_n,F_n)\to H_\varphi(B,F)\).
+\end{proof}
+
+\subsection{A positive Euler construction}
+
+\begin{theorem}[Existence of a log-rate evolution]\label{thm:evolution}
+Let \(B_0>0\), \(F_0\in\Ptwo\), and \(T>0\).
+Set \(B_t=B_0e^{-t}\).
+There is a narrowly continuous curve \((F_t)_{0\le t\le T}\) of probabilities in \(\Ptwo\) such that
+\begin{equation}
+ \sup_{0\le t\le T}F_t(y^2)<\infty
+ \label{eq:evolution-second-moment}
+\end{equation}
+and
+\begin{equation}
+ F_t(\varphi)-F_0(\varphi)
+   =\int_0^t F_r(\mathcal G_{B_r,F_r}\varphi)\,\dd r,
+ \qquad
+ 0\le t\le T,\quad \varphi\in C_c^2(\R).
+ \label{eq:evolution-weak-equation}
+\end{equation}
+\end{theorem}
+
+Equation~\eqref{eq:evolution-weak-equation} is the meaning of weak solution used here.
+The theorem asserts existence; identification of the associated GGC distributions is the subject of the next section.
+
+\begin{proof}
+All constants below may depend on \(B_0,T\) and \(F_0(y^2)\), but not on the mesh or on the intermediate probability measures.
+The mass parameter lies in the fixed compact interval \(I=[B_0e^{-T},B_0]\).
+
+\emph{Step 1: a positive probability kernel.}
+Take \(h=T/N\) and \(\epsilon=\sqrt h\), with \(h\) sufficiently small.
+Freeze \(B,F\) during one step, and abbreviate
+\begin{equation}
+ \begin{split}
+ \lambda_\epsilon(y)
+   &=\int_{|v|>\epsilon}k_{B,F}(y,v)\,\nu_0(\dd v),\\
+ m_\epsilon(y)
+   &=\int_{|v|>\epsilon}v k_{B,F}(y,v)\,\nu_0(\dd v),\\
+ a_\epsilon(y)&=a_{B,F}(y)-m_\epsilon(y),
+ \qquad
+ p_\epsilon(y)=1-h\lambda_\epsilon(y).
+ \end{split}
+ \label{eq:euler-truncated-coefficients}
+\end{equation}
+The universal dominating measure gives, for \(0<\epsilon\le1\),
+\begin{equation}
+ \begin{split}
+ \lambda_\epsilon(y)
+ &\le\int_{|v|>\epsilon}\nu_0(\dd v)
+   =\frac{2}{e^\epsilon-1}\le\frac2\epsilon,\\
+ |m_\epsilon(y)|
+ &\le\int_{|v|>\epsilon}|v|\,\nu_0(\dd v)\\
+ &=2\left\{\frac{\epsilon}{e^\epsilon-1}
+                      -\log(1-e^{-\epsilon})\right\}
+   \le C(1+|\log\epsilon|).
+ \end{split}
+ \label{eq:euler-truncation-bounds}
+\end{equation}
+The equalities follow by integrating on the positive half-line and using the evenness of \(\nu_0\); on that half-line its density is \(-\frac{\dd}{\dd v}(e^v-1)^{-1}\).
+In particular,
+\begin{equation}
+ |a_\epsilon(y)|
+ \le |y|+C_I+C(1+|\log\epsilon|).
+ \label{eq:euler-drift-bound}
+\end{equation}
+If \(h\le1/16\), then \(p_\epsilon(y)\ge1-2\sqrt h\ge1/2\), uniformly in \(B,F,y\).
+Define
+\begin{equation}
+ \begin{split}
+ \Pi_h^{B,F}(y,\dd z)
+ ={}&p_\epsilon(y)\,
+      \delta_{\,y+h a_\epsilon(y)/p_\epsilon(y)}(\dd z)\\
+ &+h\int_{|v|>\epsilon}
+       \delta_{y+v}(\dd z)\,k_{B,F}(y,v)\,\nu_0(\dd v).
+ \end{split}
+ \label{eq:positive-euler-kernel}
+\end{equation}
+Measurability of the coefficients makes this a Borel kernel.
+Both terms are nonnegative and their total mass is exactly one.
+Thus $\Pi_h^{B,F}(y,\cdot)$ is a probability for every $y$.
+For a test $\varphi$ and a probability $F$, our kernel notation is
+\[
+ \Pi_h^{B,F}\varphi(y)=\int\varphi(z)\Pi_h^{B,F}(y,\dd z),
+ \qquad
+ (F\Pi_h^{B,F})(A)=\int\Pi_h^{B,F}(y,A)F(\dd y).
+\]
+Starting from \(F_0^h=F_0\), we can therefore define recursively
+\begin{equation}
+ F_{j+1}^h
+   =F_j^h\Pi_h^{B_{jh},F_j^h},
+ \qquad j=0,\ldots,N-1.
+ \label{eq:positive-euler-recursion}
+\end{equation}
+All coefficients are defined for every probability, so this recursion does not presume existence of the desired solution.
+
+For one step from \(y\), write \(\Delta=z-y\).
+Direct calculation from \eqref{eq:positive-euler-kernel} gives
+\begin{equation}
+ \begin{split}
+ \E(\Delta\mid y)&=h a_{B,F}(y),\\
+ \E(\Delta^2\mid y)
+   &=h\int_{|v|>\epsilon}v^2 k_{B,F}(y,v)\,\nu_0(\dd v)
+       +\frac{h^2a_\epsilon(y)^2}{p_\epsilon(y)}.
+ \end{split}
+ \label{eq:euler-exact-moments}
+\end{equation}
+Thus the mean compensation is exact.
+In particular we do not bound the mean by the divergent untruncated first absolute jump moment.
+
+\emph{Step 2: uniform second moments.}
+Put \(M_j^h=F_j^h(y^2)\).
+From \eqref{eq:evolution-uniform-bounds},
+\[
+ 2y a_{B,F}(y)\le3y^2+C_I^2.
+ \]
+Using \(p_\epsilon\ge1/2\), \eqref{eq:euler-drift-bound}, and \eqref{eq:euler-exact-moments}, we obtain
+\[
+ M_{j+1}^h
+ \le (1+3h+C h^2)M_j^h
+       +C h+C h^2(1+|\log h|^2).
+ \]
+Because \(h(1+|\log h|^2)\) is bounded for sufficiently small \(h\), this implies
+\begin{equation}
+ M_{j+1}^h\le(1+C_T h)M_j^h+C_T h,
+ \qquad
+ \sup_{\substack{h\ \mathrm{small}\\0\le j\le N}}M_j^h
+       \le C_{T,B_0,F_0}<\infty.
+ \label{eq:euler-uniform-moments}
+\end{equation}
+The second inequality follows by iterating the scalar recursion, or by summing its geometric series.
+This also proves by induction that each discrete law has a finite second moment, so every moment calculation just used is justified.
+
+\emph{Step 3: compactness in time and in the state variable.}
+We realize a finite Markov chain with initial law \(F_0\) and the kernels in \eqref{eq:positive-euler-recursion}.
+Only finitely many iterated probability kernels are needed for this realization.
+Writing \(Y_j\) for its state at step \(j\), let
+\[
+ D_{j+1}
+  =Y_{j+1}-Y_j-h a_{B_{jh},F_j^h}(Y_j).
+ \]
+With respect to the filtration $\mathcal F_j=\sigma(Y_0,\ldots,Y_j)$, these are square-integrable martingale differences, by \eqref{eq:euler-exact-moments}.
+The same formula and \eqref{eq:euler-uniform-moments} yield
+\[
+ \E D_{j+1}^2\le C_T h,
+ \qquad
+ \E\bigl|a_{B_{jh},F_j^h}(Y_j)\bigr|^2\le C_T.
+ \]
+For \(i<j\), martingale orthogonality gives \(\E|\sum_{\ell=i}^{j-1}D_{\ell+1}|^2\le C_T(j-i)h\).
+Cauchy--Schwarz bounds the squared drift sum by \(C_T((j-i)h)^2\).
+Consequently
+\begin{equation}
+ \E|Y_j-Y_i|^2
+   \le C_T\bigl\{(j-i)h+((j-i)h)^2\bigr\}.
+ \label{eq:euler-time-moment}
+\end{equation}
+
+We interpolate the laws rather than the sample paths: for \(t=(j+\theta)h\), \(0\le\theta\le1\), set
+\[
+ \widetilde F_t^h=(1-\theta)F_j^h+\theta F_{j+1}^h.
+ \]
+Also let \(\overline F_t^h=F_j^h\) for \(jh\le t<(j+1)h\), with both interpolations equal to \(F_N^h\) at \(T\).
+Use the bounded Lipschitz metric
+\[
+ d_{\mathrm{BL}}(F,G)
+ =\sup_{\substack{\|f\|_\infty\le1\\ \operatorname{Lip}(f)\le1}}
+                  |F(f)-G(f)|,
+ \]
+where $\operatorname{Lip}(f)=\sup_{x\ne y}|f(x)-f(y)|/|x-y|$.
+This metric metrizes narrow convergence of probabilities on \(\R\).
+The coupling in \eqref{eq:euler-time-moment}, followed by Cauchy--Schwarz, gives the uniform estimates
+\begin{equation}
+ \begin{split}
+ d_{\mathrm{BL}}(\widetilde F_t^h,\widetilde F_s^h)
+      &\le C_T\sqrt{|t-s|+h},\\
+ \sup_{0\le t\le T}
+ d_{\mathrm{BL}}(\widetilde F_t^h,\overline F_t^h)
+      &\le C_T\sqrt h .
+ \end{split}
+ \label{eq:euler-time-modulus}
+\end{equation}
+For the first estimate, compare each interpolated law to a neighboring mesh law and apply \eqref{eq:euler-time-moment}; the squared time increment is absorbed into the constant depending on \(T\).
+The second is the adjacent-step case.
+
+The moment bound \eqref{eq:euler-uniform-moments} holds also for the interpolated laws and gives \(\widetilde F_t^h(|y|>R)\le C_{T,B_0,F_0}/R^2\).
+They are therefore uniformly tight.
+Take a sequence of meshes tending to zero.
+At each time in a countable dense subset of \([0,T]\) containing its endpoints, tightness gives a weakly convergent subsequence; diagonal selection gives one subsequence working at all these times.
+On the real line this selection can equivalently be obtained from monotonicity of distribution functions and the displayed uniform tail bound.
+
+The first estimate in \eqref{eq:euler-time-modulus} is an asymptotic, uniform time modulus.
+Its limit on the dense time set is at most \(C_T\sqrt{|t-s|}\).
+Uniform tightness and this bound extend the limiting probabilities uniquely to every time, giving a narrowly continuous curve \(F_t\).
+Comparing any time to a finite dense time grid, and then using \eqref{eq:euler-time-modulus}, shows that along the chosen subsequence
+\begin{equation}
+ \sup_{0\le t\le T}
+ d_{\mathrm{BL}}(\widetilde F_t^h,F_t)\longrightarrow0,
+ \qquad
+ \sup_{0\le t\le T}
+ d_{\mathrm{BL}}(\overline F_t^h,F_t)\longrightarrow0.
+ \label{eq:euler-uniform-narrow-limit}
+\end{equation}
+The limits remain probability measures: the uniform tail bound precludes loss of mass.
+Approximating a bounded continuous function uniformly on a large compact interval by a Lipschitz function, and controlling the complementary tails, also gives uniform-in-time convergence for every fixed bounded continuous test.
+Finally, apply this convergence to \(\min\{y^2,R\}\), and then let \(R\to\infty\).
+It follows that \(F_t\in\Ptwo\) for every \(t\) and that \eqref{eq:evolution-second-moment} holds.
+Only narrow continuity, not continuity in a second-moment transport metric, is asserted.
+
+\emph{Step 4: consistency with the compensated generator.}
+Fix \(\varphi\in C_c^2(\R)\).
+Taylor expansion at the no-jump location in \eqref{eq:positive-euler-kernel} gives a remainder bounded by
+\[
+ \frac{h^2\|\varphi''\|_\infty
+                      a_\epsilon(y)^2}{2p_\epsilon(y)}.
+ \]
+The first-order term is \(h a_\epsilon(y)\varphi'(y)\).
+Adding the retained jump terms converts it exactly into the truncated, fully compensated operator.
+For the missing small jumps,
+\[
+ \int_{|v|\le\epsilon}v^2\,\nu_0(\dd v)\le2\epsilon,
+ \]
+because \(4\sinh^2(v/2)\ge v^2\).
+We therefore have the pointwise consistency estimate
+\begin{equation}
+ \left|
+ \frac{\Pi_h^{B,F}\varphi(y)-\varphi(y)}h
+       -\mathcal G_{B,F}\varphi(y)
+ \right|
+ \le C_I\|\varphi''\|_\infty
+       \left[\epsilon+
+              h\{y^2+1+|\log\epsilon|^2\}\right].
+ \label{eq:euler-consistency}
+\end{equation}
+Here and below the value of the constant \(C_I\) may be enlarged; it remains independent of \(F,y,h\).
+Integrating against \(F_j^h\), using \eqref{eq:euler-uniform-moments}, and summing the steps yields an error, uniform in terminal time, at most
+\begin{equation}
+ C_{T,\varphi}\bigl[\sqrt h+h(1+|\log h|^2)\bigr]
+   \longrightarrow0.
+ \label{eq:euler-total-error}
+\end{equation}
+More explicitly, let \(\overline B_r^h=B_{jh}\) on the \(j\)-th mesh interval.
+Telescoping the discrete equations and, on the final partial interval, taking the same convex combination as in \(\widetilde F_t^h\), gives
+\begin{equation}
+ \widetilde F_t^h(\varphi)-F_0(\varphi)
+  =\int_0^t
+       H_\varphi(\overline B_r^h,\overline F_r^h)\,\dd r
+       +e_h(t),
+ \qquad
+ \sup_{0\le t\le T}|e_h(t)|\longrightarrow0 .
+ \label{eq:euler-integrated-consistency}
+\end{equation}
+Thus the same error bound covers terminal times between mesh points.
+
+\emph{Step 5: the nonlinear limit.}
+Lemma~\ref{lem:continuity} says that \(H_\varphi\) is continuous and uniformly bounded on \(I\times\mathcal P(\R)\).
+Equations \eqref{eq:euler-uniform-narrow-limit} and \(\sup_r|\overline B_r^h-B_r|\to0\) imply
+\begin{equation}
+ \sup_{0\le r\le T}
+ \left|
+ H_\varphi(\overline B_r^h,\overline F_r^h)
+       -H_\varphi(B_r,F_r)
+ \right|\longrightarrow0.
+ \label{eq:euler-nonlinear-limit}
+\end{equation}
+To justify the uniform assertion without assuming compactness of the entire space of probabilities, suppose it fails and choose times \(r_h\) at which the difference is bounded away from zero.
+Along a further subsequence, \(r_h\to r\).
+Uniform narrow convergence and continuity of \(F_\cdot\) give \(\overline F_{r_h}^h\Rightarrow F_r\), while \(\overline B_{r_h}^h\to B_r\).
+Continuity of \(H_\varphi\) gives a contradiction, also using continuity of \(r\mapsto H_\varphi(B_r,F_r)\).
+
+Passing to the limit in \eqref{eq:euler-integrated-consistency}, we obtain \eqref{eq:evolution-weak-equation} for the fixed test \(\varphi\), at every time.
+The subsequence used to construct \(F_\cdot\) was selected only through weak compactness, independently of \(\varphi\).
+The same argument therefore applies to every \(\varphi\in C_c^2(\R)\), establishing the stated equation on that entire test class.
+\end{proof}
+
+\begin{remark}
+The resulting rate measures are Thorin-admissible throughout the finite time interval.
+Indeed,
+\[
+ \int_0^\infty\log(1+1/b)\,
+                B_t\exp_*F_t(\dd b)
+ =B_tF_t\bigl(\log(1+e^{-y})\bigr)
+ \le B_t\bigl(\log2+F_t(|y|)\bigr)<\infty.
+ \]
+The construction thus produces positive finite Thorin measures with controlled logarithmic tails.
+Identifying their associated \(\GGC\) laws with a specified transformation of the initial law is a separate assertion; neither that identification nor nonlinear uniqueness has been used here.
+\end{remark}

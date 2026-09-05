@@ -56,6 +56,13 @@ requires no prior integrability assertion.
 
 **Status: [PROVED].**
 
+**Literature attribution update, 2026-09-05.** This factorization is
+already James (2006), arXiv:math/0610218v3, Theorem 4.1(iv), PDF p. 13.
+The calculation below is an independent derivation, not a priority claim.
+James's tilt parameter is \(\rho B\), whereas the project writes
+\(T_{\rho,B}\); see the
+[source and parameter audit](../notes/james-dirichlet-means-stable-scaling.md).
+
 Define \(T_{\rho,B}\) by
 
 \[

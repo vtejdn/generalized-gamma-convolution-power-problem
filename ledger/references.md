@@ -191,3 +191,149 @@ and
 33C57E0BEF800BA632105A5241F221ADF48F3FB4119F88C8BF6C52E62B744880.
 The Dyachenko--Karp arXiv v1 PDF has SHA-256
 849F8FA0A74CAA94C535C7128175B587C7F26A609B156E42C93AD7CFD4F26F18.
+
+## Additional source audit: 2026-09-05
+
+12. **James (2006), stable scaling and gamma tilting.** L. F. James,
+    *Gamma Tilting Calculus for GGC and Dirichlet means with applications
+    to Linnik processes and Occupation Time Laws for Randomly Skewed
+    Bessel Processes and Bridges*,
+    [arXiv:math/0610218v3](https://arxiv.org/pdf/math/0610218v3),
+    7 November 2006. Theorem 4.1(i),(iv), PDF p. 13; Proposition 5.7(i),
+    PDF pp. 21--22; Proposition 5.14, PDF p. 24.
+    [Audit and project-notation crosswalk](../notes/james-dirichlet-means-stable-scaling.md).
+    In particular, the gamma-power factorization and tilted stable
+    composition are known literature results independently rederived here.
+
+13. **James--Lijoi--Prünster (2008), PD-to-Dirichlet mean conversion.**
+    L. F. James, A. Lijoi and I. Prünster, “Distributions of linear
+    functionals of two parameter Poisson--Dirichlet random measures,”
+    *Annals of Applied Probability* **18** (2008), 521--551,
+    [DOI 10.1214/07-AAP462](https://doi.org/10.1214/07-AAP462).
+    Checked [arXiv:math/0609488v4](https://arxiv.org/pdf/math/0609488v4),
+    31 March 2008, Theorem 2.1 and equations (13)--(14), reprint/PDF p. 8.
+    The positive linear mean requires the stated fractional-moment
+    integrability and a strictly positive matching order.
+
+14. **James (2010), matched beta scaling and exponential tilting.**
+    L. F. James, “Dirichlet mean identities and laws of a class of
+    subordinators,” *Bernoulli* **16** (2010), 361--388,
+    [DOI 10.3150/09-BEJ224](https://doi.org/10.3150/09-BEJ224).
+    Checked [arXiv:1010.1639v1](https://arxiv.org/pdf/1010.1639v1),
+    8 October 2010. Theorem 2.1, PDF p. 8; Theorem 3.1, PDF pp. 12--13;
+    Remark 3.1, PDF p. 15, warns against unmatched gamma shapes.
+
+15. **Sokal--Widder Stieltjes/Hausdorff criterion.** A. D. Sokal,
+    “Real-variables characterization of generalized Stieltjes functions,”
+    *Expositiones Mathematicae* **28** (2010), 179--185,
+    [DOI 10.1016/j.exmath.2009.06.004](https://doi.org/10.1016/j.exmath.2009.06.004).
+    Checked [arXiv:0902.0065v2](https://arxiv.org/pdf/0902.0065v2),
+    6 May 2009. Theorem 1, pp. 2--3, records Widder's characterization;
+    equations (13)--(16), pp. 5--6, give the Hausdorff formulation.
+    [Project derivation for exponentially tilted cumulants](../notes/sokal-stieltjes-hausdorff-criterion.md)
+    distinguishes this all-order criterion from finite numerical tests.
+
+## Primary interfaces checked in the closure/tangent pass
+
+16. **Bondesson (1992), widened multiplication and exponential peeling.**
+    *Generalized Gamma Convolutions and Related Classes of Distributions
+    and Densities*, Lecture Notes in Statistics 76, Springer,
+    DOI 10.1007/978-1-4612-2948-3; [local book](../literature/Bondesson.pdf).
+    Section 3.5, printed p. 46 (PDF p. 55), includes widened GGC cdf
+    densities. Theorem 5.4.1, printed pp. 81--82 (PDF pp. 90--91),
+    identifies decreasing HCM transforms. Theorem 6.2.4, printed
+    pp. 94--95 (PDF pp. 103--104), explicitly includes widened measures;
+    Theorem 6.2.7, printed pp. 96--97 (PDF pp. 105--106), uses that
+    extension in the exponential induction. Theorem 6.2.6, printed p. 96,
+    covers powers of shifted gamma variables. These are the sourced
+    inputs to WIP-7.1--7.4, not newly discovered closure theorems.
+    [Detailed audit](../notes/bondesson-1992-ggc-hcm-foundational-infrastructure.md).
+
+17. **NIST DLMF, Gauss connection for the positive complement.**
+    [Equation 15.8.2](https://dlmf.nist.gov/15.8.E2), with the
+    normalized hypergeometric function from
+    [15.2.2](https://dlmf.nist.gov/15.2.E2) and Euler integral
+    [15.6.1](https://dlmf.nist.gov/15.6.E1), checked 2026-09-05.
+    WIP-5.44 gives the parameter substitution, ordinary-function gamma
+    coefficients and nonresonance/branch conditions. Its independent
+    beta integration-by-parts/ODE proof does not assume the connection.
+
+18. **NIST DLMF, Bessel inputs to the HCM-density obstruction.**
+    [10.32.2](https://dlmf.nist.gov/10.32.E2) is the beta integral for
+    the modified Bessel function; [10.27.6](https://dlmf.nist.gov/10.27.E6)
+    relates it to the ordinary Bessel function; [Section 10.21(i)](https://dlmf.nist.gov/10.21.i)
+    supplies positive real zeros. Checked 2026-09-05. WIP-7.6 combines
+    these with the zero-free canonical HCM representation in Bondesson
+    (1992), Theorems 5.3.1--5.3.4, printed pp. 79--81, already audited
+    in the foundational note. This excludes an HCM-density invariant,
+    not GGC membership.
+
+WIP-6.6--6.10 are direct project deductions from the gamma--Dirichlet
+identity, elementary rational partial fractions and the finite-Thorin-mass
+representation above. No unverified stochastic-generator or cone-invariance
+theorem is invoked to turn their positive tangent into a finite-time flow.
+
+## Finite-Thorin and log-rate evolution interfaces
+
+19. **Dunkl et al. (2015), the four-half-gamma Dirichlet mean density.**
+    C. F. Dunkl, P. Gawron, L. Pawela, Z. Puchala and K. Zyczkowski,
+    *Real numerical shadow and generalized B-splines*, Linear Algebra
+    and its Applications **479** (2015), 12--51,
+    DOI 10.1016/j.laa.2015.03.029. Checked
+    [arXiv:1409.4941v1](https://arxiv.org/pdf/1409.4941v1),
+    preprint p. 22, Section 5.3, equations (79)--(82).
+    This is the known plateau/quartic-integral density input to
+    [WIP-5.47](18-four-rate-balanced-phase.md#wip-5-47),
+    not a new density formula claimed by the project.
+
+20. **James (2005), gamma--Dirichlet and posterior identities.**
+    L. F. James, *Functionals of Dirichlet processes, the
+    Cifarelli--Regazzini identity and Beta-Gamma processes*, Annals of
+    Statistics **33** (2005), 647--660,
+    [DOI 10.1214/009053604000001237](https://doi.org/10.1214/009053604000001237).
+    Checked [arXiv:math/0505606v1](https://arxiv.org/pdf/math/0505606v1),
+    Section 1, reprint p. 2, equations (1)--(3), and Section 2,
+    reprint pp. 4--5, posterior paragraph and equation (8).
+    [WIP-6.11--6.15](19-finite-thorin-compensated-power-tangent.md)
+    and [WIP-6.16](20-finite-thorin-positive-steps.md#wip-6-16)
+    give the exact versions used, including non-atomic or mixed base
+    measures and the one-observation posterior; finite-partition
+    posterior calculations are also written explicitly.
+
+21. **Schilling--Song--Vondracek (2010), unique bounded phases.**
+    *Bernstein Functions: Theory and Applications*, de Gruyter,
+    **2010 edition**, [local primary text](../literature/SSV.pdf).
+    Theorem 6.10, printed pp. 58--59 / PDF pp. 71--72, gives the
+    exponential representation and its uniqueness; Theorem 7.3,
+    printed p. 63 / PDF p. 76, gives Stieltjes/CBF reciprocal duality.
+    Remark 6.11, printed p. 60 / PDF p. 73, imposes an extra condition
+    for anchoring at zero, which is not used in the anchor-one proof.
+    These primary pages were read again in the full evolution audit
+    on 2026-09-05. The phase selection and weak-star convergence
+    arguments are provided in WIP-6.11 and WIP-6.18.
+
+22. **Sethuraman (1994), constructive Dirichlet probabilities.**
+    J. Sethuraman, *A Constructive Definition of Dirichlet Priors*,
+    Statistica Sinica **4** (1994), 639--650.
+    Section 2, pp. 642--643, equation (2.1), and Theorem 3.4, p. 645.
+    [Publisher's original](https://www3.stat.sinica.edu.tw/statistica/oldpdf/A4n216.pdf);
+    [primary-text university mirror](https://www.cs.princeton.edu/courses/archive/fall07/cos597C/readings/Sethuraman1994.pdf).
+    Relevant primary-text indexed excerpts were checked; the
+    publisher's image-only PDF was not successfully rendered here.
+    WIP-6.18 also proves the finite-partition property directly and
+    supplies the particular almost-sure coupling used in the
+    generator-continuity argument. No nonatomicity assumption is used.
+
+23. **NIST DLMF, constants in the universal log-rate bound.**
+    [5.4.12](https://dlmf.nist.gov/5.4.E12),
+    psi(1) = minus Euler's constant, and
+    [25.6.1](https://dlmf.nist.gov/25.6.E1), zeta(2) = pi squared / 6.
+    WIP-6.17 supplies the beta logarithmic moment, correction-kernel
+    integrals and Levy second-moment calculation; these two classical
+    values only express their constants in familiar notation.
+
+The positive Euler construction in WIP-6.19 is a project proof with
+explicit transition probabilities, moment recursion, compactness and
+consistency estimates. It does not appeal to an unsourced nonlinear
+semigroup-generation theorem or infer finite-time positivity from the
+positive minimum property alone.

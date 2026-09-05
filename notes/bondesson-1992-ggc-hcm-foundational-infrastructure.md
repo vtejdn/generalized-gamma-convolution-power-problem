@@ -68,7 +68,8 @@ actionable additions to the present project are:
 2. a real hyperbolic divided-difference characterization of Stieltjes
    functions (Theorem 6.1.3);
 3. a log-concave exponential-mixing sufficient condition for GGC
-   (Theorem 4.2.1);
+   (Theorem 4.2.1), whose global hypothesis is now proved unavailable for
+   the low-total-shape powered finite-gamma family;
 4. the actual induction behind the known \(PF_\infty\) power theorem
    (Theorem 6.2.7);
 5. the decomposition of the GGC test into Bondesson-class membership plus
@@ -81,7 +82,7 @@ The route map is:
 | Stieltjes log derivative and boundary inversion | Route 2 | high |
 | Loewner matrices | Routes 2--3 and exact falsification | high |
 | \(PF_\infty\) convolution induction | Route 5 | high |
-| log-concave exponential mixing | low-total-shape part of Route 2 | medium |
+| log-concave exponential mixing | excluded for powered finite gamma with \(q>1, B/q\le1\); WIP-6.1 | closed sufficient route |
 | HCM recognition and weighting | Routes 4--5 | medium |
 | Bondesson class \(BO\) as an intermediate class | Route 2 | medium |
 
@@ -219,9 +220,9 @@ which displays positive semidefiniteness as a Gram representation.
 
 **[PROJECT CONNECTION]** This gives a global finite-point alternative to the
 cumulant Hankel gates in Route 3.  It does not require moment determinacy.
-An exact negative principal minor at negative Laplace arguments would be a
-rigorous counterexample; finitely many positive minors would still not prove
-the theorem.
+An exact negative principal minor at negative mgf arguments (equivalently,
+positive Laplace arguments) would be a rigorous counterexample; finitely
+many positive minors would still not prove the theorem.
 
 ### 3.2 Hyperbolic divided differences
 
@@ -230,7 +231,7 @@ function \(h\) on \((0,\infty)\) has a Stieltjes representation
 
 \[
 h(s)=a+\int_{[0,\infty)}\frac{U(dt)}{s+t},
-\qquad a\ge0,quad U\ge0,
+\qquad a\ge0,\quad U\ge0,
 \tag{3.3}
 \]
 
@@ -376,22 +377,48 @@ than complete monotonicity alone.
 in Route 4, but it applies only after HCM of the final density has actually
 been proved.  It cannot justify fibrewise positivity before averaging.
 
-### 5.3 Weighting a GGC density by a GGC Laplace transform
+### 5.3 The widened multiplication theorem and its ordinary corollary
 
-**[SOURCE: Theorem 6.2.4, printed pp. 94--95 / PDF pp. 103--104]** If \(f\)
-is a GGC density and \(h\) is a GGC Laplace transform, then, when integrable,
+**[SOURCE: Section 3.5, printed p. 46 / PDF p. 55]** A widened GGC
+measure belongs to \(\mathcal T_w\) precisely when every positive
+exponential weighting can be normalized to an ordinary GGC. Such a
+measure need not have finite total mass. In particular, the cdf \(F\)
+of a GGC, regarded as the density \(F(x)dx\), is widened GGC: its
+Laplace transform is \(L(s)/s\). The same section records the general
+positive-order fractional integral, with transform \(s^{-a}L(s)\).
+
+**[SOURCE: Theorem 6.2.4, printed pp. 94--95 / PDF pp. 103--104;
+widened clauses explicitly rechecked 2026-09-05]** The theorem includes
+both the ordinary and widened classes. If \(f(x)dx\) is a widened
+GGC measure and \(h\) is a decreasing HCM function, equivalently a
+Laplace transform of a widened GGC, then \(h(x)f(x)dx\) belongs to the
+widened GGC class under its stated normalization. If the product has
+finite positive total mass, it normalizes to an ordinary GGC law.
+The last step also follows by normalizing exponential weightings and
+taking their weak limit as the weighting parameter tends to zero.
+
+**[ORDINARY COROLLARY OF THE SOURCE THEOREM]** If \(f\) is an ordinary
+GGC probability density and \(h\) is an ordinary GGC Laplace transform,
+then
 
 \[
 \frac{h(x)f(x)}{\int_0^\infty h(y)f(y)\,dy}
 \tag{5.5}
 \]
 
-is again a GGC density.  A related corollary gives a positive integral
-operator preserving HCM.
+is again a GGC density. This ordinary statement alone omits the
+infinite-mass cdf factor used in the proof of Theorem 6.2.7. A related
+corollary on printed p. 95 gives a positive integral operator preserving
+HCM.
 
-**[PROJECT CONNECTION]** This is the closure mechanism used by the
-\(PF_\infty\) induction and is a plausible invariant for the shape-matched
-Route 5 recursion.
+**[PROJECT CONNECTION]**
+[WIP-7.1](../ledger/17-exponential-peeling-closure.md#wip-7-1) uses the
+full widened statement to prove that normalized exponential peeling
+\(\mathcal A_{1,b,q}\) preserves every GGC input. Its cdf is a widened
+GGC **density**, while \(y^{1/q-1}e^{-by^{1/q}}\) is a decreasing
+HCM **multiplier**. WIP-7.2--7.4 derive positive-integer peeling,
+leading integer-prefix closure, and original-square corollaries. No
+noninteger-shape closure is supplied by this theorem alone.
 
 ## 6. Two sufficient criteria with direct power-problem relevance
 
@@ -411,16 +438,23 @@ The proof verifies the complex GGC criterion by symmetrizing an integral;
 the sign follows from monotonicity of the logarithmic derivative of the
 log-concave mixing function.
 
-**[PROJECT CONNECTION]** When \(\rho B\le1\), the density of a powered finite
-gamma convolution is completely monotone and hence is an exponential
-mixture.  Theorem 4.2.1 turns the problem in this region into the concrete
-sufficient target: recover the unique Bernstein mixing measure and prove
-log-concavity of its rate density after multiplication by \(t\).
+**[PROJECT CONNECTION; REASSESSED 2026-09-05]** When \(\rho B\le1\), the
+density of a powered finite gamma convolution is completely monotone and
+hence is an exponential mixture. However, that observation does not make
+the global log-concavity hypothesis a viable target for this family.
 
-**[CANDIDATE B92-C2]** For the two-rate benchmark with \(\rho B\le1\), compute
-the exponential mixing density exactly and test \(t m(t)\) for log-concavity.
-Failure of log-concavity only kills this sufficient route; it is not evidence
-against GGC membership.
+**[B92-C2: PROVED OBSTRUCTION; FORMER CANDIDATE CLOSED]**
+[WIP-6.1](../ledger/15-global-criteria-and-power-flow.md#wip-6-1) proves
+that any nonzero log-concave Bernstein density \(\sigma(t)=t m(t)\) with
+\(\int\sigma(t)t^{-1}dt=1\) has all nonnegative moments finite. Its
+Laplace transform therefore has finite right derivatives of every order
+at zero. For powered finite gamma convolutions with \(q>1\), the density
+is infinite at zero when \(B/q<1\), and its first derivative is infinite
+in magnitude when \(B/q=1\). Consequently the global hypothesis of
+Theorem 4.2.1 is impossible throughout this parameter family, including
+equal rates. Log-concavity of \(m\) is excluded as well, since it implies
+log-concavity of \(t m(t)\). This closes the proposed sufficient route;
+it is not evidence against GGC membership or against the source theorem.
 
 ### 6.2 The \(PF_\infty\) power theorem and its recursive mechanism
 
@@ -460,10 +494,13 @@ specific research question is whether the ordinary integration produced by
 an exponential summand can be replaced by a beta or Riemann--Liouville
 fractional integral matching an arbitrary gamma shape.
 
-**[CANDIDATE B92-C3]** Formulate and prove a fractional version of the
-Theorem 6.2.7 update which preserves the final GGC density, with all beta
-parameters integrated before any HCM claim.  Proving only pointwise HCM of
-a frozen beta fibre is insufficient and is known to be too strong.
+**[CANDIDATE B92-C3; EXACT OPERATOR NOW RECORDED]**
+[WIP-6.2](../ledger/15-global-criteria-and-power-flow.md#wip-6-2) proves
+the exact normalized fractional gamma-peeling identity, including the
+minimum-rate shift and all constants. Preservation of GGC remains a
+conjecture for its matched powered finite-gamma input. It is not asserted
+for arbitrary GGC densities. Proving only pointwise HCM of a frozen beta
+fibre is insufficient and is known to be too strong.
 
 Immediately after Theorem 6.2.7, the monograph explicitly states that the
 general implication
@@ -577,9 +614,14 @@ monotonicity problem.
 
 1. Add the hyperbolic Stieltjes test (3.5) to the Route 2 benchmark family.
 2. Add Loewner minors at negative arguments to the exact falsification gate.
-3. Rewrite Theorem 6.2.7 as a standalone recursion lemma, then identify the
-   precise fractional-integral statement needed for arbitrary shapes.
-4. In the low-total-shape region, compute the exponential mixing density and
-   test the log-concavity condition of Theorem 4.2.1.
+3. Use the standalone exponential/integer closure now proved in
+   [WIP-7.1--7.4](../ledger/17-exponential-peeling-closure.md), and target
+   its noninteger extension. WIP-7.6 rules out HCM density as a preserved
+   output invariant; the target remains GGC.
+4. Retain the proved WIP-6.1 obstruction: do not continue testing global
+   log-concavity of the Bernstein mixing density for \(q>1, B/q\le1\).
+   Use the exact positive-tilt Hausdorff/Loewner criteria in
+   [WIP-6.3](../ledger/15-global-criteria-and-power-flow.md#wip-6-3) when a
+   real-variable global certificate is needed.
 5. Treat \(BO\) membership as a useful intermediate certificate, never as
    completion of the GGC proof.

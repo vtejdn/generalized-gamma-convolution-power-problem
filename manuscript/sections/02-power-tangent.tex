@@ -1,0 +1,91 @@
+\section{The infinitesimal effect of taking a power}
+\label{sec:tangent}
+
+We compute the derivative at $q=1$ of the logarithmic Laplace derivative of $X^q$.
+We will use this derivative to construct the evolution in the following sections.
+
+Throughout this section $U$ is a positive measure on $(0,\infty)$ with
+\begin{equation}
+ 0<B=U((0,\infty))<\infty,\qquad
+ \int\log(1+b^{-1})\,U(\dd b)<\infty.
+ \label{eq:finite-admissible}
+\end{equation}
+Let $X$ have the zero-drift GGC law with Thorin measure $U$.
+Thus
+\[
+ L(s)=\E e^{-sX}
+ =\exp\left\{-\int\log(1+s/b)\,U(\dd b)\right\}.
+\]
+For $s>0$, let $X_s$ be a random variable with the exponentially tilted law $\Law(X_s)(\dd x)=e^{-sx}\Law(X)(\dd x)/L(s)$.
+Recall the digamma function $\psi_0=\Gamma'/\Gamma$.
+For a probability measure $P$ on $(0,\infty)$, put
+\begin{equation}
+ M_P(s)=\int\frac{P(\dd b)}{s+b},\qquad
+ W_P(s)=M_P(s)+sM_P'(s)=\int\frac{b\,P(\dd b)}{(s+b)^2}.
+ \label{eq:MW}
+\end{equation}
+
+\begin{lemma}[Marginal tilts and infinitesimal deterministic powers]
+\label{lem:tangent}
+Let $U$, $B$, and $X$ be as above.
+Let $P\sim\DP(U)$ and $G_B\sim\operatorname{Gamma}(B,1)$ be independent.
+Then, for $s>0$,
+\begin{equation}
+ X_s\overset d=G_BM_P(s).
+ \label{eq:tilt-gamma-dirichlet}
+\end{equation}
+For $s,q>0$, define
+\[
+ g_q(s)=-\partial_s\log\E e^{-sX^q},\qquad
+ h_U(s)=\left.\partial_q g_q(s)\right|_{q=1},\qquad g(s)=g_1(s).
+\]
+The derivatives defining $g_q$ and $h_U$ exist, and expectations on the right-hand sides below are with respect to $P\sim\DP(U)$:
+\begin{align}
+ g(s)&=B\E M_P(s),\label{eq:g-dirichlet}\\
+ h_U(s)&=B\E\left[
+ W_P(s)\{\psi_0(B+1)+\log M_P(s)\}+sM_P'(s)
+ \right],\label{eq:tangent}\\
+ \frac{h_U(s)+g(s)}B
+ &=\E\left[W_P(s)\{\psi_0(B+1)+1+\log M_P(s)\}\right].
+ \label{eq:normalized-tangent}
+\end{align}
+Equivalently, $h_U(s)=\partial_s\{s\E[X_s\log X_s]\}$.
+\end{lemma}
+
+\begin{proof}
+The tilted representation \eqref{eq:tilt-gamma-dirichlet} is \eqref{eq:gamma-dirichlet-tilt}.
+We use it as an equality of distributions for each fixed $s$.
+
+\emph{Step 1: differentiating the power parameter.}
+For $q$ in a compact subinterval of $(0,\infty)$, and $s$ in a compact positive interval, differentiating $e^{-s x^q}$ in $s$ and $q$ produces finite sums of bounded functions of $z=x^q$ of the form $z^r(\log z)^j e^{-sz}$ with $r>0$, multiplied by bounded powers of $q^{-1}$.
+At $x=0$ these terms have the continuous value zero.
+Differentiation under the original probability is therefore justified without a moment assumption on $X$.
+Differentiating first in $q$ yields
+\[
+ \left.\partial_q\log\E e^{-sX^q}\right|_{q=1}
+ =-s\E[X_s\log X_s],
+\]
+and hence $h_U(s)=\partial_s\{s\E[X_s\log X_s]\}$.
+
+\emph{Step 2: evaluating the tilted logarithmic moment.}
+Differentiating the gamma integral with respect to its positive shape parameter, we obtain $\E[G_B\log G_B]=B\psi_0(B+1)$.
+Consequently
+\[
+ \E[X_s\log X_s]
+ =B\E\left[M_P(s)\{\psi_0(B+1)+\log M_P(s)\}\right].
+\]
+\emph{Step 3: differentiating the Dirichlet mean.}
+For every $P$ and integer $j\ge1$,
+\[
+ 0<W_P(s)\leq M_P(s)\leq s^{-1},\qquad
+ |M_P^{(j)}(s)|\leq j!s^{-j}M_P(s).
+\]
+On compact positive $s$-intervals, the needed derivatives of $M_P(s)\log M_P(s)$ are bounded by a constant times $M_P(s)(1+|\log M_P(s)|)$, uniformly bounded for $0<M_P(s)\leq s^{-1}$.
+Thus we may differentiate this last expectation, which gives \eqref{eq:tangent}.
+Equation~\eqref{eq:g-dirichlet} follows either from the Thorin representation or from the mean of the tilted law.
+Adding it to \eqref{eq:tangent} and using $W_P=M_P+sM_P'$ proves \eqref{eq:normalized-tangent}.
+\end{proof}
+
+We have kept the law of $X$ fixed throughout this calculation.
+Later we apply the lemma separately to the GGC distribution specified by the Thorin measure at each time.
+The calculation therefore does not presuppose closure under powers.

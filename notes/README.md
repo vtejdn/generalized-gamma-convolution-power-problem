@@ -3,6 +3,10 @@
 This directory is reserved for notes that directly serve the active
 generalized-gamma-convolution power problem.
 
+Route numbers in older notes refer to the historical classification.
+The current priority labels P1--P7 and their correspondence are in
+[CurrentGoal.md](../CurrentGoal.md); no legacy route is excluded by number.
+
 - [classes-and-power-closure.md](classes-and-power-closure.md) records the
   exact HCM/GGC/SD/ID implications and safe power-closure statements.
 - [bondesson-2015-product-closure-audit.md](bondesson-2015-product-closure-audit.md)
@@ -21,6 +25,21 @@ generalized-gamma-convolution power problem.
   audits Zolotarev and the relevant parts of Bertoin, and records stable
   Mellin formulas, tilted-stable semigroup and gamma-product lemmas, and a
   tempered-stable Poisson construction of the negative tilt.
+- [james-dirichlet-means-stable-scaling.md](james-dirichlet-means-stable-scaling.md)
+  checks the James stable-scaling identities and the
+  James--Lijoi--Prünster PD-to-ordinary-Dirichlet-mean theorem, with exact
+  tilt/order conventions and the remaining residual-representation gap.
+- [sokal-stieltjes-hausdorff-criterion.md](sokal-stieltjes-hausdorff-criterion.md)
+  records the global real-variable Stieltjes criterion and its
+  positive-argument tilted-cumulant Hausdorff formulation.
+- [log-rate-power-proof-primary-interfaces.md](log-rate-power-proof-primary-interfaces.md)
+  records direct primary-text reinspection of the James, SSV and Bondesson
+  interfaces used in the candidate full log-rate evolution proof.
+
+The 2026-09-05 reassessment refutes the proposed global mixing-density
+log-concavity target B92-C2 for q > 1 and B/q <= 1; it does not refute
+Bondesson's sufficient theorem or GGC membership. See the corrected
+Bondesson note and [WIP-6.1](../ledger/15-global-criteria-and-power-flow.md#wip-6-1).
 
 The complete theorem and obstruction record is the
 [project ledger](../ledger/README.md), with stable identifiers collected in

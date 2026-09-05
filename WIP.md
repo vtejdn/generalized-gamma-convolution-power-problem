@@ -1,14 +1,32 @@
 # WIP index: Bondesson's GGC power problem
 
 Started: **2026-09-05**.
-Status: **active overview and master result index**.
+Status: **master result index; full target proved in project after internal
+mathematical audit on 2026-09-06**. This is not external peer review,
+publication or formal verification.
+
+For the overall distance to a full solution, the main structural
+obstructions and the qualitative research outlook, see
+[BigPicture.md](BigPicture.md). This WIP remains the index of concrete
+results and proof obligations; BigPicture records strategic judgments.
+Documentation links and assessment synchronized on **2026-09-06**, through
+WIP-5.50, WIP-6.23 and WIP-7.6. The completed mathematical argument and
+requirement-by-requirement audit are recorded in
+[WIP-6.23](ledger/25-mathematical-completion-audit.md#wip-6-23).
+The earlier candidate status has been superseded by that mathematical
+audit, not by manuscript preparation. At the user's subsequent request,
+the [TeX manuscript](manuscript/ggc-power-closure.tex) was completed without
+compilation, followed by a [Lean blueprint and API audit](formalization/README.md).
+These handoff artifacts do not add a claim of external review or formal verification.
 
 ## Objective and recording rules
 
-The active objective is stated in [CurrentGoal.md](CurrentGoal.md): attempt
-Routes 1--5 in ranked order, while retaining Routes 6--7 as deferred paths.
-Research stops early only if a complete proof of Bondesson's conjecture or a
-rigorous counterexample is obtained.
+The objective is stated in [CurrentGoal.md](CurrentGoal.md): resolve the
+conjecture by a proof or rigorous counterexample, using the prioritized
+programs P1--P7 or justified new approaches. The former restriction to
+original Routes 1--5 is removed. Priorities guide effort, not eligibility.
+An execution pass may finish with a precise unresolved gap; the research
+problem is resolved only by a complete proof or counterexample.
 
 The conjecture is
 
@@ -31,6 +49,8 @@ Every entry below has one of the following statuses.
 - **[OPEN STEP]**: a precise remaining proof obligation.
 - **[REFUTED ROUTE]**: a proposed intermediate assertion shown to be false.
 - **[HEURISTIC]**: motivation only, never evidence for a theorem.
+- **[UNDER AUDIT]**: a complete candidate argument whose final consolidated
+  review/handoff is not yet finished; this is not a published theorem.
 
 No floating-point experiment is used as proof. Exact calculations must name
 the script, arithmetic domain, and mathematical identity checked.
@@ -55,10 +75,33 @@ Complete derivations now live in [`ledger/`](ledger/README.md). The files are gr
 | WIP-5.24, 5.27, 5.28, 5.30, 5.31 | arbitrary-shape two-rate squares | [11-route5-two-rate-arbitrary-shapes.md](ledger/11-route5-two-rate-arbitrary-shapes.md) |
 | WIP-5.32--5.35, 5.37 | three-rate reductions and anchor theorems | [12-route5-three-rate-reductions-and-anchors.md](ledger/12-route5-three-rate-reductions-and-anchors.md) |
 | WIP-5.36, 5.38, 5.39 | three-rate fractional Abel analysis | [13-route5-three-rate-fractional-abel.md](ledger/13-route5-three-rate-fractional-abel.md) |
+| WIP-5.40--5.44 | support-aware padding, reciprocal duality, positive complements and completed three-rate compensation | [14-averaged-phase-compensation.md](ledger/14-averaged-phase-compensation.md) |
+| WIP-6.1--6.5 | log-concavity obstruction, fractional peeling, global criteria and power flow | [15-global-criteria-and-power-flow.md](ledger/15-global-criteria-and-power-flow.md) |
+| WIP-6.6--6.10 | Loewner tangents, singular support edge, compensated jumps and a realizing GGC curve | [16-power-flow-loewner-tangent.md](ledger/16-power-flow-loewner-tangent.md) |
+| WIP-7.1--7.6 | integer peeling, residual bootstraps, small-shape reduction and an HCM-output obstruction | [17-exponential-peeling-closure.md](ledger/17-exponential-peeling-closure.md) |
+| WIP-5.45--5.50 | four-rate phase geometry and the support-wide total-shape-two square theorem | [18-four-rate-balanced-phase.md](ledger/18-four-rate-balanced-phase.md) |
+| WIP-6.11--6.15 | finite-Thorin compensated tangent, endpoint domains, conditional mass and local-to-global verification | [19-finite-thorin-compensated-power-tangent.md](ledger/19-finite-thorin-compensated-power-tangent.md) |
+| WIP-6.16--6.17 | Palm disintegration, log-rate jump generator and uniform Lyapunov estimates | [20-finite-thorin-positive-steps.md](ledger/20-finite-thorin-positive-steps.md) |
+| WIP-6.18--6.19 | weak generator continuity and positive finite-time Euler evolution | [21-log-thorin-euler-evolution.md](ledger/21-log-thorin-euler-evolution.md) |
+| WIP-6.20 | identification of the specific weak evolution with actual powers | [22-power-flow-identification.md](ledger/22-power-flow-identification.md) |
+| WIP-6.21 | full-conjecture assembly and end-to-end audit | [23-power-theorem-assembly-audit.md](ledger/23-power-theorem-assembly-audit.md) |
+| WIP-6.22 | direct resolvent cancellation with absolute posterior control | [24-direct-log-generator-resolvent.md](ledger/24-direct-log-generator-resolvent.md) |
+| WIP-6.23 | full-quantifier mathematical completion audit | [25-mathematical-completion-audit.md](ledger/25-mathematical-completion-audit.md) |
 
 The [source map](ledger/references.md) and [historical pass-20 checkpoint](ledger/checkpoints/2026-09-05-pass-20.md) are stored separately. `ResearchStatus.md` and `CurrentGoal.md` remain authoritative for current status and execution order.
 
 ## Current result index
+
+Historical route numbers in filenames and WIP IDs are not current priority
+numbers. WIP-6.x and WIP-7.x are cross-route infrastructure, not renamings
+of the historical routes. The independent phase proof now covers the
+square of every finite gamma convolution of total shape at most two,
+without a support-size restriction. The continuous-power route has a
+positive finite-time construction and an identification proof; their
+full-conjecture assembly has passed its final internal mathematical audit.
+See [WIP-6.21](ledger/23-power-theorem-assembly-audit.md#wip-6-21),
+[WIP-6.23](ledger/25-mathematical-completion-audit.md#wip-6-23) and
+[BigPicture](BigPicture.md) for the proof and exact limits of that status.
 
 | ID | Result | Status |
 |---|---|---|
@@ -153,11 +196,58 @@ The [source map](ledger/references.md) and [historical pass-20 checkpoint](ledge
 | [WIP-5.37](ledger/12-route5-three-rate-reductions-and-anchors.md#wip-5-37) | unrestricted three-rate total-shape-two theorem | removed the coordinatewise shape restriction using a repaired right-cut identity, Hadamard finite parts, and reciprocal Dirichlet duality; identified the endpoint or knot Thorin atom |
 | [WIP-5.38](ledger/13-route5-three-rate-fractional-abel.md#wip-5-38) | three-rate Abel-knot analysis below total shape two | proved that every endpoint and middle-knot phase jump has the correct sign and identified all possible Thorin atoms; when the middle shape is below \(k\), proved strict Abel-ratio decrease in punctured knot neighborhoods through a Gauss-Wronskian formula |
 | [WIP-5.39](ledger/13-route5-three-rate-fractional-abel.md#wip-5-39) | full-interval Abel monotonicity with endpoint shapes at most one | proved the complete three-rate square theorem for \(1<B<2\) whenever the shapes carried by the two extreme scales are at most one; the rates are arbitrary, and a possible shape above one may occur at the middle scale |
+| [WIP-5.40](ledger/14-averaged-phase-compensation.md#wip-5-40) | support-count-aware downward shape propagation | proved reduction; adding a vanishing-scale gamma can add a support point |
+| [WIP-5.41](ledger/14-averaged-phase-compensation.md#wip-5-41) | reciprocal duality for the auxiliary gamma--Dirichlet square | proved equivalence for the auxiliary factors; no cancellation theorem for the original square |
+| [WIP-5.42](ledger/14-averaged-phase-compensation.md#wip-5-42) | heavy-endpoint derivative asymptotic and posterior compensation target | the old pointwise invariant is rigorously false; the actual target is now proved in WIP-5.44 |
+| [WIP-5.43](ledger/14-averaged-phase-compensation.md#wip-5-43) | positive score spectrum, Bernstein structure and failure of generic posterior order | proved; smooth Bernstein-test expectations move in the wrong direction, without refuting target-specific compensation |
+| [WIP-5.44](ledger/14-averaged-phase-compensation.md#wip-5-44) | positive complementary beta solution and full heavy-endpoint compensation | proved the auxiliary three-rate theorem for 1 < B < 2 and completed the original square theorem for at most three rates and 0 < B <= 2 |
+| [WIP-5.45](ledger/18-four-rate-balanced-phase.md#wip-5-45) | exterior-cut positivity and the balanced four-rate square | proved auxiliary and original GGC membership at total shape two when the first two and last two ordered scales each carry total shape one |
+| [WIP-5.46](ledger/18-four-rate-balanced-phase.md#wip-5-46) | unique-minimum gate for the unbalanced four-rate middle cut | proved exact auxiliary-GGC equivalence; its sign is now strictly positive by WIP-5.49 |
+| [WIP-5.47](ledger/18-four-rate-balanced-phase.md#wip-5-47) | four-half-gamma residual fails HM1 despite auxiliary GGC membership | proved obstruction to a stronger sufficient route; the known density input is separately sourced |
+| [WIP-5.48](ledger/18-four-rate-balanced-phase.md#wip-5-48) | shape-open stability around every balanced four-rate vector | proved auxiliary and original-square GGC in a relative shape neighborhood for each fixed ordered scale configuration; no uniform radius or all-shape theorem |
+| [WIP-5.49](ledger/18-four-rate-balanced-phase.md#wip-5-49) | conditional-beta Cauchy primitive and separated posterior log derivatives | proved strict positivity on every open cut for arbitrary finite support at total shape two; closes the old four-rate minimum |
+| [WIP-5.50](ledger/18-four-rate-balanced-phase.md#wip-5-50) | every finite gamma-convolution square of total shape at most two | proved with arbitrary support and shapes; auxiliary GGC at B = 2, split/separate weak limits and downward padding |
+| [WIP-6.1](ledger/15-global-criteria-and-power-flow.md#wip-6-1) | global mixing log-concavity fails for q > 1 and B/q <= 1 | proved obstruction to B92-C2, including equal rates; not a GGC counterexample |
+| [WIP-6.2](ledger/15-global-criteria-and-power-flow.md#wip-6-2) | exact fractional gamma-peeling operator | proved identity with normalization; matched GGC-preservation remains conjectural |
+| [WIP-6.3](ledger/15-global-criteria-and-power-flow.md#wip-6-3) | positive-argument tilted-cumulant Hausdorff and Loewner criteria | proved applications of sourced recognition theorems; no independent explicit all-order certificate here; target signs follow from the full theorem audited in WIP-6.23 |
+| [WIP-6.4](ledger/15-global-criteria-and-power-flow.md#wip-6-4) | continuous power-flow identity and conditional Thorin mass | proved identities; no positive evolution theorem is claimed |
+| [WIP-6.5](ledger/15-global-criteria-and-power-flow.md#wip-6-5) | law-dependent local-to-global power continuation | proved conditional lemma requiring local closure for every GGC law |
+| [WIP-6.6](ledger/16-power-flow-loewner-tangent.md#wip-6-6) | explicit Dirichlet power tangent and positive off-atom boundary jump | proved, including interlacing and singular-pole compensation requirements |
+| [WIP-6.7](ledger/16-power-flow-loewner-tangent.md#wip-6-7) | strict tangent positivity on every finite Loewner nullspace | proved a right neighborhood for each fixed matrix; no common neighborhood over all matrices |
+| [WIP-6.8](ledger/16-power-flow-loewner-tangent.md#wip-6-8) | conditional Thorin support of every strictly powered finite-gamma law reaches zero | proved from the absence of positive exponential moments; no derivative/inversion interchange claimed |
+| [WIP-6.9](ledger/16-power-flow-loewner-tangent.md#wip-6-9) | compensated positive-jump form of the normalized tangent | proved finite-atom weak functional and positive minimum property; not an evolution-existence theorem |
+| [WIP-6.10](ledger/16-power-flow-loewner-tangent.md#wip-6-10) | explicit positive Thorin curve realizing the compensated weak functional and matching the power-transform tangent | proved first-order realization; this curve is not the actual power flow |
+| [WIP-6.11](ledger/19-finite-thorin-compensated-power-tangent.md#wip-6-11) | measurable Dirichlet-process phase and the finite-Thorin power tangent | proved for admissible finite Thorin measures, including non-atomic bases, using a logarithmic representation anchored at one |
+| [WIP-6.12](ledger/19-finite-thorin-compensated-power-tangent.md#wip-6-12) | compensated weak operator on compact rate support | proved absolute convergence on bounded twice-differentiable tests, resolvent action and the positive minimum property; no evolution theorem |
+| [WIP-6.13](ledger/19-finite-thorin-compensated-power-tangent.md#wip-6-13) | safe test domain for finite Thorin measures with unrestricted rate support | proved endpoint bounds and absolute convergence on constants, compactly supported smooth tests and fixed-order resolvents; iteration is supplied separately by WIP-6.19, with the full assembly audited in WIP-6.23 |
+| [WIP-6.14](ledger/19-finite-thorin-compensated-power-tangent.md#wip-6-14) | conditional mass scaling for every zero-drift finite-Thorin input | proved that a GGC power must have zero drift and Thorin mass B/q; does not establish power membership |
+| [WIP-6.15](ledger/19-finite-thorin-compensated-power-tangent.md#wip-6-15) | finite-mass law-dependent local closure is equivalent to the full conjecture | proved continuation reduction; its local hypothesis now follows from the separate full theorem audited in WIP-6.23 |
+| [WIP-6.16](ledger/20-finite-thorin-positive-steps.md#wip-6-16) | Palm-disintegrated logarithmic rate generator | proved measurable nonnegative jumps and exact current-law resolvent tangent, with the original mass parameter retained |
+| [WIP-6.17](ledger/20-finite-thorin-positive-steps.md#wip-6-17) | universal jump second moment and linear log-rate drift | proved support-independent bounds and a quadratic Lyapunov estimate |
+| [WIP-6.18](ledger/21-log-thorin-euler-evolution.md#wip-6-18) | weak continuity of the nonlinear averaged generator | proved by coupled Dirichlet probabilities and weak-star phase convergence; no rate-moment hypothesis |
+| [WIP-6.19](ledger/21-log-thorin-euler-evolution.md#wip-6-19) | positive Euler evolution on every finite time interval | proved probability-valued weak solutions with uniform second log-rate moments and vanishing cumulative discretization error |
+| [WIP-6.20](ledger/22-power-flow-identification.md#wip-6-20) | the specific weak evolution is the actual power flow | proved conditional identification, including zero-Laplace normalization and dynamic transport uniqueness; existence is separately supplied by WIP-6.19 |
+| [WIP-6.21](ledger/23-power-theorem-assembly-audit.md#wip-6-21) | full GGC power-theorem assembly | proved in project; completed internal mathematical audit and all-quantifier evidence in WIP-6.23 |
+| [WIP-6.22](ledger/24-direct-log-generator-resolvent.md#wip-6-22) | direct action of the log-rate generator on resolvents | proved alternative cancellation identity, including absolute posterior drift and signed Palm bounds; does not enlarge the existing identity's scope |
+| [WIP-6.23](ledger/25-mathematical-completion-audit.md#wip-6-23) | mathematical completion audit of the original full target | internal mathematical audit complete; full conclusion proved in project, not a claim of external review or a second independent theorem |
+| [WIP-7.1](ledger/17-exponential-peeling-closure.md#wip-7-1) | exponential peeling of arbitrary GGC inputs | proved from Bondesson's widened multiplication theorem, with exact normalization |
+| [WIP-7.2](ledger/17-exponential-peeling-closure.md#wip-7-2) | arbitrary positive-integer peeling orders | proved by rate-shift iteration and weak limits; no fractional interpolation |
+| [WIP-7.3](ledger/17-exponential-peeling-closure.md#wip-7-3) | integer prefixes preserve any uniform-in-rates residual power theorem | proved conditional bootstrap, including coincident-rate limits |
+| [WIP-7.4](ledger/17-exponential-peeling-closure.md#wip-7-4) | new original-square families obtained by integer prefixes | proved for a small-total-shape tail, an arbitrary two-rate tail, or an at-most-three-rate tail of total shape at most two |
+| [WIP-7.5](ledger/17-exponential-peeling-closure.md#wip-7-5) | small-atom-shape reduction and the ordered-peeling limitation | proved; small individual shapes suffice only with arbitrary support size |
+| [WIP-7.6](ledger/17-exponential-peeling-closure.md#wip-7-6) | HCM-density output fails for matched equal-shape two-gamma powers, 1 <= q < 2 | proved complex-zero obstruction to a stronger closure invariant, not a GGC counterexample |
 
-At this point there is **no proof and no counterexample** to (C1).
+At this point (C1) is **proved in project**, with its complete internal
+mathematical audit recorded in WIP-6.23. The subsequent TeX source handoff
+and Lean engineering blueprint are separate deliverables; compilation,
+external publication and Lean verification are not included in this status.
 
-## Deferred Routes 6--7
+## Current execution entry points
 
-Routes 6--7 are documented in [CurrentGoal.md](CurrentGoal.md) but are not
-part of the present active goal. They may be activated only under their
-recorded activation conditions.
+Use [CurrentGoal.md](CurrentGoal.md) for the ranked programs and exact
+historical programs and any future follow-up obligations. P5 has completed
+the full mathematical target. P1 supplies an independent support-wide
+square theorem; the other routes remain optional sources of representations,
+simplification or repair if a specific gap is later found. They are not
+unfinished requirements of the completed proof. Complete proofs stay in
+the ledger rather than in this index.

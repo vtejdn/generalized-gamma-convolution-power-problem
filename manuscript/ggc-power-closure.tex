@@ -1,0 +1,145 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\GGC}{\operatorname{GGC}}
+\newcommand{\DP}{\operatorname{DP}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\dd}{\mathop{}\!\mathrm d}
+\newcommand{\Ptwo}{\mathcal P_2(\R)}
+
+\title{A log-rate evolution approach to the GGC power problem}
+\author{Min Wang\thanks{School of Mathematics and Statistics, Wuhan University of Technology, Wuhan, 430063, China.
+Email: \texttt{minwangmath@whut.edu.cn}.}
+\and Sheng Yin\thanks{Harbin Institute of Technology, China.
+Email: \texttt{sheng.yin@hit.edu.cn}.}}
+\date{September 6, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+In this paper, we prove that, for every nonnegative random variable $X$ with a generalized gamma convolution (GGC) distribution and every real $q\ge1$, the distribution of $X^q$ is again a GGC.
+For this purpose, we construct a nonlinear evolution of the Thorin measure in logarithmic rate coordinates.
+Using a Dirichlet-process posterior, we obtain a nonnegative jump kernel with a uniform second-moment bound and a drift of at most linear growth.
+We construct a weak solution on each finite time interval by an explicit probability-preserving Euler scheme.
+We then identify the associated distributions with the powers $X^{e^t}$, $t\ge0$, by deriving a transport equation for their logarithmic values.
+Finally, we use approximation by finite gamma convolutions to extend the result to arbitrary GGC distributions, including those with drift or infinite Thorin mass.
+The research and manuscript preparation received substantial AI assistance, as disclosed at the end of the introduction.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+\label{sec:introduction}
+
+A generalized gamma convolution is a probability distribution on $[0,\infty)$ that is a weak limit of distributions of finite sums of independent gamma random variables; degenerate limits are included.
+We denote this class by $\GGC$.
+We recall its equivalent description by a drift and a Thorin measure in Section~\ref{sec:foundations}; see \citet[Section~3.1]{Bondesson1992}.
+
+Bondesson's power conjecture asks whether $\GGC$ is closed under deterministic powers of order at least one \citep[Conjecture 1, p.~1075]{Bondesson2015}.
+Here $X^q$ means the ordinary power of a nonnegative random variable.
+It is neither a convolution power of its distribution nor a product of independent copies of $X$.
+Throughout the paper, $\Law(X)$ denotes the probability distribution of a random variable $X$.
+
+Our main result is the following.
+
+\begin{theorem}[Power closure]
+\label{thm:main}
+Let $X$ be a nonnegative real-valued random variable with a generalized gamma convolution distribution.
+Then $X^q$ has a generalized gamma convolution distribution for every real $q\ge1$.
+\end{theorem}
+
+There is no restriction on the drift, the total Thorin mass, or the moments of $X$.
+In particular, the statement includes the constant zero.
+We first prove the result for finite gamma convolutions and then pass to weak limits.
+
+\paragraph{Notation.}
+For $\beta,b>0$, $\operatorname{Gamma}(\beta,b)$ denotes the gamma distribution with shape $\beta$ and rate $b$, having density
+\[
+ \frac{b^\beta}{\Gamma(\beta)}x^{\beta-1}e^{-bx},\qquad x>0,
+ \qquad
+ \Gamma(\beta)=\int_0^\infty x^{\beta-1}e^{-x}\,\dd x.
+\]
+We write $G_\beta$ for a random variable with distribution $\operatorname{Gamma}(\beta,1)$; thus $G_\beta/b$ has rate $b$.
+Superscripts distinguish independent copies when needed.
+The symbols $\E$, $\overset{\mathrm d}=$, and $\perp$ denote expectation, equality in distribution, and independence, respectively.
+
+For a measure $\nu$ and a nonnegative or integrable function $f$, write $\nu(f)=\int f\,\dd\nu$.
+Expressions such as $F(y^2)$ and $F(|y|)$ stand for $\int y^2F(\dd y)$ and $\int |y|F(\dd y)$.
+The point mass at $x$ is denoted by $\delta_x$, and $\mathbf1_A$ denotes the indicator of a set $A$.
+For a measurable map $T$, its pushforward is $T_*\nu(A)=\nu(T^{-1}(A))$.
+We use $L_\nu(s)=\int e^{-sx}\nu(\dd x)$ for the Laplace transform of a probability on $[0,\infty)$; this is distinct from the law notation $\Law(X)$.
+
+The space $\mathcal P(\R)$ consists of Borel probability measures on $\R$, and $\Ptwo$ is its subset with finite second moment.
+Weak, or narrow, convergence is denoted by $\Rightarrow$ and means convergence against bounded continuous functions.
+Curves with values in $\Ptwo$ will be continuous for the narrow topology unless otherwise stated.
+Unless specified otherwise, $L^p$ spaces on real intervals use Lebesgue measure.
+We write $C_c^k(D)$ for the $k$-times continuously differentiable real functions with compact support in the open set $D$, and $\|f\|_\infty$ for the supremum norm on the indicated domain.
+Finally, $r_+=r^+=\max\{r,0\}$, $r_-=r^-=\max\{-r,0\}$, and $\log_+x=\max\{\log x,0\}$ for $x>0$.
+
+\paragraph{Outline of the proof.}
+We first consider
+\begin{equation}
+ X=\sum_{i=1}^n b_i^{-1}G_{\beta_i}^{(i)},\qquad
+ n\ge1,\quad b_i,\beta_i>0,\qquad B_0=\sum_{i=1}^n\beta_i,
+ \label{eq:finite-input}
+\end{equation}
+where the gamma variables have unit rate and are independent.
+Neither the number of summands nor their shapes or rate contrasts are bounded.
+Put
+\[
+ F_0=B_0^{-1}\sum_{i=1}^n\beta_i\delta_{\log b_i},\qquad
+ B_t=B_0e^{-t}.
+\]
+The initial Thorin measure is $U_0=\sum_i\beta_i\delta_{b_i}$.
+We will construct a probability curve $F_t$ on $\R$ and set $U_t=B_t\exp_*F_t$.
+Thus $F_t$ describes normalized \emph{log rates}.
+It is different from the distribution of the logarithm of a random variable having Thorin measure $U_t$.
+
+We divide the proof into the following steps.
+\begin{enumerate}
+\item In Sections~\ref{sec:foundations} and~\ref{sec:tangent}, we use gamma--Dirichlet identities to compute the derivative, at $q=1$, of the logarithmic Laplace derivative of $X^q$.
+\item In Section~\ref{sec:generator}, we represent this derivative by an operator on log rates, with a nonnegative jump kernel and uniform drift and second-moment estimates.
+\item In Section~\ref{sec:evolution}, we prove continuity of the coefficients and construct a probability-valued weak evolution by an explicit Euler scheme.
+\item In Section~\ref{sec:identification}, we show that the GGC distributions associated with $U_t$ are exactly $\Law(X^{e^t})$.
+The essential step is a time-dependent identification argument: the logarithmic values satisfy a linear transport equation.
+\item Finally, in Section~\ref{sec:completion}, we take $t=\log q$ and use finite-gamma approximation and weak closure to prove Theorem~\ref{thm:main}.
+\end{enumerate}
+
+We recall the classical results, with their references, in Section~\ref{sec:foundations}.
+We prove the coefficient estimates, construct the Euler approximation, and identify its limit in the subsequent sections.
+Constants may change from line to line; their permitted parameter dependence is specified where they are used.
+
+\paragraph{Disclosure of AI assistance.}
+We used OpenAI's models 5.6 Sol and 6 Astra extensively in conducting this research and preparing the manuscript.
+Our use of these systems included literature searches and source checks, the organization of research notes, the comparison and revision of proof strategies, the development of mathematical constructions and intermediate arguments, computational exploration, and manuscript drafting.
+In particular, we drew on AI assistance in developing and internally checking the log-rate generator, the positive Euler evolution, and the identification argument.
+We disclose this use as substantive mathematical assistance and take full responsibility for the content of the manuscript.
+
+\input{sections/01-foundations}
+\input{sections/02-power-tangent}
+\input{sections/03-log-generator}
+\input{sections/04-evolution}
+\input{sections/05-identification}
+\input{sections/06-completion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
