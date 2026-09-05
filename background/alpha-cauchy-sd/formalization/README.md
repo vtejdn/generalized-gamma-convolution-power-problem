@@ -2,7 +2,9 @@
 
 > **Status:** reviewed engineering blueprint; no Lake project or Lean implementation exists yet.
 >
-> **Primary manuscript:** [`version-1/SD2.tex`](../version-1/SD2.tex).
+> **Primary manuscript:** [Jensen/Fourier manuscript](../manuscripts/jensen-fourier/alpha-cauchy-non-self-decomposability.tex).
+>
+> **Companion manuscript:** [Wang-oriented manuscript](../manuscripts/wang-oriented/SD.tex).
 >
 > **Supporting derivation:** [`notes/07-Jensen-obstruction-and-non-SD.md`](../notes/07-Jensen-obstruction-and-non-SD.md).
 >
@@ -619,14 +621,15 @@ This claim must be rechecked against the pinned mathlib revision in M0. In parti
 
 Repository sources:
 
-- [Current mathematical manuscript](../version-1/SD2.tex).
+- [Primary Jensen/Fourier manuscript](../manuscripts/jensen-fourier/alpha-cauchy-non-self-decomposability.tex).
+- [Wang-oriented working manuscript](../manuscripts/wang-oriented/SD.tex).
 - [Detailed Jensen-obstruction note](../notes/07-Jensen-obstruction-and-non-SD.md).
-- [Literature map and verification log](../literature/literature-audit-and-source-notes.md).
+- [Literature map and verification log](../literature/README.md).
 - [Wang ECP proof](../literature/ECP2604-002R1A0.pdf).
 - [Yano–Yano–Yor paper](<../literature/On the laws of first hitting times of points for one-dimensional symmetric stable Levy processes.pdf>).
 - [Jurek–Vervaat paper](<../literature/An integral representation for selfdecomposable banach space valued random variables.pdf>).
-- [Current manuscript bibliography](../version-1/ID.bib).
-- [Dossier bibliography](../version-0/references.bib).
+- [Jensen/Fourier manuscript bibliography](../manuscripts/jensen-fourier/references.bib).
+- [Wang-oriented manuscript bibliography](../manuscripts/wang-oriented/ID.bib).
 
 Principal references:
 

@@ -1,6 +1,6 @@
 # Lemma and conjecture ledger
 
-Labels `K` are known literature results.  Labels `N` are deductions made in this dossier from cited results.  Labels `C` are unresolved conjectures/questions.  This separation is intentional.
+Labels `K` record statements appearing in the literature, with their audit status stated explicitly; K1--K4 are accepted literature results, whereas K5 is a published claim that this project does not accept as proved.  Labels `N` are deductions made in this dossier from cited results.  Labels `C` are unresolved conjectures/questions.  This separation is intentional.
 
 ## Known literature
 
@@ -29,9 +29,9 @@ For \(a,b,s>0\), \((\Gamma_b/\Gamma_a)^s\) has an HCM density iff \(s\ge1\).
 - \(|C_2|\in SD\) (Diédhiou, 1998).
 - \(C_\alpha\in ID\iff1<\alpha\le2\) (Wang, current v3/ECP proof, 2026).
 
-### K5 — GGC power closure (Sjödin, 2026)
+### K5 — claimed GGC power closure (Sjödin, 2026; under audit)
 
-If \(X\in GGC\) and \(q>1\), then \(X^q\in GGC\).  This theorem does not cover \(0<q<1\).
+Sjödin (2026) claims that if \(X\in GGC\) and \(q>1\), then \(X^q\in GGC\).  The present project does **not** accept this claim as established: its audit finds that Lemma 2 is false as stated and that the subsequent \(\Delta<0\) substitution and parameter-dependent induction leave a proof gap.  Thus K5 records a claimed theorem under audit, not a theorem available for downstream deductions.  See the [current GGC status record](../../../ResearchStatus.md).
 
 ## New deductions
 
@@ -75,7 +75,7 @@ For \(\alpha>1\),
 (|C_\alpha|^\alpha)^{1/\alpha}=|C_\alpha|\notin GGC.
 \]
 
-This explains exactly why neither the classical beta-prime theorem nor Sjödin's \(q>1\) theorem resolves the SD problem.
+This explains exactly why neither the classical beta-prime theorem nor Sjödin's claimed \(q>1\) theorem resolves the SD problem.  The operation here has exponent \(1/\alpha<1\); moreover, the project audit found a proof gap in the claimed theorem, so it is neither accepted nor used here.  See the [current GGC status record](../../../ResearchStatus.md).
 
 ### N4 — Volterra characterization for the positive targets
 

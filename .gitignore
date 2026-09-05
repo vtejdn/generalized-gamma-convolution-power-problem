@@ -1,13 +1,10 @@
-# Ignore everything under version-GPT and version-Wang.
-/version-GPT/**
-/version-Wang/**
+# Python caches and bytecode.
+__pycache__/
+*.py[cod]
 
-# Keep directories traversable so TeX and BibTeX sources can be re-included.
-!/version-GPT/**/
-!/version-Wang/**/
-
-# Keep LaTeX sources and bibliography databases at any depth.
-!/version-GPT/**/*.tex
-!/version-GPT/**/*.bib
-!/version-Wang/**/*.tex
-!/version-Wang/**/*.bib
+# The archived SD manuscript directories keep source only.  Ignore TeX build
+# products while retaining LaTeX and BibTeX inputs at any depth.
+/background/alpha-cauchy-sd/manuscripts/**
+!/background/alpha-cauchy-sd/manuscripts/**/
+!/background/alpha-cauchy-sd/manuscripts/**/*.tex
+!/background/alpha-cauchy-sd/manuscripts/**/*.bib

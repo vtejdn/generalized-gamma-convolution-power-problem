@@ -141,5 +141,5 @@ This argument appears not to be stated in the cited sources for this parameter l
 
 1. Since \(1<\alpha<2\), \(|C_\alpha|\notin GGC\).  A proof of its SD property cannot be a proof that it remains GGC after the \(1/\alpha\)-root.
 2. For negative powers, \(p\ge\alpha\) is completely settled by HCM/GGC.  The genuine unknown zone is \(0<p<\alpha\), where neither HCM nor GGC can hold.
-3. Sjödin's \(q>1\) power theorem is consistent with, but cannot reverse, this classification.
+3. Sjödin's claimed \(q>1\) power theorem would not reverse this classification; in addition, the [current project audit](../../../ResearchStatus.md) finds a proof gap, so that claim is not used here.
 4. The beta-prime Thorin measure is still useful as input data, but there is no valid rule transporting it through a subunit power.

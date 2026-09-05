@@ -46,7 +46,7 @@ Thus \(k\) is completely monotone, hence decreasing, explaining \(GGC\subset SD\
 | convolution / independent sum | not a density-level closure used here | yes | yes | yes |
 | independent product | yes | yes | no general closure | no general closure |
 | independent quotient | yes | **do not assume in general** | no general closure | no general closure |
-| \(X\mapsto X^q,\ q\ge1\) | yes for \(q\ge1\) | yes: Sjödin (2026) for \(q>1\) | no general theorem needed/known here | no general theorem needed/known here |
+| \(X\mapsto X^q,\ q\ge1\) | yes for \(q\ge1\) | **open in general**; Bondesson's Conjecture 1 | no general theorem needed/known here | no general theorem needed/known here |
 | \(X\mapsto X^q,\ 0<q<1\) | no | no | no | no |
 | \(X\mapsto X^q,\ q\le-1\) | yes if \(X\) has HCM density | not for arbitrary GGC | no general closure | no general closure |
 
@@ -56,13 +56,18 @@ The HCM power statement is
 X\text{ HCM}\quad\Longrightarrow\quad X^q\text{ HCM for }|q|\ge1.
 \]
 
-Sjödin's 2026 theorem is
+Sjödin's 2026 article claims
 
 \[
 X\in GGC, q>1\quad\Longrightarrow\quad X^q\in GGC.
 \]
 
-It cannot be run backwards: from \(Y=X^q\in GGC\) one cannot infer \(X=Y^{1/q}\in GGC\).  The present problem supplies an explicit counterexample:
+The present project does not accept this as proved: its Lemma 2 fails under
+a bounded-support specialization, and the induction has a
+parameter-dependence gap; see [ResearchStatus.md](../ResearchStatus.md).  The
+desired implication also cannot be run backwards: from \(Y=X^q\in GGC\)
+one cannot infer \(X=Y^{1/q}\in GGC\).  The present problem supplies an
+explicit counterexample:
 
 \[
 |C_\alpha|^\alpha\in HCM\subset GGC,
@@ -86,5 +91,6 @@ Subunit powers fail even for very classical laws: if \(G\) is gamma and \(0<q<1\
 - Bondesson, *Generalized Gamma Convolutions and Related Classes of Distributions and Densities*, Theorems 3.1.1, 4.1.1, 4.1.4, 5.2.1, 5.4.1.
 - Bosch (2015), introduction and Proposition 2.1: HCM product/quotient and \(|q|\ge1\) power closure.
 - Bondesson (2015), DOI 10.1007/s10959-013-0523-y: independent-product closure of GGC.
-- Sjödin (2026), Theorem 1: \(q>1\) power closure of GGC.
+- Sjödin (2026), claimed Theorem 1; not accepted as established after the
+  audit in [ResearchStatus.md](../ResearchStatus.md).
 - Yano–Yano–Yor (2009), Section 2.2: \(GGC\subset SD\subset ID\) and the Thorin/Lévy representation.

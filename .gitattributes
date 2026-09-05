@@ -1,0 +1,3 @@
+# PDF references are opaque binary artifacts.  This prevents line-ending
+# conversion and suppresses misleading text diffs for PDFs without early NULs.
+*.pdf binary

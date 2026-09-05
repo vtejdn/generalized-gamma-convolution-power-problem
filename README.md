@@ -1,77 +1,139 @@
-# \(\alpha\)-Cauchy self-decomposability research dossier
+# Generalized Gamma Convolution Power Problem
 
-Literature cutoff: **2026-08-27**.  The attached ECP page proof has also been checked against Min Wang's current arXiv version (v3, 2026-04-15).
+Last structural update: **2026-09-05**.
 
-## New result obtained in this dossier
-
-The published-literature status found in the search is still “open,” but the calculation in `notes/07-Jensen-obstruction-and-non-SD.md` gives a new analytic argument that
-
-\[
-C_\alpha\notin SD\quad(1<\alpha<2),
-\qquad
-C_2\in SD.
-\]
-
-Equivalently, within \(1<\alpha\le2\), the proposed conclusion is \(C_\alpha\in SD\iff\alpha=2\).  This is explicitly recorded as a new, not-yet-peer-reviewed deduction rather than attributed to Wang or Yano--Yano--Yor.
-
-## Main status
-
-Put \(\gamma=1/\alpha\in(1/2,1)\).  For \(1<\alpha<2\), the reliable current record is:
-
-| Random variable | ID | SD | GGC / HCM |
-|---|---:|---:|---:|
-| \(C_\alpha\) | yes (Wang, 2026) | literature: open; **new dossier proof: no** | not applicable as a positive-law class |
-| \(|C_\alpha|\) | yes (Bondesson, 1987) | **open** | **not GGC; not HCM** |
-| \(|C_\alpha|^{-p},\ p\geq\alpha\) | yes | yes | HCM and GGC |
-| \(|C_\alpha|^{-p},\ 0<p<\alpha\) | **open on the reliable current record** | **open** | **not GGC; not HCM** |
-
-The endpoint \(\alpha=2\) is exceptional: \(C_2\) is stable and SD, and \(|C_2|\) is SD (Diédhiou, 1998), although the half-Cauchy law is not GGC.
-
-The structural reduction is
+This repository studies Bondesson's power conjecture for positive
+generalized gamma convolutions:
 
 \[
-|C_\alpha|=(B'_{\gamma,1-\gamma})^\gamma,
-\qquad
-|C_\alpha|^{-p}=(B'_{1-\gamma,\gamma})^{p/\alpha},
+\boxed{
+X\in GGC,\qquad q\ge 1
+\quad\stackrel{?}{\Longrightarrow}\quad
+X^q\in GGC.}
 \]
 
-where \(B'_{a,b}=\Gamma_a/\Gamma_b\) is beta-prime.  Thus the unresolved part is a **subunit power of a beta-prime law**, outside both HCM and GGC.
+Here \(X^q\) is an ordinary deterministic power. It is neither a
+convolution power nor a product of independent copies. The case \(q=1\)
+is trivial; the research problem is \(q>1\).
 
-## Repository structure
+The full conjecture is **not resolved in this repository**. Bondesson
+(2015) states it as Conjecture 1. Sjödin (2026) claims a proof, but our
+audit finds that the proposed induction uses a false lemma, so that article
+is not treated here as establishing the conjecture. The project instead
+records independent partial theorems, exact reductions, failed proof
+mechanisms, and seven ranked routes toward a proof or counterexample.
 
-### Manuscript
+- [ResearchStatus.md](ResearchStatus.md) is the detailed and current
+  mathematical status record.
+- [CurrentGoal.md](CurrentGoal.md) states all seven candidate routes; Routes
+  1--5 are the current active goal and Routes 6--7 are deferred.
+- [WIP.md](WIP.md) is the equation-level proof ledger.
 
-- [Tex/alpha-cauchy-non-self-decomposability.tex](Tex/alpha-cauchy-non-self-decomposability.tex): paper-style proof draft.
-- [Tex/references.bib](Tex/references.bib): BibTeX database used by the manuscript.
+## Scope
 
-The `Tex/` directory may also contain local compilation products. The repository
-`.gitignore` keeps `.tex` and `.bib` sources while ignoring generated PDF,
-SyncTeX, latexmk, BibTeX, index, glossary, and auxiliary files.
+The earlier \(\alpha\)-Cauchy self-decomposability investigation is retained
+under [background/alpha-cauchy-sd/](background/alpha-cauchy-sd/) as a
+completed case study and as provenance for the beta-prime power viewpoint.
+It is **background for the GGC project, not a parallel active problem**.
 
-### Primary literature
+For \(\gamma=1/\alpha\), the identity
 
-The [literature/](literature/) directory contains the literature audit and local source PDFs:
+\[
+|C_\alpha|^\alpha
+\overset d=
+\frac{\Gamma_\gamma}{\Gamma_{1-\gamma}}
+\]
 
-- [literature-audit-and-source-notes.md](literature/literature-audit-and-source-notes.md): literature map, version audit, source verification, and search record.
+was the original bridge to power-closure questions. Its fractional-root
+problem has exponent \(1/\alpha<1\), whereas Bondesson's conjecture concerns
+arbitrary positive GGC laws and powers \(q\ge1\); the two questions must not
+be conflated.
 
-- Min Wang, *Infinite divisibility of alpha-Cauchy distributions*
-  (`ECP2604-002R1A0.pdf`).
-- Yano--Yano--Yor, *On the laws of first hitting times of points for
-  one-dimensional symmetric stable Levy processes*.
-- Jurek--Vervaat, *An integral representation for selfdecomposable Banach-space
-  valued random variables*.
+## Research principles
 
-These PDFs are research sources, not TeX build products, and are therefore not
-covered by the TeX-output ignore rules.
+### 1. Every assertion has a provenance
 
-### Research notes
+Research notes and theorem ledgers use the following labels.
 
-- [notes/01-status-and-version-audit.md](notes/01-status-and-version-audit.md): precise current status and Wang v1/v2/v3 audit.
-- [notes/02-classes-and-power-closure.md](notes/02-classes-and-power-closure.md): HCM/GGC/SD/ID implications and power closure.
-- [notes/03-beta-prime-reduction.md](notes/03-beta-prime-reduction.md): exact beta-prime/GB2 reduction and new GGC classification.
-- [notes/04-proof-program.md](notes/04-proof-program.md): prioritized analytic proof routes.
-- [notes/05-lemmas-and-conjectures.md](notes/05-lemmas-and-conjectures.md): known results, new deductions, and conjectures kept separate.
-- [notes/06-C-alpha-SD-reduction.md](notes/06-C-alpha-SD-reduction.md): exact background-driving/positive-definiteness reduction for the symmetric problem.
-- [notes/07-Jensen-obstruction-and-non-SD.md](notes/07-Jensen-obstruction-and-non-SD.md): new Jensen/Fourier proof that the symmetric law is not SD for \(1<\alpha<2\), beginning with \(\alpha=3/2\).
+- **[LITERATURE]**: stated in an identified external source.
+- **[AUDIT]**: obtained by checking a source, including a gap, missing
+  hypothesis, or repair.
+- **[DERIVED]**: a new deduction proved in this repository.
+- **[CONJECTURE]**: unresolved, whether proposed here or in the literature.
+- **[HEURISTIC]**: motivation, numerical evidence, or a tentative route;
+  never a proof.
 
-No numerical experiment is used as evidence in these notes.
+"Proved in this repository" and "published, peer-reviewed theorem" are
+different statuses. A later paper that claims a theorem is not promoted to
+an established literature result until its proof and hypotheses have been
+audited.
+
+### 2. References are exact
+
+Every external mathematical input should record its author, title, year,
+theorem/proposition/remark number, page when useful, stable bibliographic
+identifier, and the precise local version checked. Only hypotheses actually
+present in that version may be used.
+
+### 3. Objects and operations remain distinct
+
+- An independent product \(XY\) is not the deterministic power \(X^2\).
+- A convolution power of a law is not the random-variable power \(X^q\).
+- An HCM density and an HCM Laplace transform play different roles. A
+  normalized HCM Laplace transform characterizes a GGC law; an HCM density
+  is a stronger sufficient property.
+- The positive-law implication chain
+  \(HCM_{\rm dens}\Rightarrow GGC\Rightarrow SD\Rightarrow ID\) is one-way
+  unless a converse is separately proved.
+- Necessary and sufficient conditions, and density-side and transform-side
+  criteria, are never silently interchanged.
+
+### 4. Proof obligations are explicit
+
+Numerical experiments may locate identities, counterexamples, or parameter
+regimes but do not prove them. Uses of Fubini/Tonelli, differentiation under
+an integral, analytic continuation, weak closure, strict Jensen, boundary
+values, and inversion must include their hypotheses. Endpoint cases and
+the exact parameter range belong to each theorem statement.
+
+Every reduction is labelled as an equivalence, necessary condition, or
+sufficient condition. Failed implications and failed routes remain in the
+audit trail so that they cannot be silently reused.
+
+### 5. Lemma and conjecture ledger
+
+Each independently checkable step should have:
+
+1. a stable identifier and exact statement;
+2. a provenance label and reference;
+3. explicit dependencies;
+4. a proof or a precise proof gap; and
+5. one status: proved, externally established, under audit, conjectural, or
+   refuted.
+
+### 6. Reproducibility
+
+Exact or numerical calculations state the software, precision, and identity
+being tested. Exact-arithmetic scripts are preferred for certificates.
+Generated TeX products are ignored; only manuscript and bibliography sources
+are versioned. The archived Lean plan is an independent audit layer: no
+`sorry`, added axiom, or untracked normalization repair counts as completion.
+
+## Repository map
+
+- [ResearchStatus.md](ResearchStatus.md): reliable baseline, 2026 claim
+  audit, proved parameter slices, open gaps, and the central theorem ledger.
+- [CurrentGoal.md](CurrentGoal.md): ranked proof paths and their execution
+  blueprints.
+- [WIP.md](WIP.md): live mathematical derivations and obstruction ledger.
+- [computations/](computations/): exact-arithmetic and symbolic verification
+  scripts cited by the WIP.
+- [notes/](notes/): GGC-specific structural and source audits.
+- [literature/](literature/): primary GGC and general analytic references,
+  with a source ledger in [literature/README.md](literature/README.md).
+- [background/alpha-cauchy-sd/](background/alpha-cauchy-sd/): completed
+  \(\alpha\)-Cauchy SD case study, including notes, manuscripts,
+  formalization plan, and problem-specific literature.
+
+When an older note conflicts with [ResearchStatus.md](ResearchStatus.md), the
+status record governs and the older statement must be re-audited before use.
