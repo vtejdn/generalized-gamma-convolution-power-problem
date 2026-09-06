@@ -1,10 +1,11 @@
 ---
 title: "Rocha-Arteaga--Sato (2019): ID/SD/L_m, OU representations, selfsimilarity, and subordination"
-source: "../literature/ArteagaSato2019.pdf"
+source: "../literature/Rocha-Arteaga-Sato-2019-ID-SD-Levy-processes.pdf"
 source_type: "primary source; revised research monograph"
 status: "audited"
 last_verified: "2026-09-04"
-scope: "book structure, theorem interfaces, proof mechanisms, errata, and explicitly labelled alpha-Cauchy deductions"
+scope: "general ID/SD and Levy-process infrastructure, source audit, positive-law criterion, and limits of applicability to GGC powers"
+migrated: "2026-09-06; original source-audit date unchanged"
 topics:
   - infinitely divisible distributions
   - self-decomposable distributions
@@ -15,18 +16,26 @@ topics:
   - selfsimilar additive processes
   - multivariate subordination
   - stable distributions
-  - alpha-Cauchy distributions
+  - GGC boundary and stochastic-integral context
 ---
 
 # Rocha-Arteaga--Sato (2019): LLM-oriented mathematical audit
 
-Primary source: [ArteagaSato2019.pdf](../literature/ArteagaSato2019.pdf).
+Primary source: [Rocha-Arteaga--Sato (2019)](../literature/Rocha-Arteaga-Sato-2019-ID-SD-Levy-processes.pdf).
 
 Bibliographic identity:
 
 > Alfonso Rocha-Arteaga and Ken-iti Sato, *Topics in Infinitely Divisible Distributions and Levy Processes*, Revised Edition, SpringerBriefs in Probability and Mathematical Statistics, Springer, Cham, 2019, viii+135 pp. DOI: 10.1007/978-3-030-22700-5. MR3971266.
 
 This source is a revised monograph, not a journal article. The first version grew out of Sato's 2001 visit to CIMAT, appeared through CIMAT in 2001 and in the Aportaciones Matematicas series in 2003, and was substantially reorganized and enlarged for the 2019 edition.
+
+The general source audit and positive-law criterion are retained from the
+SD dossier. The source-audit date above is not a fresh verification date.
+SD-specific applications and manuscripts remain in the
+[fixed-commit archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/notes/09-rocha-arteaga-sato-2019-id-sd-levy-processes.md).
+Sections and theorem-card IDs are retained where possible for traceability.
+This is supporting literature, not an additional axiom or dependency of the
+[log-rate proof](log-rate-power-proof-primary-interfaces.md).
 
 ## 0. Reading contract
 
@@ -36,10 +45,12 @@ Every substantive statement in this note carries, or inherits from its subsectio
 - **[BOOK-PROVED]**: a result for which the monograph supplies a proof or a proof reducing it to earlier results in the book.
 - **[EXTERNAL]**: quoted by the monograph from another source rather than proved there.
 - **[AUDIT]**: a correction, missing qualification, or proof-completeness observation found while checking the PDF.
-- **[DERIVED]**: a deduction made for the archived alpha-Cauchy case study; it is not a theorem stated in the monograph.
+- **[DERIVED]**: a retained project deduction from cited book results, not
+  a theorem stated by the book; migration does not establish novelty.
 - **[NOT-IMPLIED]**: an inference that the cited result does not justify.
 
-Notation follows the book except that the stable index is often written \(\beta\) below, reserving \(\alpha\) for the alpha-Cauchy parameter when both occur in the same paragraph.
+Notation follows the book; the stable index is often written \(\beta\)
+to distinguish it from other distributional parameters.
 
 ## 1. What the book actually supplies
 
@@ -47,11 +58,11 @@ The five chapters form one coherent chain.
 
 | Chapter | Mathematical object | Main output | Project relevance |
 |---|---|---|---|
-| 1 | \(ID\), \(L_0=SD\), \(L_m\), \(L_\infty\), stable laws | residual-factor, limit, and Levy-density characterizations | direct tests for \(C_\alpha\in SD\) |
+| 1 | \(ID\), \(L_0=SD\), \(L_m\), \(L_\infty\), stable laws | residual-factor, limit, and Levy-density characterizations | separates ID, SD and the stronger GGC criterion |
 | 2 | stochastic integrals and OU-type processes | bijection between \(ID_{\log}\) and \(SD\); BDLP representation | turns SD into a negative-definiteness test |
 | 3 | selfsimilar additive and stationary OU processes | process-level equivalents of SD | structural interpretation; uniqueness and reconstruction |
 | 4 | cone-valued time change | multivariate subordination and triplet formulas | infrastructure needed by Chapter 5 |
-| 5 | inheritance under subordination | \(L_m\) and strict stability pass from the subordinator | validates the hitting-time contrapositive used in [`../manuscripts/wang-oriented/SD.tex`](../manuscripts/wang-oriented/SD.tex) |
+| 5 | inheritance under subordination | \(L_m\) and strict stability pass from the subordinator | forward preservation and its precise hypothesis boundary |
 
 The logical spine is
 
@@ -112,7 +123,7 @@ contains no deterministic power-closure theorem.
 X\in SD\Longrightarrow X^p\in SD
 \]
 
-nor its converse follows from this book. In particular, the book cannot by itself transfer SD from \(|C_\alpha|^\alpha\) to \(|C_\alpha|\).
+nor its converse follows from this book. In particular, it supplies no automatic passage from a GGC law to an SD fractional root.
 
 ### 2.3 Process terminology
 
@@ -264,7 +275,8 @@ with \(k_+\) and \(k_-\) decreasing. For a symmetric law,
 \tag{AS19-1D-sym}
 \]
 
-This is the book's most direct interface with the alpha-Cauchy problem.
+This criterion concerns SD membership, not complete monotonicity of the
+radial density needed for positive GGC membership.
 
 ### 3.6 Higher Urbanik classes through finite differences
 
@@ -723,7 +735,7 @@ defines a \(K_1\)-parameter convolution semigroup. The book attributes the gener
 
 ## 7. Chapter 5: inheritance under subordination
 
-### 7.1 The theorem used by the alpha-Cauchy manuscript
+### 7.1 Inheritance under strictly stable subordination
 
 **[BOOK; proved through Theorem 5.9] Theorem 5.1.** Let \(X\) be a strictly \(\beta\)-stable Levy process, let \(Z\) be an independent subordinator, and let \(Y_t=X_{Z_t}\). Then:
 
@@ -817,124 +829,10 @@ the key scaling identity is
 a^C\psi_X(z)=\psi_X(a^{D^\top}z).
 \]
 
-Under these hypotheses, \(L_m(C)\) of the clock passes to \(L_m(D)\) of the output, with the corresponding self-decomposable and strictly stable clauses. This controlled block result is not a theorem for arbitrary cross-block dependence and was not needed for the one-dimensional alpha-Cauchy case study.
+Under these hypotheses, \(L_m(C)\) of the clock passes to \(L_m(D)\) of the output, with the corresponding self-decomposable and strictly stable clauses. This controlled block result is not a theorem for arbitrary cross-block dependence.
 
-## 8. Direct interfaces with the alpha-Cauchy project
-
-This section contains project deductions, not statements made by Rocha-Arteaga and Sato.
-
-### 8.1 Residual-characteristic-function test
-
-Let \(\varphi_\alpha(t)=\mathbb E e^{itC_\alpha}\). Assuming \(C_\alpha\in ID\), Definition 1.11 together with Proposition 1.13 gives the necessary and sufficient SD test
-
-\[
-R_{\alpha,b}(t)
-:=\frac{\varphi_\alpha(t)}{\varphi_\alpha(t/b)}
-\quad\text{is a characteristic function for every }b>1.
-\tag{AC-residual}
-\]
-
-**[DERIVED]** To disprove SD it suffices to find one \(b>1\) for which \(R_{\alpha,b}\) is not positive definite. Pointwise positivity or boundedness of the quotient is not sufficient.
-
-### 8.2 Levy-density route
-
-Suppose \(C_\alpha\) is symmetric and
-
-\[
-\varphi_\alpha(t)=e^{-\Psi_\alpha(t)}.
-\]
-
-Write \(A_\alpha\ge0\) for its Gaussian coefficient. If its Levy measure is
-
-\[
-\nu_\alpha(dx)=\frac{k_\alpha(|x|)}{|x|}\,dx,
-\]
-
-then Theorem 1.34 reduces the whole problem to
-
-\[
-C_\alpha\in SD
-\iff
-k_\alpha(x)\ge0\text{ and }k_\alpha'(x)\le0
-\quad(x>0),
-\]
-
-where the derivative formulation is used only when differentiability is known.
-
-**[DERIVED, under sine-inversion hypotheses]** In general,
-
-\[
-\Psi_\alpha'(t)
-=A_\alpha t+2\int_0^\infty k_\alpha(x)\sin(tx)\,dx,
-\]
-
-one can recover
-
-\[
-k_\alpha(x)=\frac1\pi\int_0^\infty
-\left(\Psi_\alpha'(t)-A_\alpha t\right)\sin(tx)\,dt.
-\tag{AC-k-inversion}
-\]
-
-For the alpha-Cauchy law one expects \(A_\alpha=0\), but that fact must be established from its Levy-Khintchine representation or asymptotics before dropping the Gaussian term. The inversion requires the usual integrability or regularization justification. A formal sine transform alone is not a proof that the resulting function is the Levy \(k\)-function.
-
-### 8.3 BDLP / negative-definiteness route
-
-Take the OU parameter \(c=1\). Assume that \(\varphi_\alpha(t)>0\), put \(\Psi_\alpha=-\log\varphi_\alpha\), assume \(\Psi_\alpha\) is differentiable on \((0,\infty)\), and define
-
-\[
-q_\alpha(t)=t\Psi_\alpha'(t),\qquad t>0.
-\]
-
-Assume further that \(q_\alpha\) has a continuous even extension with \(q_\alpha(0)=0\), and that
-
-\[
-\Psi_\alpha(t)
-=\int_0^{|t|}\frac{q_\alpha(u)}u\,du<\infty.
-\tag{AC-reconstruction}
-\]
-
-From Theorem 2.17,
-
-\[
-\Psi_\alpha(t)=
-\int_0^\infty q_\alpha(e^{-s}t)\,ds
-=\int_0^{|t|}\frac{q_\alpha(u)}u\,du
-\]
-
-for the positive-sign symmetric BDLP exponent \(q_\alpha\). Equivalently, the candidate BDLP has log characteristic function \(-q_\alpha\), and
-
-\[
-q_\alpha(t)=t\Psi_\alpha'(t)
-=-t\frac{\varphi_\alpha'(t)}{\varphi_\alpha(t)}.
-\tag{AC-BDLP}
-\]
-
-**[DERIVED, under the displayed hypotheses]**
-
-\[
-C_\alpha\in SD
-\iff
-q_\alpha\text{ is a continuous negative-definite function}.
-\]
-
-Equivalently, \(e^{-s q_\alpha(t)}\) must be a characteristic function for every \(s>0\). If \(q_\alpha\) is continuous negative definite, (AC-reconstruction) gives the absolute exponent integral in Proposition 2.28, hence the required \(ID_{\log}\) property of the BDLP law. This route often avoids explicit inversion of the Levy density.
-
-Now assume, for contradiction or verification, that \(q_\alpha\) is continuous negative definite. If the current closed form additionally shows that \(q_\alpha\) is bounded and
-
-\[
-q_\alpha(t)\longrightarrow \lambda_\alpha,
-\]
-
-with \(\lambda_\alpha>0\), then bounded negative definiteness makes the BDLP compound Poisson; the limit identifies its jump intensity as \(\lambda_\alpha\). Therefore the one-jump characteristic function must be
-
-\[
-J_\alpha(t)=1-\frac{q_\alpha(t)}{\lambda_\alpha}.
-\]
-
-Thus SD would require \(J_\alpha\) to be a characteristic function. This requirement must be proved or refuted analytically; numerical plots are only diagnostics.
-
-### 8.4 Positive-law Laplace route for \(|C_\alpha|\) and inverse powers
+<a id="as19-positive-sd"></a>
+## 8. Positive-law Laplace criterion
 
 Let \(X\ge0\) be ID with
 
@@ -990,60 +888,12 @@ k(x)=M((x,\infty))
 
 The last integral is already finite because it equals the given \(\psi(\lambda)\). By Tonelli, this also supplies the BDLP log-moment condition; in measure form it yields the required finiteness of \(\int_{(1,\infty)}\log y\,M(dy)\).
 
-This is the appropriate book-derived criterion for \(|C_\alpha|\) and \(|C_\alpha|^{-p}\). It does not convert the beta-prime fractional-power problem into an automatic closure statement.
-
-### 8.5 Hitting-time implication used in the manuscript
-
-For \(1<\alpha<2\) and \(a\ne0\), the project uses the Yano--Yano--Yor identity
-
-\[
-\widehat X_\alpha\!\left(T_{\{a\}}(X_\alpha)\right)
-\overset d=|a|C_\alpha,
-\tag{YYY}
-\]
-
-where \(\widehat X_\alpha\) is an independent symmetric strictly \(\alpha\)-stable process.
-
-**[DERIVED]** Suppose the positive hitting-time law
-
-\[
-T:=T_{\{a\}}(X_\alpha)
-\]
-
-were self-decomposable. Then it is ID and supported on \(\mathbb R_+\). First use the standard ID-law/Levy-process correspondence to construct a Levy process with time-one law \(T\); its positive support and Theorem 4.11 show that it is a subordinator \(Z\). On a product probability space choose \(Z\) independent of \(\widehat X_\alpha\). For every \(t>0\),
-
-\[
-\mathcal L(Z_t)=\mathcal L(T)^{t*}\in SD
-\]
-
-by Proposition 1.18(iv). Thus \(Z\) is an SD subordinator. Theorem 5.1 applied to an independent \(\widehat X_\alpha\) gives
-
-\[
-\widehat X_\alpha(Z_1)\in SD.
-\]
-
-Equation (YYY) and affine closure then imply \(C_\alpha\in SD\). Hence the valid contrapositive is
-
-\[
-C_\alpha\notin SD
-\Longrightarrow
-T_{\{a\}}(X_\alpha)\notin SD.
-\tag{AC-hit-contrapositive}
-\]
-
-This fills in the process-construction step implicit around lines 447-454 of [`../manuscripts/wang-oriented/SD.tex`](../manuscripts/wang-oriented/SD.tex).
-
-**[NOT-IMPLIED]** No converse is obtained: these results do not allow one to infer self-decomposability of the hitting time from self-decomposability of \(C_\alpha\).
-
-### 8.6 Endpoint \(\alpha=2\)
-
-At \(\alpha=2\), \(C_2\) is the standard Cauchy law, hence a stable law of index \(1\). Proposition 1.25 therefore gives
-
-\[
-C_2\in L_\infty\subset SD.
-\]
-
-The stable index here is \(1\), even though the alpha-Cauchy parameter equals \(2\).
+This is a positive-law SD criterion, not a GGC recognition theorem.
+For GGC one needs the stronger Stieltjes/Thorin structure; see
+[the class hierarchy](classes-and-power-closure.md) and
+[the Volterra/size-bias note](sato-id-volterra-size-bias-ggc.md).
+The former SD-specific residual, Fourier-inversion and hitting-time
+applications are not carried into the active GGC research program.
 
 ## 9. Theorem cards for LLM retrieval
 
@@ -1051,8 +901,8 @@ The stable index here is \(1\), even though the alpha-Cauchy parameter equals \(
 
 - **Input:** \(\mu\in ID(\mathbb R^d)\) and its Levy measure.
 - **Output:** \(\mu\in SD\) iff the polar radial function \(k_\xi(r)\) is nonnegative and decreasing.
-- **Best use here:** prove or disprove monotonicity of \(k_\alpha\).
-- **Does not provide:** a formula for \(k_\alpha\), ID of the candidate law, or nonlinear power closure.
+- **Best use here:** prove or disprove monotonicity of a candidate radial \(k\).
+- **Does not provide:** a formula for that \(k\), ID of the candidate law, or nonlinear power closure.
 - **Source status:** external theorem quoted from Sato [93], Theorem 15.10.
 
 ### AS19-T2.17: OU/BDLP bijection
@@ -1091,7 +941,7 @@ The stable index here is \(1\), even though the alpha-Cauchy parameter equals \(
 
 - **Input:** independent strictly stable subordinand and an \(L_m\) subordinator.
 - **Output:** subordinated process is in the same \(L_m\); stable indices multiply in the strictly stable case.
-- **Best use here:** implication from SD of a hitting-time clock to SD of \(C_\alpha\).
+- **Best use here:** forward SD inheritance under an independent strictly stable time change.
 - **Does not provide:** the converse, or a theorem for a general non-strictly stable subordinand.
 - **Source status:** Theorem 5.1 is deduced from the proved multivariate Theorem 5.9.
 
@@ -1272,15 +1122,10 @@ Rocha-Arteaga--Sato supplies the \(SD\Longrightarrow ID\) infrastructure, Levy c
 X\in GGC\Longrightarrow X^r\in SD\quad(0<r<1).
 \]
 
-For the beta-prime reduction
-
-\[
-|C_\alpha|^\alpha
-\overset d=
-\frac{\Gamma_{1/\alpha}}{\Gamma_{1-1/\alpha}},
-\]
-
-this means that the unresolved fractional root must be tested by a genuine SD criterion, such as (positive-SD), rather than by Proposition 1.18(iv).
+For the [beta-prime example](beta-prime-power-boundary.md), this means
+that subunit powers require a genuine SD criterion such as (positive-SD).
+Neither convolution-power closure nor an OU representation proves
+deterministic power closure.
 
 ## 13. Source map and exact references
 
@@ -1325,33 +1170,17 @@ An LLM using this note should enforce all of the following.
 9. Separate small and large clock jumps in integrability estimates.
 10. Treat numerical computation as a source of conjectures or finite witnesses, never as the proof of SD/ID.
 
-## 15. Project-facing conclusion
+## 15. Role in the GGC project
 
-For the archived alpha-Cauchy investigation, the monograph narrows the serious proof routes to three equivalent targets:
+Retain this source for the distinction between ID and SD, the radial
+Levy criterion, OU/BDLP representations, positive-law Bernstein tests,
+subordination hypotheses, and the audited small-/large-jump integrability
+repairs. Section 4.7 preserves the book's historical map of stochastic-
+integral representations of the Thorin class.
 
-\[
-\boxed{
-R_{\alpha,b}(t)=\frac{\varphi_\alpha(t)}{\varphi_\alpha(t/b)}
-\text{ is positive definite for every }b>1
-}
-\]
-
-or
-
-\[
-\boxed{
-\nu_\alpha(dx)=\frac{k_\alpha(|x|)}{|x|}\,dx
-\text{ with }k_\alpha\ge0\text{ decreasing}
-}
-\]
-
-or
-
-\[
-\boxed{
-q_\alpha(t)=-t\frac{\varphi_\alpha'(t)}{\varphi_\alpha(t)}
-\text{ is continuous negative definite}
-}.
-\]
-
-For \(|C_\alpha|\) and \(|C_\alpha|^{-p}\), the matching positive-law target is that \(\lambda\psi'(\lambda)\) be Bernstein. Chapter 5 additionally validates the one-way hitting-time argument, but supplies no converse and no deterministic fractional-power closure theorem.
+These are structural comparisons and source interfaces. They do not
+supply the project's nonlinear log-rate generator, its positive Euler
+evolution or actual-power identification, and migration does not add them
+to the [formalization axiom boundary](../formalization/axiom-boundary.md).
+The gamma-mixture and HCM/GGC results used in the power project remain in
+the dedicated Bondesson and James source notes.

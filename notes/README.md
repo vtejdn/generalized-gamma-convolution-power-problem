@@ -4,11 +4,21 @@ This directory is reserved for notes that directly serve the active
 generalized-gamma-convolution power problem.
 
 Route numbers in older notes refer to the historical classification.
-The current priority labels P1--P7 and their correspondence are in
-[CurrentGoal.md](../CurrentGoal.md); no legacy route is excluded by number.
+The P1--P7 priority labels and their correspondence are preserved in the
+[historical blueprint](../ledger/checkpoints/2026-09-06-route-blueprint.md).
+[CurrentGoal.md](../CurrentGoal.md) records current work; historical
+route numbers are neither current priorities nor exclusions.
 
 - [classes-and-power-closure.md](classes-and-power-closure.md) records the
   exact HCM/GGC/SD/ID implications and safe power-closure statements.
+- [beta-prime-power-boundary.md](beta-prime-power-boundary.md) retains
+  the gamma-ratio reduction, reciprocal duality, density formulas and
+  exact HCM/GGC threshold, with proofs and primary-source locators.
+  It explains the subunit-power boundary, not an additional active SD goal.
+- [rocha-arteaga-sato-2019-id-sd-levy-processes.md](rocha-arteaga-sato-2019-id-sd-levy-processes.md)
+  preserves the general ID/SD, OU/BDLP, subordination and Thorin-context
+  audit, including the positive-law criterion and integrability repairs;
+  the SD-specific applications remain historical.
 - [bondesson-2015-product-closure-audit.md](bondesson-2015-product-closure-audit.md)
   reconstructs Bondesson's 2015 article, separates its proved product theorem
   from Conjecture 1, and extracts reusable proof mechanisms.
@@ -34,7 +44,8 @@ The current priority labels P1--P7 and their correspondence are in
   positive-argument tilted-cumulant Hausdorff formulation.
 - [log-rate-power-proof-primary-interfaces.md](log-rate-power-proof-primary-interfaces.md)
   records direct primary-text reinspection of the James, SSV and Bondesson
-  interfaces used in the candidate full log-rate evolution proof.
+  interfaces used in the project's log-rate evolution argument; its
+  current verification status is recorded in ResearchStatus, not here.
 
 The 2026-09-05 reassessment refutes the proposed global mixing-density
 log-concavity target B92-C2 for q > 1 and B/q <= 1; it does not refute
@@ -45,5 +56,7 @@ The complete theorem and obstruction record is the
 [project ledger](../ledger/README.md), with stable identifiers collected in
 the [WIP master index](../WIP.md). The current status authority is
 [ResearchStatus.md](../ResearchStatus.md).
-Notes specific to the completed \(\alpha\)-Cauchy SD investigation are kept
-in the [background case study](../background/alpha-cauchy-sd/notes/).
+SD-specific notes are historical rather than active dependencies.
+The [migration record](../ledger/checkpoints/2026-09-06-background-migration.md)
+identifies migrated material, fixed-commit archives and the completed
+user-authorized directory removal.

@@ -1,52 +1,21 @@
 # Big picture: the GGC power problem
 
-Mathematical completion recorded: **2026-09-06**, through WIP-6.23.
-Status: **[PROVED IN PROJECT; INTERNAL MATHEMATICAL AUDIT COMPLETE].**
-The decisive record is the
-[completion audit](ledger/25-mathematical-completion-audit.md#wip-6-23).
+Strategic assessment recorded: **2026-09-06**.
 
-[WIP: concrete results and proofs](WIP.md) |
-[CurrentGoal: completed objective and retained routes](CurrentGoal.md) |
-[ResearchStatus: status authority](ResearchStatus.md)
+This file explains the mechanisms and methodological lessons, rather than
+maintaining another status ledger or execution queue.
+For the exact theorem assessment and verification boundary, use
+[ResearchStatus](ResearchStatus.md); for proofs, use [WIP](WIP.md);
+for authorized next work, use [CurrentGoal](CurrentGoal.md).
+Historical P1--P7 labels refer to the
+[archived route blueprint](ledger/checkpoints/2026-09-06-route-blueprint.md).
 
-## Purpose and reading order
-
-This file records the overall research assessment: established project
-results, methodological obstructions, the completed proof and the limits
-of its verification status. It does not replace the proofs
-or their external references. Read the judgment below for orientation,
-then follow [WIP](WIP.md) to the precise lemmas and proof obligations.
-Use [CurrentGoal](CurrentGoal.md) for the unchanged original objective,
-its completion record and the boundaries of any future work.
-
-## Current judgment
-
-**[PROVED IN PROJECT]** The written argument and its internal mathematical
-audit establish the original conjecture at its full quantifiers,
-\[
-X\in GGC,\qquad q\ge1\quad\Longrightarrow\quad X^q\in GGC,
-\]
-for every nonnegative GGC random variable and every finite real exponent
-of order at least one. No finite-support, drift-free, finite-Thorin-mass,
-shape, contrast or logarithmic-moment restriction survives on the final
-input. The mathematical project objective is complete.
-
-The proof is assembled in
-[WIP-6.21](ledger/23-power-theorem-assembly-audit.md#wip-6-21), with a
-[direct generator check](ledger/24-direct-log-generator-resolvent.md#wip-6-22)
-and the requirement-by-requirement
-[completion audit](ledger/25-mathematical-completion-audit.md#wip-6-23).
-Each required mathematical step has a written proof; manuscript
-preparation is not being used to defer a missing lemma. This status does
-not assert external peer review, publication, formal verification or
-literature priority. A concrete mathematical gap or counterargument must
-still be evaluated and may require correction of the status.
-
-The previous judgment, that finite-time positive evolution was a
-substantive missing mechanism, was appropriate before these results.
-It is preserved in the
-[pre-evolution assessment](ledger/checkpoints/2026-09-05-before-log-rate-evolution.md);
-it must not be used as the current status.
+The recorded internal completion rests on positive finite-time log-rate
+evolution and identification, not merely on an infinitesimal tangent.
+The earlier assessment that this finite-time mechanism was missing is
+preserved in the
+[pre-evolution checkpoint](ledger/checkpoints/2026-09-05-before-log-rate-evolution.md).
+It describes an earlier research stage, not a current proof gap.
 
 ## 1. Two advances, with different logical roles
 
@@ -127,51 +96,22 @@ curve. It does not infer it from the old one-step tangent curve, from
 finitely many Loewner minors, or from numerical evidence. It also does
 not use the independent-product theorem as a cancellation theorem.
 
-## 4. Completion, verification limits and future work
+## 4. Completion and independent follow-up
 
-The mathematical completion decision is based on the ledger proofs,
-not on whether a TeX manuscript exists or compiles. The
-[completion audit](ledger/25-mathematical-completion-audit.md#wip-6-23)
-checks the current-law tangent, measurable bounded phase, exact posterior
-operator, uniform log-rate bounds, nonlinear continuity, positive Euler
-limit, legitimate test extension, zero-Laplace endpoint and dynamic
-identification. It also checks the final passage to all GGC laws.
-The [source audit](notes/log-rate-power-proof-primary-interfaces.md)
-preserves the precise external hypotheses and source locations.
+The [completion audit](ledger/25-mathematical-completion-audit.md#wip-6-23)
+is the evidence for the recorded project-level completion.
+Mathematical mechanism, internal audit, manuscript preparation and
+external/formal validation are distinct deliverables; their current
+dispositions are maintained only in [ResearchStatus](ResearchStatus.md).
 
-Three distinct questions now have different answers:
-
-- **Mathematical mechanism:** the finite-time positive construction and
-  exact identification are supplied, not left as a future existence or
-  positivity assertion.
-- **Internal verification:** the complete mathematical chain has passed
-  the recorded audit, including its unbounded-domain and limiting
-  interfaces. No proof obligation has been assigned to future typesetting.
-- **External validation and communication:** independent human review,
-  publication and formal verification have not been claimed. They are
-  distinct possible future activities, not completed events and not
-  automatically authorized next tasks.
-
-The earlier distance assessment is superseded by this mathematical
-completion record. No success percentage or numerical probability is
-needed. Further explicit representations or independent proofs may be
-valuable, but are not necessary to complete the original objective.
-
-The user's instruction to defer TeX until mathematical completion was
-respected by freezing the existing partial drafts during the audit.
-A subsequent instruction on 2026-09-06 authorized completion of the
-[TeX source](manuscript/ggc-power-closure.tex), followed by a
-[Lean engineering blueprint](formalization/README.md). Those artifacts
-are now written; the latter distinguishes source-verified mathlib APIs,
-new infrastructure and explicitly permitted literature axioms. TeX was
-not compiled and no Lean proof has been implemented or verified.
-Publication, submission and remote synchronization remain separate actions.
+Explicit Thorin representations and independent proofs may still add
+structure. General noninteger peeling and Bondesson's integral
+Conjecture 2 are stronger or different questions, not automatic corollaries
+and not unfinished requirements of the recorded full power theorem.
 
 If a concrete counterargument identifies a failed interface, reopen that
-exact mathematical obligation and correct the status. P1's independent
-square theorem and the retained P2--P4/P6--P7 mechanisms remain available
-as research records, not as additional work required to declare this
-objective complete.
+exact obligation. The independent square proofs and retained routes are
+available for simplification or repair, not automatically resumed tasks.
 
 ## 5. What the previous obstructions still mean
 
@@ -194,25 +134,18 @@ the P5 proof does not repair or invoke that induction.
 
 ## 6. Revision policy
 
-[WIP](WIP.md) indexes exact proofs and their scope; this file records the
-strategic assessment; [CurrentGoal](CurrentGoal.md) records the completed
-objective and the scope of any subsequently authorized work.
-Update all three when a proof interface is verified or refuted.
+Record a proof or gap in the responsible ledger entry and update its WIP
+index row. Correct ResearchStatus if the mathematical assessment changes.
+Change this file only when the strategic interpretation changes, and
+CurrentGoal only when the authorized work changes; do not copy the full
+update into every entry point.
 
-Each material update should state the triggering lemma or counterexample,
-its exact quantifiers, its provenance (literature or project deduction),
-and which earlier assessment it changes. Preserve superseded assessments
-as explicitly historical checkpoints rather than silently rewriting them.
-Numerical experiments may guide investigation but never close a proof
-obligation. External inputs must remain traceable through the linked
-source notes and [reference map](ledger/references.md).
+A material change should name the triggering lemma or counterexample,
+its quantifiers and provenance, and the earlier judgment it supersedes.
+Preserve superseded assessments as explicitly historical checkpoints.
+Numerical experiments never close a proof obligation, and external inputs
+must remain traceable through the [reference map](ledger/references.md).
 
-The triggering audit WIP-6.23 changes the previous complete-candidate
-status to **proved in project**. If a gap is found, identify the exact
-implication that fails and reopen that obligation without weakening the
-original goal or conflating internal proof status with external review.
-
-**Bottom line:** the original full GGC power objective is mathematically
-complete within the project. Its proof and internal audit are recorded;
-external review, manuscript work and publication remain separate, and
-none is automatically started by this update.
+The WIP-6.23 assessment is internal project completion, not external
+validation. Any later correction must preserve the original target's
+quantifiers and state exactly which implication needs repair.

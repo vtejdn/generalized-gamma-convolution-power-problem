@@ -1,6 +1,7 @@
 # GGC literature map
 
-Last source-ledger update: **2026-09-05**.
+Last source-ledger update: **2026-09-06** (migration only; prior source-audit
+dates and verification limits are unchanged).
 
 This directory contains the primary sources and general analytic references
 used by the active GGC power project. A file's presence is not an endorsement
@@ -35,9 +36,18 @@ The four previously unaudited local books were screened or audited on
 - `Bertoin.pdf`: relevant Poisson-process infrastructure, but no direct
   Poisson--Kingman, Dirichlet-mean, or size-biased-residual theorem was found.
 
-The \(\alpha\)-Cauchy/SD-specific papers and their version-search log have
-been moved to the historical
-[background case study](../background/alpha-cauchy-sd/literature/README.md).
+Two shared sources have been copied, byte-for-byte, into this directory:
+
+- [Yano--Yano--Yor (2009)](Yano-Yano-Yor-2009-stable-hitting-times.pdf),
+  for the beta-prime identity in the power-boundary note;
+- [Rocha-Arteaga--Sato (2019)](Rocha-Arteaga-Sato-2019-ID-SD-Levy-processes.pdf),
+  for the general ID/SD and stochastic-integral source audit.
+
+Their exact bibliographic records and checksums are listed below.
+SD-specific literature and the old version-search log are preserved in the
+[fixed-commit archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/literature/README.md).
+The [migration record](../ledger/checkpoints/2026-09-06-background-migration.md)
+explains why the other SD sources are not inputs to the active GGC proof.
 
 ## Core GGC sources
 
@@ -189,3 +199,31 @@ PDF download is claimed.
   established solution.
 - Numerical or symbolic agreement is evidence for a formula only; all
   project theorems require an analytic or exact certificate.
+
+## Shared sources retained during the SD separation
+
+### Yano--Yano--Yor (2009)
+
+K. Yano, Y. Yano and M. Yor, “On the laws of first hitting times of points
+for one-dimensional symmetric stable Lévy processes,” *Séminaire de
+Probabilités XLII*, Lecture Notes in Mathematics **1979**, 187--227,
+DOI 10.1007/978-3-642-01763-6_8; arXiv:0811.2046.
+The gamma-ratio identity is in Section 2.2, equations (2.20)--(2.21).
+Local copy: [Yano-Yano-Yor-2009-stable-hitting-times.pdf](Yano-Yano-Yor-2009-stable-hitting-times.pdf).
+Use: [BP-1](../notes/beta-prime-power-boundary.md#bp-1), not the main log-rate theorem.
+
+SHA-256: `464E3DB2809C1E2AFF4A2F0B9544C9D99ADFB7DCCB2CFE26B163B9832E31D876`.
+
+### Rocha-Arteaga--Sato (2019)
+
+Alfonso Rocha-Arteaga and Ken-iti Sato, *Topics in Infinitely Divisible
+Distributions and Lévy Processes*, Revised Edition, SpringerBriefs in
+Probability and Mathematical Statistics, Springer, Cham, 2019, viii+135 pp.,
+DOI 10.1007/978-3-030-22700-5.
+Local copy: [Rocha-Arteaga-Sato-2019-ID-SD-Levy-processes.pdf](Rocha-Arteaga-Sato-2019-ID-SD-Levy-processes.pdf).
+Use: the [general source audit](../notes/rocha-arteaga-sato-2019-id-sd-levy-processes.md),
+especially Theorem 1.34, Theorem 2.17, the Chapter 2 Thorin-class notes,
+and the qualified subordination interfaces.
+Its source-audit date remains 2026-09-04; this is not a fresh PDF audit.
+
+SHA-256: `42100E1032F61547FB623F9771867E89AF582D2A48BF663E7D3BB9303C5FE7AA`.

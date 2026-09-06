@@ -4,7 +4,8 @@ source: "../literature/Bondesson2015.pdf"
 source_type: "primary article; Springer version of record"
 status: "audited"
 last_verified: "2026-09-04"
-scope: "article results for the current GGC power-problem project, plus an explicitly labelled historical alpha-Cauchy background interface"
+scope: "article results for the current GGC power-problem project, plus a standalone beta-prime boundary example"
+migration_update: "2026-09-06; external theorem and audit statements unchanged"
 topics:
   - generalized gamma convolutions
   - hyperbolic complete monotonicity
@@ -25,7 +26,8 @@ Claim labels have fixed meanings.
 - **[PAPER]**: stated or proved in Bondesson (2015).
 - **[BACKGROUND]**: recalled by the paper from earlier literature.
 - **[AUDIT]**: a qualification, correction, or proof-completeness observation made while checking the paper.
-- **[DERIVED]**: a deduction for the current GGC power-problem project; it is not stated in the paper. Alpha-Cauchy deductions are retained only as a historical background interface.
+- **[DERIVED]**: a deduction for the current GGC power-problem project; it is not stated in the paper. The alpha-Cauchy parameterization is a historical motivating example;
+  its GGC boundary deductions now have a standalone source and proof record.
 - **[NOT-IMPLIED]**: a tempting inference that is invalid.
 - **[OPEN-2015]**: explicitly open, or left unresolved, in the paper.
 - **[CONTEXT-2026]**: later context recorded elsewhere in this repository, not a result of Bondesson (2015).
@@ -822,6 +824,12 @@ The proof is existential. Section 9 explicitly lists computation of the product 
 
 ## 12. Historical background case study: the alpha-Cauchy interface
 
+This section is a motivating example, not an input to the log-rate proof.
+Its gamma-ratio identity, density calculations and exact GGC threshold are
+maintained in [BP-1--BP-3](beta-prime-power-boundary.md#bp-1).
+The numbered equations below are retained for the source note's existing
+cross-references; no SD-specific manuscript is required.
+
 Let
 
 \[
@@ -842,7 +850,7 @@ B\overset d=
 \tag{12.2}
 \]
 
-where the numerator and denominator are independent unit-rate gamma variables. See [Yano–Yano–Yor (2009)](<../background/alpha-cauchy-sd/literature/On the laws of first hitting times of points for one-dimensional symmetric stable Levy processes.pdf>).
+where the numerator and denominator are independent unit-rate gamma variables. See [Yano–Yano–Yor (2009)](../literature/Yano-Yano-Yor-2009-stable-hitting-times.pdf).
 
 ### 12.1 Immediate consequence
 
@@ -1091,6 +1099,6 @@ Additional references used in this note:
 
 For the project-wide class hierarchy and post-2015 power results, see [classes-and-power-closure.md](classes-and-power-closure.md).
 
-For the historical alpha-Cauchy beta-prime reduction, see [03-beta-prime-reduction.md](../background/alpha-cauchy-sd/notes/03-beta-prime-reduction.md).
-
-For the historical alpha-Cauchy lemma ledger, see [05-lemmas-and-conjectures.md](../background/alpha-cauchy-sd/notes/05-lemmas-and-conjectures.md).
+For the beta-prime reduction and retained legacy K1--K3 / N1--N3 claims,
+see [beta-prime-power-boundary.md](beta-prime-power-boundary.md).
+Source facts, project deductions and independent SD questions remain distinct.

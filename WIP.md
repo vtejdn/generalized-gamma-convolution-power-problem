@@ -1,34 +1,20 @@
 # WIP index: Bondesson's GGC power problem
 
-Started: **2026-09-05**.
-Status: **master result index; full target proved in project after internal
-mathematical audit on 2026-09-06**. This is not external peer review,
-publication or formal verification.
+Started: **2026-09-05**. Index synchronized through WIP-5.50, WIP-6.23
+and WIP-7.6 on **2026-09-06**.
 
-For the overall distance to a full solution, the main structural
-obstructions and the qualitative research outlook, see
-[BigPicture.md](BigPicture.md). This WIP remains the index of concrete
-results and proof obligations; BigPicture records strategic judgments.
-Documentation links and assessment synchronized on **2026-09-06**, through
-WIP-5.50, WIP-6.23 and WIP-7.6. The completed mathematical argument and
-requirement-by-requirement audit are recorded in
-[WIP-6.23](ledger/25-mathematical-completion-audit.md#wip-6-23).
-The earlier candidate status has been superseded by that mathematical
-audit, not by manuscript preparation. At the user's subsequent request,
-the [TeX manuscript](manuscript/ggc-power-closure.tex) was completed without
-compilation, followed by a [Lean blueprint and API audit](formalization/README.md).
-These handoff artifacts do not add a claim of external review or formal verification.
+This is the master per-result index, not a duplicate proof or status
+narrative. The current mathematical assessment and verification limits
+are maintained in [ResearchStatus](ResearchStatus.md).
+Complete derivations are grouped by mechanism in the
+[ledger module map](ledger/README.md); exact references are in the
+[source map](ledger/references.md).
+For current work use [CurrentGoal](CurrentGoal.md), and for strategic
+interpretation use [BigPicture](BigPicture.md).
 
 ## Objective and recording rules
 
-The objective is stated in [CurrentGoal.md](CurrentGoal.md): resolve the
-conjecture by a proof or rigorous counterexample, using the prioritized
-programs P1--P7 or justified new approaches. The former restriction to
-original Routes 1--5 is removed. Priorities guide effort, not eligibility.
-An execution pass may finish with a precise unresolved gap; the research
-problem is resolved only by a complete proof or counterexample.
-
-The conjecture is
+The original target is
 
 \[
 X\in GGC,\qquad q\ge1
@@ -36,6 +22,11 @@ X\in GGC,\qquad q\ge1
 X^q\in GGC.
 \tag{C1}
 \]
+
+Entries retain their individual statements and statuses, even when a
+later theorem subsumes their scope. A refuted auxiliary condition is not
+a refutation of the original target; an independent open route is not
+automatically a gap in the assembled proof.
 
 Every entry below has one of the following statuses.
 
@@ -54,41 +45,6 @@ Every entry below has one of the following statuses.
 
 No floating-point experiment is used as proof. Exact calculations must name
 the script, arithmetic domain, and mathematical identity checked.
-
-## Ledger organization
-
-Complete derivations now live in [`ledger/`](ledger/README.md). The files are grouped by mathematical object and proof mechanism; stable WIP identifiers, equation numbers, and provenance labels are unchanged.
-
-| IDs | Mathematical module | Detailed record |
-|---|---|---|
-| WIP-0.1--0.3 | finite-gamma and Dirichlet foundations | [00-foundations.md](ledger/00-foundations.md) |
-| WIP-1.1--1.13 | stable tilting, Dirichlet means, and quadratic benchmark | [01-route1-stable-dirichlet-and-quadratic.md](ledger/01-route1-stable-dirichlet-and-quadratic.md) |
-| WIP-1.14--1.19 | q = 3/2 Wright--Bessel problem | [02-route1-q-three-halves-wright-bessel.md](ledger/02-route1-q-three-halves-wright-bessel.md) |
-| WIP-2.1--2.14 | Thorin boundary phase and Volterra analysis | [03-route2-thorin-volterra.md](ledger/03-route2-thorin-volterra.md) |
-| WIP-3.1--3.10 | cumulants, Hankel gates, and Stieltjes moments | [04-route3-cumulant-stieltjes.md](ledger/04-route3-cumulant-stieltjes.md) |
-| WIP-4.1--4.6 | averaged HCM and spectral inversion | [05-route4-averaged-hcm.md](ledger/05-route4-averaged-hcm.md) |
-| WIP-5.1--5.7 | shape-matched recursion and initial cones | [06-route5-recursion-and-initial-cones.md](ledger/06-route5-recursion-and-initial-cones.md) |
-| WIP-5.8--5.11 | two-rate total-shape-one theorem | [07-route5-two-rate-total-shape-one.md](ledger/07-route5-two-rate-total-shape-one.md) |
-| WIP-5.12--5.17 | multirate first-cut geometry | [08-route5-multirate-first-cut.md](ledger/08-route5-multirate-first-cut.md) |
-| WIP-5.18--5.23 | multicut capacity and transport | [09-route5-multirate-capacity.md](ledger/09-route5-multirate-capacity.md) |
-| WIP-5.25, 5.26, 5.29 | support-wide closure and shape propagation | [10-route5-support-wide-closure-and-shape-propagation.md](ledger/10-route5-support-wide-closure-and-shape-propagation.md) |
-| WIP-5.24, 5.27, 5.28, 5.30, 5.31 | arbitrary-shape two-rate squares | [11-route5-two-rate-arbitrary-shapes.md](ledger/11-route5-two-rate-arbitrary-shapes.md) |
-| WIP-5.32--5.35, 5.37 | three-rate reductions and anchor theorems | [12-route5-three-rate-reductions-and-anchors.md](ledger/12-route5-three-rate-reductions-and-anchors.md) |
-| WIP-5.36, 5.38, 5.39 | three-rate fractional Abel analysis | [13-route5-three-rate-fractional-abel.md](ledger/13-route5-three-rate-fractional-abel.md) |
-| WIP-5.40--5.44 | support-aware padding, reciprocal duality, positive complements and completed three-rate compensation | [14-averaged-phase-compensation.md](ledger/14-averaged-phase-compensation.md) |
-| WIP-6.1--6.5 | log-concavity obstruction, fractional peeling, global criteria and power flow | [15-global-criteria-and-power-flow.md](ledger/15-global-criteria-and-power-flow.md) |
-| WIP-6.6--6.10 | Loewner tangents, singular support edge, compensated jumps and a realizing GGC curve | [16-power-flow-loewner-tangent.md](ledger/16-power-flow-loewner-tangent.md) |
-| WIP-7.1--7.6 | integer peeling, residual bootstraps, small-shape reduction and an HCM-output obstruction | [17-exponential-peeling-closure.md](ledger/17-exponential-peeling-closure.md) |
-| WIP-5.45--5.50 | four-rate phase geometry and the support-wide total-shape-two square theorem | [18-four-rate-balanced-phase.md](ledger/18-four-rate-balanced-phase.md) |
-| WIP-6.11--6.15 | finite-Thorin compensated tangent, endpoint domains, conditional mass and local-to-global verification | [19-finite-thorin-compensated-power-tangent.md](ledger/19-finite-thorin-compensated-power-tangent.md) |
-| WIP-6.16--6.17 | Palm disintegration, log-rate jump generator and uniform Lyapunov estimates | [20-finite-thorin-positive-steps.md](ledger/20-finite-thorin-positive-steps.md) |
-| WIP-6.18--6.19 | weak generator continuity and positive finite-time Euler evolution | [21-log-thorin-euler-evolution.md](ledger/21-log-thorin-euler-evolution.md) |
-| WIP-6.20 | identification of the specific weak evolution with actual powers | [22-power-flow-identification.md](ledger/22-power-flow-identification.md) |
-| WIP-6.21 | full-conjecture assembly and end-to-end audit | [23-power-theorem-assembly-audit.md](ledger/23-power-theorem-assembly-audit.md) |
-| WIP-6.22 | direct resolvent cancellation with absolute posterior control | [24-direct-log-generator-resolvent.md](ledger/24-direct-log-generator-resolvent.md) |
-| WIP-6.23 | full-quantifier mathematical completion audit | [25-mathematical-completion-audit.md](ledger/25-mathematical-completion-audit.md) |
-
-The [source map](ledger/references.md) and [historical pass-20 checkpoint](ledger/checkpoints/2026-09-05-pass-20.md) are stored separately. `ResearchStatus.md` and `CurrentGoal.md` remain authoritative for current status and execution order.
 
 ## Current result index
 
@@ -237,17 +193,11 @@ See [WIP-6.21](ledger/23-power-theorem-assembly-audit.md#wip-6-21),
 | [WIP-7.5](ledger/17-exponential-peeling-closure.md#wip-7-5) | small-atom-shape reduction and the ordered-peeling limitation | proved; small individual shapes suffice only with arbitrary support size |
 | [WIP-7.6](ledger/17-exponential-peeling-closure.md#wip-7-6) | HCM-density output fails for matched equal-shape two-gamma powers, 1 <= q < 2 | proved complex-zero obstruction to a stronger closure invariant, not a GGC counterexample |
 
-At this point (C1) is **proved in project**, with its complete internal
-mathematical audit recorded in WIP-6.23. The subsequent TeX source handoff
-and Lean engineering blueprint are separate deliverables; compilation,
-external publication and Lean verification are not included in this status.
-
 ## Current execution entry points
 
-Use [CurrentGoal.md](CurrentGoal.md) for the ranked programs and exact
-historical programs and any future follow-up obligations. P5 has completed
-the full mathematical target. P1 supplies an independent support-wide
-square theorem; the other routes remain optional sources of representations,
-simplification or repair if a specific gap is later found. They are not
-unfinished requirements of the completed proof. Complete proofs stay in
-the ledger rather than in this index.
+[CurrentGoal](CurrentGoal.md) records authorized next work.
+The [archived blueprint](ledger/checkpoints/2026-09-06-route-blueprint.md)
+preserves the complete P1--P7 history and historical route correspondence.
+Use [ResearchStatus](ResearchStatus.md) for the overall theorem assessment
+and [WIP-6.23](ledger/25-mathematical-completion-audit.md#wip-6-23)
+for its internal completion evidence; proofs remain in the ledger.

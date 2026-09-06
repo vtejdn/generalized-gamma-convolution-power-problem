@@ -337,3 +337,32 @@ explicit transition probabilities, moment recursion, compactness and
 consistency estimates. It does not appeal to an unsourced nonlinear
 semigroup-generation theorem or infer finite-time positivity from the
 positive minimum property alone.
+
+## Auxiliary sources retained from the earlier investigation
+
+These entries support examples and structural comparisons, not new
+dependencies of WIP-6.21 or additions to the Lean axiom whitelist.
+
+24. **Yano--Yano--Yor (2009), beta-prime identity.**
+    K. Yano, Y. Yano and M. Yor, “On the laws of first hitting times of
+    points for one-dimensional symmetric stable Lévy processes,”
+    *Séminaire de Probabilités XLII*, LNM **1979**, 187--227,
+    DOI 10.1007/978-3-642-01763-6_8.
+    Section 2.2, equations (2.20)--(2.21);
+    [local PDF](../literature/Yano-Yano-Yor-2009-stable-hitting-times.pdf).
+    [BP-1--BP-3](../notes/beta-prime-power-boundary.md#bp-1) records the
+    exact specialization and project deductions; its GGC necessity uses
+    Bondesson (1992), Theorems 4.1.1 and 4.1.4, not the SD manuscript.
+
+25. **Rocha-Arteaga--Sato (2019), ID/SD and stochastic-integral context.**
+    Alfonso Rocha-Arteaga and Ken-iti Sato, *Topics in Infinitely Divisible
+    Distributions and Lévy Processes*, Revised Edition, SpringerBriefs in
+    Probability and Mathematical Statistics, 2019, viii+135 pp.,
+    DOI 10.1007/978-3-030-22700-5;
+    [local PDF](../literature/Rocha-Arteaga-Sato-2019-ID-SD-Levy-processes.pdf).
+    Theorem 1.34 (SD Levy criterion, quoted from Sato's Theorem 15.10);
+    Theorem 2.17 (OU/BDLP); Chapter 2 notes (Thorin-class integral
+    representations); Theorem 4.41 (subordination, with the recorded
+    integrability qualification); Theorems 5.1 and 5.9 (strictly stable
+    inheritance). Exact statements, source/page map and corrections are
+    preserved in the [migrated audit](../notes/rocha-arteaga-sato-2019-id-sd-levy-processes.md).

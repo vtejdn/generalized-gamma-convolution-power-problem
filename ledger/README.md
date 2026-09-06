@@ -2,7 +2,8 @@
 
 This directory contains the complete mathematical derivations formerly kept
 in the monolithic `WIP.md`. The root [WIP index](../WIP.md) now supplies the
-overall status and a stable, per-entry navigation table.
+stable, per-entry navigation table; current status lives in
+[ResearchStatus.md](../ResearchStatus.md).
 
 The governing research problem remains
 
@@ -12,15 +13,14 @@ X\in GGC,\qquad q\ge1
 X^q\in GGC.
 \]
 
-The full power theorem in WIP-6.21 has completed its internal mathematical
-audit and is **proved in project**; the exact completion evidence is
-[WIP-6.23](25-mathematical-completion-audit.md). This is distinct from
-external peer review, publication or formal verification. TeX drafts are
-frozen; typesetting is not a mathematical completion requirement. Use
-[ResearchStatus.md](../ResearchStatus.md) for the reliable mathematical
-status and [CurrentGoal.md](../CurrentGoal.md) for the current execution
-order. Historical checkpoints in this directory are snapshots, not status
-authorities.
+The assembled proof and internal audit are
+[WIP-6.21](23-power-theorem-assembly-audit.md#wip-6-21) and
+[WIP-6.23](25-mathematical-completion-audit.md#wip-6-23).
+Use [ResearchStatus](../ResearchStatus.md) for the current assessment and
+verification limits, and [CurrentGoal](../CurrentGoal.md) for authorized
+work. The [manuscript](../manuscript/ggc-power-closure.tex) and
+[Lean blueprint](../formalization/README.md) are separate artifacts;
+historical checkpoints are not current status authorities.
 
 ## Mathematical organization
 
@@ -57,11 +57,21 @@ Modules 10--13 are thematic rather than numerically contiguous. Stable WIP
 identifiers preserve provenance, while each file keeps one proof mechanism
 together. Module 14 continues the phase/recursion family; the new WIP-6.x
 family in modules 15--16 and WIP-7.x in module 17 are cross-route
-infrastructure, not historical Routes 6 or 7. Current priority labels
-P1--P7 are defined only in CurrentGoal.md.
+infrastructure, not historical Routes 6 or 7. The P1--P7 priority labels and their correspondence are preserved in the
+[historical route blueprint](checkpoints/2026-09-06-route-blueprint.md);
+[CurrentGoal](../CurrentGoal.md) now records current work rather than
+repeating that history.
 
 ## Supporting records
 
+- [2026-09-06 migration record](checkpoints/2026-09-06-background-migration.md)
+  maps retained SD-era material into the GGC project and records the
+  completed user-authorized removal of the old directory and three links.
+- [Pre-cleanup route blueprint](checkpoints/2026-09-06-route-blueprint.md)
+  preserves all seven programs, rankings, attempts and exclusions.
+- [Pre-cleanup status/history](checkpoints/2026-09-06-status-before-cleanup.md)
+  preserves the earlier long status record and preliminary lemma list.
+  Both are dated 2026-09-06 and tied to `snapshot-2026-09-06-pre-cleanup`.
 - [references.md](references.md) preserves the theorem-level source map.
 - [pre-log-rate assessment](checkpoints/2026-09-05-before-log-rate-evolution.md)
   preserves the strategic judgment before the finite-time mechanism was
