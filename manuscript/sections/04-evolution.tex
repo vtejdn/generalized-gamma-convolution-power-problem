@@ -1,10 +1,10 @@
-\section{Continuity and construction of the logarithmic evolution}
+\section{Evolution of the Thorin measure}
 \label{sec:evolution}
 
-In this section, we construct the evolution of the normalized log-rate measure.
-We use continuity of the averaged generator with respect to the current distribution and an explicit discrete approximation that preserves positivity and total mass.
+We construct the curve of log-rate probabilities from the operator of Section~\ref{sec:tangent}.
+The proof has two ingredients: continuity of the averaged operator under weak convergence, and an Euler approximation in which each step is a probability kernel.
 
-For \(B>0\) and \(F\in\mathcal P(\R)\), retain the coefficients of Section~\ref{sec:generator} and the relation \(U=B\exp_*F\).
+For \(B>0\) and \(F\in\mathcal P(\R)\), retain the coefficients of Section~\ref{sec:tangent} and the relation \(U=B\exp_*F\).
 Recall that
 \begin{equation}
  \mathcal G_{B,F}\varphi(y)
@@ -26,7 +26,7 @@ Lemma~\ref{lem:bounds} gives, for every compact interval \(I\subset(0,\infty)\),
  \label{eq:evolution-uniform-bounds}
 \end{equation}
 These bounds hold for every probability \(F\), without a moment assumption.
-We first prove the continuity needed to pass through the nonlinear dependence on \(F\), and then construct a positive weak evolution.
+The continuity result below will permit passage to the limit in the dependence of the coefficients on \(F\).
 
 \subsection{Weak continuity of the averaged generator}
 
@@ -54,8 +54,8 @@ It is uniformly bounded when \(B\) is restricted to a compact positive interval.
 \end{lemma}
 
 \begin{proof}
-\emph{Step 1: coupling the Dirichlet probabilities.}
-We use the fixed probability space and the quantile maps of Lemma~\ref{lem:parameterized-dirichlet}.
+We first couple the posterior probabilities so that their weak convergence holds almost surely.
+Use the fixed probability space and the quantile maps of Lemma~\ref{lem:parameterized-dirichlet}.
 For a probability \(F\) on \(\R\), put \(Z_j=q_F(S_j)\) and \(V_j=1-T_j^{1/B}\).
 Thus the locations have law \(F\), the break fractions have law \(\operatorname{Beta}(1,B)\), and the two sequences are independent.
 On the common full-probability event in that lemma, the resulting stick-breaking probability has the form
@@ -98,7 +98,7 @@ have laws \(\DP(B_nF_n+\delta_{y_n})\) and \(\DP(BF+\delta_y)\), respectively.
 They converge weakly almost surely.
 Their rate-coordinate pushforwards \(P_n=\exp_*\widehat P_n\) and \(P=\exp_*\widehat P\) are the posterior probabilities appearing in the coefficients.
 
-\emph{Step 2: weak-star convergence of the boundary phases.}
+The next point is convergence of the phases against integrable kernels.
 For each coupled sample, set \(b_n=e^{y_n}\), \(b=e^y\), and
 \begin{equation}
  \begin{split}
@@ -137,10 +137,9 @@ The kernels in \eqref{eq:scaled-phase-anchor} belong to \(L^1\).
 Passing to the limit shows that \(\eta_*\) represents \(\log R(s)-\log R(1)\).
 Uniqueness of the exponential Stieltjes phase representation, equivalently that for the reciprocal complete Bernstein function, gives \(\eta_*=\eta\) almost everywhere; see \cite[Theorems~6.10 and~7.3]{SSV2010}.
 Every subsequential limit is therefore the same, which proves convergence against every \(L^1\) kernel.
-No pointwise convergence of the boundary phases has been used.
-In particular, exceptional values in their measurable versions do not affect the argument, including after the positive rate scaling.
+This argument uses only integrals of the phases, so their exceptional boundary values, including after rate scaling, play no role.
 
-\emph{Step 3: passing through the posterior averages.}
+We can now pass to the limit in the posterior averages.
 The drift formula \eqref{eq:log-drift} takes the form
 \begin{equation}
  a_{B_n,F_n}(y_n)
@@ -149,8 +148,7 @@ The drift formula \eqref{eq:log-drift} takes the form
            +\int_0^\infty\eta_n(u)K(u)\,\dd u\right].
  \label{eq:continuity-drift-formula}
 \end{equation}
-Here \(\psi_0\) is the digamma function and \(K\in L^1(0,\infty)\) is the correction kernel in \eqref{eq:K}.
-The coefficient \(\psi_0(B_n+1)\) retains the original mass parameter \(B_n\) under posterior averaging.
+The kernel \(K\) belongs to \(L^1(0,\infty)\) by Lemma~\ref{lem:bounds}.
 The phase integrals converge almost surely by weak-star convergence and are bounded in absolute value by \(\|K\|_1\).
 Moreover,
 \[
@@ -185,7 +183,7 @@ This convergence and the weak-star convergence of \(\eta_n\) imply convergence o
 Their uniform bound permits taking expectations.
 This proves \eqref{eq:generator-joint-continuity}.
 
-\emph{Step 4: integrating against the varying log-rate law.}
+Finally, we integrate against the varying base probability.
 For \(\varphi\in C_c^2(\R)\),
 \begin{equation}
  |\mathcal G_{B,F}\varphi(y)|
@@ -198,7 +196,7 @@ Joint continuity implies that \(\mathcal G_{B_n,F_n}\varphi\to\mathcal G_{B,F}\v
 Tightness of \(F_n\), this local uniform convergence, the uniform global bound, and weak convergence against the bounded continuous limiting function give \(H_\varphi(B_n,F_n)\to H_\varphi(B,F)\).
 \end{proof}
 
-\subsection{A positive Euler construction}
+\subsection{Existence by positive Euler approximation}
 
 \begin{theorem}[Existence of a log-rate evolution]\label{thm:evolution}
 Let \(B_0>0\), \(F_0\in\Ptwo\), and \(T>0\).
@@ -218,14 +216,14 @@ and
 \end{equation}
 \end{theorem}
 
-Equation~\eqref{eq:evolution-weak-equation} is the meaning of weak solution used here.
-The theorem asserts existence; identification of the associated GGC distributions is the subject of the next section.
+The displayed identity is the weak evolution equation used in this paper.
+Its construction gives the candidate Thorin measures; Section~\ref{sec:identification} will identify their value distributions.
 
 \begin{proof}
 All constants below may depend on \(B_0,T\) and \(F_0(y^2)\), but not on the mesh or on the intermediate probability measures.
 The mass parameter lies in the fixed compact interval \(I=[B_0e^{-T},B_0]\).
 
-\emph{Step 1: a positive probability kernel.}
+\emph{The discrete kernel.}
 Take \(h=T/N\) and \(\epsilon=\sqrt h\), with \(h\) sufficiently small.
 Freeze \(B,F\) during one step, and abbreviate
 \begin{equation}
@@ -289,7 +287,7 @@ Starting from \(F_0^h=F_0\), we can therefore define recursively
  \qquad j=0,\ldots,N-1.
  \label{eq:positive-euler-recursion}
 \end{equation}
-All coefficients are defined for every probability, so this recursion does not presume existence of the desired solution.
+Since the coefficients are defined for every probability, each successive step is well defined.
 
 For one step from \(y\), write \(\Delta=z-y\).
 Direct calculation from \eqref{eq:positive-euler-kernel} gives
@@ -302,10 +300,9 @@ Direct calculation from \eqref{eq:positive-euler-kernel} gives
  \end{split}
  \label{eq:euler-exact-moments}
 \end{equation}
-Thus the mean compensation is exact.
-In particular we do not bound the mean by the divergent untruncated first absolute jump moment.
+The cancellation in the first identity is essential: it controls the mean increment although the untruncated first absolute jump moment is infinite.
 
-\emph{Step 2: uniform second moments.}
+\emph{Moment control.}
 Put \(M_j^h=F_j^h(y^2)\).
 From \eqref{eq:evolution-uniform-bounds},
 \[
@@ -328,9 +325,9 @@ Because \(h(1+|\log h|^2)\) is bounded for sufficiently small \(h\), this implie
 The second inequality follows by iterating the scalar recursion, or by summing its geometric series.
 This also proves by induction that each discrete law has a finite second moment, so every moment calculation just used is justified.
 
-\emph{Step 3: compactness in time and in the state variable.}
+\emph{Compactness.}
 We realize a finite Markov chain with initial law \(F_0\) and the kernels in \eqref{eq:positive-euler-recursion}.
-Only finitely many iterated probability kernels are needed for this realization.
+This finite chain is obtained by iterating the Borel kernels just constructed.
 Writing \(Y_j\) for its state at step \(j\), let
 \[
  D_{j+1}
@@ -379,7 +376,7 @@ The coupling in \eqref{eq:euler-time-moment}, followed by Cauchy--Schwarz, gives
 For the first estimate, compare each interpolated law to a neighboring mesh law and apply \eqref{eq:euler-time-moment}; the squared time increment is absorbed into the constant depending on \(T\).
 The second is the adjacent-step case.
 
-The moment bound \eqref{eq:euler-uniform-moments} holds also for the interpolated laws and gives \(\widetilde F_t^h(|y|>R)\le C_{T,B_0,F_0}/R^2\).
+The interpolated laws also satisfy \eqref{eq:euler-uniform-moments}. Thus \(\widetilde F_t^h(|y|>R)\le C_{T,B_0,F_0}/R^2\).
 They are therefore uniformly tight.
 Take a sequence of meshes tending to zero.
 At each time in a countable dense subset of \([0,T]\) containing its endpoints, tightness gives a weakly convergent subsequence; diagonal selection gives one subsequence working at all these times.
@@ -401,9 +398,9 @@ The limits remain probability measures: the uniform tail bound precludes loss of
 Approximating a bounded continuous function uniformly on a large compact interval by a Lipschitz function, and controlling the complementary tails, also gives uniform-in-time convergence for every fixed bounded continuous test.
 Finally, apply this convergence to \(\min\{y^2,R\}\), and then let \(R\to\infty\).
 It follows that \(F_t\in\Ptwo\) for every \(t\) and that \eqref{eq:evolution-second-moment} holds.
-Only narrow continuity, not continuity in a second-moment transport metric, is asserted.
+The curve is thus narrowly continuous and has the required uniform second-moment bound.
 
-\emph{Step 4: consistency with the compensated generator.}
+\emph{Consistency.}
 Fix \(\varphi\in C_c^2(\R)\).
 Taylor expansion at the no-jump location in \eqref{eq:positive-euler-kernel} gives a remainder bounded by
 \[
@@ -446,9 +443,9 @@ Telescoping the discrete equations and, on the final partial interval, taking th
  \sup_{0\le t\le T}|e_h(t)|\longrightarrow0 .
  \label{eq:euler-integrated-consistency}
 \end{equation}
-Thus the same error bound covers terminal times between mesh points.
+The convex interpolation therefore gives the same vanishing error at every terminal time.
 
-\emph{Step 5: the nonlinear limit.}
+\emph{Passage to the limit.}
 Lemma~\ref{lem:continuity} says that \(H_\varphi\) is continuous and uniformly bounded on \(I\times\mathcal P(\R)\).
 Equations \eqref{eq:euler-uniform-narrow-limit} and \(\sup_r|\overline B_r^h-B_r|\to0\) imply
 \begin{equation}
@@ -459,7 +456,7 @@ Equations \eqref{eq:euler-uniform-narrow-limit} and \(\sup_r|\overline B_r^h-B_r
  \right|\longrightarrow0.
  \label{eq:euler-nonlinear-limit}
 \end{equation}
-To justify the uniform assertion without assuming compactness of the entire space of probabilities, suppose it fails and choose times \(r_h\) at which the difference is bounded away from zero.
+For the uniform assertion, suppose otherwise and choose times \(r_h\) at which the difference is bounded away from zero.
 Along a further subsequence, \(r_h\to r\).
 Uniform narrow convergence and continuity of \(F_\cdot\) give \(\overline F_{r_h}^h\Rightarrow F_r\), while \(\overline B_{r_h}^h\to B_r\).
 Continuity of \(H_\varphi\) gives a contradiction, also using continuity of \(r\mapsto H_\varphi(B_r,F_r)\).
@@ -478,6 +475,6 @@ Indeed,
  =B_tF_t\bigl(\log(1+e^{-y})\bigr)
  \le B_t\bigl(\log2+F_t(|y|)\bigr)<\infty.
  \]
-The construction thus produces positive finite Thorin measures with controlled logarithmic tails.
-Identifying their associated \(\GGC\) laws with a specified transformation of the initial law is a separate assertion; neither that identification nor nonlinear uniqueness has been used here.
+Thus the moment estimate gives admissibility at every time.
+We turn next to the distributions represented by these Thorin measures.
 \end{remark}

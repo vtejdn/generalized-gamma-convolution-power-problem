@@ -1,0 +1,134 @@
+\section{Measurable realizations}
+\label{sec:measurable-realizations}
+
+We give the parameterized Dirichlet construction and the measurable version of the bounded phase used above.
+The common probability space makes the coefficients jointly measurable in the mass, the base probability, and the distinguished rate.
+
+\subsection{Dirichlet probabilities with varying parameters}
+
+We use the stick-breaking formula of Lemma~\ref{lem:stick-breaking}, choosing the locations by quantiles and the break fractions by common uniform random variables.
+
+\begin{lemma}[A parameterized Dirichlet realization]
+\label{lem:parameterized-dirichlet}
+There is a fixed probability space \((\Omega,\mathcal A,\mathbb P)\) and jointly Borel maps
+\[
+ (B,F,\omega)\longmapsto Q(B,F,\omega),\qquad
+ (B,F,y,\omega)\longmapsto\widehat P(B,F,y,\omega)
+\]
+into \(\mathcal P(\R)\), for \(B>0\), \(F\in\mathcal P(\R)\), and \(y\in\R\), such that
+\[
+ Q(B,F,\cdot)\sim\DP(BF),\qquad
+ \widehat P(B,F,y,\cdot)\sim\DP(BF+\delta_y).
+\]
+The construction uses a single event of probability one on which the stick-breaking weights sum to one for every \(B>0\) and every \(F\).
+All spaces of probabilities carry their narrow Borel sigma-fields.
+\end{lemma}
+
+\begin{proof}
+For \(F\in\mathcal P(\R)\) and \(0<u<1\), define its quantile by
+\[
+ q_F(u)=\inf\{x\in\R:F((-\infty,x])\ge u\}.
+\]
+This is a finite real number.
+For every \(a\in\R\),
+\begin{equation}\label{eq:quantile-joint-borel}
+ \{(F,u):q_F(u)<a\}
+ =\bigcup_{\substack{r\in\mathbb Q\\r<a}}
+       \{(F,u):F((-\infty,r])\ge u\}.
+\end{equation}
+The evaluation \(F\mapsto F((-\infty,r])\) is Borel: the bounded continuous functions \((1-n(x-r)_+)_+\) decrease to the indicator of this half-line, so their integrals converge to that evaluation.
+Thus \((F,u)\mapsto q_F(u)\) is jointly Borel.
+Right continuity of distribution functions also gives \(\mathbb P\{q_F(S)\le x\}=F((-\infty,x])\) for a uniform \(S\) on \((0,1)\).
+
+Take \(\Omega=(0,1)^{\mathbb N}\times(0,1)^{\mathbb N}\times(0,1)\) with its product Borel sigma-field and product uniform probability.
+Write \((S_j)_j,(T_j)_j,T_*\) for its independent coordinate variables.
+Suppressing \(\omega\) in the formulas, put
+\begin{equation}\label{eq:parameterized-stick-breaking}
+ \begin{gathered}
+ Z_j(F)=q_F(S_j),\qquad V_j(B)=1-T_j^{1/B},\\
+ W_j(B)=V_j(B)\prod_{i<j}(1-V_i(B)).
+ \end{gathered}
+\end{equation}
+These are jointly Borel in their parameters and \(\omega\).
+The decreasing products \(\prod_{j\le m}T_j\) tend to zero almost surely: their expectations are \(2^{-m}\), so their nonnegative limit has expectation zero.
+Denote this Borel event by \(\Omega_0\).
+It does not depend on \(B,F\), and on it
+\[
+ R_m(B):=\prod_{j\le m}(1-V_j(B))
+        =\left(\prod_{j\le m}T_j\right)^{1/B}
+        \longrightarrow0\qquad\text{for every }B>0.
+\]
+In particular \(\sum_jW_j(B)=1\) simultaneously for all parameters on \(\Omega_0\); no intersection of parameter-dependent null sets is needed.
+
+The probability-valued maps
+\[
+ Q_m(B,F)=\sum_{j\le m}W_j(B)\delta_{Z_j(F)}+R_m(B)\delta_0
+\]
+are jointly Borel, since finite convex combinations and \(z\mapsto\delta_z\) are continuous in the narrow topology.
+On \(\Omega_0\) they converge narrowly to \(Q(B,F)=\sum_{j\ge1}W_j(B)\delta_{Z_j(F)}\); the tail error against a bounded continuous test is at most twice its supremum norm times \(R_m(B)\).
+Set both \(Q_m\) and \(Q\) equal to \(\delta_0\) on \(\Omega_0^c\).
+The resulting everywhere pointwise limit is a jointly Borel map into the metrizable space \(\mathcal P(\R)\).
+For each fixed \(B,F\), its law is \(\DP(BF)\) by Lemma~\ref{lem:stick-breaking}.
+
+Finally, set \(Z_*(B)=1-T_*^{1/B}\) and
+\[
+ \widehat P(B,F,y)=(1-Z_*(B))Q(B,F)+Z_*(B)\delta_y.
+\]
+This map is jointly Borel.
+For each fixed \(B,F\), the variable \(Z_*(B)\) is \(\operatorname{Beta}(1,B)\) and independent of \(Q(B,F)\).
+Lemma~\ref{lem:dirichlet-posterior}, in log-rate coordinates, therefore gives the stated posterior law.
+Passing through \(\exp_*\) supplies the corresponding jointly Borel realizations on positive rates as well.
+\end{proof}
+
+
+\subsection{Proof of Lemma~\ref{lem:phase}}
+\label{sec:phase-proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:phase}]
+The function \(M_P\) is a nonzero Stieltjes function, since \(\int(1+b)^{-1}P(\dd b)\le1\).
+For \(z\) in the upper half-plane,
+\[
+  \operatorname{Im}M_P(z)
+  =-\operatorname{Im}z\int|z+b|^{-2}P(\dd b)<0.
+\]
+Thus the arguments in \eqref{eq:phase-representative} are unambiguous principal arguments, with \(-\pi<\arg M_P(z)<0\).
+Apply \eqref{eq:ssv-exponential} to \(f=1/M_P\), and subtract its real logarithms at \(s\) and \(1\).
+Negating the resulting identity gives exactly the sign in \eqref{eq:phase-anchor}.
+The uniqueness assertion follows from uniqueness in \eqref{eq:ssv-exponential}: the value at \(1\) fixes the otherwise free multiplicative constant.
+
+Let \(\xi_P^0\) be any almost-everywhere phase initially provided by that representation.
+Analytic continuation of \eqref{eq:ssv-exponential} and its imaginary part give
+\[
+  \arg(1/M_P(-t+i\varepsilon))
+  =\int_0^\infty
+       \frac{\varepsilon\,\xi_P^0(u)}
+            {(u-t)^2+\varepsilon^2}\,\dd u,
+  \qquad \varepsilon>0.
+\]
+Extend \(\xi_P^0\) by zero to the negative half-line.
+The normalized integral is its Poisson approximate identity; at each Lebesgue point it tends to \(\xi_P^0(t)\).
+For completeness, this convergence follows by splitting the integral into a neighborhood of the point, where the Lebesgue-point averages of the error tend to zero, and its complement, whose Poisson mass tends to zero.
+Boundedness of \(\xi_P^0\) controls the complement.
+Hence \eqref{eq:phase-representative} agrees with \(\xi_P^0\) almost everywhere and preserves \eqref{eq:phase-anchor}.
+
+For fixed \(n\), the map \((P,t)\mapsto M_P(-t+i/n)\) is jointly Borel (in fact continuous).
+The kernel is bounded by \(n\), is continuous in the rate variable, and its dependence on \(t\) is locally uniform, with derivative bounded by \(n^2\).
+Taking a continuous argument on the strict lower half-plane and then a limsup proves joint Borel measurability of the specified representative.
+The minus sign remains inside the limsup in \eqref{eq:phase-representative}, so the definition is unambiguous also at exceptional boundary points.
+
+Finally,
+\[
+  \int_0^\infty
+   \left|\frac1{s+t}-\frac1{1+t}\right|\dd t=|\log s|,
+\]
+and, for every integer \(k\ge1\),
+\[
+  \partial_s^k\log M_P(s)
+  =(-1)^k k!\int_0^\infty
+                    \frac{\xi_P(t)}{(s+t)^{k+1}}\,\dd t,
+  \qquad
+  k!\int_0^\infty(s+t)^{-k-1}\dd t
+       =(k-1)!s^{-k}.
+\]
+These estimates prove the absolute convergence and justify all the stated differentiations.
+\end{proof}

@@ -1,3 +1,12 @@
+% Writing model designated by the user on 2026-09-16:
+% Hasebe--Simon--Wang (2020), literature/HSW20.pdf, especially pp. 296--306.
+% Adopted features: result-led introduction, connected proof exposition,
+% separate global theorem/lemma counters, and concise contextual remarks.
+% General exposition: experimental-math-ai/framework/rules/writing.md.
+% Mathematical sources: ledger/19--25 and the primary-interface source note.
+% This revision changes exposition and organization, not the result's status.
+% Build from manuscript/: latexmk -pdf -interaction=nonstopmode -halt-on-error
+%   -outdir=build ggc-power-closure.tex
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -7,15 +16,14 @@
 \usepackage[margin=1in]{geometry}
 \usepackage[numbers,sort&compress]{natbib}
 \usepackage[hidelinks]{hyperref}
-\numberwithin{equation}{section}
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
+\newtheorem{definition}{Definition}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newtheorem{remark}{Remark}
 \newcommand{\E}{\mathbb E}
 \newcommand{\R}{\mathbb R}
 \newcommand{\GGC}{\operatorname{GGC}}
@@ -24,41 +32,43 @@
 \newcommand{\dd}{\mathop{}\!\mathrm d}
 \newcommand{\Ptwo}{\mathcal P_2(\R)}
 
-\title{A log-rate evolution approach to the GGC power problem}
+\title{Powers of generalized gamma convolutions}
 \author{Min Wang\thanks{School of Mathematics and Statistics, Wuhan University of Technology, Wuhan, 430063, China.
 Email: \texttt{minwangmath@whut.edu.cn}.}
 \and Sheng Yin\thanks{Harbin Institute of Technology, China.
 Email: \texttt{sheng.yin@hit.edu.cn}.}}
-\date{September 6, 2026}
+\date{September 16, 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-In this paper, we prove that, for every nonnegative random variable $X$ with a generalized gamma convolution (GGC) distribution and every real $q\ge1$, the distribution of $X^q$ is again a GGC.
-For this purpose, we construct a nonlinear evolution of the Thorin measure in logarithmic rate coordinates.
-Using a Dirichlet-process posterior, we obtain a nonnegative jump kernel with a uniform second-moment bound and a drift of at most linear growth.
-We construct a weak solution on each finite time interval by an explicit probability-preserving Euler scheme.
-We then identify the associated distributions with the powers $X^{e^t}$, $t\ge0$, by deriving a transport equation for their logarithmic values.
-Finally, we use approximation by finite gamma convolutions to extend the result to arbitrary GGC distributions, including those with drift or infinite Thorin mass.
-The research and manuscript preparation received substantial AI assistance, as disclosed at the end of the introduction.
+We prove that every deterministic power of order at least one of a generalized gamma convolution is again a generalized gamma convolution.
+The proof uses a nonlinear evolution of the Thorin measure in logarithmic rate coordinates.
+A gamma--Dirichlet representation and a bounded Stieltjes phase yield a nonnegative jump kernel and a drift of at most linear growth.
+These estimates allow us to construct the evolution by positive Euler approximations and to identify its associated distributions through a linear transport equation.
+Weak approximation by finite gamma convolutions then gives the result without restrictions on the drift, the Thorin mass, or the moments of the initial distribution.
 \end{abstract}
-
-\tableofcontents
 
 \section{Introduction}
 \label{sec:introduction}
 
-A generalized gamma convolution is a probability distribution on $[0,\infty)$ that is a weak limit of distributions of finite sums of independent gamma random variables; degenerate limits are included.
+In this paper, we study the behavior of generalized gamma convolutions under deterministic powers.
+We use the following definition, which includes degenerate distributions; see \cite[Section~3.1]{Bondesson1992}.
+
+\begin{definition}[Generalized gamma convolutions]
+\label{def:ggc}
+A probability distribution on $[0,\infty)$ is a generalized gamma convolution if it is a weak limit of distributions of finite sums of independent gamma random variables.
 We denote this class by $\GGC$.
-We recall its equivalent description by a drift and a Thorin measure in Section~\ref{sec:foundations}; see \citet[Section~3.1]{Bondesson1992}.
+\end{definition}
 
-Bondesson's power conjecture asks whether $\GGC$ is closed under deterministic powers of order at least one \citep[Conjecture 1, p.~1075]{Bondesson2015}.
-Here $X^q$ means the ordinary power of a nonnegative random variable.
-It is neither a convolution power of its distribution nor a product of independent copies of $X$.
-Throughout the paper, $\Law(X)$ denotes the probability distribution of a random variable $X$.
+The class is closed under addition of independent random variables and under weak limits that are probability distributions.
+Bondesson proved that it is also closed under multiplication of independent random variables \cite[Theorem~1]{Bondesson2015}.
+The corresponding question for powers concerns a different operation: all factors in an integer power of one random variable are the same variable.
+In \cite[Conjecture~1, p.~1075]{Bondesson2015}, Bondesson asked whether $X^q$ has a GGC distribution whenever $X$ does and $q\ge1$.
+Here and throughout, $X^q$ is the ordinary power of a nonnegative random variable.
 
-Our main result is the following.
+Our main result answers this question.
 
 \begin{theorem}[Power closure]
 \label{thm:main}
@@ -66,66 +76,51 @@ Let $X$ be a nonnegative real-valued random variable with a generalized gamma co
 Then $X^q$ has a generalized gamma convolution distribution for every real $q\ge1$.
 \end{theorem}
 
-There is no restriction on the drift, the total Thorin mass, or the moments of $X$.
-In particular, the statement includes the constant zero.
-We first prove the result for finite gamma convolutions and then pass to weak limits.
+The statement allows positive drift, infinite Thorin mass, and arbitrary tails.
+It also includes the constant zero.
+The main part of the proof treats finite gamma convolutions; weak closure will then give the full assertion.
 
-\paragraph{Notation.}
-For $\beta,b>0$, $\operatorname{Gamma}(\beta,b)$ denotes the gamma distribution with shape $\beta$ and rate $b$, having density
-\[
- \frac{b^\beta}{\Gamma(\beta)}x^{\beta-1}e^{-bx},\qquad x>0,
- \qquad
- \Gamma(\beta)=\int_0^\infty x^{\beta-1}e^{-x}\,\dd x.
-\]
-We write $G_\beta$ for a random variable with distribution $\operatorname{Gamma}(\beta,1)$; thus $G_\beta/b$ has rate $b$.
-Superscripts distinguish independent copies when needed.
-The symbols $\E$, $\overset{\mathrm d}=$, and $\perp$ denote expectation, equality in distribution, and independence, respectively.
-
-For a measure $\nu$ and a nonnegative or integrable function $f$, write $\nu(f)=\int f\,\dd\nu$.
-Expressions such as $F(y^2)$ and $F(|y|)$ stand for $\int y^2F(\dd y)$ and $\int |y|F(\dd y)$.
-The point mass at $x$ is denoted by $\delta_x$, and $\mathbf1_A$ denotes the indicator of a set $A$.
-For a measurable map $T$, its pushforward is $T_*\nu(A)=\nu(T^{-1}(A))$.
-We use $L_\nu(s)=\int e^{-sx}\nu(\dd x)$ for the Laplace transform of a probability on $[0,\infty)$; this is distinct from the law notation $\Law(X)$.
-
-The space $\mathcal P(\R)$ consists of Borel probability measures on $\R$, and $\Ptwo$ is its subset with finite second moment.
-Weak, or narrow, convergence is denoted by $\Rightarrow$ and means convergence against bounded continuous functions.
-Curves with values in $\Ptwo$ will be continuous for the narrow topology unless otherwise stated.
-Unless specified otherwise, $L^p$ spaces on real intervals use Lebesgue measure.
-We write $C_c^k(D)$ for the $k$-times continuously differentiable real functions with compact support in the open set $D$, and $\|f\|_\infty$ for the supremum norm on the indicated domain.
-Finally, $r_+=r^+=\max\{r,0\}$, $r_-=r^-=\max\{-r,0\}$, and $\log_+x=\max\{\log x,0\}$ for $x>0$.
-
-\paragraph{Outline of the proof.}
-We first consider
+Let $G_\beta$ denote a gamma random variable with shape $\beta>0$ and unit rate.
+Our initial variable has the form
 \begin{equation}
  X=\sum_{i=1}^n b_i^{-1}G_{\beta_i}^{(i)},\qquad
  n\ge1,\quad b_i,\beta_i>0,\qquad B_0=\sum_{i=1}^n\beta_i,
  \label{eq:finite-input}
 \end{equation}
-where the gamma variables have unit rate and are independent.
-Neither the number of summands nor their shapes or rate contrasts are bounded.
-Put
+where the summands are independent.
+Its Thorin measure is $U_0=\sum_i\beta_i\delta_{b_i}$.
+Writing
 \[
  F_0=B_0^{-1}\sum_{i=1}^n\beta_i\delta_{\log b_i},\qquad
- B_t=B_0e^{-t}.
+ B_t=B_0e^{-t},
 \]
-The initial Thorin measure is $U_0=\sum_i\beta_i\delta_{b_i}$.
-We will construct a probability curve $F_t$ on $\R$ and set $U_t=B_t\exp_*F_t$.
-Thus $F_t$ describes normalized \emph{log rates}.
-It is different from the distribution of the logarithm of a random variable having Thorin measure $U_t$.
+we seek a curve of probability measures $F_t$ for which $U_t=B_t\exp_*F_t$ is the Thorin measure of $X^{e^t}$.
+Here $\exp_*F$ denotes the image of $F$ under the exponential map.
+The measure $F_t$ describes logarithmic rates; the law of $\log(X^{e^t})$ is a different measure.
 
-We divide the proof into the following steps.
-\begin{enumerate}
-\item In Sections~\ref{sec:foundations} and~\ref{sec:tangent}, we use gamma--Dirichlet identities to compute the derivative, at $q=1$, of the logarithmic Laplace derivative of $X^q$.
-\item In Section~\ref{sec:generator}, we represent this derivative by an operator on log rates, with a nonnegative jump kernel and uniform drift and second-moment estimates.
-\item In Section~\ref{sec:evolution}, we prove continuity of the coefficients and construct a probability-valued weak evolution by an explicit Euler scheme.
-\item In Section~\ref{sec:identification}, we show that the GGC distributions associated with $U_t$ are exactly $\Law(X^{e^t})$.
-The essential step is a time-dependent identification argument: the logarithmic values satisfy a linear transport equation.
-\item Finally, in Section~\ref{sec:completion}, we take $t=\log q$ and use finite-gamma approximation and weak closure to prove Theorem~\ref{thm:main}.
-\end{enumerate}
+The first difficulty is to express power differentiation in a form that preserves positivity of the Thorin measure.
+We use the gamma--Dirichlet representation of an exponentially tilted GGC variable to compute this derivative.
+The posterior identity for a Dirichlet process then expresses it through a bounded Stieltjes phase.
+In logarithmic rate coordinates, this gives an operator with a nonnegative jump kernel, a finite jump second moment, and a drift whose difference from $y$ is bounded independently of the rate distribution.
+These bounds are the basis of the existence argument.
 
-We recall the classical results, with their references, in Section~\ref{sec:foundations}.
-We prove the coefficient estimates, construct the Euler approximation, and identify its limit in the subsequent sections.
-Constants may change from line to line; their permitted parameter dependence is specified where they are used.
+The second difficulty is to identify the distributions obtained from that evolution.
+The agreement of the infinitesimal derivatives alone does not make this identification.
+We prove that the associated value distributions satisfy the weak equation with operator $x\log x\,\partial_x$.
+Taking logarithms reduces this equation to linear transport, whose solution is dilation by $e^t$.
+It follows that the constructed distributions are precisely the laws of $X^{e^t}$.
+
+Section~\ref{sec:foundations} recalls the Thorin and Dirichlet representations and the bounded phase formula.
+Section~\ref{sec:tangent} derives the positive operator, and Section~\ref{sec:evolution} constructs its evolution.
+The identification is proved in Section~\ref{sec:identification}, and the weak approximation argument in Section~\ref{sec:completion} completes the proof of Theorem~\ref{thm:main}.
+Appendix~\ref{sec:measurable-realizations} supplies the measurable realizations used in the coefficient construction and its continuity proof.
+
+\paragraph{Notation.}
+We write $\Law(X)$ for the law of $X$, $\E$ for expectation, and $\overset{\mathrm d}=$ for equality in distribution.
+Unless otherwise stated, random variables occurring as factors or summands in a distributional representation are independent.
+For a measure $\nu$, write $\nu(f)=\int f\,\dd\nu$ whenever the integral is defined, and let $T_*\nu$ be its image under a measurable map $T$.
+Weak convergence of probability measures is denoted by $\Rightarrow$.
+Further notation is introduced as it is needed.
 
 \paragraph{Disclosure of AI assistance.}
 We used OpenAI's models 5.6~\texttt{Sol} and 6~\texttt{Astra} extensively in conducting this research and preparing the manuscript.
@@ -141,13 +136,17 @@ We share the manuscript and our exploration record in their current form to invi
 We will update the repository and the manuscript as we make progress and incorporate feedback.
 We will take responsibility for ensuring that the final version of the manuscript is accurate, complete with respect to all references, proofs, and arguments under common standards of the research community.
 
+
 \input{sections/01-foundations}
 \input{sections/02-power-tangent}
 \input{sections/03-log-generator}
 \input{sections/04-evolution}
 \input{sections/05-identification}
 \input{sections/06-completion}
+\appendix
+\input{sections/07-measurable-realizations}
 
+\clearpage
 \bibliographystyle{plainnat}
 \bibliography{references}
 \end{document}

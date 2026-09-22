@@ -1,14 +1,12 @@
-\section{A positive generator in logarithmic rate coordinates}
+\subsection{The operator on logarithmic rates}
 \label{sec:generator}
 
-We now construct an operator on log rates whose averaged action reproduces the power derivative in Lemma~\ref{lem:tangent}.
-We will prove that its jump kernel is nonnegative and that its coefficients satisfy bounds independent of the rate distribution.
-
-\subsection{Coefficients and uniform estimates}
+We now represent the right-hand side of \eqref{eq:normalized-tangent} by an operator on the logarithmic rate variable.
+The construction will apply to every base probability, and its estimates will be independent of the support of that probability.
 
 Let $B>0$ and let $F$ be any probability on $\R$.
 Set $U=B\exp_*F$.
-For the coefficient construction we do not yet require $U$ to satisfy the Thorin integrability condition.
+The coefficients below are defined even when $U$ fails the Thorin integrability condition; admissibility will follow from the moment bound along the evolution.
 For $b=e^y$ use the posterior probability
 \[
  P^{(b)}=(1-Z)Q+Z\delta_b,\qquad
@@ -22,7 +20,7 @@ For a measurable function $A$ of a probability measure, write
 \]
 whenever the expectation exists.
 Let $\xi_P$ be the jointly measurable phase in Lemma~\ref{lem:phase}.
-Define the reference jump measure $\nu_0$, the correction kernel $K$, the jump acceptance function $k_{B,F}$, and the drift $a_{B,F}$ by
+The jump measure and drift are obtained from the following four quantities:
 \begin{align}
  \nu_0(\dd v)&=\frac{e^v}{(e^v-1)^2}\,\dd v
              =\frac{\dd v}{4\sinh^2(v/2)},\qquad v\ne0,
@@ -36,9 +34,10 @@ Define the reference jump measure $\nu_0$, the correction kernel $K$, the jump a
  \label{eq:log-drift}
 \end{align}
 Here $u>0$, $y,v\in\R$, and $b=e^y$; the measure $\nu_0$ has no atom at zero.
-The expression defining $K$ is taken as a whole before integration.
-Its apparent singularity at one is removable.
-Although $\nu_0$ has infinite mass near zero, its second moment is finite, as the next lemma shows.
+The function $K$ is a correction term that will cancel the logarithmic compensation on resolvent tests.
+Its three terms are integrated together, and its singularity at one is removable.
+The bound $0\le\xi_P\le1$ makes $k_{B,F}$ an acceptance factor for the reference measure $\nu_0$.
+Although this measure has infinite mass near zero, its second moment is finite.
 
 \begin{lemma}[Uniform coefficient bounds]
 \label{lem:bounds}
@@ -82,7 +81,7 @@ For the identity function $\iota(y)=y$ and its square, the values are
 \end{lemma}
 
 \begin{proof}
-\emph{Step 1: the deterministic kernels.}
+We begin with the two deterministic kernels.
 Multiplying by $(u-1)^2$, we obtain
 \[
  (u-1)^2K(u)=\log u-\frac{2(u-1)}{u+1}.
@@ -100,8 +99,8 @@ The density of $\nu_0$ is even, and on $v>0$ it equals $\sum_{n\geq1}ne^{-nv}$.
 Tonelli's theorem gives \eqref{eq:m2}, since $\int_0^\infty v^2e^{-nv}\dd v=2/n^3$.
 Only the finiteness of this series is needed in the proof.
 
-\emph{Step 2: the posterior drift.}
-The posterior atom at $b$ implies
+The uniform drift bound comes from the atom added at the distinguished rate $b$.
+Indeed, the posterior representation gives
 \[
  Z/2\leq bM_{P^{(b)}}(b)\leq1.
 \]
@@ -125,17 +124,17 @@ Integration over that fixed space preserves measurability.
 The logarithmic expectation is finite by the displayed beta bound, and the phase correction is absolutely bounded by $\|K\|_1$; their positive and negative parts may therefore be integrated separately.
 Thus $a_{B,F}(y)$ and $k_{B,F}(y,v)$ are jointly Borel in all their displayed parameters, as well as finite.
 
-\emph{Step 3: the compensated operator.}
-Taylor's formula bounds the jump remainder in absolute value by $\frac12\|\varphi''\|_\infty v^2$, proving \eqref{eq:generator-bound} and absolute convergence.
+For the operator itself, Taylor's formula bounds the jump remainder in absolute value by $\frac12\|\varphi''\|_\infty v^2$, proving \eqref{eq:generator-bound} and absolute convergence.
 Linear and quadratic remainders are respectively zero and $v^2$, proving the remaining assertions by $2|y|(|y|+C_B)\leq3y^2+C_B^2$.
 \end{proof}
 
 \subsection{Action on the resolvent tests}
 
-We next compute the action on resolvent tests, which explains the choice of $K$ and of the drift.
-The compensation terms cancel so that the resulting expression is exactly the logarithmic power derivative computed earlier.
+The choice of the correction term becomes transparent on the resolvents $\varphi_s(y)=(s+e^y)^{-1}$.
+After cancellation, the phase integral is the difference of two logarithms of $M_P$.
+Posterior averaging then gives the power derivative in Lemma~\ref{lem:tangent}.
 
-\begin{lemma}[Direct resolvent action]
+\begin{lemma}[The resolvent identity]
 \label{lem:generator}
 Assume in addition that $U$ satisfies \eqref{eq:finite-admissible}.
 Let $g$ and $h_U$ be the functions associated with $U$ in Lemma~\ref{lem:tangent}.
@@ -151,14 +150,13 @@ It annihilates constants and satisfies the positive minimum property: if a test 
 \end{lemma}
 
 \begin{proof}
-\emph{Step 1: the test domain.}
 For compactly supported tests, $(1+|y|)|\varphi'(y)|$ is bounded.
 For $\varphi_s$ it is also bounded, since $\varphi_s'(y)=-e^y/(s+e^y)^2$ decays exponentially at both ends; its second derivative is bounded.
 Integrability follows from \eqref{eq:generator-bound}.
 Constants have zero generator.
 At a global minimum the derivative vanishes and the remaining jump integral is nonnegative.
 
-\emph{Step 2: cancellation for a fixed probability measure.}
+We prove the identity first for a fixed posterior sample.
 Fix $b=e^y$ and a deterministic probability $P$ on positive rates.
 Define the sample drift
 \[
@@ -182,7 +180,7 @@ holds for $u>0$, $u\ne1$, and extends by continuity at one.
 The first term is absolutely integrable: it is the log-coordinate Taylor remainder just estimated.
 The $K$ term is absolutely integrable.
 The bracketed kernel on the right has absolute integral $|\log(s/b)|$; the full right-hand side has absolute integral $b(s+b)^{-2}|\log(s/b)|$.
-Thus their integrals may be combined as written, without a principal value or a subtraction of divergent integrals.
+All three integrals are therefore absolutely convergent, so the cancellation is legitimate.
 
 Subtracting the phase representations at $s$ and $b$ and changing variables $t=bu$ gives
 \[
@@ -198,15 +196,14 @@ Since $\varphi_s'(y)=-b/(s+b)^2$, the sample drift and jump terms therefore sum 
  \label{eq:sample-resolvent}
 \end{equation}
 
-\emph{Step 3: posterior averaging and the Palm identity.}
-We take posterior expectations and then integrate in $F(\dd y)$.
+We next take posterior expectations and integrate in $F(\dd y)$.
 The application of the Palm identity to the signed right-hand side is justified first by Tonelli for its absolute value: the resulting expectation is
 \[
  \E_{\DP(U)}\left[
  W_P(s)|\psi_0(B+1)+1+\log M_P(s)|\right]<\infty,
 \]
 because $W_P\leq M_P\leq1/s$ and $M_P(1+|\log M_P|)$ is uniformly bounded.
-For the left-hand side, absolute sample integrability, not only a bound on the averaged drift, is needed.
+To interchange the integrals on the left, we also need an absolute bound before averaging the sample drift.
 The posterior atom estimate gives
 \begin{equation}
  \E^{(b)}|\widehat a_P(y)-y|
@@ -223,11 +220,11 @@ We obtain
  =\E_{\DP(U)}\left[
  W_P(s)\{\psi_0(B+1)+1+\log M_P(s)\}\right].
 \]
-By \eqref{eq:normalized-tangent}, we obtain \eqref{eq:generator-tangent}.
+Equation~\eqref{eq:normalized-tangent} now gives \eqref{eq:generator-tangent}.
 The parameter $B$ in the digamma term has not changed under the posterior disintegration.
 \end{proof}
 
-\begin{remark}[Domain for the construction]
+\begin{remark}
 If $F\in\Ptwo$, then $U=B\exp_*F$ is Thorin-admissible, since
 \begin{equation}
  \int\log(1+b^{-1})\,U(\dd b)
@@ -235,7 +232,6 @@ If $F\in\Ptwo$, then $U=B\exp_*F$ is Thorin-admissible, since
  \leq B\{\log2+F(|y|)\}<\infty.
  \label{eq:log-moment-admissibility}
 \end{equation}
-This is a sufficient domain, not a necessary condition for a finite Thorin measure.
-Every finite-gamma input lies in it.
-The construction below starts there and controls its second moment on finite intervals; it does not assume moments of the unlogged positive rates.
+Every finite gamma convolution gives such an $F$.
+We shall preserve this second logarithmic moment on finite time intervals; no moment of the positive rate itself is required.
 \end{remark}
