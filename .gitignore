@@ -8,3 +8,6 @@ __pycache__/
 !/manuscript/**/
 !/manuscript/**/*.tex
 !/manuscript/**/*.bib
+
+# Literature PDFs are local reading copies; keep only notes and metadata.
+/literature/**/*.pdf
