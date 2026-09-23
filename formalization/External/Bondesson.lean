@@ -4,16 +4,16 @@ import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 /-!
 # Registered Bondesson inputs
 
-This file contains the only external mathematical axioms currently introduced by
-this project. It imports mathlib only. In particular it does not import `main`,
+This file contains the registered Bondesson axioms. It imports mathlib only.
+In particular it does not import `main`,
 the project's GGC predicate, or any project deduction.
 
 The contracts below deliberately repeat their primitive measure, integrability,
 and Laplace-transform formulas. Their meaning can therefore be audited without
 trusting an opaque predicate or a project structure. The measure on positive
 rates need not have finite total mass. `Integrable` at parameter one is the
-Thorin admissibility condition; the local implication to integrability at every
-positive Laplace parameter must be proved before manipulating those integrals.
+Thorin admissibility condition. `GGC.Thorin` proves its endpoint equivalence and
+integrability at every nonnegative Laplace parameter without new axioms.
 
 Source: L. Bondesson, *Generalized Gamma Convolutions and Related Classes of
 Distributions and Densities*, Lecture Notes in Statistics 76, Springer, 1992,
@@ -41,21 +41,21 @@ integrable `log (1 + 1 / b)`. The output is a nonnegative probability law with
 the stated Laplace transform. Zero Thorin mass, nonzero drift, and infinite
 Thorin mass are permitted. No support bounded away from zero is required.
 
-Consumers: future Thorin realization and value-law construction (Blueprint
-M0/M1 and M6). Local obligations include the equivalence with the classical
-Thorin integrability conditions, integrability at all positive parameters,
-uniqueness via Laplace transforms, and any regularity in varying data.
+Consumers: `GGC.exists_law_thorinLaplace` and `GGC.existsUnique_law_thorinLaplace`
+(M1), and future value-law construction (M6). Local endpoint equivalence,
+parameter integrability and Laplace uniqueness are proved. Regularity in
+varying data remains a project obligation.
 -/
 axiom thorin_realization
     (a : ℝ) (ha : 0 ≤ a)
     (U : Measure {b : ℝ // 0 < b})
-    (hU : Integrable (fun b => Real.log (1 + 1 / b.1)) U) :
+    (hU : Integrable (fun b => Real.log (1 + 1 / b.val)) U) :
     ∃ μ : ProbabilityMeasure ℝ,
       (∀ᵐ x ∂(μ : Measure ℝ), 0 ≤ x) ∧
       ∀ s : ℝ, 0 < s →
         (∫ x : ℝ, Real.exp (-s * x) ∂(μ : Measure ℝ)) =
           Real.exp (-a * s -
-            ∫ b : {b : ℝ // 0 < b}, Real.log (1 + s / b.1) ∂U)
+            ∫ b : {b : ℝ // 0 < b}, Real.log (1 + s / b.val) ∂U)
 
 /-- **E-B2 — weak closure at a nondefective probability limit.**
 
@@ -68,9 +68,10 @@ Thorin representation. The limit is already a `ProbabilityMeasure ℝ`, and
 nonnegative concentration together with another admissible representation.
 The converse canonical-measure conclusion from the source is not assumed.
 
-Consumers: final weak-approximation reduction (Blueprint M1 and M7).
-Local obligations include constructing the limit, proving it is the actual
-power pushforward, and translating this primitive contract to `IsGGC`.
+Consumer: `GGC.IsGGC.hasThorinRepresentation` (Blueprint M1), using the
+locally proved finite-gamma transform and atomic-measure adapters.
+Original-GGC weak closure and the conditional power reduction are proved
+locally and do not depend on this axiom.
 A defective pointwise limit of Laplace transforms does not meet the inputs.
 -/
 axiom weak_closure
@@ -105,13 +106,11 @@ zero-drift transform with finitely many strictly positive shapes and rates.
 The finite index size may be zero, representing the empty convolution / law
 concentrated at zero. There is no uniform moment hypothesis on the sequence.
 
-Consumers: finite-input reduction (Blueprint M1 and M7). Local obligations
-include constructing the finite atomic Thorin measure from the displayed
-sum, identifying this transform with the distribution of a sum of independent
-gamma variables, proving power closure for those finite inputs, and proving
-continuity of the fixed power pushforward. In particular this declaration
-does not assume the finite-input power theorem. The actual gamma-sum API has
-not yet been implemented; this declaration specifies only its transform.
+Consumer: `GGC.HasThorinRepresentation.isGGC` (Blueprint M1). The finite-gamma
+transform and local Laplace uniqueness identify these approximants with actual
+independent gamma sums. Finite-input power closure remains a separate project
+obligation and is not supplied by this declaration. Fixed-power continuity and
+the conditional reduction are local results without this axiom.
 -/
 axiom finite_atomic_approximation
     (μ : ProbabilityMeasure ℝ)

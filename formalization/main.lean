@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.MeasureTheory.Constructions.Pi
+import Mathlib.MeasureTheory.Measure.FiniteMeasurePi
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.Probability.Distributions.Gamma
 
@@ -57,14 +58,13 @@ def gammaLaw (α b : PosReal) : NonnegLaw where
 
 /-- The law of the sum of k independent gamma variables with shapes α and rates b.
 
-`Measure.pi` is the actual finite product of the component probability measures.
+`ProbabilityMeasure.pi` is the finite product of the component probability measures.
 Its pushforward under summation supplies the law; there is no coupling premise.
 The index k may be zero: the empty product and empty sum give the zero law.
 No restriction is imposed on k, the shapes, or the variation of the rates. -/
 def finiteGammaLaw (k : ℕ) (α b : Fin k → PosReal) : NonnegLaw where
   law := ProbabilityMeasure.map (f := fun x : Fin k → ℝ => ∑ i, x i)
-    (⟨Measure.pi (fun i => ((gammaLaw (α i) (b i)).law : Measure ℝ)),
-      inferInstance⟩ : ProbabilityMeasure (Fin k → ℝ)) (by fun_prop)
+    (ProbabilityMeasure.pi (fun i => (gammaLaw (α i) (b i)).law)) (by fun_prop)
   nonneg := by
     change ∀ᵐ y ∂Measure.map (fun x : Fin k → ℝ => ∑ i, x i)
       (Measure.pi (fun i => ((gammaLaw (α i) (b i)).law : Measure ℝ))), 0 ≤ y

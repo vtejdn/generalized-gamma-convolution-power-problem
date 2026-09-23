@@ -20,19 +20,24 @@ entry point is [main.lean](main.lean), which contains all project-specific
 definitions needed to read `GGC.GGCPowerClosure`. This is an unproved target
 proposition, not a theorem disguised as an axiom or an unfinished proof term.
 The project's mathematical assessment in [ResearchStatus](../ResearchStatus.md)
-is separate from Lean verification. Future proof modules remain proposed.
+is separate from Lean verification. M0 is accepted. M1 implementation is
+verified and ready for independent design acceptance: Laplace uniqueness,
+Thorin endpoint equivalence, finite-atomic adapters, the characterization and
+constant-law membership are now proved, alongside the earlier weak reduction.
+The characterization uses the existing E-B2/E-B3 axioms; no E-B4 was added.
+The finite-input power theorem remains open; see the
+[construction record](ConstructionReport.md#m1-characterization-2026-09-23).
 
 **Implemented migration (2026-09-23):** `main.lean` now uses the
 original definition of `IsGGC` as a weak limit of actual finite gamma
 convolutions, retaining all definitions needed to read `GGCPowerClosure`.
-Thorin representability is a separate predicate; its characterization remains
-M1 work: prove it when
-the work is modest, or use the user-authorized literature fallback if the
-engineering cost is substantial. See the [definition contract](Blueprint.md#original-ggc-definition).
+Thorin representability is a separate predicate. Its characterization now
+follows the local E-B2/E-B3 bridge (route 2) in the
+[definition contract](Blueprint.md#original-ggc-definition).
 Auxiliary lemmas have moved to their proof modules; the genuine final proof belongs
 to `GGC/PowerClosure.lean`. The [migration contract](Blueprint.md#statement-proof-separation)
 specifies ownership and acceptance. No new external axiom was needed for this
-migration. The characterization and full power-closure proof are not yet implemented.
+migration or the characterization. The full power-closure proof is not yet implemented.
 
 ## Current project layout
 
@@ -41,12 +46,16 @@ formalization/
   lean-toolchain          Lean 4.32.2
   lakefile.toml           default GGCPower library target
   lake-manifest.json      exact dependency revisions
+  Blueprint.md            design, interfaces, milestones and acceptance criteria
+  ConstructionReport.md   implementation reports, build evidence and axiom audits
   main.lean               original GGC definition and complete target statement
   GGC/
     Basic.lean            law and power-pushforward lemmas
-    FiniteGamma.lean      product/sum semantics and elementary GGC membership
-    Laplace.lean          Laplace definition; analytic lemmas remain planned
-    Thorin.lean           separate representability predicate and constant case
+    FiniteGamma.lean      product/sum semantics, membership and Laplace formulas
+    Laplace.lean          integrability, normalization, bounds and uniqueness
+    WeakClosure.lean      original-definition closure in the weak topology
+    Reduction.lean        conditional finite-input-to-general power reduction
+    Thorin.lean           admissibility, atomic data, characterization, realization
   AxiomAudit.lean         declaration and axiom inspection
   External/
     Bondesson.lean        complete E-B1, E-B2 and E-B3 axiom contracts
@@ -73,7 +82,8 @@ import cycle. The final theorem will be available through
 | Content | Maintained in |
 |---|---|
 | Principles, trust boundary, development and acceptance rules | This README |
-| Dependency graph, interfaces, modules, milestones and open obligations | [Blueprint](Blueprint.md) |
+| Read-only construction specification: dependency graph, interfaces, modules and acceptance criteria | [Blueprint](Blueprint.md) |
+| Current milestone status, implementation/completion reports, API evidence, build results and axiom audits | [Construction Report](ConstructionReport.md) |
 | Written proofs and stable result identifiers | [ledger](../ledger/README.md), [WIP](../WIP.md) |
 | Literature versions, locators and hypothesis audits | [Primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md), [reference map](../ledger/references.md) |
 | Mathematical research status | [ResearchStatus](../ResearchStatus.md) |
@@ -225,11 +235,12 @@ results not yet formalized may be registered as explicit external axioms.
 The target is **Lean verification of the project's GGC power closure
 derivation relative to the registered literature axioms**.
 Do not re-axiomatize mathlib results. E-B1, E-B2 and E-B3 are implemented in
-[External/Bondesson.lean](External/Bondesson.lean); all other entries remain
-planned. The [external inventory](External/README.md) identifies the exact
-declarations and adaptations. In particular, E-B3 currently returns finite
-atomic Thorin transforms; identification with actual finite gamma sums is
-a local obligation, not an implemented gamma-sum API.
+[External/Bondesson.lean](External/Bondesson.lean). E-J1–E-J3 are registered in
+[External/James.lean](External/James.lean), using actual shared random-measure
+semantics. E-S1 and E-T1 remain planned. The [external inventory](External/README.md) identifies the exact
+declarations and adaptations. E-B3 returns finite atomic Thorin transforms;
+`GGC.HasThorinRepresentation.isGGC` identifies its approximants with actual
+finite gamma sums using the local transform certificate and Laplace uniqueness.
 
 For every actual declaration, record its stable ID, full source and version,
 theorem/formula/page locator, original statement or derived interface, exact
@@ -347,7 +358,7 @@ failure to find one guessed name does not establish that a theory is missing.
   Notify consumers of interface changes and preserve others' uncommitted
   work. Formalization difficulty does not justify changing the conclusion.
 
-Record each major declaration using:
+Record each major declaration in [ConstructionReport.md](ConstructionReport.md), not in the blueprint, using:
 
 ```text
 Node ID / WIP ID:
@@ -370,7 +381,9 @@ Gamma case implies the general case” is useful early work, but must not use
 the final theorem's name before its premise is discharged. An unregistered
 axiom is not a substitute for completing a draft.
 
-Use `planned / in_progress / blocked / verified` in the Blueprint.
+Treat the Blueprint as read-only during construction and follow its requirements.
+Record `planned / in_progress / blocked / verified` and actual progress in
+[ConstructionReport.md](ConstructionReport.md); do not update the Blueprint's status text.
 A blocked node records the exact obstacle. A verified node needs a complete
 proof, build evidence and a dependency audit. A file depending on an
 unfinished draft is not verified merely because it contains no `sorry` itself.
@@ -390,9 +403,9 @@ The existing [AxiomAudit.lean](AxiomAudit.lean) prints the full target,
 definitions, external contracts and axiom dependencies of the basic lemmas.
 It imports `GGC.FiniteGamma`, `GGC.Thorin` and `External.Bondesson` explicitly.
 Lake covers `main`, all `GGC` and `External` descendants, and the audit.
-The audit prints both membership predicates and checks the migrated and new
-lemmas. Add the characterization's type and dependency report when that
-theorem is implemented; no characterization axiom has been added for this rewrite.
+The audit prints both membership predicates, the endpoint condition, finite
+Thorin data and the characterization type, and checks the completed M0/M1
+declarations' dependencies. No new characterization axiom has been added.
 
 There is no `GGC.ggc_rpow` declaration yet. Once its genuine proof exists,
 import `GGC.PowerClosure` in the audit, include that proof module in the
@@ -435,7 +448,7 @@ three external assumptions and elementary-lemma dependencies recorded above.
 This was cached-project validation, not a clean rebuild of mathlib, and no
 environment configuration or implementation was changed. The direct path
 is machine-specific; on another machine use its installed pinned toolchain.
-The [design review](Blueprint.md#design-review-2026-09-23)
+The [design review](ConstructionReport.md#design-review-2026-09-23)
 records the contract corrections and remaining acceptance obligations.
 M0 remains `in_progress`; the main theorem has not been proved.
 
@@ -476,7 +489,8 @@ Completion requires all of the following:
    semantics, the separate characterization and its dependencies, and the
    zero law, positive constant laws, \(q=1\) and a single Gamma law. A proof of
    representability alone does not establish original-definition membership.
-3. Every required Blueprint node is `verified` with evidence; all project
+3. Every required Blueprint node is recorded as `verified` in the construction
+   report with evidence; all project
    core deductions have complete Lean proofs.
 4. The proof entry point `GGC/PowerClosure.lean` and `AxiomAudit.lean` build
    reproducibly in the pinned environment. Default targets include the main
@@ -496,6 +510,6 @@ derivation has been verified in Lean relative to the listed literature
 axioms.” Claiming a full formalization without external mathematical axioms
 also requires Lean proofs of those inputs.
 
-The present deliverables are the project scaffold, complete target statement,
-basic semantic lemmas and the registered Bondesson interfaces. They do not
-yet satisfy the main-proof completion criteria above.
+The present deliverables include the complete target statement, M0/M1 lemmas,
+the characterization relative to E-B2/E-B3, and the registered Bondesson
+interfaces. They do not yet satisfy the main-proof completion criteria above.

@@ -6,8 +6,10 @@ Compiling an axiom declaration checks its type; it does not prove the external
 mathematical result. No project core result, including GGC power closure, is
 registered here as an axiom.
 
-The current declarations are in [Bondesson.lean](Bondesson.lean), under
-`GGC.External.Bondesson`. That file imports mathlib only. It writes every
+The current declarations are in [Bondesson.lean](Bondesson.lean) and
+[James.lean](James.lean), under the corresponding `GGC.External` namespaces.
+Bondesson imports mathlib only; James imports mathlib and the shared
+`GGC.Foundations` measure definitions. Each file writes every
 assumption and conclusion using actual measures, integrals, probability laws,
 and weak convergence, without importing `main.lean` or using an opaque GGC
 predicate. Consequently it cannot create an import cycle with the main file.
@@ -19,8 +21,11 @@ predicate. Consequently it cannot create an import cycle with the main file.
 | E-B1 | `GGC.External.Bondesson.thorin_realization` | Realize every nonnegative drift and Thorin-admissible positive-rate measure as a nonnegative probability law with the displayed Laplace transform. Intended for Thorin/value-law construction, Blueprint M0/M1 and M6. |
 | E-B2 | `GGC.External.Bondesson.weak_closure` | A weak limit of represented laws, already known to be a probability law, inherits nonnegative concentration and an admissible Thorin representation. Under the approved original GGC definition, this can supply the original-membership-to-representation direction in M1. |
 | E-B3 | `GGC.External.Bondesson.finite_atomic_approximation` | Approximate every represented law by nonnegative probability laws with zero-drift finite-atomic Thorin transforms. After local identification of these approximants with actual finite gamma sums, this can supply the representation-to-original-membership direction in M1. |
+| E-J1 | `GGC.External.James.markov_krein` | Nonnegative real Markov–Krein formula and a.s. integrability of the actual random mean; finite positive base mass and logarithmic integrability are explicit. M2 consumer: `dirichletMean_laplace`, then local tilted-law identification. |
+| E-J2 | `GGC.External.James.posterior_palm_nonneg` | Nonnegative one-observation disintegration for an explicitly measurable posterior kernel whose values have DP(U+δ_b) laws. Signed applications still require local L1 proofs. |
+| E-J3 | `GGC.External.James.beta_atom_posterior` | DP(U+δ_b) law of the actual independent-product atom mixture. The supplied weight law must push forward to mathlib's Beta(1,B) measure. M2 consumer: `posteriorMixture_isDirichlet`. |
 
-All three use L. Bondesson, *Generalized Gamma Convolutions and Related Classes
+The three E-B inputs use L. Bondesson, *Generalized Gamma Convolutions and Related Classes
 of Distributions and Densities*, Lecture Notes in Statistics **76**, Springer,
 **1992**, [DOI 10.1007/978-1-4612-2948-3](https://doi.org/10.1007/978-1-4612-2948-3).
 The source locators are:
@@ -48,11 +53,12 @@ measure is permitted. The represented law is explicitly a probability measure
 on the real line concentrated almost everywhere on nonnegative values.
 
 Every displayed Laplace identity is quantified over all real `s > 0`.
-Before manipulating these integrals, prove locally that the admissibility
-condition implies integrability of `log (1 + s / b)` for every such `s`, and
-verify its equivalence with the classical Thorin conditions. The Laplace
-integrand is bounded on the law's nonnegative concentration set; the formal
-integrability proof and all changes of variables remain local work.
+`GGC.ThorinAdmissible.integrable_log` now proves integrability of
+`log (1 + s / b)` for every `s ≥ 0`. `GGC.thorinAdmissible_iff_endpoint`
+proves equivalence with local finiteness, absolute logarithmic integrability
+on rates at most one, and reciprocal-rate integrability on rates above one.
+The local-finiteness clause controls mass near rate one, where `log b` vanishes.
+`GGC.Laplace` proves Laplace integrability and uniqueness without moments.
 
 E-B2 uses mathlib's weak topology on `ProbabilityMeasure ℝ`. Thus its limit is
 a nondefective probability law, as required by the source. It does not assert
@@ -61,9 +67,9 @@ source's converse canonical-measure claim.
 
 E-B3 specifies an exponential of a finite sum of logarithms with positive
 shapes and rates. It allows an empty sum, representing the law concentrated
-at zero. The finite sum must still be connected locally to an atomic Thorin
-measure and to an actual sum of independent gamma variables. This gamma-sum
-API has not been implemented. No moment bound uniform over the approximating
+at zero. The finite sum is connected locally to `finiteThorinMeasure` and to
+the actual independent gamma sum by `laplace_finiteGammaLaw`. Local Laplace
+uniqueness identifies E-B3's approximants. No moment bound uniform over the approximating
 sequence is assumed. Neither E-B2 nor E-B3 supplies continuity of the power
 pushforward or power closure of the finite inputs.
 
@@ -75,17 +81,21 @@ itself complete the project's main theorem.
 
 The approved [definition contract](../Blueprint.md#original-ggc-definition)
 requires `main.lean` to define GGC by weak limits of actual finite gamma sums.
-Thorin representability becomes the separate `HasThorinRepresentation`
-predicate in planned `GGC/Thorin.lean`. Existing E-B1--E-B3 do not change their
-primitive types: their adapters must use the representation predicate rather
-than treating it as definitionally equal to the new `IsGGC`.
+Thorin representability is the separate `HasThorinRepresentation`
+predicate in `GGC/Thorin.lean`. Existing E-B1--E-B3 retain their primitive types.
+The local adapters use the separate representation predicate.
 
-Prefer a characterization proof using mathlib and local lemmas if modest.
-Alternatively, the already declared E-B2/E-B3 permit a local derivation once
-finite-gamma transform certificates and Laplace uniqueness are available.
-That derivation is verified relative to E-B2/E-B3, not axiom-free.
+**Selected route: Blueprint Section 2.1, route 2.**
+`GGC.isGGC_iff_hasThorinRepresentation` is derived from E-B2/E-B3, with local
+finite-atomic adapters, the finite-gamma transform and Laplace uniqueness.
+The forward direction depends on E-B2; the reverse depends on E-B3.
+`GGC.isGGC_diracLaw` uses E-B3, including for positive constants.
+E-B1 remains the separate existence input to the realization adapters.
+See the [construction report](../ConstructionReport.md#m1-characterization-2026-09-23)
+for verification and the exact dependency audit.
 
-**E-B4 is authorized as a fallback, but has no Lean declaration.** If the
+**E-B4 was not needed and has no Lean declaration.** Its previously authorized
+fallback contract is retained below for reference. If the
 characterization requires substantial new work, register
 `GGC.External.Bondesson.thorin_characterization` in the proposed
 `External/ThorinCharacterization.lean`. For every nonnegative probability law
@@ -121,6 +131,29 @@ the original definition and locally proved weak closure. It therefore needs
 neither E-B2/E-B3 nor E-B4 directly; the finite-input proof uses the selected
 characterization to establish GGC membership of its constructed value laws.
 
+## James registration — 2026-09-23
+
+E-J1–E-J3 are now declared. The [primary reprint](https://arxiv.org/pdf/math/0505606)
+was read at its version-marked page 1 and reprint pp.2, 4–5. Bibliography:
+L. F. James (2005), *Annals of Statistics* 33, 647–660,
+[DOI 10.1214/009053604000001237](https://doi.org/10.1214/009053604000001237).
+These page numbers are reprint pages, not the journal pagination.
+
+E-J1 specializes (1)–(3) to a nonnegative real test and z=1. E-J2 uses the
+one-observation posterior discussion and (8), with the joint test made
+explicit. E-J3 is source-derived: add an independent shape-one gamma atom,
+then normalize; the gamma ratio supplies the Beta(1,B) weight. It is not
+presented as a separately numbered theorem in the paper.
+
+All three use actual finite-partition DP semantics on a Polish Borel space.
+Zero-mass partition cells are permitted. The base has finite positive mass;
+there is no nonatomicity or moment assumption. E-J2 supplies no signed Fubini
+rule or chosen measurable-kernel construction. E-J3 supplies no posterior
+logarithmic bounds. The local beta density adapter, product construction,
+mean estimates, and Laplace identification belong in proof modules. None
+supplies DP existence, a common parameterized realization, the power tangent,
+canonical phase, or a generator identity.
+
 ## Whitelisted inputs not introduced yet
 
 In addition to the optional E-B4 fallback above, the following entries remain
@@ -130,9 +163,6 @@ APIs or proved results.
 
 | ID | Planned source and interface | Required work before introduction |
 |---|---|---|
-| E-J1 | James (2005), arXiv:math/0505606v1, reprint p. 2, (1)–(3): gamma normalization, independence, and Markov–Krein identity. | Define a Dirichlet process with finite-partition or stick-breaking semantics; state the exact random-mean and logarithmic integrability conditions. |
-| E-J2 | Same paper, pp. 4–5, posterior formula and (8): nonnegative one-observation Palm/posterior identity, including atomic and mixed bases. | Define measurable random-measure evaluation and the posterior kernel, then state the nonnegative identity. Signed use requires local absolute integrability. |
-| E-J3 | A source-derived interface from the James posterior and gamma-normalization results: independent beta mixing realizes the augmented-base posterior. | Supply actual beta and Dirichlet laws, independence and pushforward semantics, or prove this specialization locally. |
 | E-S1 | Schilling–Song–Vondracek, *Bernstein Functions*, **2010 first edition**, Theorems 6.10 and 7.3, printed pp. 58–60 and 63, with the official 2022-12-01 errata. | Give the nonzero Stieltjes function, bounded phase, anchor-one integral, a.e. uniqueness, and any complex-domain contract needed for boundary recovery. Joint measurability remains local work. |
 | E-T1 | Sethuraman (1994), Section 2, (2.1), pp. 642–643, and Theorem 3.4, p. 645: stick-breaking construction of a Dirichlet process. | Specify independent beta break fractions and independent base locations, the actual random measure, and total mass one. Parameterized convergence and uniform integrability remain local work. |
 
@@ -150,8 +180,9 @@ lake env lean External/Bondesson.lean
 ```
 
 A successful check establishes elaboration in the pinned environment only.
-Build evidence and the implementation status are maintained in the parent
-[README](../README.md) and [Blueprint](../Blueprint.md).
+Build evidence and implementation status are maintained in the
+[Construction Report](../ConstructionReport.md). The [Blueprint](../Blueprint.md)
+is read-only during construction.
 
 Every new axiom belongs in this folder, must be registered in the project
 whitelist and this inventory, and must carry a complete type and provenance
@@ -159,8 +190,8 @@ docstring. Project proof modules import the external contracts they need;
 external modules must not import `main`, `GGC.Basic`, or project proof modules.
 Under the [approved statement/proof separation](../Blueprint.md#statement-proof-separation),
 project proof modules may import `main` to use its complete definitions, while
-`main` will no longer import external declarations. That migration remains
-pending. If shared semantic definitions are later needed for Dirichlet
+`main` imports mathlib only; this migration is complete.
+If shared semantic definitions are later needed for Dirichlet
 processes or phases, put their actual definitions in the independently
 reviewable `GGC/Foundations/RandomMeasure.lean` layer, which imports mathlib
 only. This keeps external inputs independent of the target and its proof.
