@@ -1179,6 +1179,6 @@ integral representations of the Thorin class.
 These are structural comparisons and source interfaces. They do not
 supply the project's nonlinear log-rate generator, its positive Euler
 evolution or actual-power identification, and migration does not add them
-to the [formalization axiom boundary](../formalization/axiom-boundary.md).
+to the [formalization axiom boundary](../formalization/README.md#external-inputs).
 The gamma-mixture and HCM/GGC results used in the power project remain in
 the dedicated Bondesson and James source notes.

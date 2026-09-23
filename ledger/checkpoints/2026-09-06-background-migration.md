@@ -26,7 +26,7 @@ Return to [CurrentGoal](../../CurrentGoal.md) or the [ledger map](../README.md).
 | General GGC references in the old literature README | [reference map](../references.md), entries 6--11 | already present: DLMF, Martin--Kearney, Sjodin 2021, Leonov--Shiryaev, Cifarelli--Regazzini/Lijoi--Prunster, Dyachenko--Karp; no duplicate source ledger added |
 | Bibliographic references behind class/beta-prime examples | class-and-power and BP source maps | Bosch, Bosch--Simon, Diedhiou and the Ferreira--Simon spectral-representation lead, without importing a new theorem |
 | Author information and SD writing-style precedent | existing [GGC manuscript](../../manuscript/ggc-power-closure.tex) | already self-contained; no further manuscript edit needed |
-| General Lean engineering safeguards | existing [GGC blueprint](../../formalization/README.md) and [axiom boundary](../../formalization/axiom-boundary.md) | the current policy remains authoritative; the old SD plan's different external-axiom policy is not imported |
+| General Lean engineering safeguards | existing [GGC blueprint](../../formalization/README.md) and [axiom boundary](../../formalization/README.md#external-inputs) | the current policy remains authoritative; the old SD plan's different external-axiom policy is not imported |
 
 The BP note retains the old mathematical claims, adding the exact
 Theorems 4.1.1 / 4.1.4 locators and making their existing mass/curvature

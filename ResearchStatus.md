@@ -58,10 +58,17 @@ sources or to the 2026 induction discussed below.
 The [manuscript sources](manuscript/ggc-power-closure.tex) and
 [bibliography](manuscript/references.bib) are written. The recorded handoff
 included static checks, not TeX compilation.
-The [Lean directory](formalization/README.md) contains a blueprint, API
-audit and explicit literature-axiom boundary, not an implemented or
-Lean-verified proof. Neither source formatting nor compilation certifies
-the mathematics.
+As of 2026-09-23, the [Lean principles](formalization/README.md) and
+[construction blueprint](formalization/Blueprint.md) are accompanied by a
+pinned project and a [complete target statement](formalization/main.lean),
+including the original finite-gamma weak-limit definition of GGC. Thorin
+representability is a separate predicate whose characterization remains pending.
+The [external-input directory](formalization/External/README.md)
+contains three explicit Bondesson axiom contracts. The main theorem remains
+an unproved proposition; the scaffold and elementary lemmas do not constitute
+a Lean-verified power-closure proof. Build evidence is recorded in the Lean README.
+This implementation stage does not change the mathematical assessment above.
+Neither source formatting nor compilation certifies the mathematics.
 
 ## Independent results and separate questions
 

@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# Lean/Lake dependencies and generated build products.
+.lake/
+
 # Active GGC manuscript: retain only TeX/BibTeX sources and source folders.
 # In particular, local compilation products and generated PDFs stay untracked.
 /manuscript/**

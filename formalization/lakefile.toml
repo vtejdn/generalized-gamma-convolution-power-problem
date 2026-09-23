@@ -1,0 +1,14 @@
+name = "ggc_power_closure"
+version = "0.1.0"
+defaultTargets = ["GGCPower"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+# mathlib v4.32.2, verified against the upstream release tag.
+rev = "905b95818eb32af7874a58b427f50c1711a5e96c"
+
+[[lean_lib]]
+name = "GGCPower"
+roots = ["main", "GGC", "External", "AxiomAudit"]
+globs = ["main", "GGC.+", "External.+", "AxiomAudit"]

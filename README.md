@@ -29,7 +29,7 @@ compilation remains user-controlled.
 | Where are the full proofs and their dependencies? | [ledger/README.md](ledger/README.md), the thematic module map |
 | What exactly do the external sources say? | [notes/README.md](notes/README.md), [ledger/references.md](ledger/references.md) and [literature/README.md](literature/README.md) |
 | What can be checked by code? | [computations/README.md](computations/README.md) |
-| What is the presentation or formalization artifact? | [manuscript](manuscript/ggc-power-closure.tex), [bibliography](manuscript/references.bib) and [Lean blueprint](formalization/README.md) |
+| What is the presentation or formalization artifact? | [manuscript](manuscript/ggc-power-closure.tex), [bibliography](manuscript/references.bib), [Lean principles](formalization/README.md), [Lean blueprint](formalization/Blueprint.md), [complete Lean target statement](formalization/main.lean) and [external inputs](formalization/External/README.md) |
 
 For a quick orientation, read ResearchStatus, then BigPicture.
 For a proof audit, start with the
@@ -77,7 +77,7 @@ The subunit-root question must not be conflated with the present
    not generated compilation products.
 7. **Respect the formalization boundary.** Precisely cited external
    theorems may be declared as axioms under the
-   [explicit whitelist](formalization/axiom-boundary.md).
+   [explicit whitelist](formalization/README.md#external-inputs).
    Project deductions must be proved relative to that boundary.
    A blueprint, `sorry`, unregistered axiom or hidden core assumption is
    not a completed formalization.

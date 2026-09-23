@@ -1,6 +1,29 @@
 # Current goal
 
-Updated: **2026-09-06**.
+Updated: **2026-09-23**.
+
+## Current authorized work: blueprint-aligned Lean definition migration
+
+Following the [principles](formalization/README.md) and
+[blueprint](formalization/Blueprint.md), establish a pinned Lean project,
+ignore `.lake/`, and provide a human-auditable [main.lean](formalization/main.lean)
+containing the full **GGC power closure** statement and its necessary definitions.
+Every introduced literature axiom belongs in the separate
+[External directory](formalization/External/README.md), with a complete Lean
+type, source locator and explicit scope.
+
+The current code defines `GGC.GGCPowerClosure` as the unproved target proposition.
+`main.lean` now uses actual finite gamma products and weak limits for `IsGGC`,
+with no external imports. Basic, finite-gamma, Laplace and Thorin declarations
+are separated into `GGC/` modules, and the audit and Lake coverage follow that
+layout. `HasThorinRepresentation` is a separate predicate; its characterization
+and positive-constant membership proof remain M1 work. The three Bondesson
+interfaces are unchanged. The main construction and proof remain pending; no
+core conclusion is assumed as an axiom or represented by an unfinished proof.
+This stage includes compilation and dependency inspection of the scaffold.
+The mathematical assessment in [ResearchStatus](ResearchStatus.md) is unchanged.
+
+## Previous maintenance handoff (2026-09-06)
 
 **Documentation cleanup, shared-material migration and SD-directory removal complete.**
 The user authorized deletion of the three obsolete checkpoint links and the
@@ -9,7 +32,7 @@ The GGC proofs, manuscript, computation scripts and Lean blueprint are
 unchanged. The cleanup is a separate repository-maintenance handoff;
 Git history and remote verification record its commit/synchronization state.
 
-## Current authorized work
+### Authorized work at that time
 
 The current maintenance request is complete: shared SD-era content is in
 the GGC notes and literature, obsolete local references are removed, and

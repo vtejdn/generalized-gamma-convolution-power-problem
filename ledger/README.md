@@ -19,7 +19,7 @@ The assembled proof and internal audit are
 Use [ResearchStatus](../ResearchStatus.md) for the current assessment and
 verification limits, and [CurrentGoal](../CurrentGoal.md) for authorized
 work. The [manuscript](../manuscript/ggc-power-closure.tex) and
-[Lean blueprint](../formalization/README.md) are separate artifacts;
+[Lean blueprint](../formalization/Blueprint.md) are separate artifacts;
 historical checkpoints are not current status authorities.
 
 ## Mathematical organization

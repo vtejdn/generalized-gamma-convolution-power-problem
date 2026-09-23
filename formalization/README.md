@@ -1,304 +1,501 @@
-# GGC power theorem: Lean formalization blueprint
+# GGC Power Closure: Lean Formalization Principles and Rules
 
-Date: 2026-09-06. The subject is the current [TeX manuscript](../manuscript/ggc-power-closure.tex),
-specifically its logarithmic Thorin evolution proof, rather than the α-Cauchy SD proof in the background project.
+Updated: 2026-09-23. Construction plan: [Blueprint.md](Blueprint.md).
 
-**This directory currently contains only a blueprint, a source-level API audit, and an external axiom boundary; there is no Lean implementation or machine verification.**
-The manuscript source cleanup for this round is complete; it has not been compiled, as previously requested.
-All module names and local theorem names below are proposed names, not existing Lean declarations.
-
-Reading order: this document → [mathlib API audit](mathlib-api-audit.md) →
-[external axiom contracts](axiom-boundary.md). For mathematical status, see
-[ResearchStatus](../ResearchStatus.md); for individual proofs, see [WIP](../WIP.md) and
-[ledger 19–25](../ledger/README.md).
-
-## 1. Goal and trust boundary
-
-The final public theorem must preserve the original quantifiers: for every nonnegative GGC probability distribution μ and every real q ≥ 1,
-the pushforward under x ↦ x^q is again GGC. The final interface must retain no restrictions requiring finite Thorin mass,
-zero drift, finite second moments, finite rate support, or an upper bound on shape parameters.
-
-As requested by the user for this work, verified theorems from external papers and monographs are generally declared as `axiom`.
-The engineering goal is therefore “machine-check the new derivations in this paper relative to an explicit list of literature axioms.”
-This is not a formalization from scratch without external mathematical axioms. Existing mathlib theorems should be reused directly, not axiomatized again.
-Generator continuity, Euler existence, dynamic identification, and power closure in this paper must not enter the external axiom whitelist
-merely because they are difficult to formalize.
-
-Selected source baseline: mathlib commit
-`810b3888d0aa94294b18587c453466bc86c1f0fc`, paired with
-`leanprover/lean4:v4.34.0-rc2`. Actual source code was checked in this audit; the API list was not reconstructed from memory.
-**Neither `#check` nor `lake build` was run with this version.** The locally installed v4.32.x
-cannot establish that these newer interfaces compile. Implementation must begin by pinning the versions and running minimal smoke tests.
-
-## 2. Dependencies from manuscript to implementation
-
-```text
-Nonnegative laws, real powers, Thorin representations, test functions
-    ├─ Literature interfaces: Bondesson / James / SSV / Sethuraman
-    ├─ Gamma–Beta logarithmic moments, exponential tilting, parameter differentiation
-    └─ Explicit K kernel, reference jump measure, absolute integrability estimates
-            ↓
-    Palm-based log-rate generator and direct resolvent identity
-            ↓
-    DP parameter coupling + weak-star phase limits → joint generator continuity
-            ↓
-    Positive Euler kernels → second moments and time modulus → compactness → nonlinear weak equation
-            ↓
-    Extension to unbounded tests → Laplace evolution → uniqueness of log-value transport
-            ↓
-    Finite gamma convolutions for arbitrary q → weak approximation → all GGC laws
-```
-
-| Manuscript | Local implementation responsibility | New conclusions that must not be axiomatized |
-|---|---|---|
-| §2 Foundations (01-foundations.tex) | Laws, Thorin, DP, literature interfaces, and adaptation of measurable representatives | Jointly measurable phase selection and local parameter changes in literature formulas |
-| §3 Power tangent (02-power-tangent.tex) | Tilted laws, q and s differentiation, Gamma logarithmic moments | The exact tangent in the power direction |
-| §4 Log generator (03-log-generator.tex) | K kernel, Palm drift, compensation at all jump sizes, absolute integrals | Positive generator and direct resolvent cancellation identity |
-| §5 Evolution (04-evolution.tex) | Common coupling, phase compactness, positive Euler scheme, weak limits | Joint continuity and existence of positive solutions on finite time intervals |
-| §6 Identification (05-identification.tex) | Logarithmic moments, truncation, parameter integrals, density of tests, transport | The constructed curve is the actual power flow |
-| §7 Completion (06-completion.tex) | q=1, T=log q, continuous mapping, weak closure | Final assembly preserving all quantifiers |
-
-The first version should formalize only this dependency chain. There is no need to formalize all seven historical routes,
-HCM theory, the Lévy–Khintchine formula, continuous-time jump SDEs, general McKean–Vlasov theory, or
-Wasserstein duality at the same time. None is a necessary prerequisite for the current proof.
-
-## 3. Suggested encoding of the core objects
-
-### 3.1 Probability laws, positive rates, and real powers
-
-Use `MeasureTheory.ProbabilityMeasure ℝ` with a nonnegativity field:
-`∀ᵐ x ∂μ, 0 ≤ x`. This connects directly to mathlib's Gamma and Beta distributions,
-tilted measures, and Bochner integrals on ℝ.
-
-For `powerLaw μ q`, use `ProbabilityMeasure.map μ (fun x : ℝ => x ^ q)`.
-It has been verified that `Real.continuous_rpow_const` gives continuity on all of ℝ for q ≥ 0;
-no separate extension to the negative half-line is needed for this goal. However, semantic identities such as multiplication of powers
-must still assume x ≥ 0; probabilistic conclusions cannot be inferred from Lean's totalized definition on negative inputs.
-Prove nonnegativity of the pushforward and handle q=1 separately.
-
-For rates, use `PosReal := {b : ℝ // 0 < b}`, or explicitly require the measure to be concentrated almost everywhere on
-`Ioi 0`. **Do not require the topological support to lie in `(0,∞)`**: rates may accumulate at 0 even when there is no mass at 0.
-`F : ProbabilityMeasure ℝ` is the log-rate law, with
-`U = B • exp_*F` and B strictly positive; defining the jump generator does not require F to have a second moment.
-
-In contrast, `log_*μ` is the log-value law, not F. Use distinct type aliases or namespaces for the two.
-Since `Real.log` is not continuous on all of ℝ, the continuous mapping theorem for the whole space cannot be applied directly.
-Lift a strictly positive μ to `PosReal` before mapping by log, or prove the corresponding continuity-set version.
-The established uniform logarithmic moment control is also needed here to prevent loss of tightness near zero.
-
-### 3.2 The GGC definition must not conceal the conclusion
-
-Define `ThorinData` with drift a ≥ 0, a measure U of type `Measure PosReal`, classical Thorin
-integrability, and the finite real integral for every s>0:
+The main theorem is **GGC power closure**:
 
 \[
-\Psi(s)=as+\int\log(1+s/b)\,U(db).
+X\in GGC,\qquad q\in\mathbb R,\quad q\ge1
+\quad\Longrightarrow\quad X^q\in GGC.
 \]
 
-`IsGGC μ` means that such data exist and that the Laplace transform of μ equals exp(−Ψ).
-U may have infinite total mass. One may store the classical piecewise integrability conditions first, then prove equivalence to
-`Integrable (fun b => log (1 + 1/b)) U` and derive integrability for all s>0.
-**Do not store only a Bochner integral identity without integrability**: Lean assigns a default value to the integral of a nonintegrable function,
-which could make the definition incorrectly accept invalid Thorin data.
+This is a deterministic real power of the same nonnegative random variable.
+The final theorem covers every GGC probability law, including nonzero drift,
+infinite Thorin mass and degenerate laws. Finite support, shape bounds,
+moment conditions and finite Thorin mass must not remain as extra hypotheses.
 
-“Every valid set of Thorin data is realized by a probability law” is an external existence theorem, separate from the definition above.
-Construct `finiteGammaLaw` as the pushforward of an actual finite product of Gamma measures under summation, not as an unexplained predicate.
-The empty convolution may be defined as δ0; the main evolution first treats nonempty convolutions with positive shapes and B>0.
+**Current status: the initial Lean project and complete target statement are
+implemented; the main theorem's proof is not implemented.** The human-audit
+entry point is [main.lean](main.lean), which contains all project-specific
+definitions needed to read `GGC.GGCPowerClosure`. This is an unproved target
+proposition, not a theorem disguised as an axiom or an unfinished proof term.
+The project's mathematical assessment in [ResearchStatus](../ResearchStatus.md)
+is separate from Lean verification. Future proof modules remain proposed.
 
-### 3.3 DP and phases
+**Implemented migration (2026-09-23):** `main.lean` now uses the
+original definition of `IsGGC` as a weak limit of actual finite gamma
+convolutions, retaining all definitions needed to read `GGCPowerClosure`.
+Thorin representability is a separate predicate; its characterization remains
+M1 work: prove it when
+the work is modest, or use the user-authorized literature fallback if the
+engineering cost is substantial. See the [definition contract](Blueprint.md#original-ggc-definition).
+Auxiliary lemmas have moved to their proof modules; the genuine final proof belongs
+to `GGC/PowerClosure.lean`. The [migration contract](Blueprint.md#statement-proof-separation)
+specifies ownership and acceptance. No new external axiom was needed for this
+migration. The characterization and full power-closure proof are not yet implemented.
 
-DP must have explicit semantics: the finite-partition distributions of the random probability measure are Dirichlet, allowing atomic bases
-and partition cells of zero mass. This property can be defined via normalized finite-dimensional laws of independent Gamma variables,
-and then realized by stick-breaking. Another valid approach is to define the stick-breaking law directly
-and declare its DP finite-partition property as an external theorem of Sethuraman.
-
-Do not assume that the space of probability measures automatically has every required standard Borel instance. M1 should verify the interface
-between the evaluation σ-algebra and the Borel σ-algebra of the narrow topology, measurability of random measures, and measurability of parameter integrals.
-The complete chain of existing instances has not been verified in this audit. Prefer an explicit common probability space with countably many independent uniform coordinates,
-to reduce dependence on the full theory establishing that the space of random measures is Polish.
-
-The external SSV input first supplies phase existence and a.e. uniqueness for each M. Locally, then fix the bounded truncation of
-`limsup_n (−arg M(−t+i/(n+1)) / π)` as the representative, and prove joint Borel measurability,
-a.e. equality with the external phase, and compatibility with scaling. The minus sign is **inside** the limsup.
-Choosing a phase with `Classical.choose` alone does not establish joint measurability in P.
-
-### 3.4 Test functions and weak solutions
-
-`CompactTest2` bundles a function φ:ℝ→ℝ, `ContDiff ℝ 2 φ`, and `HasCompactSupport φ`.
-Also define an extended test class with linear growth and bounded first and second derivatives. Standardize coercions for function values,
-derivatives, and integrals early, so later proofs are not dominated by conversions between wrapper types.
-
-`WeakLogRateSolution B₀ F₀ T` should explicitly record:
-
-- T ≥ 0, B(t)=B₀ exp(−t), F(0)=F₀, and narrow continuity of F;
-- a finite C such that, for all t∈[0,T], `Integrable (fun y => y^2) (F t)` and the second moment is ≤ C;
-- time integrability and the integral identity of the weak equation for every `CompactTest2`.
-
-These fields are outputs to be proved by the Euler construction. Existence of `WeakLogRateSolution` must not be an external axiom,
-and a finite second moment must not be expressed solely as an upper bound on a real integral without `Integrable`.
-
-## 4. Infrastructure to build locally
-
-### A. Analysis and integral adaptations (moderate effort)
-
-1. `LaplaceTilt`: bounded weights for s>0, strictly positive normalization, and an integral formula for tilted expectations;
-   a common dominating function for q differentiation near q=1, and s differentiation. Estimate 0<x≤1 and x≥1 separately.
-2. `GammaLogMoments`: adaptation of real digamma, Gamma log / x log x moments,
-   the −log Z moment for Beta(1,B), and common bounds for B in compact positive intervals. Complex-valued infrastructure for differentiating the Gamma integral already exists;
-   distribution-level moment formulas and uniformity in parameters still need assembly.
-3. `CompensatedKernel`: the removable singularity of K at 1, L¹ bounds, the two pieces of its integral,
-   truncated mass/first absolute moment of ν₀, and its finite second moment. Only m₂<∞ is needed here;
-   formalizing the closed form of the Basel sum is unnecessary.
-4. `TaylorBounds`: the O(v²) compensation remainder at all jump sizes and the second-order error of the truncated drift shift;
-   prove norm integrability before every signed Fubini interchange.
-
-### B. DP parameter continuity (high effort)
-
-1. Construct a common uniform coupling using generalized inverse CDFs: if Fₙ⇒F, the location variables converge a.s. in each coordinate.
-   No directly usable quantile / Skorohod convergence API was found in this audit;
-   `Kernel.exists_measurable_map_eq_unitInterval` supplies only a randomization representation, not this convergence guarantee.
-2. Take the Beta weights explicitly as V=1−T^(1/B). Prove continuity of the weights, vanishing tail remainder, and a common full-measure set for countably many coordinates.
-3. Use P=(1−Z)Q+Zδ_b for the posterior; prove weak convergence when Bₙ, Fₙ, and yₙ vary simultaneously.
-4. A bound on the y derivative of the kernel `e^y/(s e^y+e^z)` yields resolvent convergence under changing scales.
-   Passing from convergence for fixed P to random posterior integrals requires a common Beta logarithmic bound.
-
-Sethuraman permits only the distributional identity as external input; the coupling with moving parameters and the uniform integrability arguments above
-remain local work. If a Skorohod theorem from a separate source is later adopted as an axiom, add an exact source and contract first;
-do not present a generic randomization API as that result.
-
-### C. Weak-star phase compactness (high effort; two implementation choices)
-
-The manuscript uses weak-star compactness of the unit order interval in L∞. mathlib already has Banach–Alaoglu and metrizability of weak-star compact sets
-with separable predual, but this audit did not verify a complete, directly reusable surjective representation interface for `(L¹)* ≃ L∞`.
-The existence of `WeakDual` does not mean phase limits have been implemented.
-
-First try an equivalent implementation, **currently only a proposed construction, not a verified API**:
-
-\[
-w=\frac{u}{1+u},\quad
-\sigma_n(dw)=\eta_n\!\left(\frac{w}{1-w}\right)dw,\quad 0\le\sigma_n\le dw
-\quad(0\le w\le1).
-\]
-
-Extract a weak limit of finite measures on the compact interval and prove that the limit is still dominated by Lebesgue measure.
-Radon–Nikodym gives a density 0≤η≤1, with no atoms at the endpoints. For any f∈L¹(du), the transformed test is
-`f(w/(1−w))/(1−w)^2`, which belongs to L¹(dw). First pass to the limit for continuous tests, then extend to this test class
-using the common domination σₙ≤dw and L¹ density; finally identify the limit by phase uniqueness at anchor 1.
-Weak closedness of domination, change of variables, and density adaptations must be proved locally.
-
-This route reuses Prokhorov/Radon–Nikodym and may be shorter than developing the full Lp dual representation first.
-Both implementations yield only weak-star convergence against L¹ kernels, **not pointwise convergence of boundary phases**.
-
-### D. Positive Euler scheme and nonlinear weak limits (the largest block)
-
-Fix finite T; set h=T/N and ε=√h. For sufficiently large N, explicitly define
-
-\[
-\Pi_h(y,dz)=p\delta_{y+h a_\varepsilon/p}(dz)
- +h\int_{|v|>\varepsilon}\delta_{y+v}(dz)k(y,v)\nu_0(dv),
-\quad p=1-h\lambda_\varepsilon\ge\tfrac12.
-\]
-
-1. Prove this is a measurable Markov kernel, nonnegative and of mass exactly 1.
-2. Recursively define `F_{j+1}=F_j Π_h(B_j,F_j)`. At each step, the kernel depends on the current deterministic marginal law;
-   it is not a fixed linear semigroup depending only on y.
-3. Compute EΔ=ha and EΔ² exactly; use discrete Gronwall to obtain uniform second moments.
-4. Construct finite path measures to couple different times. Vanishing cross terms of centered increments can be proved by successive kernel integration,
-   without first implementing general martingale L² theory. Obtain second-moment estimates for time increments.
-5. **Linearly interpolate the probability laws**; do not interpolate sample paths and assume the marginals agree.
-   Extract a limiting curve using Prokhorov and equicontinuity in time.
-6. Reuse the Lévy–Prokhorov metrization of the narrow topology: prove from a coupling and Markov tail bounds that
-   `d_LP(μ,ν) ≤ (E|Y−Z|²)^(1/3)` (handling zero separately), which suffices for the time modulus.
-   This bridging inequality still needs a local proof; the library's topological equivalence is not a quantitative coupling bound.
-7. Prove the cumulative consistency error tends to zero at order `√h+h(log h)^2`; then pass through the nonlinear limit
-   using joint continuity of Hφ(B,F). Continuity with F frozen is insufficient.
-
-The library's Arzelà–Ascoli theorem cannot be applied directly to a discrete grid. Continuous interpolation, a common compact range, and
-equicontinuity must be established first. If estimates give only asymptotic equicontinuity, handle the finitely many early grids separately,
-or use diagonal extraction at rational times followed by extension. The final weak equation must hold for all tests simultaneously,
-not along a different subsequence for each φ.
-
-### E. Dynamic identification (high effort)
-
-1. Derive valid Uₜ and uniform `E|log X|` for μₜ from the uniform second moment of F; finite EX is unnecessary.
-2. Extend the test domain by truncation, proving that errors from the first and second cutoff derivatives and the tail terms vanish.
-3. Use the direct resolvent identity and B′=−B to obtain gₜ′=hₜ. Do not omit the mass-decay term.
-4. Integrate the identity for δ≤s and let δ↓0; control absolute integration in s×t using a strictly positive Laplace lower bound and `E|log X|`.
-   Do not strengthen the assumptions to `E|X log X|<∞` without justification.
-5. Approximate J′ by Bernstein polynomials and integrate to obtain C¹ polynomial approximation. After converting back to Hₙ(x)=pₙ(e^(−x)),
-   control both the function norm and the generator norm of `x log x H′`. C⁰ density alone is insufficient.
-6. For the linear transport weak equation in log-value coordinates, formalize the time-partition proof with backward tests
-   ζᵤ(z)=ζ(e^(t−u)z). Static Laplace uniqueness cannot replace this step.
-7. Prove that smooth compactly supported tests determine finite measures on the real line, then identify μₜ=law(X₀^(e^t)).
-
-### F. Assembly with all quantifiers (smaller but crucial)
-
-First prove the result for every nonempty finite Gamma convolution and every q>1, taking only T=log q.
-Then use Bondesson's zero-drift finite-atomic approximation, continuous mapping by real powers, and weak closure of GGC.
-Second-moment constants and Euler grid thresholds may differ between initial approximating laws; uniformity across the approximation family is unnecessary.
-Drift, infinite Thorin mass, and δ0 enter through the final closure step; include separate endpoint tests to prevent their accidental exclusion.
-
-## 5. Proposed directory layout and implementation order
-
-The following is a plan; these Lean files have not yet been created:
+## Current project layout
 
 ```text
 formalization/
-  README.md                 # This blueprint
-  mathlib-api-audit.md       # Source evidence for the pinned version
-  axiom-boundary.md          # Literature contracts and final trust whitelist
-  [to be added during implementation]
-  lean-toolchain
-  lakefile.toml
-  lake-manifest.json
+  lean-toolchain          Lean 4.32.2
+  lakefile.toml           default GGCPower library target
+  lake-manifest.json      exact dependency revisions
+  main.lean               original GGC definition and complete target statement
   GGC/
-    Basic/{Law,Power,Thorin,Tests}.lean
-    External/{Bondesson,James,SSV,Sethuraman}.lean
-    Probability/{GammaLogMoments,Dirichlet,QuantileCoupling}.lean
-    Analysis/{Tilt,Tangent,Kernel,PhaseCompactness}.lean
-    LogRate/{Generator,Resolvent,Continuity}.lean
-    Evolution/{EulerKernel,Moments,Compactness,WeakLimit}.lean
-    Identification/{LogMoments,Cutoff,Laplace,Transport}.lean
-    Main.lean
-  Tests/{API,Endpoints,AxiomAudit}.lean
+    Basic.lean            law and power-pushforward lemmas
+    FiniteGamma.lean      product/sum semantics and elementary GGC membership
+    Laplace.lean          Laplace definition; analytic lemmas remain planned
+    Thorin.lean           separate representability predicate and constant case
+  AxiomAudit.lean         declaration and axiom inspection
+  External/
+    Bondesson.lean        complete E-B1, E-B2 and E-B3 axiom contracts
+    README.md             external-input inventory and source adaptations
+  .lake/                  ignored dependencies and build products
 ```
 
-| Milestone | Input → acceptance output | Risk |
+The current external contracts use explicit measure and Laplace formulas and
+import only mathlib. `main.lean` also imports only mathlib and owns the public
+definitions, with no dependency on external mathematical assumptions.
+
+After this migration, `GGC.Basic` imports `main`, and proof modules
+import the definitions, helper lemmas and external results they use. Adapters
+belong in their corresponding proof modules. `main` imports mathlib only and
+does not import its consumers. Its former unused `External.Bondesson` import
+has been removed. `GGC.PowerClosure` will assemble the final
+proof, and `AxiomAudit` will import and inspect that proof entry point once it
+exists. Thus the complete definitions remain readable in `main` without an
+import cycle. The final theorem will be available through
+`import GGC.PowerClosure`, rather than through `import main`.
+
+## 1. Document responsibilities
+
+| Content | Maintained in |
+|---|---|
+| Principles, trust boundary, development and acceptance rules | This README |
+| Dependency graph, interfaces, modules, milestones and open obligations | [Blueprint](Blueprint.md) |
+| Written proofs and stable result identifiers | [ledger](../ledger/README.md), [WIP](../WIP.md) |
+| Literature versions, locators and hypothesis audits | [Primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md), [reference map](../ledger/references.md) |
+| Mathematical research status | [ResearchStatus](../ResearchStatus.md) |
+| Manuscript presentation | [manuscript](../manuscript/ggc-power-closure.tex) |
+
+Use the assembly in [WIP-6.21](../ledger/23-power-theorem-assembly-audit.md#wip-6-21)
+and the requirements in [WIP-6.23](../ledger/25-mathematical-completion-audit.md#wip-6-23)
+to check the main theorem. TeX labels locate results; they do not replace proofs.
+Resolve discrepancies between the ledger, manuscript and Lean types explicitly.
+Do not silently weaken the theorem or strengthen its assumptions to make it compile.
+
+## 2. General principles
+
+1. **Check the proposition before proving its type.** Write the mathematical
+   statement, quantifiers, domains, assumptions and provenance first.
+   A proof of a weaker proposition does not complete the original obligation.
+2. **Give definitions mathematical semantics.** GGC membership, Thorin measures,
+   Dirichlet processes, power laws and weak solutions must refer to actual
+   measures, integrals and distributions. Do not define membership as `True`,
+   include power closure in its definition, or assume an unsupported object
+   possessing every required property.
+3. **Keep dependencies transparent.** Definitions must not import the main
+   theorem; external interfaces must not import project deductions.
+   The current-law tangent must not assume that positive-time powers are GGC.
+4. **Reuse mathlib first.** Search the pinned source, read the actual type and
+   compile a minimal use. Reuse existing theorems and prove local adapters.
+   A name remembered from another version is not API evidence.
+5. **Make analytic obligations explicit.** Prove measurability, absolute
+   integrability, uniform parameter bounds, almost-everywhere conditions,
+   probability normalization and hypotheses for every limit interchange.
+6. **Remove intermediate restrictions.** Positive mass, zero drift and finite
+   second log-rate moments are valid construction hypotheses. Remove them by
+   proved extension steps. Taking logarithms must not exclude zero or constant
+   laws from the final statement.
+7. **Separate computation from proof.** Python output, plots and finite scans
+   do not prove analytic claims. An exact certificate needs a Lean-checked
+   connection to the proposition it certifies.
+8. **Report evidence, not apparent progress.** Distinguish plans, declarations,
+   incomplete scaffolding, local proofs and completed theorems. File counts
+   are not completion measures. Record genuine mathematical gaps against
+   their ledger nodes and resolve them.
+
+## 3. Shared modeling conventions
+
+Laws and power pushforwards are implemented in [main.lean](main.lean).
+The original finite-gamma weak-limit definition is implemented. The separate
+Thorin predicate has moved to `GGC/Thorin.lean`; its characterization is still planned.
+Random-measure, phase and evolution interfaces also remain planned.
+
+### 3.1 Laws, powers and coordinates
+
+- Use a law-first interface: `NonnegLaw` bundles
+  `MeasureTheory.ProbabilityMeasure ℝ` with `∀ᵐ x ∂μ, 0 ≤ x`.
+  Derive the random-variable statement by taking distributions at the end;
+  different laws need not share a probability space.
+- `powerLaw μ q hq` is the actual pushforward \((x\mapsto x^q)_*\mu\), with
+  exponent type `ℝ`. Prove measurability, nonnegativity and the continuous
+  mapping result for fixed \(q\ge1\). Handle \(q=1\) explicitly.
+  The implemented argument `hq : 0 ≤ q` supplies continuity; the main target
+  derives it from \(1\le q\), adding no hypothesis to the target theorem.
+- Use `PosReal := {b : ℝ // 0 < b}` for rates and `ℝ` for log-rates.
+  Rates may accumulate at zero. Do not strengthen concentration on positive
+  rates to a support condition excluding that behavior.
+- Distinguish the log-rate law \(F\), its Thorin measure \(U=B\exp_*F\),
+  the value law \(\mu\), and the log-value law \(\log_*\mu\).
+- Use log-value transport only after proving strict positivity of the
+  intermediate laws. Total definitions of `Real.log` and `Real.rpow`
+  do not discharge their mathematical side conditions.
+
+mathlib's `ProbabilityMeasure` carries the weak-convergence topology.
+Check coercions, pushforward arguments and imports in the version pinned
+at M0; see the [mathlib probability-measure documentation](https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Measure/ProbabilityMeasure.html).
+
+### 3.2 Original GGC definition, Thorin characterization and integrals
+
+Define `gammaLaw`, `finiteGammaLaw`, `IsFiniteGammaConvolution` and `IsGGC`
+completely in `main.lean`. A finite gamma convolution is the sum pushforward
+of a finite product of actual gamma laws with positive shapes and rates;
+the product encodes independence. Permit the empty sum, giving \(\delta_0\).
+Use mathlib's `ProbabilityTheory.gammaMeasure` with its shape/rate convention
+and supply normalization and nonnegative-concentration proofs.
+
+The original definition is
+
+\[
+\operatorname{IsGGC}(\mu)\iff
+\exists(\mu_n)_{n\in\mathbb N},\quad
+(\forall n,\ \operatorname{IsFiniteGammaConvolution}(\mu_n))
+\ \land\ \mu_n\Rightarrow\mu.
+\]
+
+Use weak convergence of the underlying `ProbabilityMeasure ℝ` values, with
+no uniform moments, common probability space or Thorin data in the definition.
+Prove weak closure locally by a closure/sequential-closure bridge or a metric
+diagonal argument. The final reduction extracts approximants from `IsGGC`
+itself, then uses fixed-power continuity and this closure theorem.
+
+`laplace` is in `GGC/Laplace.lean`; `ThorinData`, `ThorinAdmissible`
+and `thorinLaplace` are in `GGC/Thorin.lean`. The separate analytic predicate
+is named `HasThorinRepresentation`. It asserts the existence of \(a\ge0\) and a measure
+\(U\) on positive rates, with `Integrable` for \(\log(1+1/b)\), such that
+
+\[
+L_\mu(s)=\exp\!\left(-as-\int\log(1+s/b)\,U(db)\right),\qquad s>0.
+\]
+
+The mass of \(U\) need not be finite. Prove equivalence of this admissibility
+convention with the classical endpoint conditions and integrability at every
+\(s>0\). State `isGGC_iff_hasThorinRepresentation` for all `NonnegLaw`, including
+zero/constant laws and nonzero drift. Realization of arbitrary admissible
+Thorin data remains the separate E-B1 existence input.
+
+First assess reuse of mathlib and local proofs. A short derivation from the
+already declared E-B2/E-B3 is also acceptable, but it still depends on
+literature axioms. If the full bridge requires substantial new work, E-B4
+below is an authorized fallback. Record the selected route and exact axiom
+dependencies; do not add E-B4 redundantly when E-B2/E-B3 settle the bridge
+cheaply. The characterization must never become an extra hypothesis of the
+main theorem. See [Blueprint Section 2.1](Blueprint.md#original-ggc-definition)
+for the two directions and semantic acceptance cases.
+
+A real integral's default value outside the integrable case can make a
+meaningless identity hold. Include `Integrable` or equivalent conditions
+with signed integral identities and moment bounds. Prove finiteness before
+converting extended integrals to real numbers, and strict positivity before
+dividing by a mass or normalizer. Record hypotheses and dominating functions
+for Fubini, differentiation under integrals, dominated convergence and
+\(s\downarrow0\).
+
+### 3.3 Random measures, phases and weak solutions
+
+Give Dirichlet processes explicit finite-partition or stick-breaking
+semantics, including atomic and mixed bases and zero-mass partition cells.
+Pointwise existence or `Classical.choose` does not give joint measurability.
+SSV initially supplies phases only up to a.e. equality; jointly measurable
+representatives, parameter changes, scaling and weak-star limits remain
+project obligations. Fix the anchor at 1 without adding a zero-endpoint condition.
+
+`WeakLogRateSolution` describes an output: initial data, probability status,
+narrow continuity, a uniform second log-rate moment and the integral weak
+equation for compactly supported twice continuously differentiable tests.
+Its existence must be proved, not assumed in the main theorem.
+
+<a id="external-inputs"></a>
+## 4. External mathematical input whitelist
+
+Retain the repository's established policy: precisely audited literature
+results not yet formalized may be registered as explicit external axioms.
+The target is **Lean verification of the project's GGC power closure
+derivation relative to the registered literature axioms**.
+Do not re-axiomatize mathlib results. E-B1, E-B2 and E-B3 are implemented in
+[External/Bondesson.lean](External/Bondesson.lean); all other entries remain
+planned. The [external inventory](External/README.md) identifies the exact
+declarations and adaptations. In particular, E-B3 currently returns finite
+atomic Thorin transforms; identification with actual finite gamma sums is
+a local obligation, not an implemented gamma-sum API.
+
+For every actual declaration, record its stable ID, full source and version,
+theorem/formula/page locator, original statement or derived interface, exact
+inputs and conclusion, consumers, local adaptation obligations and Blueprint
+node. Additional literature inputs require the same registration.
+
+Prove local specializations by default. If a literature corollary is directly
+axiomatized, label it a **source-derived interface** and check every adaptation.
+Do not append conclusions the source does not supply.
+
+| ID | Permitted input and source locator | Work not supplied by that axiom |
 |---|---|---|
-| M0 Versions and smoke tests | Pin commit/toolchain; compile minimal ProbabilityMeasure, Tilted, Kernel, and Prokhorov interfaces | Low; version drift is manageable |
-| M1 Definitions and external contracts | Semantically explicit IsGGC/DP/Test/WeakSolution; individual source correspondence for external axioms | High; incorrect definitions contaminate the entire proof |
-| M2 Explicit analytic kernel | Cancellation and absolute integrals for K, second moment of ν₀, and Taylor bounds, all without sorry | Moderate |
-| M3 Exact tangent and generator | Gamma logarithmic moments, Palm, direct resolvent identity; signatures with no missing terms | Moderate to high |
-| M4 Parameter continuity | Quantile coupling, phase compactness, joint continuity of Hφ | High; first major technical gate |
-| M5 Positive Euler scheme | Markov kernel, inductive mass preservation, M₂, and time modulus | High |
-| M6 Nonlinear existence | WeakLogRateSolution for every finite T, without assuming its existence | High; largest integration gate |
-| M7 Identification of the actual power flow | Truncation, zero endpoint, C¹ approximation, dynamic transport uniqueness | High |
-| M8 Main theorem and audit | Arbitrary GGC and real q≥1; endpoint checks; `#print axioms` whitelist | Moderate; quantifier and trust checks are crucial |
+| E-B1 | Bondesson (1992), Section 3.1, printed p.29 and pp.34–35: realization of Thorin-admissible data by a nonnegative probability law | Gives `HasThorinRepresentation`; original-GGC membership uses the separate characterization. No power closure input |
+| E-B2 | Same book, Theorem 3.1.5, p.34: the declared primitive interface is weak closure of Thorin representability at a probability limit | Finite-gamma transform certificates connect this to the original-definition-to-representation direction. Original GGC weak closure is proved locally |
+| E-B3 | Same book, final paragraph of p.35: the declared interface approximates every represented law by laws with finite-atomic Thorin transforms | Identify approximants with actual finite gamma sums using their transforms and Laplace uniqueness. This gives the representation-to-original-definition direction, not finite-input power closure |
+| E-B4 — authorized fallback, not declared | Same book, Section 3.1 p.29, Theorem 3.1.5 p.34 and finite-gamma approximation p.35: original finite-gamma weak-limit membership iff Thorin representability, with exact source adaptations recorded | Use only if characterization work is substantial. Primitive full formulas in planned `External/ThorinCharacterization.lean`; public-predicate adapter and dependency audit remain local. No realization or power/evolution conclusion is added |
+| E-J1 | James (2005), arXiv:math/0505606v1, reprint p.2, (1)–(3): Gamma normalization and Markov–Krein identities, with logarithmic integrability and independence | Substitution, normalization and identification of the particular tilted law |
+| E-J2 | Same paper, pp.4–5, posterior formula and (8): nonnegative one-observation Palm/posterior identity for atomic, nonatomic and mixed bases | Absolute integrability before the signed version; arbitrary signed Fubini is not an input |
+| E-J3 | A source-derived interface from the posterior result and Gamma normalization: independent \(Q\sim DP(U)\), \(Z\sim\mathrm{Beta}(1,B)\) give \((1-Z)Q+Z\delta_b\sim DP(U+\delta_b)\); alternatively prove locally | Posterior logarithmic bounds and joint continuity; the original tangent coefficient stays \(\psi(B+1)\), not \(\psi(B+2)\) |
+| E-S1 | SSV (2010 first edition), Theorems 6.10 and 7.3, printed pp.58–60 and 63, with the 2022-12-01 errata: reciprocal representation for nonzero Stieltjes functions, bounded phase and a.e. uniqueness | Jointly measurable representatives, boundary-recovery adaptations, scaling, weak-star limits and generator continuity |
+| E-T1 | Sethuraman (1994), Section 2, (2.1), pp.642–643; Theorem 3.4, p.645: the DP law of stick-breaking with independent Beta break variables and independent base locations | Common-coordinate convergence as \(B,F,y\) vary, tail control and uniform integrability |
 
-Recommended order: M0 → M1 → M2 → M3 → M4 → M5 → M6 → M7 → M8.
-After M1, one may first write a closure assembly theorem stating “if the finite Gamma case holds, then it holds for all GGC laws”
-to check the public signature early. This is only conditional assembly and does not complete M8.
+These locators come from the retained
+[primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md)
+and [reference map](../ledger/references.md), not a new primary-text audit
+performed during this documentation update.
 
-Prototype these three interfaces first:
+E-J1–E-J3 require a finite positive base measure \(U\) on positive rates,
+with real mass \(B=U((0,\infty))\in(0,\infty)\).
+Preserve the following contract details:
 
-- the measurable structure of `ProbabilityMeasure` and parameter integrals over DP samples;
-- weak limits of phase measures dominated by Lebesgue measure;
-- mass and the first two increment identities of the positive Euler kernel.
+- **E-J1:** For \(P\sim DP(U)\) and admissible \(g\ge0\),
+  \(\mathbb E(1+\int g\,dP)^{-B}=\exp(-\int\log(1+g)\,dU)\).
+  State a.s. finiteness of the random mean, or begin with a nonnegative
+  extended integral and derive it.
+- **E-J2:** First register the nonnegative measurable identity
+  \(\mathbb E_{DP(U)}\int\Phi(b,P)P(db)
+  =\int(U/B)(db)\,\mathbb E_{DP(U+\delta_b)}\Phi(b,P)\).
+  Make joint measurability and random-measure evaluation explicit.
+- **E-S1:** For \(s>0\), let \(M_P(s)=\int(s+b)^{-1}P(db)>0\).
+  The anchor-one interface is
+  \(\log M_P(s)-\log M_P(1)
+  =\int_0^\infty\xi_P(t)((s+t)^{-1}-(1+t)^{-1})\,dt\),
+  with \(0\le\xi_P\le1\) and a.e. uniqueness. Mark a directly registered
+  specialization as source-derived. If boundary recovery uses the complex
+  representation, retain its complex-domain contract; an insufficient
+  real-axis interface does not supply the boundary formula.
+- **E-T1:** For \(B>0\), take i.i.d. \(V_j\sim\mathrm{Beta}(1,B)\),
+  i.i.d. \(Y_j\sim F\), and independence of the two sequences.
+  Set \(W_j=V_j\prod_{i<j}(1-V_i)\), \(Q=\sum_jW_j\delta_{Y_j}\).
+  The weights \(W_j\) are not independent. Prove unit total mass or include
+  it in the precisely registered construction theorem. The residual-mass
+  expectation \((B/(B+1))^m\) can support a local proof.
 
-These best test the design choices. Writing §7 as ten lines of assembly code does not reflect the difficulty of the main implementation.
-Only risk levels are given here; no completion probabilities, precise schedules, or verified Lean line counts are invented.
+Do not mix SSV editions and page numbers. First-edition errata correct the
+intermediate Herglotz measure's domain and finiteness and replace an equality
+in Remark 6.11 by an inclusion. Do not use the erroneous reverse inclusion
+or an additional zero-anchor formula. Any missing general boundary-recovery
+or compactness theorem needs a proof or a separate source registration;
+it is not automatically part of E-S1 or E-T1.
 
-## 6. Completion criteria
+### 4.1 Core deductions excluded from the whitelist
 
-Each local module should link to a TeX label / WIP ID; each external declaration should link to exact literature page numbers.
-The final requirements are:
+The power tangent, posterior absolute drift bound, generator resolvent
+identity, joint generator continuity, positive Euler evolution, dynamic
+power-flow identification, finite Gamma power closure and final GGC power
+closure must be proved locally, including equivalent reformulations.
 
-1. A full `lake build` passes with the pinned toolchain, and the public main theorem can be imported independently.
-2. `#print axioms` contains no `sorryAx`, only foundational logical axioms and explicitly registered external mathematical axioms.
-3. The whitelist contains no synonymous reformulation of the existence, continuity, identification, or target result that this project must prove.
-4. The complete IsGGC definition and all Integrable, positivity, and measurability conditions are reviewed together with the code.
-5. Check q=1, δ0, arbitrary fixed q>1, and the final signature allowing drift and infinite Thorin mass.
-6. Report the statuses of “literature source audit,” “manuscript mathematical audit,” and “Lean verification relative to axioms” separately;
-   none substitutes for another.
+Hiding these conclusions in typeclass instances, `ExternalFacts`,
+`PowerAdmissible`, structure fields, local variables or a solution-existence
+parameter still leaves the main proof incomplete.
 
-This delivery stops at the engineering blueprint and source-level API checks; planned modules are not reported as implemented.
+## 5. Engineering and collaboration rules
+
+### 5.1 Environment and API evidence
+
+The current configuration pins `leanprover/lean4:v4.32.2` and mathlib commit
+`905b95818eb32af7874a58b427f50c1711a5e96c` (the upstream `v4.32.2` tag).
+The [toolchain](lean-toolchain), [Lake configuration](lakefile.toml) and
+[manifest](lake-manifest.json) are source artifacts; `.lake/` is ignored.
+This compatible installed version was selected instead of requiring an
+unrelated toolchain upgrade. The local dependency cache was copied only
+after checking its revisions and clean source state against the manifest.
+
+Handle upgrades separately and rebuild affected proofs. Lake's manifest
+records concrete dependency versions and belongs in version control;
+see the [official Lake documentation](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/).
+
+Use four API evidence levels:
+`to_find → source_read → #check_passed → minimal_use_compiled`.
+Record revision, imports, full declaration name and verification result.
+Online `latest` documentation is a navigation aid. Prefer `rg` for searches;
+failure to find one guessed name does not establish that a theory is missing.
+
+### 5.2 Files and declarations
+
+- The Blueprint owns the module tree. The public namespace is
+  `GGC`, with external axioms only in `GGC.External`. Name files by
+  responsibility and theorems by content; put WIP IDs in docstrings.
+- Keep modules focused and imports specific. The human-audit entry point is
+  `main.lean`; it contains the full main statement and its required definitions.
+  Definition-internal proof fields remain with their objects; auxiliary lemmas
+  live in the corresponding proof modules. The completed theorem will be
+  exposed by `GGC/PowerClosure.lean`, with unchanged name `GGC.ggc_rpow` and
+  type `GGC.GGCPowerClosure`. `main` must not import modules depending on it.
+  External mathematical axioms must be placed in `External/` with complete
+  types and source records. Extract reusable analysis lemmas rather than
+  copying estimates.
+- `classical` and `noncomputable` are allowed; neither proves existence,
+  measurability or integrability. Automation must produce kernel-checkable
+  proofs. Do not expand the default trust boundary to native evaluation.
+- Do not globally suppress errors or material warnings. Split difficult
+  goals before raising resource limits; document necessary local settings.
+- Fix shared contracts and file ownership before parallel implementation.
+  Notify consumers of interface changes and preserve others' uncommitted
+  work. Formalization difficulty does not justify changing the conclusion.
+
+Record each major declaration using:
+
+```text
+Node ID / WIP ID:
+Mathematical statement and complete assumptions:
+Proposed or actual Lean name and file:
+Dependency nodes / external input IDs:
+Source (ledger, TeX label or literature):
+Status / exact remaining gap:
+Verification commands, versions and results:
+```
+
+### 5.3 Incomplete proofs
+
+Use `sorry`, `admit` and temporary core assumptions only in marked drafts.
+Drafts must not enter the definition entry point, the verified helper/audit
+modules, or the future proof entry point's transitive import closure, and
+must not count as completed nodes. The proof entry point is
+`GGC/PowerClosure.lean`. A genuine reduction theorem saying “the finite
+Gamma case implies the general case” is useful early work, but must not use
+the final theorem's name before its premise is discharged. An unregistered
+axiom is not a substitute for completing a draft.
+
+Use `planned / in_progress / blocked / verified` in the Blueprint.
+A blocked node records the exact obstacle. A verified node needs a complete
+proof, build evidence and a dependency audit. A file depending on an
+unfinished draft is not verified merely because it contains no `sorry` itself.
+
+## 6. Verification and completion criteria
+
+The current statement and external contracts are checked by the default
+library build. Run from `formalization`:
+
+```powershell
+lake env lean --version
+lake build
+lake env lean AxiomAudit.lean
+```
+
+The existing [AxiomAudit.lean](AxiomAudit.lean) prints the full target,
+definitions, external contracts and axiom dependencies of the basic lemmas.
+It imports `GGC.FiniteGamma`, `GGC.Thorin` and `External.Bondesson` explicitly.
+Lake covers `main`, all `GGC` and `External` descendants, and the audit.
+The audit prints both membership predicates and checks the migrated and new
+lemmas. Add the characterization's type and dependency report when that
+theorem is implemented; no characterization axiom has been added for this rewrite.
+
+There is no `GGC.ggc_rpow` declaration yet. Once its genuine proof exists,
+import `GGC.PowerClosure` in the audit, include that proof module in the
+default build, and add the following final-theorem checks:
+
+```lean
+#check GGC.ggc_rpow
+#print GGC.ggc_rpow
+#print axioms GGC.ggc_rpow
+```
+
+**Build evidence (2026-09-23):** the installed pinned Lean 4.32.2 toolchain's
+Lake executable completed the default `lake build` with exit code 0, including
+`External.Bondesson`, `main` and `AxiomAudit`. Dependencies were reused from
+the verified local cache; this was not a fresh download or a rebuild of all
+mathlib sources. The audit printed the complete external contracts and the
+target proposition. `powerLaw_toMeasure`, `powerLaw_one`, `isGGC_diracLaw`
+and `isGGC_powerLaw_one` depend only on `propext`, `Classical.choice` and
+`Quot.sound`. Each external axiom's audit lists itself as an assumption,
+as expected. No main-theorem proof or final-theorem axiom audit is claimed.
+
+**Design-review acceptance rerun (2026-09-23):** in this review environment,
+the generic elan-shim invocations `lake env lean --version` and `lake build`
+failed with `couldn't find value of ELAN_HOME` (exit code 1). The already
+installed pinned toolchain worked when invoked directly. From
+`E:\AI\GitHub\generalized-gamma-convolution-power-problem\formalization`,
+the actual successful commands were:
+
+```powershell
+& 'C:\Users\Jdn\.elan\toolchains\leanprover--lean4---v4.32.2\bin\lake.exe' env lean --version
+& 'C:\Users\Jdn\.elan\toolchains\leanprover--lean4---v4.32.2\bin\lake.exe' build
+& 'C:\Users\Jdn\.elan\toolchains\leanprover--lean4---v4.32.2\bin\lake.exe' env lean AxiomAudit.lean
+```
+
+All three succeeded (exit code 0). The version was Lean 4.32.2, commit
+`f3b06c705e6c85f5314019d5d3baab0fec5b580c`; the build reported
+`Build completed successfully (2549 jobs)` and replayed the cached audit.
+The separate audit command also passed and printed the same target,
+three external assumptions and elementary-lemma dependencies recorded above.
+This was cached-project validation, not a clean rebuild of mathlib, and no
+environment configuration or implementation was changed. The direct path
+is machine-specific; on another machine use its installed pinned toolchain.
+The [design review](Blueprint.md#design-review-2026-09-23)
+records the contract corrections and remaining acceptance obligations.
+M0 remains `in_progress`; the main theorem has not been proved.
+
+These historical build records precede the definition/helper migration. They
+validate the former representation-based scaffold only. In particular,
+the recorded `isGGC_diracLaw` proof establishes representability; original
+membership needs a new argument. The migrated proof is accurately named
+`hasThorinRepresentation_diracLaw`; positive-constant GGC membership and the
+Thorin characterization remain M1 obligations. Current migration evidence
+is recorded separately below.
+
+**Original-definition migration check (2026-09-23):** from the same working
+directory and using the pinned Lake executable shown above, `build` succeeded
+with exit code 0 (`2781 jobs`, with cached mathlib dependencies). It compiled
+the rewritten `main`, `GGC.Basic`, `GGC.FiniteGamma`, `GGC.Laplace`,
+`GGC.Thorin` and the updated `AxiomAudit`. The statement imports mathlib only;
+the actual product/sum law and weak-limit definition are visible in its source.
+The audit prints both `IsGGC` and `HasThorinRepresentation`. All audited local
+lemmas, including the single-gamma/zero membership cases, constant-power
+identity and weak-convergence adapter, use only the three standard logical
+axioms. The three external contracts are unchanged. No new axiom or unfinished
+proof was added. The target's quantifiers are preserved, but its membership
+predicate now has the requested original semantics. Characterization and
+the final power-closure proof remain pending; M0 is still `in_progress`.
+
+`#print axioms` reports transitive axiom dependencies, including `sorryAx`.
+It does not replace checking the theorem's meaning and hidden premises.
+See the [Lean axiom reference](https://lean-lang.org/doc/reference/latest/Axioms/)
+and [proof validation guide](https://lean-lang.org/doc/reference/latest/ValidatingProofs/).
+
+Completion requires all of the following:
+
+1. `GGC.ggc_rpow` retains the full target quantifiers. Its mathematical
+   assumptions are GGC membership and \(q\ge1\), with no core premise,
+   unconstructed instance or finite-moment restriction.
+2. `IsGGC` uses the original finite-gamma weak-limit definition, independently
+   of `HasThorinRepresentation`. Check actual product/sum and power-pushforward
+   semantics, the separate characterization and its dependencies, and the
+   zero law, positive constant laws, \(q=1\) and a single Gamma law. A proof of
+   representability alone does not establish original-definition membership.
+3. Every required Blueprint node is `verified` with evidence; all project
+   core deductions have complete Lean proofs.
+4. The proof entry point `GGC/PowerClosure.lean` and `AxiomAudit.lean` build
+   reproducibly in the pinned environment. Default targets include the main
+   theorem and required modules; checking `main.lean` alone checks the
+   statement layer. Record toolchain, mathlib commit, commands, exit statuses
+   and audit output.
+5. The actual axiom set is a subset of
+   `{propext, Classical.choice, Quot.sound}` and the registered, checked
+   external mathematical declarations. No `sorryAx`, unregistered axiom or
+   extra native-evaluation trust dependency is permitted.
+6. Inspect the full theorem type and dependent definitions: no circular
+   definitions, vacuous assumptions, default-integral loopholes or
+   function/typeclass parameters that merely assume the main result.
+
+An accurate completion statement is: “The project's GGC power closure
+derivation has been verified in Lean relative to the listed literature
+axioms.” Claiming a full formalization without external mathematical axioms
+also requires Lean proofs of those inputs.
+
+The present deliverables are the project scaffold, complete target statement,
+basic semantic lemmas and the registered Bondesson interfaces. They do not
+yet satisfy the main-proof completion criteria above.
