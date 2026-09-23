@@ -31,8 +31,6 @@ This source is a revised monograph, not a journal article. The first version gre
 
 The general source audit and positive-law criterion are retained from the
 SD dossier. The source-audit date above is not a fresh verification date.
-SD-specific applications and manuscripts remain in the
-[fixed-commit archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/notes/09-rocha-arteaga-sato-2019-id-sd-levy-processes.md).
 Sections and theorem-card IDs are retained where possible for traceability.
 This is supporting literature, not an additional axiom or dependency of the
 [log-rate proof](log-rate-power-proof-primary-interfaces.md).

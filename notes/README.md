@@ -58,5 +58,5 @@ the [WIP master index](../WIP.md). The current status authority is
 [ResearchStatus.md](../ResearchStatus.md).
 SD-specific notes are historical rather than active dependencies.
 The [migration record](../ledger/checkpoints/2026-09-06-background-migration.md)
-identifies migrated material, fixed-commit archives and the completed
+identifies the retained material and documents the completed
 user-authorized directory removal.

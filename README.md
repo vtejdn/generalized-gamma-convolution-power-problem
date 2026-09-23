@@ -39,11 +39,8 @@ following their lemma and source dependencies.
 
 The earlier \(\alpha\)-Cauchy investigation motivated the
 [beta-prime power-boundary example](notes/beta-prime-power-boundary.md).
-Its SD-specific proofs are preserved in the [fixed-commit archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/README.md),
-not used as a parallel active project or an input to the GGC proof.
 The [migration record](ledger/checkpoints/2026-09-06-background-migration.md)
-records the retained shared material, completed directory removal and
-recoverable historical sources.
+documents the retained shared material and completed directory removal.
 The subunit-root question must not be conflated with the present
 \(q\ge1\) question.
 
@@ -98,9 +95,6 @@ lemma reopened if necessary, and the assessment corrected.
 
 Historical material is explicitly labelled in
 [ledger/checkpoints/](ledger/checkpoints/).
-The complete pre-cleanup state is preserved by the annotated tag
-[`snapshot-2026-09-06-pre-cleanup`](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/tree/snapshot-2026-09-06-pre-cleanup)
-at commit `527a78a`; the earlier `baseline-2026-09-05` tag is unchanged.
 The archived [route blueprint](ledger/checkpoints/2026-09-06-route-blueprint.md)
 and [status/history](ledger/checkpoints/2026-09-06-status-before-cleanup.md)
 preserve the detailed pre-cleanup records.

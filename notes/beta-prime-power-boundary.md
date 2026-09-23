@@ -4,7 +4,6 @@ Migrated into the GGC project on **2026-09-06** from the SD dossier's
 beta-prime reduction and records K1--K3 / N1--N3.
 These are retained literature inputs and project deductions, not new
 results of this migration and not lemmas used by the log-rate power proof.
-The original record is preserved in the [fixed-commit archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/notes/03-beta-prime-reduction.md).
 
 Throughout, \(\alpha>1\) and \(p>0\).
 All gamma variables in a ratio below are independent and have unit rate;

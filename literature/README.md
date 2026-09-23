@@ -44,10 +44,6 @@ Two shared sources have been copied, byte-for-byte, into this directory:
   for the general ID/SD and stochastic-integral source audit.
 
 Their exact bibliographic records and checksums are listed below.
-SD-specific literature and the old version-search log are preserved in the
-[fixed-commit archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/literature/README.md).
-The [migration record](../ledger/checkpoints/2026-09-06-background-migration.md)
-explains why the other SD sources are not inputs to the active GGC proof.
 
 ## Core GGC sources
 

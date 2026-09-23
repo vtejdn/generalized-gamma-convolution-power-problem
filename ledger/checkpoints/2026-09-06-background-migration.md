@@ -50,21 +50,19 @@ The Wang ECP proof and Jurek--Vervaat PDF remain SD-specific source assets.
 They are not needed as local inputs to the active GGC manuscript; the
 general source map for OU/BDLP is retained in the AS19 audit.
 
-Immediately before deletion, all 18 tracked files of the old directory were
-checked against
-`snapshot-2026-09-06-pre-cleanup` at commit
-`527a78a3616fbd7c40dab83f549a94e95dd81a54`, with no difference.
-They remain recoverable from that history after working-tree removal.
-No Git history or archive tag was erased.
-
-[Complete SD archive](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/527a78a3616fbd7c40dab83f549a94e95dd81a54/background/alpha-cauchy-sd/README.md).
+Before the directory removal on 2026-09-06, all 18 tracked files
+were verified to match the pre-cleanup snapshot.
+That operation removed working-tree files without rewriting Git history.
 
 ## 3. References updated now
 
-The active README, notes index, literature index and Bondesson 2015 note
-no longer require local files in the SD directory. Six former local links
-are replaced with the corresponding migrated content or a fixed-commit
-historical reference. The three remaining obsolete checkpoint links were
+During the 2026-09-06 migration, six former local links were
+replaced with migrated-content links or fixed-commit references.
+Three obsolete checkpoint links were also deleted at the user's
+explicit request, as recorded below.
+The fixed-commit links were later removed during the 2026-09-23
+PDF cleanup.
+The three remaining obsolete checkpoint links were
 subsequently deleted at the user's explicit request, as recorded below.
 
 The Bondesson note retains its Section 12 equation numbers, source
@@ -93,7 +91,6 @@ Their needed GGC content is already covered by the retention map above.
 The checkpoint preface now records the user-authorized omission.
 Historical path descriptions and theorem/route-history statements are
 unchanged: they describe the old tree, not live local dependencies.
-The complete original source list remains in the named commit/tag.
 
 ### B. Entire local directory, including ignored generated files
 
