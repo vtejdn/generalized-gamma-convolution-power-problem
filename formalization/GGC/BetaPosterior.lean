@@ -2,6 +2,7 @@ import GGC.BetaAnalysis
 import GGC.StieltjesMean
 import Mathlib.MeasureTheory.Measure.FiniteMeasureProd
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Topology.Order.ProjIcc
 
 /-! # Beta atom mixtures and posterior logarithmic domination
 
@@ -18,14 +19,13 @@ namespace GGC
 open RandomMeasure
 
 def unitWeight (z : ℝ) : UnitWeight :=
-  ⟨max 0 (min 1 z), le_max_left _ _, max_le zero_le_one (min_le_left _ _)⟩
+  Set.projIcc 0 1 zero_le_one z
 
-@[fun_prop] theorem measurable_unitWeight : Measurable unitWeight := by
-  apply Measurable.subtype_mk
-  exact measurable_const.max (measurable_const.min measurable_id)
+@[fun_prop] theorem measurable_unitWeight : Measurable unitWeight :=
+  (continuous_projIcc (h := (zero_le_one : (0 : ℝ) ≤ 1))).measurable
 
 theorem unitWeight_val_of_mem {z : ℝ} (hz : z ∈ Icc 0 1) : (unitWeight z).val = z := by
-  simp only [unitWeight, min_eq_right hz.2, max_eq_right hz.1]
+  exact congrArg Subtype.val (Set.projIcc_of_mem zero_le_one hz)
 
 theorem betaLaw_mem_Ioo (a b : PosReal) :
     ∀ᵐ z ∂(betaLaw a b : Measure ℝ), z ∈ Ioo (0 : ℝ) 1 := by

@@ -101,7 +101,7 @@ private theorem hasDerivAt_beta_one {B : ℝ} (hB : 0 < B) :
     simpa only [Function.comp_def, mul_one] using! h₂.comp 1 ((hasDerivAt_id 1).add_const B)
   have hG : Real.Gamma (1 + B) ≠ 0 := ne_of_gt (Real.Gamma_pos_of_pos (by linarith))
   convert! (h₁.mul_const (Real.Gamma B)).div hc hG using 1
-  simp only [ProbabilityTheory.beta, digamma, Real.Gamma_one, one_mul, div_one]
+  simp only [ProbabilityTheory.beta, digamma_apply, Real.Gamma_one, one_mul, div_one]
   field_simp
 
 /-- The differentiated beta kernel is absolutely integrable at both endpoints. -/

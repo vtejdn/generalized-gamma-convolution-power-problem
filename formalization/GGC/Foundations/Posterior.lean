@@ -42,14 +42,9 @@ theorem measurable_probability_map_parameterized {A F : Type*} [MeasurableSpace 
   apply Measurable.subtype_mk
   apply Measure.measurable_of_measurable_coe
   intro s hs
-  have hm : Measurable (fun x : A × E => s.indicator (fun _ => (1 : ℝ≥0∞)) (f x.1 x.2)) :=
-    (measurable_const.indicator hs).comp hf
-  have hi := hm.lintegral_kernel_prod_right' (κ := κ)
-  convert! hi using 1
-  funext a
-  rw [Measure.map_apply hf.of_uncurry_left hs,
-    ← lintegral_indicator_one (hf.of_uncurry_left hs)]
-  rfl
+  have hm := ProbabilityTheory.Kernel.measurable_kernel_prodMk_left (κ := κ) (hf hs)
+  simpa only [ProbabilityMeasure.map, Measure.map_apply hf.of_uncurry_left hs,
+    Set.preimage_preimage, Function.uncurry_def, Function.comp_def] using! hm
 
 def atomMixture (Q : ProbabilityMeasure E) (z : UnitWeight) (b : E) :
     ProbabilityMeasure E :=
@@ -131,23 +126,7 @@ theorem atomMixtureLaw_jointlyMeasurable :
 /-- Measurability of the actual posterior probability kernel in its atom. -/
 theorem measurable_atomMixtureLaw (D : ProbabilityMeasure (ProbabilityMeasure E))
     (Z : ProbabilityMeasure UnitWeight) : Measurable (atomMixtureLaw D Z) := by
-  apply Measurable.subtype_mk
-  apply Measure.measurable_of_measurable_coe
-  intro s hs
-  have hp : Measurable (fun x : E × (ProbabilityMeasure E × UnitWeight) => (x.2.1, x.2.2, x.1)) :=
-    (measurable_fst.comp measurable_snd).prodMk
-      ((measurable_snd.comp measurable_snd).prodMk measurable_fst)
-  have hm := measurable_atomMixture.comp hp
-  have hi₀ : Measurable (s.indicator (fun _ => (1 : ℝ≥0∞))) := measurable_const.indicator hs
-  have hi := hi₀.comp hm
-  have hi' := hi.lintegral_prod_right' (ν := (D : Measure (ProbabilityMeasure E)).prod (Z : Measure UnitWeight))
-  convert! hi' using 1
-  funext b
-  change (Measure.map (fun x : ProbabilityMeasure E × UnitWeight => atomMixture x.1 x.2 b)
-    ((D : Measure (ProbabilityMeasure E)).prod (Z : Measure UnitWeight))) s = _
-  rw [Measure.map_apply (measurable_atomMixture_sample b) hs]
-  simp only [Function.comp_def] at *
-  rw [← lintegral_indicator_one ((measurable_atomMixture_sample b) hs)]
-  rfl
+  have hp : Measurable (fun b : E => (D, Z, b)) := by fun_prop
+  simpa only [Function.comp_def] using! atomMixtureLaw_jointlyMeasurable.comp hp
 
 end GGC.RandomMeasure

@@ -6,9 +6,10 @@ Compiling an axiom declaration checks its type; it does not prove the external
 mathematical result. No project core result, including GGC power closure, is
 registered here as an axiom.
 
-The current declarations are in [Bondesson.lean](Bondesson.lean) and
-[James.lean](James.lean), under the corresponding `GGC.External` namespaces.
-Bondesson imports mathlib only; James imports mathlib and the shared
+The eight current declarations are in [Bondesson.lean](Bondesson.lean),
+[James.lean](James.lean), [Sethuraman.lean](Sethuraman.lean), and
+[SSV.lean](SSV.lean), under the corresponding `GGC.External` namespaces.
+Bondesson and SSV import mathlib only; James and Sethuraman import mathlib and the shared
 `GGC.Foundations` measure definitions. Each file writes every
 assumption and conclusion using actual measures, integrals, probability laws,
 and weak convergence, without importing `main.lean` or using an opaque GGC
@@ -24,6 +25,8 @@ predicate. Consequently it cannot create an import cycle with the main file.
 | E-J1 | `GGC.External.James.markov_krein` | Nonnegative real Markov–Krein formula and a.s. integrability of the actual random mean; finite positive base mass and logarithmic integrability are explicit. M2 consumer: `dirichletMean_laplace`, then local tilted-law identification. |
 | E-J2 | `GGC.External.James.posterior_palm_nonneg` | Nonnegative one-observation disintegration for an explicitly measurable posterior kernel whose values have DP(U+δ_b) laws. Signed applications still require local L1 proofs. |
 | E-J3 | `GGC.External.James.beta_atom_posterior` | DP(U+δ_b) law of the actual independent-product atom mixture. The supplied weight law must push forward to mathlib's Beta(1,B) measure. M2 consumer: `posteriorMixture_isDirichlet`. |
+| E-T1 | `GGC.External.Sethuraman.stick_breaking` | Actual independent beta/location input law; measurable probability-valued stick sum supplied by the caller. Gives the shared finite-partition DP law. Consumer: `dirichletLaw_isDirichlet`. |
+| E-S1 | `GGC.External.SSV.phase_representation` | Bounded measurable real phase with anchor-one representation, principal-log representation on the upper half-plane, absolute integrability, and a.e. uniqueness on `(0,∞)`. Consumer: `phase_anchor_one`, via a locally proved Poisson boundary recovery. |
 
 The three E-B inputs use L. Bondesson, *Generalized Gamma Convolutions and Related Classes
 of Distributions and Densities*, Lecture Notes in Statistics **76**, Springer,
@@ -154,22 +157,55 @@ mean estimates, and Laplace identification belong in proof modules. None
 supplies DP existence, a common parameterized realization, the power tangent,
 canonical phase, or a generator identity.
 
-## Whitelisted inputs not introduced yet
+## Sethuraman registration — 2026-09-24
 
-In addition to the optional E-B4 fallback above, the following entries remain
-construction requirements. They currently have
-**no Lean axiom declaration**; their symbols must not be treated as available
-APIs or proved results.
+E-T1 is declared in [Sethuraman.lean](Sethuraman.lean) as
+`GGC.External.Sethuraman.stick_breaking`. The primary reprint was inspected
+at printed pp.642 and 645 (PDF pages 4 and 7); equation (2.1) continues on
+p.643. Source: J. Sethuraman, *Statistica Sinica* 4 (1994), 639–650,
+[primary reprint](https://www.cs.princeton.edu/courses/archive/fall07/cos597C/readings/Sethuraman1994.pdf).
 
-| ID | Planned source and interface | Required work before introduction |
-|---|---|---|
-| E-S1 | Schilling–Song–Vondracek, *Bernstein Functions*, **2010 first edition**, Theorems 6.10 and 7.3, printed pp. 58–60 and 63, with the official 2022-12-01 errata. | Give the nonzero Stieltjes function, bounded phase, anchor-one integral, a.e. uniqueness, and any complex-domain contract needed for boundary recovery. Joint measurability remains local work. |
-| E-T1 | Sethuraman (1994), Section 2, (2.1), pp. 642–643, and Theorem 3.4, p. 645: stick-breaking construction of a Dirichlet process. | Specify independent beta break fractions and independent base locations, the actual random measure, and total mass one. Parameterized convergence and uniform integrability remain local work. |
+The source-derived contract uses the actual product law of an iid beta
+fraction sequence and an independent iid base-location sequence. Its
+conclusion is the existing normalized-gamma finite-partition DP law,
+including zero-mass cells, on an arbitrary measurable base space. It does
+not restrict the base to be nonatomic. A measurable probability-valued map
+equal a.s. to the explicit stick sum is a premise: the local constructor
+must establish its unit mass and all parameter measurability. Common-event
+convergence is proved separately in `GGC.CommonUniforms`. No continuity,
+uniform integrability, posterior identity or power theorem is included.
 
-Do not fill these gaps with an opaque `IsDirichletProcess` predicate, an
-uninterpreted phase object, or a structure whose fields assume the project
-deductions. Add each external theorem only when its complete Lean semantics,
-source, hypotheses, local adaptations, and intended consumers can be audited.
+## SSV registration — 2026-09-24
+
+E-S1 is declared in [SSV.lean](SSV.lean) as
+`GGC.External.SSV.phase_representation`. This is a source-derived
+specialization of *Bernstein Functions*, **2010 first edition**, Theorems
+6.10 and 7.3, printed pp.58–60 and 63, to the Stieltjes transform of a
+probability on positive rates. The source record and first-edition
+[2022-12-01 errata](https://www.motapa.de/bernstein_functions/misprints-ssv.pdf)
+are recorded in [the primary-interface audit](../../notes/log-rate-power-proof-primary-interfaces.md).
+
+The interface applies the exponential representation to the reciprocal,
+negates the logarithm, and subtracts the value at one. Its `RealPhase` and
+`Phase` structures spell out ordinary measurable functions, `[0,1]` bounds,
+absolute integrability, and explicit real/complex integral formulas; they
+do not package project conclusions. The complex domain is `0 < z.im`,
+with the principal logarithm. Uniqueness is only modulo Lebesgue-null sets
+on the positive half-line. There is no inverse moment or zero-anchor premise.
+The corrected finite Herglotz measure is on `[0,∞)`; the erroneous reverse
+inclusion in Remark 6.11 is unused.
+
+Boundary recovery is **not** an axiom: `GGC.Foundations.ApproximateIdentity`
+proves bounded-measurable approximate-identity convergence from mathlib's
+Lebesgue differentiation theorem, and `GGC.Foundations.PoissonBoundary`
+specializes it to the standard Cauchy density. `GGC.StieltjesPhase` takes
+the imaginary part of the complex formula, identifies the fixed-height
+limsup almost everywhere, and transfers the anchor formula and uniqueness.
+Joint Borel measurability and the narrow-Borel/Giry bridge are also local.
+No weak-star phase limit or generator continuity is supplied by E-S1.
+
+The optional E-B4 fallback remains undeclared. No other whitelist entry is
+pending introduction for M2.
 
 ## Checking and extension rules
 
@@ -196,7 +232,8 @@ processes or phases, put their actual definitions in the independently
 reviewable `GGC/Foundations/RandomMeasure.lean` layer, which imports mathlib
 only. This keeps external inputs independent of the target and its proof.
 
-Once the genuine main proof exists, import `GGC.PowerClosure` in the audit
-and use `#print axioms GGC.ggc_rpow` to check its transitive dependencies
-against this inventory. A named target
-proposition is not a proof and must not be reported as a completed theorem.
+`AxiomAudit.lean` now imports `GGC.PowerClosure` and uses
+`#print axioms GGC.ggc_rpow` to check the genuine proof's transitive dependencies
+against this inventory. The actual final dependency list and verification
+evidence are recorded in the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24).
+A named target proposition alone is not a proof.

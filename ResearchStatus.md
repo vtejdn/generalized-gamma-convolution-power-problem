@@ -58,17 +58,19 @@ sources or to the 2026 induction discussed below.
 The [manuscript sources](manuscript/ggc-power-closure.tex) and
 [bibliography](manuscript/references.bib) are written. The recorded handoff
 included static checks, not TeX compilation.
-As of 2026-09-23, the [Lean principles](formalization/README.md) and
-[construction blueprint](formalization/Blueprint.md) are accompanied by a
-pinned project and a [complete target statement](formalization/main.lean),
-including the original finite-gamma weak-limit definition of GGC. Thorin
-representability is a separate predicate whose characterization remains pending.
-The [external-input directory](formalization/External/README.md)
-contains three explicit Bondesson axiom contracts. The main theorem remains
-an unproved proposition; the scaffold and elementary lemmas do not constitute
-a Lean-verified power-closure proof. Build evidence is recorded in the Lean README.
-This implementation stage does not change the mathematical assessment above.
-Neither source formatting nor compilation certifies the mathematics.
+As of 2026-09-24, the pinned Lean project contains the
+[complete target definitions](formalization/main.lean) and the genuine theorem
+`GGC.ggc_rpow` in [the proof entry point](formalization/GGC/PowerClosure.lean).
+The original finite-gamma weak-limit definition is preserved; no moment,
+drift or Thorin-mass restriction remains in the final type. The construction
+uses proved Euler existence, dynamic identification and the weak-limit reduction.
+Its actual dependencies include seven [registered literature axioms](formalization/External/README.md):
+E-B1, E-B3, E-J1–3, E-T1 and E-S1, in addition to Lean's standard logical axioms.
+This is verification of the project derivation relative to those inputs,
+not a formalization of the external inputs themselves. Build and axiom-audit
+evidence is recorded in the [construction report](formalization/ConstructionReport.md#m7-completion-2026-09-24);
+independent design acceptance remains separate. This does not revise the
+written mathematical assessment above or establish external peer review or priority.
 
 ## Independent results and separate questions
 

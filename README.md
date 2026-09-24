@@ -14,6 +14,10 @@ product of independent copies.
 audit complete.** This is not external peer review, publication, Lean
 verification or a priority claim. The scope, evidence and qualifications
 are maintained in [ResearchStatus.md](ResearchStatus.md).
+The separate Lean construction now includes the [complete power-closure proof](formalization/GGC/PowerClosure.lean),
+relative to seven registered literature axioms. Its build and axiom evidence,
+with independent design acceptance tracked separately, is in the
+[construction report](formalization/ConstructionReport.md#m7-completion-2026-09-24).
 The [manuscript source](manuscript/ggc-power-closure.tex) is available;
 compilation remains user-controlled.
 
@@ -29,7 +33,7 @@ compilation remains user-controlled.
 | Where are the full proofs and their dependencies? | [ledger/README.md](ledger/README.md), the thematic module map |
 | What exactly do the external sources say? | [notes/README.md](notes/README.md), [ledger/references.md](ledger/references.md) and [literature/README.md](literature/README.md) |
 | What can be checked by code? | [computations/README.md](computations/README.md) |
-| What is the presentation or formalization artifact? | [manuscript](manuscript/ggc-power-closure.tex), [bibliography](manuscript/references.bib), [Lean principles](formalization/README.md), [Lean blueprint](formalization/Blueprint.md), [complete Lean target statement](formalization/main.lean) and [external inputs](formalization/External/README.md) |
+| What is the presentation or formalization artifact? | [manuscript](manuscript/ggc-power-closure.tex), [bibliography](manuscript/references.bib), [Lean principles](formalization/README.md), [Lean blueprint](formalization/Blueprint.md), [complete Lean target statement](formalization/main.lean), [Lean proof](formalization/GGC/PowerClosure.lean) and [external inputs](formalization/External/README.md) |
 
 For a quick orientation, read ResearchStatus, then BigPicture.
 For a proof audit, start with the

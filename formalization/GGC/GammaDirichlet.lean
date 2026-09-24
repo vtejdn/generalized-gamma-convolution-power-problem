@@ -26,7 +26,7 @@ theorem posteriorMixture_isDirichlet {U : Measure PosReal}
   External.James.beta_atom_posterior U D hD B.val B.property hMass
     (betaWeightLaw B) (betaWeightLaw_map_val B) b
 
-private theorem measurable_gammaDirichlet_product (s : PosReal) :
+theorem measurable_gammaDirichlet_product (s : PosReal) :
     Measurable (fun x : ℝ × ProbabilityMeasure PosReal => x.1 * stieltjesMean x.2 s.val) := by
   have hp : Measurable (fun x : ℝ × ProbabilityMeasure PosReal => (x.2,s.val)) :=
     measurable_snd.prodMk measurable_const

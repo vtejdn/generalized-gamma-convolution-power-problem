@@ -4,8 +4,8 @@ import GGC.WeakClosure
 # Conditional reduction to finite gamma inputs
 
 Blueprint node W / M1; WIP-6.21 and manuscript Section 6, final approximation.
-This proves the final weak-limit step, not the finite-input power theorem.
-The missing finite-input result remains an explicit premise. In particular,
+This proves the final weak-limit step, keeping the finite-input power theorem
+as an explicit premise. `GGC.PowerClosure` supplies its proved instance. In particular,
 this module does not declare `GGC.ggc_rpow` or use a core literature axiom.
 -/
 
@@ -23,7 +23,7 @@ theorem isGGC_powerLaw_of_finiteGamma (q : ℝ) (hq : 0 ≤ q)
     (fun n => hfinite (μs n) (hμs n)) (power_pushforward_tendsto μs μ q hq hlim)
 
 /-- Conditional assembly of the complete target. Its sole mathematical premise
-is the still-unproved finite-gamma power-closure theorem for all real q ≥ 1. -/
+is the finite-gamma power-closure theorem for all real q ≥ 1. -/
 theorem ggcPowerClosure_of_finiteGamma
     (hfinite : ∀ (ν : NonnegLaw) (q : ℝ) (hq : 1 ≤ q),
       IsFiniteGammaConvolution ν → IsGGC (powerLaw ν q (zero_le_one.trans hq))) :

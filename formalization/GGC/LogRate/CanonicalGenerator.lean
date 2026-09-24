@@ -5,8 +5,9 @@ import GGC.LogRate.PhaseGenerator
 
 The input `D` is an actual law of probability measures on positive rates.
 The phase argument is now discharged by the integer-boundary construction.
-Constructing `D(B,F)` on the common probability space and proving the
-Stieltjes representation / resolvent identities are separate obligations.
+`Generator` supplies `D(B,F)` from the common-space realization.
+`SampleResolvent`, `PosteriorResolvent` and `PalmResolvent` identify the
+resulting operator through absolutely integrable resolvent formulas.
 -/
 
 noncomputable section

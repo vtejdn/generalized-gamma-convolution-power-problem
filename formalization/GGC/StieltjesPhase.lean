@@ -1,6 +1,10 @@
 import GGC.StieltjesMean
+import GGC.Foundations.ProbabilityBorel
+import GGC.Foundations.PoissonBoundary
+import External.SSV
 import Mathlib.MeasureTheory.Function.SpecialFunctions.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+import Mathlib.MeasureTheory.Measure.ResolventTransform
 
 /-! # The canonical measurable Stieltjes phase
 
@@ -17,6 +21,18 @@ namespace GGC
 
 def complexStieltjesMean (P : ProbabilityMeasure PosReal) (z : ℂ) : ℂ :=
   ∫ b, (z + (b.val : ℂ))⁻¹ ∂(P : Measure PosReal)
+
+/-- mathlib uses `(b - a)⁻¹`; our positive-rate convention is its value at `a = -z`. -/
+theorem complexStieltjesMean_eq_resolventTransform (P : ProbabilityMeasure PosReal) (z : ℂ) :
+    complexStieltjesMean P z =
+      resolventTransform ((P : Measure PosReal).map Subtype.val) (-z) := by
+  rw [resolventTransform_apply, integral_map measurable_subtype_coe.aemeasurable
+    (measurable_resolvent (𝕜 := ℝ) (a := -z)).aestronglyMeasurable]
+  simp only [complexStieltjesMean, resolvent, Ring.inverse_eq_inv', sub_neg_eq_add]
+  congr 1
+  funext b
+  congr 1
+  exact add_comm _ _
 
 @[fun_prop] theorem measurable_complexStieltjesMean :
     Measurable (fun x : ProbabilityMeasure PosReal × ℂ => complexStieltjesMean x.1 x.2) := by
@@ -38,12 +54,15 @@ theorem complexStieltjesMean_ofReal (P : ProbabilityMeasure PosReal) (s : ℝ) :
 theorem integrable_complexStieltjesMean (P : ProbabilityMeasure PosReal)
     {z : ℂ} (hz : 0 < z.im) :
     Integrable (fun b : PosReal => (z + (b.val : ℂ))⁻¹) (P : Measure PosReal) := by
-  apply (integrable_const (1 / z.im)).mono'
-    ((show Measurable (fun b : PosReal => (z + (b.val : ℂ))⁻¹) by fun_prop).aestronglyMeasurable)
-  exact Eventually.of_forall fun b => by
-    rw [norm_inv, ← one_div]
-    apply one_div_le_one_div_of_le hz
-    simpa using Complex.im_le_norm (z + (b.val : ℂ))
+  have hz' : -z ∉ algebraMap ℝ ℂ '' ((P : Measure PosReal).map Subtype.val).support := by
+    rintro ⟨x, _, hx⟩
+    have hi := congrArg Complex.im hx
+    change 0 = -z.im at hi
+    linarith
+  have hi := integrable_resolvent (A := ℂ) hz'
+  rw [integrable_map_measure (measurable_resolvent (𝕜 := ℝ) (a := -z)).aestronglyMeasurable
+    measurable_subtype_coe.aemeasurable] at hi
+  simpa only [Function.comp_def, resolvent, Ring.inverse_eq_inv', sub_neg_eq_add, add_comm] using! hi
 
 theorem norm_complexStieltjesMean_le (P : ProbabilityMeasure PosReal)
     {z : ℂ} (hz : 0 < z.im) : ‖complexStieltjesMean P z‖ ≤ 1 / z.im := by
@@ -183,5 +202,86 @@ theorem stieltjesPhase_dirac_self (b : PosReal) :
   have he : phaseApprox ⟨Measure.dirac b, inferInstance⟩ b.val = (fun _ => 1 / 2) :=
     funext (phaseApprox_dirac_self b)
   exact (congrArg (fun f : ℕ → ℝ => limsup f atTop) he).trans (limsup_const _)
+
+theorem phaseHeight_tendsto_zero : Tendsto phaseHeight atTop (nhds 0) :=
+  tendsto_one_div_add_atTop_nhds_zero_nat
+
+/-- Taking the imaginary part of the registered complex representation gives
+the actual normalized Poisson integral. This step asserts no boundary limit. -/
+theorem phaseApprox_eq_poisson {P : ProbabilityMeasure PosReal} {η : ℝ → ℝ}
+    (hη : External.SSV.Phase P η) (t : ℝ) (n : ℕ) :
+    phaseApprox P t n = ∫ u in Ioi 0,
+      ProbabilityTheory.cauchyPDFReal t ⟨phaseHeight n, (phaseHeight_pos n).le⟩ u * η u := by
+  let z : ℂ := -(t:ℂ) + (phaseHeight n:ℂ)*Complex.I
+  have hz : 0 < z.im := by simpa [z] using phaseHeight_pos n
+  have h := congrArg Complex.im (hη.complex_anchor_one z hz)
+  have him : (∫ u in Ioi 0, (η u:ℂ) * ((z+(u:ℂ))⁻¹-((1+u:ℝ):ℂ)⁻¹)).im =
+      ∫ u in Ioi 0, ((η u:ℂ) * ((z+(u:ℂ))⁻¹-((1+u:ℝ):ℂ)⁻¹)).im :=
+    (integral_im (hη.complex_integrable z hz)).symm
+  rw [Complex.sub_im, Complex.log_im, Complex.ofReal_im, sub_zero, him] at h
+  change (complexStieltjesMean P z).arg = _ at h
+  change -(complexStieltjesMean P z).arg / Real.pi = _
+  rw [h, ← integral_neg, ← integral_div]
+  apply integral_congr_ae
+  exact Eventually.of_forall fun u => by
+    simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.sub_im,
+      mul_zero, zero_mul, add_zero, Complex.inv_im, Complex.add_im, Complex.add_re,
+      Complex.neg_im, Complex.neg_re, Complex.mul_re, Complex.I_re, Complex.I_im,
+      mul_one, sub_zero, Complex.normSq_apply, neg_zero, zero_add, z]
+    simp only [ProbabilityTheory.cauchyPDFReal_def, zero_div, sub_zero]
+    change -(η u * (-(phaseHeight n) / ((-t+u)*(-t+u)+phaseHeight n*phaseHeight n))) /
+      Real.pi = Real.pi⁻¹ * phaseHeight n * ((u-t)^2+phaseHeight n^2)⁻¹ * η u
+    have hd : (-t+u)*(-t+u)+phaseHeight n*phaseHeight n = (u-t)^2+phaseHeight n^2 := by ring
+    rw [hd]
+    ring
+
+/-- The prescribed limsup agrees a.e. with any phase supplied by E-S1.
+The recovery theorem is proved locally from Lebesgue differentiation. -/
+theorem phase_eq_ae_of_representation {P : ProbabilityMeasure PosReal} {η : ℝ → ℝ}
+    (hη : External.SSV.Phase P η) :
+    stieltjesPhase P =ᵐ[volume.restrict (Ioi 0)] η := by
+  have h := Analysis.ae_tendsto_halfLine_cauchy_integral hη.measurable hη.bounds
+    phaseHeight_pos phaseHeight_tendsto_zero
+  filter_upwards [h] with t ht
+  simp_rw [← phaseApprox_eq_poisson hη t] at ht
+  exact ht.limsup_eq
+
+/-- The canonical, jointly Borel measurable representative satisfies the real
+representation contract, without any integrability assumption at zero. -/
+theorem stieltjesPhase_realPhase (P : ProbabilityMeasure PosReal) :
+    External.SSV.RealPhase P (stieltjesPhase P) := by
+  obtain ⟨η, hη, _⟩ := External.SSV.phase_representation P
+  have he := phase_eq_ae_of_representation hη
+  have hm : Measurable (stieltjesPhase P) := by
+    have h := phase_jointlyMeasurable.comp
+      (show Measurable (fun t : ℝ => (P,t)) from measurable_const.prodMk measurable_id)
+    exact h
+  refine ⟨hm, stieltjesPhase_bounds P, ?_, ?_⟩
+  · intro s hs
+    exact (hη.integrable s hs).congr (he.symm.mono fun t ht => by dsimp only; rw [ht])
+  · intro s hs
+    exact (hη.anchor_one s hs).trans (integral_congr_ae
+      (he.symm.mono fun t ht => by dsimp only; rw [ht]))
+
+theorem integrable_phase_anchor_one (P : ProbabilityMeasure PosReal) {s : ℝ} (hs : 0 < s) :
+    IntegrableOn (fun t => stieltjesPhase P t * ((s+t)⁻¹-(1+t)⁻¹)) (Ioi 0) :=
+  (stieltjesPhase_realPhase P).integrable s hs
+
+theorem phase_anchor_one (P : ProbabilityMeasure PosReal) {s : ℝ} (hs : 0 < s) :
+    Real.log (stieltjesMean P s) - Real.log (stieltjesMean P 1) =
+      ∫ t in Ioi 0, stieltjesPhase P t * ((s+t)⁻¹-(1+t)⁻¹) := by
+  simpa only [stieltjesMean, one_div] using (stieltjesPhase_realPhase P).anchor_one s hs
+
+/-- Uniqueness is a.e. on the positive half-line, with explicit real-axis data. -/
+theorem phase_unique_ae (P : ProbabilityMeasure PosReal) {η : ℝ → ℝ}
+    (hm : Measurable η) (hb : ∀ t, 0 ≤ η t ∧ η t ≤ 1)
+    (hi : ∀ s : ℝ, 0 < s → IntegrableOn (fun t => η t * ((s+t)⁻¹-(1+t)⁻¹)) (Ioi 0))
+    (hr : ∀ s : ℝ, 0 < s → Real.log (stieltjesMean P s) - Real.log (stieltjesMean P 1) =
+      ∫ t in Ioi 0, η t * ((s+t)⁻¹-(1+t)⁻¹)) :
+    η =ᵐ[volume.restrict (Ioi 0)] stieltjesPhase P := by
+  obtain ⟨ζ, hζ, hu⟩ := External.SSV.phase_representation P
+  have hη : External.SSV.RealPhase P η := ⟨hm, hb, hi, by
+    simpa only [stieltjesMean, one_div] using hr⟩
+  exact (hu η hη).trans (phase_eq_ae_of_representation hζ).symm
 
 end GGC

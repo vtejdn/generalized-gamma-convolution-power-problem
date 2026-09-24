@@ -5,7 +5,8 @@ import GGC.LogRate.JumpCalculus
 
 This is the actual posterior averaging construction for a supplied phase and
 law D. It does not assert that D is a Dirichlet law or that the input phase is
-the canonical Stieltjes phase. Those identifications remain separate M2 work.
+the canonical Stieltjes phase. `CanonicalGenerator` and `Generator` supply
+those identifications using the completed M2 constructions.
 -/
 
 noncomputable section

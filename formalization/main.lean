@@ -17,8 +17,8 @@ of gamma laws. The finite product below encodes independence, and the sum
 pushforward is the distribution of their sum. No transform identity or external
 mathematical axiom is used to define this class.
 
-STATUS: `GGCPowerClosure` is an unproved proposition, not an axiom or a proof.
-The future proof entry point `GGC/PowerClosure.lean` must prove it. This file
+`GGCPowerClosure` declares the target proposition independently of its proof.
+The proof entry point is `GGC/PowerClosure.lean`. This file
 imports mathlib only and contains only definitions and their construction proofs.
 The final target has no restriction on drift, Thorin mass, support or moments.
 -/
@@ -107,7 +107,7 @@ def powerLaw (μ : NonnegLaw) (q : ℝ) (hq : 0 ≤ q) : NonnegLaw where
     filter_upwards [μ.nonneg] with x hx
     exact Real.rpow_nonneg hx q
 
-/-- **The complete main theorem statement, currently unproved.**
+/-- **The complete main theorem statement.**
 
 For every nonnegative probability law μ and every finite real q ≥ 1,
 membership in the finite-gamma weak-limit class is preserved by x ↦ x^q.
@@ -116,7 +116,8 @@ In particular, neither Thorin representability nor an evolution-existence
 assumption appears in the statement.
 
 Defining this proposition does not assert it. The genuine theorem
-`GGC.ggc_rpow : GGCPowerClosure` belongs in `GGC/PowerClosure.lean` when proved.
+`GGC.ggc_rpow : GGCPowerClosure` is proved in `GGC/PowerClosure.lean`,
+relative to the registered literature inputs audited by `AxiomAudit.lean`.
 -/
 def GGCPowerClosure : Prop :=
   ∀ (μ : NonnegLaw) (q : ℝ) (hq : 1 ≤ q),

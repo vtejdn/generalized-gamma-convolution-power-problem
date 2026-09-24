@@ -1,5 +1,6 @@
 import GGC.FiniteGamma
 import Mathlib.Analysis.SpecialFunctions.Gamma.Deriv
+import Mathlib.Analysis.SpecialFunctions.Gamma.Digamma
 import Mathlib.Probability.Distributions.Beta
 import Mathlib.Analysis.Complex.CauchyIntegral
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
@@ -16,7 +17,27 @@ open MeasureTheory Set Filter Topology Asymptotics
 
 namespace GGC
 
-def digamma (s : ℝ) : ℝ := deriv Real.Gamma s / Real.Gamma s
+/-- The real logarithmic derivative, using mathlib's generic convention. -/
+def digamma (s : ℝ) : ℝ := logDeriv Real.Gamma s
+
+theorem digamma_apply (s : ℝ) : digamma s = deriv Real.Gamma s / Real.Gamma s := rfl
+
+/-- Compatibility with mathlib's complex digamma on the positive real axis. -/
+theorem digamma_eq_re_complex {s : ℝ} (hs : 0 < s) :
+    digamma s = (Complex.digamma (s : ℂ)).re := by
+  have hc : DifferentiableAt ℂ Complex.Gamma (s : ℂ) :=
+    Complex.differentiableAt_Gamma _ (by
+      intro m hm
+      have hr := congrArg Complex.re hm
+      simp only [Complex.ofReal_re, Complex.neg_re, Complex.natCast_re] at hr
+      linarith [Nat.cast_nonneg (α := ℝ) m])
+  have he : (fun x : ℝ => Complex.Gamma (x : ℂ)) = fun x => (Real.Gamma x : ℂ) :=
+    funext Complex.Gamma_ofReal
+  have hd : deriv Complex.Gamma (s : ℂ) = ((deriv Real.Gamma s : ℝ) : ℂ) := by
+    rw [← hc.hasDerivAt.comp_ofReal.deriv, he]
+    exact (hc.hasDerivAt.real_of_complex.differentiableAt.hasDerivAt.ofReal_comp).deriv
+  rw [Complex.digamma, logDeriv_apply, hd, Complex.Gamma_ofReal, ← Complex.ofReal_div]
+  rfl
 
 def betaLaw (a b : PosReal) : ProbabilityMeasure ℝ :=
   ⟨ProbabilityTheory.betaMeasure a.val b.val,
@@ -85,7 +106,7 @@ theorem integral_gamma_log_kernel {s : ℝ} (hs : 0 < s) :
     (∫ t in Ioi 0, t ^ (s - 1) * (Real.log t * Real.exp (-t))) =
       Real.Gamma s * digamma s := by
   rw [← (hasDerivAt_Gamma_integral hs).deriv]
-  unfold digamma
+  rw [digamma_apply]
   field_simp [ne_of_gt (Real.Gamma_pos_of_pos hs)]
 
 private theorem gammaPDF_mul_log (B x : ℝ) :
@@ -120,6 +141,39 @@ private theorem integrable_gammaLaw_iff (B : PosReal) (f : ℝ → ℝ) :
     (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]
   simp only [ENNReal.toReal_ofReal
     (ProbabilityTheory.gammaPDFReal_nonneg B.property zero_lt_one _), smul_eq_mul]
+
+private theorem gammaPDF_mul_self (B x : ℝ) :
+    ProbabilityTheory.gammaPDFReal B 1 x * x =
+      (Ioi 0).indicator (fun t : ℝ => (1 / Real.Gamma B) *
+        (t ^ ((B + 1) - 1) * Real.exp (-t))) x := by
+  rcases lt_trichotomy x 0 with hx | rfl | hx
+  · simp [ProbabilityTheory.gammaPDFReal, not_le.mpr hx, not_lt.mpr hx.le]
+  · simp [ProbabilityTheory.gammaPDFReal]
+  · rw [indicator_of_mem (show x ∈ Ioi (0 : ℝ) from hx)]
+    simp only [ProbabilityTheory.gammaPDFReal, if_pos hx.le, Real.one_rpow, one_mul,
+      add_sub_cancel_right, Real.rpow_sub_one (ne_of_gt hx)]
+    field_simp
+
+theorem integrable_self_gammaLaw (B : PosReal) :
+    Integrable (fun x : ℝ => x) ((gammaLaw B ⟨1, zero_lt_one⟩).law : Measure ℝ) := by
+  rw [integrable_gammaLaw_iff]
+  simp_rw [gammaPDF_mul_self]
+  apply (integrable_indicator_iff measurableSet_Ioi).2
+  have h := (Real.GammaIntegral_convergent (show 0 < B.val + 1 by linarith [B.property])).const_mul
+    (1 / Real.Gamma B.val)
+  simpa only [mul_comm (Real.exp _)] using! h
+
+theorem integral_self_gammaLaw (B : PosReal) :
+    (∫ x : ℝ, x ∂((gammaLaw B ⟨1, zero_lt_one⟩).law : Measure ℝ)) = B.val := by
+  rw [integral_gammaLaw _ _ _ (integrable_self_gammaLaw B)]
+  simp_rw [gammaPDF_mul_self]
+  rw [integral_indicator measurableSet_Ioi, integral_const_mul]
+  have he : (∫ x in Ioi (0 : ℝ), x^((B.val+1)-1) * Real.exp (-x)) =
+      Real.Gamma (B.val+1) := by
+    rw [Real.Gamma_eq_integral (show 0 < B.val + 1 by linarith [B.property])]
+    simp only [mul_comm (Real.exp _)]
+  rw [he, Real.Gamma_add_one (ne_of_gt B.property)]
+  field_simp [ne_of_gt (Real.Gamma_pos_of_pos B.property)]
 
 /-- The unit-rate gamma logarithm is absolutely integrable. -/
 theorem integrable_log_gammaLaw (B : PosReal) :
