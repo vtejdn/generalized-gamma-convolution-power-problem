@@ -2,6 +2,8 @@
 
 Updated: 2026-09-24. Construction plan: [Blueprint.md](Blueprint.md).
 
+All comments and documentation comments in project Lean source files must be written in English.
+
 The main theorem is **GGC power closure**:
 
 \[
@@ -14,12 +16,20 @@ The final theorem covers every GGC probability law, including nonzero drift,
 infinite Thorin mass and degenerate laws. Finite support, shape bounds,
 moment conditions and finite Thorin mass must not remain as extra hypotheses.
 
-**Current status: `GGC.ggc_rpow : GGC.GGCPowerClosure` is implemented in
-[GGC/PowerClosure.lean](GGC/PowerClosure.lean) and compiles relative to the
-registered literature inputs.** The definition entry point is
-[main.lean](main.lean), which contains all project-specific definitions needed
-to read the complete target. `import GGC.PowerClosure` exposes its genuine
-proof; `AxiomAudit.lean` checks the fully expanded type and transitive axioms.
+**Current status: `GGC.ggc_rpow : GGC.GGCPowerClosure` in
+[main.lean](main.lean) has passed independent design
+acceptance relative to seven registered literature axioms. M0–M7 are
+accepted: the user accepts the distribution version and withdraws RV-1.**
+E1's readability migration is implemented; fresh verification is recorded in
+[the E1 construction report](ConstructionReport.md#e1-construction-2026-09-24).
+[Definitions.lean](Definitions.lean) contains all complete definitions.
+`import main` exposes the unique public theorem with four visible proof steps;
+`GGC.PowerClosure` retains the finite-input details. `AxiomAudit.lean` imports
+`main` and prints the expanded type, proof body and transitive axioms.
+Independent design acceptance of E1 remains pending.
+Fresh E1 clean build: **3940 jobs**, **137/137 project modules** freshly built;
+direct audit: **883/883 checks**, with the same seven literature dependencies.
+The root location of `Definitions.lean` follows the user's explicit override.
 The project's mathematical assessment in [ResearchStatus](../ResearchStatus.md)
 is separate from Lean verification. M0 and M1 are accepted: Laplace uniqueness,
 Thorin endpoint equivalence, finite-atomic adapters, the characterization and
@@ -28,8 +38,10 @@ The characterization uses the existing E-B2/E-B3 axioms; no E-B4 was added.
 The earlier conditional reduction is now supplied with the finite-input power
 theorem. For the accepted base, see the
 [M1 acceptance](ConstructionReport.md#m1-design-acceptance-2026-09-23).
-M2–M7 implementations are complete and pass the build/axiom audit relative to
-the registered literature inputs; independent design acceptance is pending.
+The [2026-09-24 independent acceptance](ConstructionReport.md#final-design-acceptance-2026-09-24)
+confirms M2–M6 and the complete law theorem after a fresh project build and
+direct axiom audit. Its former RV-1 handoff is withdrawn by the
+[user scope correction](ConstructionReport.md#entrypoint-design-2026-09-24).
 The [M2 report](ConstructionReport.md#m2-completion-2026-09-24) and
 [M3 report](ConstructionReport.md#m3-completion-2026-09-24) record their
 contracts, evidence and remaining later-stage obligations. The
@@ -68,20 +80,21 @@ verification. The final proof uses seven literature axioms: E-B1, E-B3,
 E-J1–3, E-T1 and E-S1, beyond the standard logical axioms. The clean build
 uses `LEAN_NUM_THREADS=2` after an initial memory-allocation failure; pinned
 dependency caches are retained and the report preserves both attempts.
-The layout and historical evidence below describe the accepted M0/M1 base.
+The layout describes the current implementation; dated earlier evidence is
+retained as history and is superseded by the independent acceptance above.
 
-**Implemented migration (2026-09-23):** `main.lean` now uses the
+**Definition migration (2026-09-23, relocated by E1):** `Definitions.lean` uses the
 original definition of `IsGGC` as a weak limit of actual finite gamma
 convolutions, retaining all definitions needed to read `GGCPowerClosure`.
 Thorin representability is a separate predicate. Its characterization now
 follows the local E-B2/E-B3 bridge (route 2) in the
 [definition contract](Blueprint.md#original-ggc-definition).
 Auxiliary lemmas have moved to their proof modules; the genuine final proof belongs
-to `GGC/PowerClosure.lean`. The [migration contract](Blueprint.md#statement-proof-separation)
+to `main.lean`, with finite-input detail in `GGC/PowerClosure.lean`. The [migration contract](Blueprint.md#statement-proof-separation)
 specifies ownership and acceptance. No new external axiom was needed for this
 migration or the characterization. The full power-closure proof is now implemented.
 
-## Current project layout
+## Current project layout (after E1)
 
 ```text
 formalization/
@@ -91,7 +104,8 @@ formalization/
   Blueprint.md            design, interfaces, milestones and acceptance criteria
   MathlibAPI.md           shared API mapping, reuse decisions and search gaps
   ConstructionReport.md   implementation reports, build evidence and axiom audits
-  main.lean               original GGC definition and complete target statement
+  main.lean               public theorem with four explicit proof steps
+  Definitions.lean        original GGC definitions and complete target proposition
   GGC/
     Basic.lean            law and power-pushforward lemmas
     FiniteGamma.lean      product/sum semantics, membership and Laplace formulas
@@ -102,7 +116,7 @@ formalization/
     Foundations/         generic analytic and random-measure foundations
     LogRate/             specified generator, continuity, Euler scheme and weak solution
     Identification/      moments, endpoint control, weak transport and power-law identification
-    PowerClosure.lean    proved finite-input theorem and complete GGC power closure
+    PowerClosure.lean    proved finite-input power closure
   AxiomAudit.lean         declaration and axiom inspection
   External/
     Bondesson.lean        complete E-B1, E-B2 and E-B3 axiom contracts
@@ -110,20 +124,12 @@ formalization/
   .lake/                  ignored dependencies and build products
 ```
 
-The current external contracts use explicit measure and Laplace formulas and
-import mathlib or the designated independent shared semantics. `main.lean`
-imports only mathlib and owns the public
-definitions, with no dependency on external mathematical assumptions.
-
-After this migration, `GGC.Basic` imports `main`, and proof modules
-import the definitions, helper lemmas and external results they use. Adapters
-belong in their corresponding proof modules. `main` imports mathlib only and
-does not import its consumers. Its former unused `External.Bondesson` import
-has been removed. `GGC.PowerClosure` assembles the final proof, and `AxiomAudit`
-imports and inspects that proof entry point. Thus the complete definitions
-remain readable in `main` without an import cycle. The final theorem is available through
-`import GGC.PowerClosure`, rather than through `import main`.
-
+The external contracts import only mathlib or independent shared semantics.
+`Definitions` imports mathlib only. `GGC.Basic` and `GGC.StieltjesMean`
+import that definition layer; helpers never import `main`. `GGC.PowerClosure`
+provides finite-input closure, while `main` assembles the unique `ggc_rpow`
+using those lemmas and original-definition weak closure. `AxiomAudit` imports
+`main`. Lake roots and globs explicitly include the root `Definitions` module.
 ## 1. Document responsibilities
 
 | Content | Maintained in |
@@ -201,7 +207,7 @@ require a repository-wide search before every elementary lemma.
    directly when its semantics match. When a project-facing definition is
    needed, prove equality or the exact transport relation once and reuse that
    bridge. Keep adapters in their mathematical owner module; shared consumers
-   should import them rather than copy proofs. Preserve `main.lean`'s complete
+   should import them rather than copy proofs. Preserve `Definitions.lean`'s complete
    public definitions and the external-input import boundary.
 4. **Read the full type and compile a real use.** Check implicit/typeclass
    assumptions, domains, signs, parameter conventions, null sets and measure
@@ -266,7 +272,7 @@ turns this workflow into module-level construction and acceptance requirements.
 
 ## 3. Shared modeling conventions
 
-Laws and power pushforwards are implemented in [main.lean](main.lean).
+Laws and power pushforwards are implemented in [Definitions.lean](Definitions.lean).
 The original finite-gamma weak-limit definition is implemented. The separate
 Thorin predicate lives in `GGC/Thorin.lean`; its characterization is accepted
 relative to E-B2/E-B3. Random-measure realizations, canonical phases and the
@@ -279,8 +285,8 @@ for declaration-level status.
 
 - Use a law-first interface: `NonnegLaw` bundles
   `MeasureTheory.ProbabilityMeasure ℝ` with `∀ᵐ x ∂μ, 0 ≤ x`.
-  Derive the random-variable statement by taking distributions at the end;
-  different laws need not share a probability space.
+  The distribution version is the full required deliverable; no random-variable
+  corollary is required. Different laws need not share a probability space.
 - `powerLaw μ q hq` is the actual pushforward \((x\mapsto x^q)_*\mu\), with
   exponent type `ℝ`. Prove measurability, nonnegativity and the continuous
   mapping result for fixed \(q\ge1\). Handle \(q=1\) explicitly.
@@ -302,7 +308,7 @@ at M0; see the [mathlib probability-measure documentation](https://leanprover-co
 ### 3.2 Original GGC definition, Thorin characterization and integrals
 
 Define `gammaLaw`, `finiteGammaLaw`, `IsFiniteGammaConvolution` and `IsGGC`
-completely in `main.lean`. A finite gamma convolution is the sum pushforward
+completely in `Definitions.lean`. A finite gamma convolution is the sum pushforward
 of a finite product of actual gamma laws with positive shapes and rates;
 the product encodes independence. Permit the empty sum, giving \(\delta_0\).
 Use mathlib's `ProbabilityTheory.gammaMeasure` with its shape/rate convention
@@ -485,11 +491,13 @@ failure to find one guessed name does not establish that a theory is missing.
   `GGC`, with external axioms only in `GGC.External`. Name files by
   responsibility and theorems by content; put WIP IDs in docstrings.
 - Keep modules focused and imports specific. The human-audit entry point is
-  `main.lean`; it contains the full main statement and its required definitions.
-  Definition-internal proof fields remain with their objects; auxiliary lemmas
-  live in the corresponding proof modules. The completed theorem will be
-  exposed by `GGC/PowerClosure.lean`, with unchanged name `GGC.ggc_rpow` and
-  type `GGC.GGCPowerClosure`. `main` must not import modules depending on it.
+  `main.lean`, containing `GGC.ggc_rpow : GGC.GGCPowerClosure` with
+  explicit approximation, finite-input closure, power-map convergence and
+  weak-closure steps and mathematical comments. The complete required definitions
+  and their construction proof fields move to `Definitions.lean`, importing
+  mathlib only. Detailed assembly remains in `GGC/PowerClosure.lean`; auxiliary
+  lemmas keep their corresponding modules. No dependency of `main` may import
+  it. Section 4.1 of the Blueprint governs the coordinated migration.
   External mathematical axioms must be placed in `External/` with complete
   types and source records. Extract reusable analysis lemmas rather than
   copying estimates.
@@ -520,8 +528,8 @@ Verification commands, versions and results:
 Use `sorry`, `admit` and temporary core assumptions only in marked drafts.
 Drafts must not enter the definition entry point, the verified helper/audit
 modules, or the proof entry point's transitive import closure, and
-must not count as completed nodes. The proof entry point is
-`GGC/PowerClosure.lean`. A genuine reduction theorem saying “the finite
+must not count as completed nodes. The proof entry point is currently
+`main.lean`. A genuine reduction theorem saying “the finite
 Gamma case implies the general case” is useful early work, but must not use
 the final theorem's name before its premise is discharged. An unregistered
 axiom is not a substitute for completing a draft.
@@ -552,7 +560,7 @@ lake env lean AxiomAudit.lean
 
 The existing [AxiomAudit.lean](AxiomAudit.lean) prints the full target,
 definitions, external contracts and axiom dependencies of the implemented lemmas.
-It imports `GGC.PowerClosure` and checks the actual main theorem.
+It imports `main` and checks the actual main theorem.
 Lake covers `main`, all `GGC` and `External` descendants, and the audit.
 The audit prints both membership predicates, the endpoint condition, finite
 Thorin data and the characterization type, and checks the completed M0/M1
@@ -566,6 +574,17 @@ commands inspect its type, proof and actual transitive dependencies:
 #print GGC.ggc_rpow
 #print axioms GGC.ggc_rpow
 ```
+
+**Current acceptance evidence (2026-09-24):** the independent design review
+ran `lake clean ggc_power_closure`, then the default build and direct audit
+with the pinned executable and `LEAN_NUM_THREADS=2`. All 136 project modules
+were freshly built (3939 jobs), and all 883 requested axiom checks matched
+the output. A separate check printed the final proof body and checked its
+full type. Dependency caches were retained. Exact commands, logs, seven
+literature dependencies and the historical RV-1 finding are in
+[the acceptance report](ConstructionReport.md#final-design-acceptance-2026-09-24).
+The following dated records preserve the earlier state; their pending statuses
+are not the current verdict.
 
 **Build evidence (2026-09-23):** the installed pinned Lean 4.32.2 toolchain's
 Lake executable completed the default `lake build` with exit code 0, including
@@ -642,10 +661,11 @@ Completion requires all of the following:
 3. Every required Blueprint node is recorded as `verified` in the construction
    report with evidence; all project
    core deductions have complete Lean proofs.
-4. The proof entry point `GGC/PowerClosure.lean` and `AxiomAudit.lean` build
+4. The proof entry point (`main.lean`), its supporting
+   `GGC/PowerClosure.lean`, and `AxiomAudit.lean` build
    reproducibly in the pinned environment. Default targets include the main
-   theorem and required modules; checking `main.lean` alone checks the
-   statement layer. Record toolchain, mathlib commit, commands, exit statuses
+   theorem and required modules; the audit additionally inspects the proof's
+   transitive dependencies. Record toolchain, mathlib commit, commands, exit statuses
    and audit output.
 5. The actual axiom set is a subset of
    `{propext, Classical.choice, Quot.sound}` and the registered, checked
@@ -660,7 +680,8 @@ derivation has been verified in Lean relative to the listed literature
 axioms.” Claiming a full formalization without external mathematical axioms
 also requires Lean proofs of those inputs.
 
-The present deliverables include the complete target and its proof, with the
-original finite-gamma weak-limit definition preserved. Construction evidence
-and independent design acceptance remain distinct; see the latest completion
-record in [ConstructionReport.md](ConstructionReport.md).
+The complete law theorem is accepted with the original finite-gamma weak-limit
+definition preserved. The user has withdrawn RV-1 and closed M7. E1 is an implemented,
+separately awaiting design acceptance presentation migration; it does not reopen the accepted
+mathematics. The current decision is in
+[ConstructionReport.md, Section 27](ConstructionReport.md#entrypoint-design-2026-09-24).

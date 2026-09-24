@@ -83,7 +83,7 @@ itself complete the project's main theorem.
 ## Original definition and authorized characterization fallback
 
 The approved [definition contract](../Blueprint.md#original-ggc-definition)
-requires `main.lean` to define GGC by weak limits of actual finite gamma sums.
+requires `Definitions.lean` to define GGC by weak limits of actual finite gamma sums.
 Thorin representability is the separate `HasThorinRepresentation`
 predicate in `GGC/Thorin.lean`. Existing E-B1--E-B3 retain their primitive types.
 The local adapters use the separate representation predicate.
@@ -225,14 +225,14 @@ whitelist and this inventory, and must carry a complete type and provenance
 docstring. Project proof modules import the external contracts they need;
 external modules must not import `main`, `GGC.Basic`, or project proof modules.
 Under the [approved statement/proof separation](../Blueprint.md#statement-proof-separation),
-project proof modules may import `main` to use its complete definitions, while
-`main` imports mathlib only; this migration is complete.
+project proof modules import `Definitions` to use its complete definitions, while
+`Definitions` imports mathlib only; `main` consumes the proved helpers.
 If shared semantic definitions are later needed for Dirichlet
 processes or phases, put their actual definitions in the independently
 reviewable `GGC/Foundations/RandomMeasure.lean` layer, which imports mathlib
 only. This keeps external inputs independent of the target and its proof.
 
-`AxiomAudit.lean` now imports `GGC.PowerClosure` and uses
+`AxiomAudit.lean` now imports `main` and uses
 `#print axioms GGC.ggc_rpow` to check the genuine proof's transitive dependencies
 against this inventory. The actual final dependency list and verification
 evidence are recorded in the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24).

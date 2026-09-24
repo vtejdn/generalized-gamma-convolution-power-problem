@@ -1,4 +1,4 @@
-import main
+import Definitions
 
 /-! Basic law and power-pushforward lemmas, separated from the public statement. -/
 

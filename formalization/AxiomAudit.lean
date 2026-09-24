@@ -37,7 +37,7 @@ import GGC.Identification.TestExtension
 import GGC.Identification.LaplaceEvolution
 import GGC.Identification.LogTransport
 import GGC.Identification.DynamicIdentification
-import GGC.PowerClosure
+import main
 import External.Bondesson
 import External.James
 import External.Sethuraman
@@ -1107,4 +1107,5 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.isGGC_power_of_isFiniteGammaConvolution
 #check (GGC.ggc_rpow : ∀ (μ : GGC.NonnegLaw) (q : ℝ) (hq : 1 ≤ q),
   GGC.IsGGC μ → GGC.IsGGC (GGC.powerLaw μ q (zero_le_one.trans hq)))
+#print GGC.ggc_rpow
 #print axioms GGC.ggc_rpow

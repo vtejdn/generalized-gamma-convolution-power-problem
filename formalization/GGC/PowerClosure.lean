@@ -8,7 +8,7 @@ The finite-input theorem is obtained from the constructed nonlinear log-rate
 evolution and its dynamic identification at time log q. The original weak-limit
 definition and continuity of the fixed power map remove all construction
 moment and finite-mass assumptions. The literature trust boundary is audited
-in `AxiomAudit.lean`; the public definitions remain in `main.lean`.
+in `AxiomAudit.lean`; definitions live in `Definitions.lean`; the public theorem is assembled in `main.lean`.
 -/
 
 noncomputable section
@@ -46,10 +46,5 @@ theorem isGGC_power_of_isFiniteGammaConvolution (μ : NonnegLaw)
     IsGGC (powerLaw μ q (zero_le_one.trans hq)) := by
   obtain ⟨k,α,b,rfl⟩ := hμ
   exact isGGC_power_finiteGammaLaw k α b q hq
-
-/-- The complete public target: no moment, drift, Thorin-mass, support,
-atomicity or nondegeneracy restriction remains on the input law. -/
-theorem ggc_rpow : GGCPowerClosure :=
-  ggcPowerClosure_of_finiteGamma isGGC_power_of_isFiniteGammaConvolution
 
 end GGC

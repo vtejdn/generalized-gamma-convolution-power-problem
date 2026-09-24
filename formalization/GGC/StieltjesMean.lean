@@ -1,4 +1,4 @@
-import main
+import Definitions
 import GGC.Foundations.Posterior
 
 /-! # Stieltjes means of actual positive-rate probability measures

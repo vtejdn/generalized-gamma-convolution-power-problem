@@ -13,9 +13,13 @@ and remaining obligations. Do not append completion reports to the blueprint.
 Historical entries retain their status at the time; later entries supersede
 those statuses without claiming that earlier checks have been rerun.
 
-Current construction status: **M0 and M1 accepted as `verified`; M2–M7 construction
-`verified` relative to registered literature inputs, with independent design
-acceptance pending**.
+Current design acceptance: **M0–M7 accepted as `verified` within the registered
+trust boundary.** The user accepts the distribution version as the complete
+deliverable and withdraws RV-1; it is not recorded as implemented. Section 26's
+successful independent verification remains the evidence for the law theorem.
+A separate entry-point/readability migration, **E1, is `planned`**; see
+[Section 27](#entrypoint-design-2026-09-24). No Lean code has changed in this
+scope/design update, and no new build is claimed.
 M1's characterization and realization are verified relative to the registered
 literature axioms, as detailed in the independent acceptance record.
 The main theorem and clean project build pass; the [M7 record](#m7-completion-2026-09-24)
@@ -2070,3 +2074,211 @@ mathlib。环境变量仅作用于运行这些命令的进程环境。
 所有蓝图核心推导均已有 Lean 证明，最终目标没有遗留的存在性、有限输入封闭性或
 额外矩条件前提。本次未发现项目数学证明错误；后续工作是独立设计复核以及另行
 形式化上述文献输入，不属于此白名单下尚未完成的核心施工节点。
+
+<a id="final-design-acceptance-2026-09-24"></a>
+## 26. M2–M7 独立设计验收 — 2026-09-24
+
+历史验收结论：用户随后撤销 RV-1，M7 已按第 27 节结案；以下构建、公理和语义复核
+证据保留。随机变量推论不再是补交要求。
+
+**结论：M2–M6 验收通过；分布版本主定理 `GGC.ggc_rpow` 按完整目标范围验收通过，
+相对于七个登记文献公理成立。M7 整体交付暂不结案，状态为 `in_progress`：
+缺少蓝图明确要求的随机变量版本推论（RV-1）。** 此项是交付缺口，不是否定现有
+分布定理。本节取代第 25 节“仅待独立复核、无剩余交付”的判断；历史施工记录保留。
+
+### 验收范围与结果
+
+复核以实际定义、主要证明接口与依赖链为依据，结合全项目重新编译及传递公理审计。
+不是仅检查文件数量，也不声称逐行人工重证全部 136 个模块。施工源代码对应提交
+`e2edc76e360e098e8ffaabbff61111b7e94138cc`；验收开始时已有蓝图文档修改，予以保留。
+设计师未修改 Lean 施工源文件、依赖 pin 或外部公理类型。
+
+| 节点 | 独立验收结论 | 实际检查重点 |
+|---|---|---|
+| M2 | `verified`，相对于登记输入 | 有限分割 Dirichlet 语义含零质量单元；实际 Gamma/Beta 积分与绝对可积性；实际后验混合；固定公共空间、有序分位数与公共满测事件；复数 phase 输入与局部可测边界恢复；真实幂推前的 tangent。 |
+| M3 | `verified`，相对于登记输入 | `LogRate.Generator` 使用实际 Dirichlet 法则；补偿核、漂移和二阶跳矩的界；正确的 `digamma (B + 1)`；`integral_generator_eq_normalized_powerTangent` 有绝对可积性而无隐藏率矩条件。 |
+| M4 | `verified`，相对于登记输入 | 每个 L¹ 核的 phase 配对连续性；位置的可数公共事件与所有质量参数共用的 stick 事件；实际后验样本耦合、统一支配、局部一致收敛以及随法则变化的平均生成元。 |
+| M5 | `verified`，相对于登记输入 | 正 Euler Markov 核及精确矩、离散迭代、统一二阶矩和紧性；整条连续曲线的共同子列；累积误差和最后不完整网格项；每个测试函数、每个时刻的极限弱方程。`exists_weakLogRateSolution` 实际构造弱解。 |
+| M6 | `verified`，相对于登记输入 | 严格正性、绝对对数矩和实值/正值法则连续性；tangent 各项的绝对时空可积性及零端点归一化；截断测试域扩展；固定测试方程导出的分割唯一性；`valueAt_eq_powerLaw` 识别实际测度。 |
+| M7 分布主定理 | `verified`，相对于七个登记输入 | `InitialData` 从实际有限 Thorin 测度构造初值，处理空和与 `q = 1`；取 `T = log q`，再通过原始定义中的近似列与局部弱封闭性解除中间矩限制。 |
+| M7 完整交付 | `in_progress` | RV-1 尚未实现；见下方补交合同。 |
+
+`main.lean` 保留实际 Gamma 分布、有限独立乘积/求和推前、有限卷积弱极限的
+`IsGGC` 定义，以及真实 `Real.rpow` 推前的 `powerLaw`。主定理完整类型为：
+
+```lean
+∀ (μ : GGC.NonnegLaw) (q : ℝ) (hq : 1 ≤ q),
+  GGC.IsGGC μ → GGC.IsGGC (GGC.powerLaw μ q (zero_le_one.trans hq))
+```
+
+独立 `#print GGC.ggc_rpow` 显示实际证明体为
+`GGC.ggcPowerClosure_of_finiteGamma GGC.isGGC_power_of_isFiniteGammaConvolution`。
+有限输入前提已由前序构造解除；最终类型没有弱解存在性、额外矩、有限质量、有限支撑、
+零漂移或非退化前提。实际核心依赖链未发现语义循环、空洞前提或用默认积分值掩盖
+所需可积性的缺口。
+
+### 独立构建与审计证据
+
+工作目录为仓库的 `formalization`。使用本机已安装的固定工具链，命令依次执行，
+在构建成功后才运行独立审计：
+
+```powershell
+$taskLake = 'C:\Users\vtejd\.elan\toolchains\leanprover--lean4---v4.32.2\bin\lake.exe'
+$env:LEAN_NUM_THREADS = '2'
+& $taskLake env lean --version
+& $taskLake clean ggc_power_closure
+& $taskLake build
+& $taskLake env lean AxiomAudit.lean
+& $taskLake env lean .lake/FinalDesignCheck.lean
+```
+
+- Lean 版本为 4.32.2；mathlib HEAD 为
+  `905b95818eb32af7874a58b427f50c1711a5e96c`，依赖检出无本地修改。
+- 清理前核对目标位于本项目内；`clean ggc_power_closure` 退出码 0，随后确认
+  `formalization/.lake/build` 不存在。本次只清理并重新编译项目，保留固定依赖缓存，
+  不声称从零编译 mathlib。
+- 默认构建退出码 0，**3939 jobs**。将源码模块逐项与本次 `Built` 日志比较，
+  **136/136** 个项目 Lean 模块都有新编译记录。
+- 直接运行 `AxiomAudit.lean` 退出码 0。将审计源中的声明名与输出逐项比较，
+  **883/883** 项吻合，全部传递公理位于白名单内。
+- 补充检查退出码 0：打印最终证明体和 `GGCPowerClosure`、`IsGGC`、`powerLaw`，
+  用上述完整类型检查 `ggc_rpow`，并再次审计弱解存在性、输运唯一性、动态识别和主定理。
+  临时文件仅位于被忽略的 `.lake`，不替代项目的持久审计入口。
+- 构建、直接审计与补充检查日志均无 warning、error、`sorryAx` 或 `ofReduceBool`。
+  源码扫描只找到八个登记外部公理，没有核心公理或未完成证明。
+- 本地导入图无环。外部文件的项目内传递依赖仅为
+  `GGC.Foundations.RandomMeasure`、`Posterior`、`StickBreaking`；不依赖 `main`
+  或核心推导。`main` 只导入 mathlib。
+- 验收文档更新后，`git diff --check` 和四份修改文档的相对文件链接检查通过。
+
+本次日志为 `.lake/final-design-review-clean.log`、
+`.lake/final-design-review-build.log`、`.lake/final-design-review-audit.log`、
+`.lake/final-design-review-semantic.log`；逐项核对结果为
+`.lake/final-design-review-summary.json`。这些是本机复核产物，`.lake` 不纳入版本控制；
+可复现的命令、计数与依赖清单因此同时保存在本节。
+
+### 信任边界与复用验收
+
+本次独立输出确认主定理依赖恰好为：
+
+| 文献 ID | 实际公理 |
+|---|---|
+| E-B1 | `GGC.External.Bondesson.thorin_realization` |
+| E-B3 | `GGC.External.Bondesson.finite_atomic_approximation` |
+| E-J1 | `GGC.External.James.markov_krein` |
+| E-J2 | `GGC.External.James.posterior_palm_nonneg` |
+| E-J3 | `GGC.External.James.beta_atom_posterior` |
+| E-T1 | `GGC.External.Sethuraman.stick_breaking` |
+| E-S1 | `GGC.External.SSV.phase_representation` |
+
+另有 `propext`、`Classical.choice`、`Quot.sound`。整个审计的并集包含八个文献公理，
+多出 E-B2；它用于独立的 Thorin 刻画，不在 `ggc_rpow` 的传递依赖中。
+`exists_weakLogRateSolution` 除标准逻辑外仅使用 E-S1；通用
+`transport_law_eq_map` 仅使用标准逻辑。未引入 E-B4。
+
+文献输入的类型和局部适配与登记边界相符；本次没有重做原始文献全文审核，也未将
+这些公理形式化为 Lean 定理。因此验收用语必须保留“相对于登记文献公理成立”。
+
+共享 [MathlibAPI.md](MathlibAPI.md) 的复用决策已对本次提交的实际消费者进行验收：
+采用标准分布、核、推前、CDF、Mellin/Gamma、弱拓扑、Arzelà–Ascoli、FTC 和
+积分支配工具；保留需要更强结论的有序分位数适配、补偿生成元、弱输运识别等局部证明。
+接受的是固定版本下的合同匹配与已编译实际使用，不声称已穷尽 mathlib 所有可能的
+复用。GAP-001–004/006 的项目证明义务已闭合；GAP-005 保留为文献输入的信任边界。
+
+### RV-1：历史补交合同（已按第 27 节撤销）
+
+蓝图第 2 节称随机变量定理是推前推论，第 4.1、4.2 节明确把
+“random-variable corollary”列为 `GGC/PowerClosure.lean` 的交付物。
+实际文件在分布版本 `ggc_rpow` 后结束，全项目中未找到对应推论。
+故不能仅凭主定理编译通过便将整个交付判为完成。
+
+施工方需在任意概率空间上，对可测且几乎处处非负的 `X : Ω → ℝ`，从其真实分布
+属于 GGC 推出同一个 `X` 的 `X^q` 分布属于 GGC，适用每个实数 `q ≥ 1`。
+允许更一般的 `AEMeasurable` 接口。用小型法则包装或法则相等适配即可；证明实际
+`Measure.map` 复合恒等式并调用现有 `ggc_rpow`，不引入独立性、矩、有限质量或
+Thorin 表示前提，不重新构造演化。
+
+将复用记录补至 API-060 或新增稳定编号；在 `AxiomAudit` 中加入推论的完整类型和
+传递公理检查，顺便持久记录 `#print GGC.ggc_rpow`；默认构建和直接审计通过后提交
+M7 复验。原拟名 `finiteGamma_power_closure` 已由实际的
+`isGGC_power_finiteGammaLaw` / `isGGC_power_of_isFiniteGammaConvolution`
+满足其合同，名称不同不构成另一项缺陷。无需新增外部公理或重开 M2–M6。
+
+<a id="entrypoint-design-2026-09-24"></a>
+## 27. 用户范围修正与可读入口设计 — 2026-09-24
+
+用户确认当前分布版本已经满足结论要求，不再需要随机变量版本推论。因此撤销 RV-1，
+M7 按第 26 节已完成的独立验证结案为 `verified`，仍相对于原七个登记文献公理成立。
+这是交付范围的明确修正，不是新增推论已获证明，也不改变既有数学验收证据。
+
+新增 E1，状态 `planned`：建议将当前 `main.lean` 重命名为
+`GGC/Definitions.lean`，保留主定理所需的全部定义和构造证明字段；新 `main.lean`
+放置唯一的 `GGC.ggc_rpow : GGCPowerClosure`，显式展示有限 Gamma 近似、近似项幂封闭、
+幂推前的弱收敛及 GGC 弱封闭性四个步骤，增加解释数学作用和假设的可读注释。
+有限输入的初值、Euler 构造、动态识别等细节继续封装于 `GGC/PowerClosure.lean`
+及其依赖模块中。推荐 `Definitions` 是为区别已有 `Basic` 辅助引理层。
+
+施工须同时改正导入方向：底层模块引用 `GGC.Definitions`，新 `main` 引用证明模块，
+审计引用新 `main`；不得令 `PowerClosure` 反向导入 `main`。主定理名称、完整类型、
+原始 GGC 定义及七个文献公理依赖保持不变。完整职责、注释标准与验收条件见
+[蓝图第 4.1 节](Blueprint.md#statement-proof-separation)，复用记录见 API-061。
+
+本次只修正文档，没有移动或改写 Lean 文件。E1 完成后需提交实际证明、无环导入图、
+项目干净构建和随后运行的直接审计；不得将旧模块数或审计数充作迁移后的验证结果。
+
+<a id="e1-construction-2026-09-24"></a>
+## 28. E1 可读主定理入口迁移 — 2026-09-24
+
+按蓝图第 4.1、13 节施工。M0–M7 的数学范围不变；RV-1 已撤销，未构造随机变量推论。
+本节追加施工证据，不修改设计师的蓝图或前述验收记录；E1 的独立设计验收仍待进行。
+
+- `Definitions.lean` 承接原 `main.lean` 的全部定义及构造证明字段。
+  从 `noncomputable section` 起与提交 `e2edc76` 中的旧文件逐字比较
+  （统一换行并忽略末尾空白）一致，声明名与定义语义不变，只修正模块说明。
+- `GGC.Basic`、`GGC.StieltjesMean` 的定义层导入改为 `Definitions`。
+  `GGC/PowerClosure.lean` 保留三个有限输入辅助定理，移出唯一公共 `ggc_rpow`。
+- 新 `main.lean` 明确导入 `Definitions`、`GGC.PowerClosure`、`GGC.WeakClosure`。
+  证明展开为提取有限 Gamma 近似、命名 `hpowered`、命名 `hpowered_lim`、应用
+  `isGGC_of_tendsto` 四步；中文注释说明中间条件和最终范围。
+  数学来源仍为 WIP-6.21、WIP-6.23 和 manuscript/sections/06-completion.tex。
+- `AxiomAudit.lean` 改为导入 `main`；保留全部已有检查，并新增 `#print GGC.ggc_rpow`。
+  扩展量词类型检查仍为任意 `NonnegLaw μ`、实数 `q ≥ 1`、`IsGGC μ` 推出实际幂律 GGC。
+- 复用 API-061 中已获验收的三个辅助引理，无新通用基础证明、文献输入或工具链更改。
+  用户随后指定 `Definitions` 放在根目录，已按此覆盖蓝图中的推荐路径；Lake roots/globs 显式加入 `Definitions`；根 README、ResearchStatus、formalization README
+  和 External README 的当前入口说明同步更新，历史验收记录保留原时点含义。
+
+静态验证：137 个项目 Lean 模块的本地导入图经 DFS 检查无环；只有 `AxiomAudit`
+导入 `main`，只有新 `main` 声明 `ggc_rpow`。外部文件未修改，定义层仅导入 mathlib。
+蓝图施工前后 SHA256 均为
+`AF02B6208E82DCE31D48014F87B316BFBB1125FA1D1E38BE6E0F251736BD7E59`。
+
+复现命令（在 `formalization`，保留依赖缓存，清理项目产物）：
+
+```powershell
+$env:LEAN_NUM_THREADS = '2'
+$lake = 'C:/Users/vtejd/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe'
+& $lake clean ggc_power_closure
+& $lake build *> .lake/e1-root-clean-build.log
+& $lake env lean AxiomAudit.lean *> .lake/e1-audit.log
+```
+
+验证结果：项目清理和最终布局的干净构建均退出 0；构建完成 **3940 jobs**。
+逐项比较全部项目源文件与构建日志，**137/137 模块均显示 Built**，包括根
+`Definitions`、新 `main` 和 `AxiomAudit`，不是沿用旧布局的 136 模块计数。
+随后直接运行审计，退出 0；**883/883** 个 `#print axioms` 请求与输出声明逐项匹配。
+新增的普通 `#print` 打印实际四步证明体，不增加公理检查数量。
+完整构建和直接审计日志均无 warning、error、`sorryAx`、`ofReduceBool`。
+
+`GGC.ggc_rpow` 的依赖恰为 `propext`、`Classical.choice`、`Quot.sound` 加：
+`Bondesson.thorin_realization`、`Bondesson.finite_atomic_approximation`、
+`James.markov_krein`、`James.posterior_palm_nonneg`、`James.beta_atom_posterior`、
+`Sethuraman.stick_breaking`、`SSV.phase_representation`（均在 `GGC.External` 下）。
+E-B2 仍仅出现在更广的特征刻画审计中，不在主定理依赖中。全审计只出现登记白名单。
+
+过程说明：首次按蓝图推荐的子目录布局运行构建，用户随后明确要求把 `Definitions`
+放入根目录。该运行主动中止，日志 `.lake/e1-clean-build.log` 不作为通过证据；
+最终证据是重新清理后产生的 `.lake/e1-root-clean-build.log` 和 `.lake/e1-audit.log`。
+依赖缓存保留，Lean 4.32.2 与 mathlib `905b95818eb32af7874a58b427f50c1711a5e96c`
+未变。施工结论：E1 `verified`（相对于原信任边界），独立设计验收待进行。
+
+后续用户约定：项目 Lean 源码注释统一使用英文。已将本节所述 main.lean 的中文模块说明、定理文档和行内注释全部译为英文，并在 README 记录约定；定义和证明代码不变。扫描项目全部 Lean 源文件未再发现汉字，diff 空白检查通过。此项仅修改注释，未重复运行完整构建。

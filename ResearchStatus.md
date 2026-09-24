@@ -59,8 +59,8 @@ The [manuscript sources](manuscript/ggc-power-closure.tex) and
 [bibliography](manuscript/references.bib) are written. The recorded handoff
 included static checks, not TeX compilation.
 As of 2026-09-24, the pinned Lean project contains the
-[complete target definitions](formalization/main.lean) and the genuine theorem
-`GGC.ggc_rpow` in [the proof entry point](formalization/GGC/PowerClosure.lean).
+[complete target definitions](formalization/Definitions.lean) and the genuine theorem
+`GGC.ggc_rpow` in [the proof entry point](formalization/main.lean).
 The original finite-gamma weak-limit definition is preserved; no moment,
 drift or Thorin-mass restriction remains in the final type. The construction
 uses proved Euler existence, dynamic identification and the weak-limit reduction.
