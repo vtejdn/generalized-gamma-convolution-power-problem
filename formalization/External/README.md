@@ -1,27 +1,47 @@
-# External mathematical axioms
+# Literature interfaces and remaining mathematical axioms
 
-This folder contains all literature theorems currently introduced as Lean
-axioms. They are explicit assumptions in the formalization's trust boundary.
-Compiling an axiom declaration checks its type; it does not prove the external
-mathematical result. No project core result, including GGC power closure, is
-registered here as an axiom.
+Eight source/interface IDs are retained for provenance. E-B1 and E-B3 are now
+locally proved compatibility theorems with their original types; E-B2, E-J1,
+E-J2, E-J3, E-T1 and E-S1 remain the six explicit literature axioms. Compiling
+those six axiom declarations checks their types, not their mathematical proofs.
+No project core result is registered as an axiom.
 
-The eight current declarations are in [Bondesson.lean](Bondesson.lean),
-[James.lean](James.lean), [Sethuraman.lean](Sethuraman.lean), and
-[SSV.lean](SSV.lean), under the corresponding `GGC.External` namespaces.
-Bondesson and SSV import mathlib only; James and Sethuraman import mathlib and the shared
-`GGC.Foundations` measure definitions. Each file writes every
-assumption and conclusion using actual measures, integrals, probability laws,
-and weak convergence, without importing `main.lean` or using an opaque GGC
-predicate. Consequently it cannot create an import cycle with the main file.
+[Bondesson.lean](Bondesson.lean) imports the independent `GGC.Thorin.Realization`
+layer for its two theorem wrappers. That lower layer imports neither this facade
+nor any `External` input, `GGC.Thorin`, `Identification`, `PowerClosure` or `main`.
+SSV remains mathlib-only; James and Sethuraman use mathlib and independent shared
+random-measure semantics. All primitive interface types retain actual measures,
+integrals, nonnegative probability laws and the original quantifier order.
+
+E2's implementation and fresh verification are documented in the
+[construction report](../ConstructionReport.md#e2-construction-2026-09-24).
+E2 has passed [independent design acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24). E-B2 is retained for the
+forward characterization and is not used by either new proof endpoint.
+## Independent source-review status
+
+The auditor's [2026-09-24 report](../SemanticAudit-2026-09-24.md) directly
+checked E-B1--3, E-J1--3 and E-T1 against the original pages. E-S1's formula,
+principal logarithm, anchor and official errata were checked without finding
+an error, but images of the specified 2010 first-edition pages were not
+obtained in that audit. The local copy has since been located at
+[literature/pdf/SSV.pdf](../../literature/pdf/SSV.pdf), through a directory
+junction to the local reference library. The earlier missing-file observation
+is superseded. The constructor has now completed the edition and original-page comparison; see [SSVSourceCheck](../SSVSourceCheck-2026-09-24.md). The designer independently rendered and inspected the same edition and errata, confirmed all interface adaptations, and closed **S1-SOURCE**; see [Section 34](../ConstructionReport.md#e2-design-acceptance-2026-09-24). E-S1 remains an axiom.
+The user confirmed that the constructor supplies the source comparison and
+evidence, and the designer or independent auditor reviews it before closure.
+Registration, file presence and passing Lean builds do not close this review.
+The independent report is preserved; designer follow-up is recorded in the
+[independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24).
+The confirmed assignment and local-file check are recorded in
+[the follow-up](../ConstructionReport.md#source-review-ownership-2026-09-24).
 
 ## Introduced declarations
 
 | ID | Lean declaration | Contract and intended consumers |
 |---|---|---|
-| E-B1 | `GGC.External.Bondesson.thorin_realization` | Realize every nonnegative drift and Thorin-admissible positive-rate measure as a nonnegative probability law with the displayed Laplace transform. Intended for Thorin/value-law construction, Blueprint M0/M1 and M6. |
+| E-B1 (local theorem) | `GGC.External.Bondesson.thorin_realization` | Realize every nonnegative drift and Thorin-admissible positive-rate measure as a nonnegative probability law with the displayed Laplace transform. Intended for Thorin/value-law construction, Blueprint M0/M1 and M6. |
 | E-B2 | `GGC.External.Bondesson.weak_closure` | A weak limit of represented laws, already known to be a probability law, inherits nonnegative concentration and an admissible Thorin representation. Under the approved original GGC definition, this can supply the original-membership-to-representation direction in M1. |
-| E-B3 | `GGC.External.Bondesson.finite_atomic_approximation` | Approximate every represented law by nonnegative probability laws with zero-drift finite-atomic Thorin transforms. After local identification of these approximants with actual finite gamma sums, this can supply the representation-to-original-membership direction in M1. |
+| E-B3 (local theorem) | `GGC.External.Bondesson.finite_atomic_approximation` | Approximate every represented law by nonnegative probability laws with zero-drift finite-atomic Thorin transforms. After local identification of these approximants with actual finite gamma sums, this can supply the representation-to-original-membership direction in M1. |
 | E-J1 | `GGC.External.James.markov_krein` | Nonnegative real Markov–Krein formula and a.s. integrability of the actual random mean; finite positive base mass and logarithmic integrability are explicit. M2 consumer: `dirichletMean_laplace`, then local tilted-law identification. |
 | E-J2 | `GGC.External.James.posterior_palm_nonneg` | Nonnegative one-observation disintegration for an explicitly measurable posterior kernel whose values have DP(U+δ_b) laws. Signed applications still require local L1 proofs. |
 | E-J3 | `GGC.External.James.beta_atom_posterior` | DP(U+δ_b) law of the actual independent-product atom mixture. The supplied weight law must push forward to mathlib's Beta(1,B) measure. M2 consumer: `posteriorMixture_isDirichlet`. |
@@ -85,17 +105,18 @@ itself complete the project's main theorem.
 The approved [definition contract](../Blueprint.md#original-ggc-definition)
 requires `Definitions.lean` to define GGC by weak limits of actual finite gamma sums.
 Thorin representability is the separate `HasThorinRepresentation`
-predicate in `GGC/Thorin.lean`. Existing E-B1--E-B3 retain their primitive types.
+predicate in `GGC/Thorin/Basic.lean`, re-exported by `GGC/Thorin.lean`. Existing E-B1--E-B3 retain their primitive types.
 The local adapters use the separate representation predicate.
 
 **Selected route: Blueprint Section 2.1, route 2.**
 `GGC.isGGC_iff_hasThorinRepresentation` is derived from E-B2/E-B3, with local
 finite-atomic adapters, the finite-gamma transform and Laplace uniqueness.
-The forward direction depends on E-B2; the reverse depends on E-B3.
+The forward direction retains E-B2 as an axiom; the reverse now uses locally proved E-B3 and standard logic only.
 `GGC.isGGC_diracLaw` uses E-B3, including for positive constants.
-E-B1 remains the separate existence input to the realization adapters.
-See the [construction report](../ConstructionReport.md#m1-characterization-2026-09-23)
-for verification and the exact dependency audit.
+E-B1 is now locally proved; the realization adapters and constant-law membership have no literature dependencies.
+See the [E2 independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24)
+for the current dependency audit; the [M1 report](../ConstructionReport.md#m1-characterization-2026-09-23)
+retains the earlier construction record.
 
 **E-B4 was not needed and has no Lean declaration.** Its previously authorized
 fallback contract is retained below for reference. If the
@@ -223,7 +244,7 @@ is read-only during construction.
 Every new axiom belongs in this folder, must be registered in the project
 whitelist and this inventory, and must carry a complete type and provenance
 docstring. Project proof modules import the external contracts they need;
-external modules must not import `main`, `GGC.Basic`, or project proof modules.
+external assumption modules must not import `main` or project proof modules. The approved E2 exception lets Bondesson theorem wrappers import the independent Thorin proof layer, which has no path back to External or the main theorem.
 Under the [approved statement/proof separation](../Blueprint.md#statement-proof-separation),
 project proof modules import `Definitions` to use its complete definitions, while
 `Definitions` imports mathlib only; `main` consumes the proved helpers.
@@ -235,5 +256,5 @@ only. This keeps external inputs independent of the target and its proof.
 `AxiomAudit.lean` now imports `main` and uses
 `#print axioms GGC.ggc_rpow` to check the genuine proof's transitive dependencies
 against this inventory. The actual final dependency list and verification
-evidence are recorded in the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24).
+evidence are recorded in the [E2 independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24); the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24) preserves the earlier seven-input result.
 A named target proposition alone is not a proof.

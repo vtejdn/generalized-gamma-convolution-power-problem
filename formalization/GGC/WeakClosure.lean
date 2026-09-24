@@ -7,7 +7,7 @@ import Mathlib.Topology.Sequences
 
 Blueprint node W / M1; manuscript `lem:ggc-closure`.
 The weak topology on real probability measures is metrizable. Consequently
-the sequential definition in `main` is equivalent to membership in the
+the sequential definition in `Definitions` is equivalent to membership in the
 topological closure of the finite-gamma laws. No Thorin characterization or
 external mathematical axiom is used.
 -/

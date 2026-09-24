@@ -1,4 +1,5 @@
 import GGC.Identification.ValuePositivity
+import GGC.LaplaceTightness
 import GGC.Foundations.TailMoments
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 
@@ -8,38 +9,6 @@ noncomputable section
 open MeasureTheory Set Filter
 namespace GGC.Identification
 open GGC.Analysis
-
-theorem measureReal_Iic_exp_neg_le_laplace (μ : NonnegLaw) (r : ℝ) :
-    (μ.law : Measure ℝ).real (Iic (Real.exp (-r))) ≤ Real.exp 1*laplace μ (Real.exp r) := by
-  have hi := (laplace_integrable μ (Real.exp_pos r).le).const_mul (Real.exp 1)
-  have h0 : ∀ᵐ x ∂(μ.law : Measure ℝ), 0 ≤ Real.exp 1*Real.exp (-Real.exp r*x) :=
-    Eventually.of_forall fun _ => by positivity
-  have hb := measureReal_le_integral hi h0 (s := Iic (Real.exp (-r))) (fun x hx => by
-    rw [← Real.exp_add, Real.one_le_exp_iff]
-    have hm := mul_le_mul_of_nonneg_left hx (Real.exp_pos r).le
-    rw [← Real.exp_add, add_neg_cancel, Real.exp_zero] at hm
-    linarith)
-  simpa only [integral_const_mul, laplace] using hb
-
-theorem exp_neg_one_le_half : Real.exp (-1) ≤ (1 : ℝ)/2 := by
-  have h : 2 ≤ Real.exp 1 := by linarith [Real.add_one_le_exp (1 : ℝ)]
-  rw [Real.exp_neg]
-  simpa only [one_div] using (inv_le_inv₀ (Real.exp_pos 1) (by norm_num : (0 : ℝ) < 2)).mpr h
-
-theorem measureReal_Ioi_exp_le_one_sub_laplace (μ : NonnegLaw) (r : ℝ) :
-    (μ.law : Measure ℝ).real (Ioi (Real.exp r)) ≤ 2*(1-laplace μ (Real.exp (-r))) := by
-  have hi : Integrable (fun x : ℝ => 2*(1-Real.exp (-Real.exp (-r)*x))) (μ.law : Measure ℝ) :=
-    ((integrable_const 1).sub (laplace_integrable μ (Real.exp_pos (-r)).le)).const_mul (2 : ℝ)
-  have h0 : ∀ᵐ x ∂(μ.law : Measure ℝ), 0 ≤ 2*(1-Real.exp (-Real.exp (-r)*x)) := by
-    filter_upwards [laplace_integrand_le_one μ (Real.exp_pos (-r)).le] with x hx
-    linarith
-  have hb := measureReal_le_integral hi h0 (s := Ioi (Real.exp r)) (fun x hx => by
-    have hm := mul_le_mul_of_nonneg_left hx.le (Real.exp_pos (-r)).le
-    rw [← Real.exp_add, neg_add_cancel, Real.exp_zero] at hm
-    have he : Real.exp (-Real.exp (-r)*x) ≤ Real.exp (-1) := Real.exp_le_exp.mpr (by linarith)
-    linarith [exp_neg_one_le_half])
-  rw [integral_const_mul, integral_sub (integrable_const 1) (laplace_integrable μ (Real.exp_pos (-r)).le)] at hb
-  simpa [laplace] using! hb
 
 theorem measureReal_negLog_tail_le (μ : NonnegLaw) (hμ : ∀ᵐ x ∂(μ.law : Measure ℝ), 0 < x)
     {r : ℝ} (hr : 0 < r) :

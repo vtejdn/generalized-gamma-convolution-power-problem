@@ -1,3 +1,4 @@
+import GGC.Thorin.GridMeasureMap
 import GGC.FiniteGamma
 import GGC.Thorin
 import GGC.Reduction
@@ -81,12 +82,11 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #check GGC.nonnegLaw_eq_of_laplace_eq
 #check GGC.thorinAdmissible_iff_endpoint
 #check GGC.ThorinAdmissible.integrable_log
-#check GGC.isGGC_iff_hasThorinRepresentation
+#check GGC.HasThorinRepresentation.isGGC
 #check GGC.isGGC_diracLaw
 #check GGC.existsUnique_law_thorinLaplace
 
 #print GGC.External.Bondesson.thorin_realization
-#print GGC.External.Bondesson.weak_closure
 #print GGC.External.Bondesson.finite_atomic_approximation
 
 #print axioms GGC.powerLaw_toMeasure
@@ -130,15 +130,12 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.integrable_finiteThorinMeasure
 #print axioms GGC.integral_finiteThorinMeasure
 #print axioms GGC.hasThorinRepresentation_finiteGammaLaw
-#print axioms GGC.IsGGC.hasThorinRepresentation
 #print axioms GGC.HasThorinRepresentation.isGGC
-#print axioms GGC.isGGC_iff_hasThorinRepresentation
 #print axioms GGC.isGGC_diracLaw
 #print axioms GGC.exists_law_thorinLaplace
 #print axioms GGC.existsUnique_law_thorinLaplace
 
 #print axioms GGC.External.Bondesson.thorin_realization
-#print axioms GGC.External.Bondesson.weak_closure
 #print axioms GGC.External.Bondesson.finite_atomic_approximation
 
 -- M2/M3 construction: these are local results, not milestone completion.
@@ -1109,3 +1106,79 @@ Printing the axioms of the proposition definition alone would not certify its tr
   GGC.IsGGC μ → GGC.IsGGC (GGC.powerLaw μ q (zero_le_one.trans hq)))
 #print GGC.ggc_rpow
 #print axioms GGC.ggc_rpow
+
+-- E2 independent Thorin approximation and realization proofs.
+#print axioms GGC.ThorinApproximation.scale
+#print axioms GGC.ThorinApproximation.scale_pos
+#print axioms GGC.ThorinApproximation.window
+#print axioms GGC.ThorinApproximation.measurableSet_window
+#print axioms GGC.ThorinApproximation.cellIndex
+#print axioms GGC.ThorinApproximation.cellIndex_pos
+#print axioms GGC.ThorinApproximation.roundedRate
+#print axioms GGC.ThorinApproximation.measurable_cellIndex
+#print axioms GGC.ThorinApproximation.measurable_roundedRate
+#print axioms GGC.ThorinApproximation.le_roundedRate
+#print axioms GGC.ThorinApproximation.roundedRate_lt
+#print axioms GGC.ThorinApproximation.tendsto_scale
+#print axioms GGC.ThorinApproximation.tendsto_inv_scale
+#print axioms GGC.ThorinApproximation.tendsto_roundedRate
+#print axioms GGC.ThorinApproximation.eventually_mem_window
+#print axioms GGC.ThorinApproximation.cellIndex_le
+#print axioms GGC.ThorinApproximation.kernel
+#print axioms GGC.ThorinApproximation.measurable_kernel
+#print axioms GGC.ThorinApproximation.kernel_nonneg
+#print axioms GGC.ThorinApproximation.kernel_le
+#print axioms GGC.ThorinApproximation.tendsto_kernel
+#print axioms GGC.ThorinApproximation.integrable_kernel
+#print axioms GGC.ThorinApproximation.tendsto_integral_kernel
+#print axioms GGC.ThorinAdmissible
+#print axioms GGC.ThorinEndpointAdmissible
+#print axioms GGC.ThorinData
+#print axioms GGC.thorinLaplace
+#print axioms GGC.HasThorinRepresentation
+#print axioms GGC.finiteThorinMeasure
+#print axioms GGC.finiteThorinData
+#print axioms GGC.driftGammaExponent
+#print axioms GGC.driftGammaExponent_nonneg
+#print axioms GGC.driftGammaExponent_le
+#print axioms GGC.driftGammaExponent_zero
+#print axioms GGC.driftGammaExponent_zero_parameter
+#print axioms GGC.tendsto_driftGammaExponent
+#print axioms GGC.driftGammaShape
+#print axioms GGC.driftGammaRate
+#print axioms GGC.driftGammaExponent_eq_log_rate
+#print axioms GGC.exists_finiteGammaLaw_of_nonneg_weights
+#print axioms GGC.ThorinApproximation.Grid
+#print axioms GGC.ThorinApproximation.cell
+#print axioms GGC.ThorinApproximation.measurableSet_cell
+#print axioms GGC.ThorinApproximation.cell_mass_lt_top
+#print axioms GGC.ThorinApproximation.gridRate
+#print axioms GGC.ThorinApproximation.roundedRate_eq_gridRate
+#print axioms GGC.ThorinApproximation.kernel_eq_sum
+#print axioms GGC.ThorinApproximation.integrable_cell_indicator
+#print axioms GGC.ThorinApproximation.integral_kernel_eq_sum
+#print axioms GGC.ThorinApproximation.integral_kernel_nonneg
+#print axioms GGC.ThorinApproximation.integral_kernel_le
+#print axioms GGC.ThorinApproximation.disjoint_cells
+#print axioms GGC.ThorinApproximation.map_restrict_window_roundedRate
+#print axioms GGC.ThorinAdmissible.tendsto_integral_log_zero
+#print axioms GGC.thorinLaplace_zero
+#print axioms GGC.tendsto_thorinLaplace_zero
+#print axioms GGC.isGGC_of_laplace_sequence
+#print axioms GGC.finite_atomic_approximation_of_laplace_sequence
+#print axioms GGC.thorin_realization_of_laplace_sequence
+#print axioms GGC.thorin_realization_core
+#print axioms GGC.finite_atomic_approximation_core
+#print axioms GGC.ThorinApproximation.weight
+#print axioms GGC.ThorinApproximation.rate
+#print axioms GGC.ThorinApproximation.weight_nonneg
+#print axioms GGC.ThorinApproximation.sum_weight_log_rate
+#print axioms GGC.ThorinApproximation.law
+#print axioms GGC.ThorinApproximation.law_spec
+#print axioms GGC.ThorinApproximation.isFiniteGammaConvolution_law
+#print axioms GGC.ThorinApproximation.laplace_law
+#print axioms GGC.ThorinApproximation.thorinLaplace_le_laplace_law
+#print axioms GGC.ThorinApproximation.tendsto_laplace_law
+#print axioms GGC.isTightMeasureSet_of_laplace_lower_bound
+#print axioms GGC.exists_nonnegLaw_subseq_of_isTightMeasureSet
+#print axioms GGC.exists_nonnegLaw_of_laplace_tendsto

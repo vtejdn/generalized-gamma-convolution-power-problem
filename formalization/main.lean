@@ -21,7 +21,7 @@ namespace GGC
 /-- Every nonnegative GGC probability law remains GGC under every real power `q ≥ 1`.
 This includes arbitrary drift, infinite Thorin mass, nonatomic Thorin measures,
 and degenerate laws, with no additional moment conditions.
-The proof is relative to seven registered literature inputs: E-B1, E-B3, E-J1,
+The proof is relative to five registered literature inputs: E-J1,
 E-J2, E-J3, E-T1, and E-S1. `AxiomAudit.lean` checks its transitive dependencies. -/
 theorem ggc_rpow : GGCPowerClosure := by
   intro μ q hq hμ

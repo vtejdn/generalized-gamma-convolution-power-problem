@@ -14,3 +14,6 @@ __pycache__/
 
 # Literature PDFs are local reading copies; keep only notes and metadata.
 /literature/**/*.pdf
+
+# Temporary files and directories.
+tmp

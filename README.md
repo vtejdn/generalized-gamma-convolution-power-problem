@@ -15,9 +15,8 @@ audit complete.** This is not external peer review, publication, Lean
 verification or a priority claim. The scope, evidence and qualifications
 are maintained in [ResearchStatus.md](ResearchStatus.md).
 The separate Lean construction now includes the [complete power-closure proof](formalization/main.lean),
-relative to seven registered literature axioms. Its build and axiom evidence,
-with independent design acceptance tracked separately, is in the
-[construction report](formalization/ConstructionReport.md#m7-completion-2026-09-24).
+relative to five registered literature axioms; Thorin realization and finite-atomic approximation are now proved locally. Its fresh clean build, full axiom audit and independent design acceptance are recorded in the
+[E2 acceptance report](formalization/ConstructionReport.md#e2-design-acceptance-2026-09-24).
 The [manuscript source](manuscript/ggc-power-closure.tex) is available;
 compilation remains user-controlled.
 

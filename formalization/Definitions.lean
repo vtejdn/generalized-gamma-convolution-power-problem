@@ -116,7 +116,7 @@ In particular, neither Thorin representability nor an evolution-existence
 assumption appears in the statement.
 
 Defining this proposition does not assert it. The genuine theorem
-`GGC.ggc_rpow : GGCPowerClosure` is proved in `GGC/PowerClosure.lean`,
+`GGC.ggc_rpow : GGCPowerClosure` is proved in `main.lean`,
 relative to the registered literature inputs audited by `AxiomAudit.lean`.
 -/
 def GGCPowerClosure : Prop :=

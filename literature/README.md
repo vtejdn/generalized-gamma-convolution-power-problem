@@ -3,6 +3,17 @@
 Last source-ledger update: **2026-09-06** (migration only; prior source-audit
 dates and verification limits are unchanged).
 
+**Local-file location checked 2026-09-24:** the reading copies are accessible
+through `pdf/`, a directory junction to `E:\AI\GitHub\literature\ggcpp`.
+For example, [SSV.pdf](pdf/SSV.pdf) and [Bondesson.pdf](pdf/Bondesson.pdf)
+are present there. Follow the junction when searching (for example,
+`rg --files --hidden --no-ignore --follow literature/pdf` from the repository
+root). Historical bare PDF paths below describe the earlier layout; resolve
+them against this local library where applicable. File presence is not a new
+edition or theorem-level audit. Source preparation and self-check belong to
+the constructor; independent acceptance belongs to the designer/auditor, per
+the [confirmed formalization rules](../formalization/README.md#external-inputs).
+
 This directory contains the primary sources and general analytic references
 used by the active GGC power project. A file's presence is not an endorsement
 of every claim in it. The exact theorem, hypotheses, page or equation, and

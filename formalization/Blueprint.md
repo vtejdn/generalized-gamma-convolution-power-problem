@@ -7,30 +7,53 @@ within the registered trust boundary.** The distribution version is the complete
 mathematical deliverable. The user withdraws the random-variable corollary
 requirement: RV-1 is withdrawn by scope decision, not implemented.
 
-A separate readability migration **E1 is `planned`**: rename the current
-definition file to the recommended `GGC/Definitions.lean`, and put the public
-theorem with visible proof steps and explanatory comments in a new `main.lean`.
-Section 4.1 is the new construction contract; Section 13 records the decision.
-This documentation update does not move or modify Lean code.
+E1's readability migration is implemented with root `Definitions.lean` and
+an explicit four-step proof in `main.lean`; **E1 is accepted as `verified`**.
+The independent clean build passed 3940 jobs with 137/137 project modules
+freshly compiled; the subsequent direct audit matched all 883 checks. See
+[Section 14](#e1-design-acceptance-2026-09-24).
+The root location and English-only Lean comments follow the current project
+conventions recorded in the E1 construction report and README. Section 4.1
+records the actual ownership. The mathematical scope and RV-1 withdrawal remain unchanged.
 
-The independent clean project build passed **3939 jobs**, freshly compiling
+The earlier M7 independent clean project build passed **3939 jobs**, freshly compiling
 all **136 project Lean modules**. The subsequent direct audit matched all
 **883 axiom checks** and found only the registered whitelist. Dependency
 caches were retained. [lean-toolchain](lean-toolchain) still pins Lean
 **4.32.2** and [lakefile.toml](lakefile.toml) pins mathlib
 **`905b95818eb32af7874a58b427f50c1711a5e96c`**.
 
-[main.lean](main.lean) retains the complete original weak-limit definition
-and target; [GGC/PowerClosure.lean](GGC/PowerClosure.lean) supplies the proof.
-Thorin representability remains separate; its characterization uses E-B2/E-B3
-and no E-B4. The final law theorem uses E-B1, E-B3, E-J1–3, E-T1 and E-S1,
-plus `propext`, `Classical.choice`, and `Quot.sound`; E-B2 is absent from its
-dependency set. These seven literature statements remain assumptions.
+[Definitions.lean](Definitions.lean) retains the complete original weak-limit
+definition and target; [main.lean](main.lean) supplies the readable final proof.
+[GGC/PowerClosure.lean](GGC/PowerClosure.lean) retains the finite-input details.
+Thorin representability remains separate. E-B1 and E-B3 are now locally proved
+theorems. The unused E-B2 axiom and its forward/equivalence characterization
+interfaces have been removed; the undeclared E-B4 fallback is withdrawn. The final law theorem uses exactly E-J1–3, E-T1 and
+E-S1, plus `propext`, `Classical.choice`, and `Quot.sound`. These five literature
+statements remain assumptions; E-B2 is absent from the final dependency set.
 
-Sections 8–12 preserve earlier acceptance snapshots; Section 13 supersedes
-RV-1 and the earlier file-ownership rules. The [reuse gate](#module-reuse-gate) continues to apply, and
+**E2 is independently accepted as `verified`.** E-B3 finite-atomic approximation
+and E-B1 Thorin realization preserve their original complete primitive types
+and use standard logic only. The independent clean build passed **3950 jobs**,
+freshly compiling **147/147 project modules**; the subsequent direct audit
+matched **957/957 checks**. That E2 snapshot had six project axioms; the later
+E2-P cleanup leaves five, all used by the main theorem. See the
+[construction contract](#e2-bondesson-formalization) and
+[independent acceptance](#e2-design-acceptance-2026-09-24).
+
+**S1-SOURCE is closed by independent source review.** The actual 2010
+first-edition pages and errata were inspected against the E-S1 interface;
+the historical [semantic audit](SemanticAudit-2026-09-24.md) remains unchanged.
+The [designer response](#semantic-audit-followup) records the closure.
+This source review does not remove E-S1's axiom status.
+
+Sections 8–13 preserve earlier acceptance and design snapshots; Section 14
+records E1 acceptance; Section 17 records the E2/source-review snapshot.
+[Section 18](#unused-axiom-cleanup) records the subsequent E-B2 removal and
+[Section 19](#e3-james-reduction-plan) proposes the next reduction round.
+RV-1 remains withdrawn. The [reuse gate](#module-reuse-gate) continues to apply, and
 the jointly maintained [MathlibAPI.md](MathlibAPI.md) records accepted uses
-and the remaining delivery adapter.
+and the entry-point migration evidence.
 
 General rules and trust boundaries are in the [README](README.md); external inputs use its [single whitelist](README.md#external-inputs). This blueprint specifies dependencies, mathematical contracts, construction order, and acceptance criteria. The mathematical index is [WIP](../WIP.md); the main assembly and audit are [WIP-6.21](../ledger/23-power-theorem-assembly-audit.md#wip-6-21) and [WIP-6.23](../ledger/25-mathematical-completion-audit.md#wip-6-23).
 
@@ -44,7 +67,7 @@ For a real-valued probability law \(\mu\) concentrated on \([0,\infty)\), and \(
 \operatorname{IsGGC}\bigl((x\mapsto x^q)_*\mu\bigr).
 \]
 
-The declaration `GGC.GGCPowerClosure : Prop` in [main.lean](main.lean) has this quantifier structure and unfolds Section 2.1's original weak-limit definition. Its proof is now `GGC.ggc_rpow` in [GGC/PowerClosure.lean](GGC/PowerClosure.lean). The substantive hypotheses are only nonnegativity of the probability law, GGC membership, and \(q\ge1\); the registered literature dependencies remain explicit in the audit. Its scope includes:
+The declaration `GGC.GGCPowerClosure : Prop` in [Definitions.lean](Definitions.lean) has this quantifier structure and unfolds Section 2.1's original weak-limit definition. Its proof is `GGC.ggc_rpow` in [main.lean](main.lean). The substantive hypotheses are only nonnegativity of the probability law, GGC membership, and \(q\ge1\); the registered literature dependencies remain explicit in the audit. Its scope includes:
 
 - Every finite real exponent, including noninteger powers and \(q=1\), rather than only squares or a local interval of exponents.
 - Arbitrary drift \(a\ge0\), infinite total Thorin mass, and nonatomic Thorin measures.
@@ -55,16 +78,16 @@ First prove power closure for finite gamma convolutions. Then, for each fixed \(
 
 ## 2. Objects and interface conventions
 
-Use a **law-first, supported-real** model. The implemented `GGC.NonnegLaw` in [main.lean](main.lean) wraps `MeasureTheory.ProbabilityMeasure ℝ` together with an a.e. nonnegativity proof for its underlying measure. That file owns all project-specific definitions required to read the main statement. The distribution theorem is the complete required result; no random-variable corollary is required. Choosing a common probability space, independent copies, or a path process must not become additional main-theorem hypotheses.
+Use a **law-first, supported-real** model. The implemented `GGC.NonnegLaw` in [Definitions.lean](Definitions.lean) wraps `MeasureTheory.ProbabilityMeasure ℝ` together with an a.e. nonnegativity proof for its underlying measure. That file owns all project-specific definitions required to read the main statement. The distribution theorem is the complete required result; no random-variable corollary is required. Choosing a common probability space, independent copies, or a path process must not become additional main-theorem hypotheses.
 
 | Object | Current representation or remaining contract |
 |---|---|
-| Nonnegative value law \(\mu\) | `NonnegLaw` and `powerLaw μ q hq` are implemented in `main.lean`, where `hq : 0 ≤ q`. The definition uses the actual map \(x\mapsto x^q\), its continuity for nonnegative exponents, and a proof of nonnegative concentration. `powerLaw_toMeasure` exposes this semantics; `powerLaw_one` and `isGGC_powerLaw_one` supply the exponent-one sanity check. `GGC/Basic.lean` now proves fixed-power preservation of weak convergence as `power_pushforward_tendsto`. |
-| Positive rate \(b\) | `PosReal := {b : ℝ // 0 < b}` is implemented in `main.lean`. Rate space and value space are distinct. Log rates live in \(\mathbb R\); `RateRealization` supplies the measurable `exp`/`log` equivalence and pushforward adapters. |
-| Thorin data | `ThorinAdmissible` and `ThorinData` live in `GGC/Thorin.lean`. They contain nonnegative drift \(a\), a positive rate measure \(U\), and `Integrable` for \(\log(1+1/b)\), without finite total mass. `ThorinAdmissible.integrable_log` proves integrability for every \(s\ge0\); `thorinAdmissible_iff_endpoint` proves the endpoint equivalence, explicitly including local finiteness. These data describe the analytic characterization, not the original GGC definition. |
+| Nonnegative value law \(\mu\) | `NonnegLaw` and `powerLaw μ q hq` are implemented in `Definitions.lean`, where `hq : 0 ≤ q`. The definition uses the actual map \(x\mapsto x^q\), its continuity for nonnegative exponents, and a proof of nonnegative concentration. `powerLaw_toMeasure` exposes this semantics; `powerLaw_one` and `isGGC_powerLaw_one` supply the exponent-one sanity check. `GGC/Basic.lean` now proves fixed-power preservation of weak convergence as `power_pushforward_tendsto`. |
+| Positive rate \(b\) | `PosReal := {b : ℝ // 0 < b}` is implemented in `Definitions.lean`. Rate space and value space are distinct. Log rates live in \(\mathbb R\); `RateRealization` supplies the measurable `exp`/`log` equivalence and pushforward adapters. |
+| Thorin data | `ThorinAdmissible` and `ThorinData` live in `GGC/Thorin/Basic.lean`, re-exported by `GGC/Thorin.lean`. They contain nonnegative drift \(a\), a positive rate measure \(U\), and `Integrable` for \(\log(1+1/b)\), without finite total mass. `ThorinAdmissible.integrable_log` proves integrability for every \(s\ge0\); `thorinAdmissible_iff_endpoint` proves the endpoint equivalence, explicitly including local finiteness. These data describe the analytic characterization, not the original GGC definition. |
 | GGC membership | Implemented: `IsGGC μ` means that \(\mu\) is a weak limit of actual finite gamma convolutions, as specified in Section 2.1. It has no Thorin-representation premise. |
-| Thorin representability | `HasThorinRepresentation` remains separate from `IsGGC`. `isGGC_iff_hasThorinRepresentation` connects them using exactly E-B2/E-B3 and standard logical axioms. `existsUnique_law_thorinLaplace` realizes arbitrary `ThorinData` using E-B1 for existence and local Laplace uniqueness. |
-| Finite gamma law | `gammaLaw`, `finiteGammaLaw`, and `IsFiniteGammaConvolution` use actual gamma measures and a finite product/sum pushforward in `main.lean`. `ProbabilityMeasure.pi` has underlying measure `Measure.pi`. No transform formula defines this class. `laplace_finiteGammaLaw` proves its exponential finite-sum transform for every \(s\ge0\); `finiteThorinMeasure`, `finiteThorinData` and `hasThorinRepresentation_finiteGammaLaw` supply the adapter \(U=\sum_i\alpha_i\delta_{b_i}\). The empty product/sum gives \(\delta_0\). `Identification.exists_finiteGamma_initialData` supplies normalized log-rate data and the nonempty mass/second-moment certificates. |
+| Thorin representability | `HasThorinRepresentation` remains separate from `IsGGC`. `HasThorinRepresentation.isGGC` proves the direction required by the main theorem, using locally proved E-B3. The unused converse and equivalence were retired with E-B2. `existsUnique_law_thorinLaplace` combines the locally proved E-B1 with local Laplace uniqueness, using standard logic only. |
+| Finite gamma law | `gammaLaw`, `finiteGammaLaw`, and `IsFiniteGammaConvolution` use actual gamma measures and a finite product/sum pushforward in `Definitions.lean`. `ProbabilityMeasure.pi` has underlying measure `Measure.pi`. No transform formula defines this class. `laplace_finiteGammaLaw` proves its exponential finite-sum transform for every \(s\ge0\); `finiteThorinMeasure`, `finiteThorinData` and `hasThorinRepresentation_finiteGammaLaw` supply the adapter \(U=\sum_i\alpha_i\delta_{b_i}\). The empty product/sum gives \(\delta_0\). `Identification.exists_finiteGamma_initialData` supplies normalized log-rate data and the nonempty mass/second-moment certificates. |
 | Log-rate state \(F\) | `ProbabilityMeasure ℝ`, with an additional finite-second-moment hypothesis where needed. Set \(U=B\exp_*F\). Define coefficients for every probability \(F\), before proving Thorin admissibility, so the Euler iteration is not circular. |
 | Evolution \(F_t\) | `LogRate.WeakLogRateSolution` packages a narrowly continuous probability curve, its initial state, a uniform second-moment bound and the integral weak equation for the specified generator on \([0,T]\). `LogRate.exists_weakLogRateSolution` constructs an inhabitant from the actual Euler curves for every \(T>0\); it does not assume an existence axiom. |
 | Value and log-value laws | \(\mu_t\) is the zero-drift GGC law associated with \(U_t\); \(\lambda_t=(\log)_*\mu_t\). Prove \(\mu_t((0,\infty))=1\) before taking log values. \(F_t\) describes log **rates**, whereas \(\lambda_t\) describes log **values**. |
@@ -74,7 +97,7 @@ The initial files now select concrete imports and APIs in the pinned revision. F
 
 <a id="original-ggc-definition"></a>
 
-### 2.1 Original definition and separate Thorin characterization
+### 2.1 Original definition and the represented-law adapter
 
 For \(k\in\mathbb N\) and shapes/rates \(\alpha_i,b_i>0\), define the finite gamma law by
 \[
@@ -82,7 +105,7 @@ For \(k\in\mathbb N\) and shapes/rates \(\alpha_i,b_i>0\), define the finite gam
  =\left(x\mapsto\sum_{i\in\mathrm{Fin}(k)}x_i\right)_*
    \bigotimes_{i\in\mathrm{Fin}(k)}\operatorname{Gamma}(\alpha_i,b_i).
 \]
-The product measure encodes independence. A law is `IsFiniteGammaConvolution` exactly when it equals such a pushforward. Shapes and rates may vary with every approximant, \(k=0\) is permitted, and no boundedness or uniform moment condition is added. The actual gamma law uses the shape/rate density already represented by mathlib's `ProbabilityTheory.gammaMeasure`; give the complete project wrappers in `main.lean` and prove their normalization and nonnegative concentration.
+The product measure encodes independence. A law is `IsFiniteGammaConvolution` exactly when it equals such a pushforward. Shapes and rates may vary with every approximant, \(k=0\) is permitted, and no boundedness or uniform moment condition is added. The actual gamma law uses the shape/rate density already represented by mathlib's `ProbabilityTheory.gammaMeasure`; give the complete project wrappers in `Definitions.lean` and prove their normalization and nonnegative concentration.
 
 The public definition is
 \[
@@ -101,32 +124,40 @@ Keep the analytic predicate separate:
 \quad\forall s>0,\quad
  L_\mu(s)=\exp\{-as-\int\log(1+s/b)\,U(db)\}.
 \]
-`GGC/Thorin.lean` must expose `isGGC_iff_hasThorinRepresentation` for every `NonnegLaw`. It covers zero and constant laws, nonzero drift, nonatomic measures and infinite Thorin mass. This is a theorem or an adapter to an explicitly registered axiom, never the definition of `IsGGC`, and never a hypothesis added to `ggc_rpow`.
+`GGC/Thorin.lean` exposes `HasThorinRepresentation.isGGC` for every
+`NonnegLaw`. This locally proved direction covers zero and constant laws,
+nonzero drift, nonatomic measures and infinite Thorin mass. It is sufficient
+to certify the value laws constructed in the power-closure proof. It is never
+the definition of `IsGGC` or an extra hypothesis of `ggc_rpow`.
 
-**Implementation-cost decision:** inspect the pinned source and try the small local adapters first. A modest characterization proof should be formalized. If the full characterization needs substantial new analysis, the user has authorized the standalone literature fallback E-B4 in the README whitelist; record the missing infrastructure and selected route without requiring another approval for that already authorized choice. The permitted routes are:
+**User scope correction after E2:** the converse
+`IsGGC.hasThorinRepresentation` and equivalence
+`isGGC_iff_hasThorinRepresentation` had no production consumers. They are
+removed together with the E-B2 axiom on which they depended. The former E-B4
+fallback is withdrawn, not replaced by another axiom. A full characterization
+may be added later with a local proof, but it is not a required deliverable.
+This removes optional interfaces; it does not prove E-B2 or the converse.
+The original finite-gamma weak-limit definition and final theorem are unchanged.
 
-1. A proof from mathlib and local lemmas, with no external mathematical axioms in this characterization's dependency report.
-2. A local Lean derivation from the already registered E-B2/E-B3: original GGC \(\Rightarrow\) representation uses the finite-gamma transform certificate and E-B2; representation \(\Rightarrow\) original GGC uses E-B3, that certificate and Laplace uniqueness. This may be a short bridge, but its dependencies are still literature axioms. Do not call it an axiom-free proof.
-3. If substantial work remains, a precisely stated E-B4 `thorin_characterization` in `External/ThorinCharacterization.lean`, followed by a local adapter to the two public predicates. E-B4 repeats the actual finite-product gamma/weak-limit and measure/Laplace formulas in primitive terms, so it need not import `main`. Its scope is exactly the characterization; E-B1 realization remains separate. Avoid adding a redundant second characterization assumption when route 2 already settles the required bridge cheaply.
+Arbitrary admissible Thorin data has a unique realizing law through locally
+proved E-B1 and Laplace uniqueness. E-B3 supplies actual finite-gamma
+approximation and the represented-law membership direction. Positive constant
+laws therefore remain locally proved GGC members. Admissibility includes local
+finiteness through a proved equivalence; no extra mass/moment assumption is
+added to `IsGGC`.
 
-The source is Bondesson (1992), Section 3.1, printed p.29, Theorem 3.1.5 on p.34 and the finite-gamma approximation paragraph on p.35; see the existing [primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md). Before introducing E-B4, match both directions and the chosen admissibility convention to that source and record all local adaptations. This authorization does not allow axiomatizing power closure or any project evolution/identification result.
+**Semantic acceptance:** inspect the full definitions of `gammaLaw`,
+`finiteGammaLaw`, `IsFiniteGammaConvolution`, `IsGGC` and
+`HasThorinRepresentation`, together with the retained membership direction.
+Check actual product-law independence, weak convergence, empty sums, single
+Gamma laws and every nonnegative constant. The axiom-free original-GGC weak
+closure remains in `GGC.WeakClosure`; it is not the removed E-B2 statement.
 
-**Initial design API evidence, 2026-09-23 (before migration):** source-read only at the pinned mathlib revision: `Mathlib.Probability.Distributions.Gamma` supplies `ProbabilityTheory.gammaMeasure`, `ProbabilityTheory.isProbabilityMeasure_gammaMeasure`, and the gamma-integral argument used for normalization. No minimal compile or full characterization feasibility proof was performed in this design update. The eventual cost decision remains an implementation task; failure to find one guessed name is not evidence that the theorem must be axiomatized.
-
-**Semantic acceptance:** print the full expansions of `gammaLaw`, `finiteGammaLaw`, `IsFiniteGammaConvolution`, the new `IsGGC`, `HasThorinRepresentation`, and the characterization. Check actual product-law independence and weak convergence. A single gamma law is GGC by a constant approximating sequence; \(\delta_0\) is the empty sum. For \(a>0\), supply the limiting argument \(\operatorname{Gamma}(n+1,(n+1)/a)\Rightarrow\delta_a\), or a proved characterization-based membership argument whose axiom dependencies are disclosed. The old `isGGC_diracLaw` proof only proves representability and cannot be reused unchanged as original-GGC membership.
-
-**Accepted M1 route (2026-09-23):** route 2 is implemented. Local Laplace
-uniqueness follows from polynomial combinations of the bounded continuous
-function `exp (-x)` on nonnegative reals and mathlib's finite-measure separation
-theorem. The forward implication uses the actual finite-atomic transform
-adapter and E-B2; the reverse uses E-B3 and local uniqueness to identify its
-approximants with actual gamma sums. `isGGC_diracLaw` now proves original
-membership for every nonnegative constant using E-B3. The characterization
-depends on E-B2/E-B3, not E-B1 or E-B4; it is not an axiom-free result.
-Admissibility estimates and endpoint equivalence are locally proved. The
-endpoint predicate includes local finiteness alongside absolute logarithmic
-integrability below rate one and reciprocal integrability above rate one;
-local finiteness is derived from `ThorinAdmissible`, not added to `IsGGC`.
+The dated M1/E2 records in Sections 11 and 17 preserve the former two-direction
+characterization and its then-dependencies. Current scope is governed by this
+section and Section 18. Source provenance remains Bondesson (1992), Section
+3.1, pp.29 and 34-35, as recorded in the
+[primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md).
 
 ## 3. Main dependency graph
 
@@ -137,7 +168,7 @@ flowchart TD
   A[Nonnegative laws / original GGC definition / power pushforward] --> B[Finite gamma transform and initial log rates]
   A --> L[Primitive Laplace uniqueness / realization adapters]
   L --> B
-  B --> H[Thorin characterization / proved bridge or E-B4]
+  B --> H[Represented law to original GGC / local approximation]
   S[Shared random-measure semantics] --> D[Gamma-Dirichlet / Palm / parameterized realization]
   Q[Gamma / beta analytic lemmas] --> D
   Q --> B
@@ -172,49 +203,48 @@ flowchart TD
   W --> Z
 ```
 
-All core graph nodes now have Lean implementations, including B's initial log-rate data, V's constructed weak evolution, J's dynamic identification and Z's final law theorem. L's Laplace uniqueness is local, and its realization adapter uses E-B1. H uses E-B2/E-B3; E-B4 is not declared. W's original-definition weak closure and reduction use standard logical axioms only. `PowerClosure` discharges W's finite-input premise using the constructed evolution at \(T=\log q\). The graph describes mathematical contracts, not the exact Lean import graph; Section 4.2 maps the contracts to their actual modules. External sources supply only the foundational inputs individually listed in the README. The project generator, continuity, Euler limit, dynamic identification and final assembly are proved locally. The user has withdrawn the random-variable corollary requirement.
+All core graph nodes now have Lean implementations, including B's initial log-rate data, V's constructed weak evolution, J's dynamic identification and Z's final law theorem. L's Laplace uniqueness and E-B1 realization are locally proved. H uses the locally proved E-B3 membership direction only. E-B2 and the unused characterization consumers are removed; E-B4 is withdrawn. W's original-definition weak closure and reduction use standard logical axioms only. `PowerClosure` discharges W's finite-input premise using the constructed evolution at \(T=\log q\). The graph describes mathematical contracts, not the exact Lean import graph; Section 4.2 maps the contracts to their actual modules. External sources supply only the foundational inputs individually listed in the README. The project generator, continuity, Euler limit, dynamic identification and final assembly are proved locally. The user has withdrawn the random-variable corollary requirement.
 
 ## 4. Implemented modules and source mapping
 
-Paths are relative to `formalization/`. The Lake library is `GGCPower`, with roots `main`, `GGC`, `External`, and `AxiomAudit`. Its globs include every `GGC` and `External` submodule. `main.lean` is the human-audit definition/statement entry point. The current files are:
+Paths are relative to `formalization/`. The Lake library is `GGCPower`, with roots `Definitions`, `main`, `GGC`, `External`, and `AxiomAudit`. Its globs explicitly include `Definitions`, `main`, `AxiomAudit`, and every `GGC` and `External` submodule. `Definitions.lean` owns definitions; `main.lean` is the readable theorem entry point. The current files are:
 
 | Existing file | Current contents and limits |
 |---|---|
 | [lean-toolchain](lean-toolchain), [lakefile.toml](lakefile.toml) | Pinned Lean/mathlib and the Lake library configuration. The generated `.lake` directory is excluded by the repository ignore rules. |
-| [main.lean](main.lean) | Complete original GGC definition, actual gamma/product/sum and power laws, and the `GGCPowerClosure` proposition. Its proof lives in `GGC.PowerClosure`; `main` imports mathlib only. |
+| [Definitions.lean](Definitions.lean) | Complete original GGC definition, actual gamma/product/sum and power laws, and `GGCPowerClosure`. Imports mathlib only. |
+| [main.lean](main.lean) | The unique `ggc_rpow`, with explicit approximation, finite-input closure, power-pushforward convergence and weak-closure steps and English mathematical comments. |
 | [GGC/Basic.lean](GGC/Basic.lean) | Moved law/endpoint lemmas, the constant-law power identity, and fixed-power preservation of weak convergence. |
 | [GGC/FiniteGamma.lean](GGC/FiniteGamma.lean) | Product/sum semantics, empty- and one-factor identities, finite-gamma and zero-law GGC membership via constant sequences. Scalar and finite-sum Laplace formulas are proved from the gamma density and product integration, including \(s=0\). The finite-atomic adapter is in `GGC.Thorin`; initial log rates are constructed in `GGC.Identification.InitialData`. |
 | [GGC/Laplace.lean](GGC/Laplace.lean) | Laplace integrability, normalization, positivity, bounds and constant-law formula; `measure_eq_of_laplace_nat_eq` and `nonnegLaw_eq_of_laplace_eq` prove finite-measure/nonnegative-law uniqueness without extra moments or external mathematical axioms. |
-| [GGC/Thorin.lean](GGC/Thorin.lean) | Thorin data, separate representation predicate, parameter integrability, endpoint equivalence and finite-atomic adapters. Characterization uses E-B2/E-B3; nonnegative-constant GGC membership uses E-B3; unique realization uses E-B1. Varying-data regularity and derivative lemmas are supplied by the `Identification` modules. |
+| [GGC/Thorin/Basic.lean](GGC/Thorin/Basic.lean) | Independent Thorin data, separate representation predicate, parameter integrability, endpoint equivalence and finite-atomic certificates; moved definitions and proofs preserve their public names and semantics. |
+| [GGC/LaplaceTightness.lean](GGC/LaplaceTightness.lean), [GGC/Thorin/Approximation.lean](GGC/Thorin/Approximation.lean), `GridMeasure`, `GridMeasureMap`, `FiniteWeights`, `Drift`, `Normalization`, `Sequence`, [Realization](GGC/Thorin/Realization.lean) | Independent finite-gamma approximation, drift absorption, lower-bound tightness and full E-B1/E-B3 core proofs. Section 15.3 records the accepted decomposition. No literature axiom is used. |
+| [GGC/Thorin.lean](GGC/Thorin.lean) | Public facade for represented-law membership and realization adapters. All retained declarations use standard logic only; the unused converse and equivalence are removed. Varying-data regularity and derivatives remain in `Identification`. |
 | [GGC/WeakClosure.lean](GGC/WeakClosure.lean) | `isGGC_iff_mem_closure` and `isGGC_of_tendsto` prove original-GGC weak closure through metrization and sequential closure, with no Thorin dependency. |
 | [GGC/Reduction.lean](GGC/Reduction.lean) | `isGGC_powerLaw_of_finiteGamma` and `ggcPowerClosure_of_finiteGamma` prove the conditional reduction. `GGC.PowerClosure` now discharges its explicit finite-input premise. |
-| [External/Bondesson.lean](External/Bondesson.lean) | E-B1 `thorin_realization`, E-B2 `weak_closure`, E-B3 `finite_atomic_approximation`, with primitive measure/Laplace contracts and source annotations. These are explicit external axioms, not proved project deductions. |
-| [External/README.md](External/README.md), [External/James.lean](External/James.lean), [External/SSV.lean](External/SSV.lean), [External/Sethuraman.lean](External/Sethuraman.lean) | Eight registered declarations in total including Bondesson. The external files depend only on mathlib and shared random-measure semantics; their mathematical statements remain assumptions. |
-| [GGC/PowerClosure.lean](GGC/PowerClosure.lean) | `isGGC_power_finiteGammaLaw`, `isGGC_power_of_isFiniteGammaConvolution`, and `ggc_rpow : GGCPowerClosure`. The law-level delivery is complete; E1 will move the public final theorem to `main`. |
-| [AxiomAudit.lean](AxiomAudit.lean) | Prints definitions and complete external contracts, checks the expanded final theorem type, and audits 883 declarations including `ggc_rpow`. The design review additionally prints its proof body. |
+| [External/Bondesson.lean](External/Bondesson.lean) | E-B1 `thorin_realization` and E-B3 `finite_atomic_approximation`, with primitive measure/Laplace contracts and source annotations. Both are locally proved compatibility theorems. E-B2 is removed; this file declares no axiom. |
+| [External/README.md](External/README.md), [External/James.lean](External/James.lean), [External/SSV.lean](External/SSV.lean), [External/Sethuraman.lean](External/Sethuraman.lean) | Seven active interfaces: two proved Bondesson endpoints and five remaining axioms. E-B2 survives only in historical source/acceptance records; E-B4 is withdrawn. SSV imports mathlib; James and Sethuraman additionally use independent shared random-measure semantics. Bondesson imports the independent Thorin proof layer for its theorem wrappers. |
+| [GGC/PowerClosure.lean](GGC/PowerClosure.lean) | `isGGC_power_valueLaw`, `isGGC_power_finiteGammaLaw`, `isGGC_power_of_isFiniteGammaConvolution`; detailed finite-input assembly. The public `ggc_rpow` now lives in `main`. |
+| [AxiomAudit.lean](AxiomAudit.lean) | Prints definitions and complete external contracts, checks the expanded final theorem type, and audits 954 declarations including `ggc_rpow`. The persistent audit also prints its actual proof body. |
 
 <a id="statement-proof-separation"></a>
 
 ### 4.1 E1: definitions module and readable main theorem
 
-**Status: planned, not yet implemented.** This contract supersedes the old
-rule that `main` imports mathlib only and the helpers import `main`. The
-source currently retains that old layout; change its import direction as
-one migration. Earlier inventories and acceptance records describe the
-pre-migration snapshot, not the future ownership.
-
-**Recommended rename: `main.lean → GGC/Definitions.lean`.** This name makes
-its purpose explicit and fits the existing namespace/module hierarchy.
-`GGC/Basic.lean` already owns elementary lemmas; keep that separation.
-`Statement.lean` would understate the complete definitions in this file.
-Keep the Lean namespace `GGC` and all declaration names unchanged.
+**Implemented and independently accepted (`verified`).** The earlier recommendation
+was `GGC/Definitions.lean`; the accepted implementation choice places
+`Definitions.lean` in the formalization root. This preserves the intended
+separation from `GGC/Basic.lean`. The declaration namespace remains `GGC`.
+The construction report records the user's subsequent root-path override;
+this section now reflects the actual root module and explicit Lake coverage.
+Earlier acceptance records retain the paths used at their time.
 
 | Target file | Ownership after E1 |
 |---|---|
-| `GGC/Definitions.lean` | Move all current definitions: `PosReal`, `NonnegLaw`, `gammaLaw`, `finiteGammaLaw`, `IsFiniteGammaConvolution`, `IsGGC`, `powerLaw`, `GGCPowerClosure`. Keep complete definitions, explanatory comments, and construction proof fields for normalization and nonnegativity. Import mathlib only, with no external or downstream proof dependencies. |
-| `GGC/Basic.lean` and other helpers | Replace old definition-layer `import main` with `import GGC.Definitions` where needed. Existing elementary, analytic and Thorin lemmas keep their owners. None of the new main's dependencies may import `main`. |
+| `Definitions.lean` | Move all current definitions: `PosReal`, `NonnegLaw`, `gammaLaw`, `finiteGammaLaw`, `IsFiniteGammaConvolution`, `IsGGC`, `powerLaw`, `GGCPowerClosure`. Keep complete definitions, explanatory comments, and construction proof fields for normalization and nonnegativity. Import mathlib only, with no external or downstream proof dependencies. |
+| `GGC/Basic.lean` and other helpers | Replace old definition-layer `import main` with `import Definitions` where needed. Existing elementary, analytic and Thorin lemmas keep their owners. None of the new main's dependencies may import `main`. |
 | `GGC/PowerClosure.lean` | Retain `isGGC_power_valueLaw`, `isGGC_power_finiteGammaLaw`, `isGGC_power_of_isFiniteGammaConvolution` and detailed finite-input assembly using the existing evolution/identification modules. Move the public `ggc_rpow` out; do not duplicate it under a second name. |
-| New `main.lean` | Import `GGC.Definitions` and proof modules, principally `GGC.PowerClosure` and `GGC.WeakClosure`. Own the unique `GGC.ggc_rpow : GGC.GGCPowerClosure`, with the visible mathematical steps below. No `main : IO Unit` is required. |
+| New `main.lean` | Import `Definitions` and proof modules, principally `GGC.PowerClosure` and `GGC.WeakClosure`. Own the unique `GGC.ggc_rpow : GGC.GGCPowerClosure`, with the visible mathematical steps below. No `main : IO Unit` is required. |
 | `AxiomAudit.lean` | Import the new `main`; preserve definition and external-contract checks. Check the expanded main theorem type, print its proof body and transitive axioms from the new owner. |
 
 The final proof must visibly carry out the following steps using existing
@@ -237,16 +267,17 @@ lemmas, rather than remaining a one-line application of the general reduction:
 
 Use named intermediate membership and convergence facts. The file overview
 should link the definitions and detailed modules; the theorem docstring
-should state the full law scope and its seven literature dependencies.
+should state the full law scope and its current five literature dependencies
+(seven at the E1 acceptance snapshot; reduced by the accepted E2 proofs).
 Comments should explain mathematical purpose and hypotheses, not merely
-repeat tactics. Clear Chinese explanations are recommended for the new
-human-readable entry point; retain Lean names and mathematical notation.
+repeat tactics. All project Lean comments and docstrings are written in English,
+following the current README convention; retain Lean names and mathematical notation.
 Do not move lengthy analysis or duplicate generic proofs into `main`.
 
 The intended dependency direction is:
 
 ```text
-mathlib → GGC.Definitions → GGC helpers → GGC.PowerClosure → main → AxiomAudit
+mathlib → Definitions → GGC helpers → GGC.PowerClosure → main → AxiomAudit
 mathlib → shared random-measure semantics → External → GGC proof modules
 ```
 
@@ -258,24 +289,25 @@ Do not add a compatibility back-import that would create a cycle.
 **Acceptance:** preserve definition semantics, names and the full theorem type;
 inspect the real proof steps and comments; replace every old definition-layer
 `import main`; update audit imports, module docstrings, README layout and API
-consumers. Verify the existing `GGC.+` glob covers `GGC.Definitions` and that
-the default build includes the new `main` and audit. Require an acyclic import
-graph, a clean project build followed by a direct audit, and exactly the same
-seven literature axioms plus the standard logical axioms for `ggc_rpow`.
+consumers. Verify `Definitions` is explicitly included in Lake roots and globs,
+and that the default build includes `main`, all proof modules and the audit. Require an acyclic import
+graph, a clean project build followed by a direct audit, and preservation of
+the trust boundary for a pure migration. E1 preserved seven literature axioms
+plus standard logic; the separately accepted E2 proofs now reduce this to five.
 Record fresh module/check counts; old counts do not verify the migration.
-The accepted M7 mathematics remains closed; E1 is separately pending.
+The accepted M7 mathematics remains closed; E1 has separate migration evidence.
 
 ### 4.2 Proof contracts and actual implementation
 
-The first table preserves the original contract decomposition and manuscript locators. Its proposed filenames and theorem names are not all literal current APIs: construction split several contracts into smaller modules. The implementation map following it gives the actual consumers. Local adapters belong with the relevant mathematics and, after E1, import `GGC.Definitions`; the public final theorem will belong to `main.lean`.
+The first table preserves the original contract decomposition and manuscript locators. Its proposed filenames and theorem names are not all literal current APIs: construction split several contracts into smaller modules. The implementation map following it gives the actual consumers. Local adapters belong with the relevant mathematics and import `Definitions` as needed; the public final theorem belongs to `main.lean`.
 
 | Proposed file | Proposed declarations or deliverable | Written proof and manuscript locator |
 |---|---|---|
-| `GGC/Basic.lean` | The existing basic declarations listed in Section 4.1, followed by `power_pushforward_weaklyContinuous` and its `NonnegLaw`/`powerLaw` adapter; imports `main` | [main.lean](main.lean), existing helper proofs; [WIP-0.1](../ledger/00-foundations.md#wip-0-1); [completion section](../manuscript/sections/06-completion.tex) |
+| `GGC/Basic.lean` | The existing basic declarations listed in Section 4.1, followed by `power_pushforward_weaklyContinuous` and its `NonnegLaw`/`powerLaw` adapter; imports `Definitions` | [Definitions.lean](Definitions.lean), existing helper proofs; [WIP-0.1](../ledger/00-foundations.md#wip-0-1); [completion section](../manuscript/sections/06-completion.tex) |
 | `GGC/Laplace.lean` | `laplace`, `nonnegLaw_eq_of_laplace_eq`, Laplace normalization/positivity/integrability; primitive probability-measure statements with no moment assumptions. Realization adapters using Thorin data belong to `GGC.Thorin`, avoiding a reverse import | [foundations](../manuscript/sections/01-foundations.tex), `lem:gamma-dirichlet`; [identification](../manuscript/sections/05-identification.tex), transform-uniqueness argument following `eq:id-positive-log`; E-B1 local obligations |
 | `GGC/FiniteGamma.lean` | Product/sum semantics lemmas, scalar and finite-sum Laplace formulas, finite-gamma membership and zero-law membership via constant sequences; imports `GGC.Basic` and `GGC.Laplace`, not `GGC.Thorin` | Section 2.1; [foundations ledger](../ledger/00-foundations.md) |
 | `GGC/WeakClosure.lean` | Sequential/closure equivalence or metric diagonal construction, then `isGGC_of_tendsto`; consumes the original definition and `GGC.Basic`, with no Thorin-characterization dependency | Section 2.1; [preliminaries](../manuscript/sections/01-foundations.tex), `lem:ggc-closure` |
-| `GGC/Thorin.lean` | Thorin data and `HasThorinRepresentation`, integrability and derivative lemmas, realization adapters, `isGGC_iff_hasThorinRepresentation`, `hasThorinRepresentation_diracLaw`, and revised `isGGC_diracLaw`; imports finite-gamma/Laplace results and only the external contracts actually used | Section 2.1; [foundations ledger](../ledger/00-foundations.md); [preliminaries](../manuscript/sections/01-foundations.tex), `eq:thorin-representation` |
+| `GGC/Thorin.lean` | Thorin data and `HasThorinRepresentation`, integrability and derivative lemmas, realization adapters, `HasThorinRepresentation.isGGC`, `hasThorinRepresentation_diracLaw`, and revised `isGGC_diracLaw`; imports finite-gamma/Laplace results and only the external contracts actually used | Section 2.1; [foundations ledger](../ledger/00-foundations.md); [preliminaries](../manuscript/sections/01-foundations.tex), `eq:thorin-representation` |
 | `GGC/Reduction.lean` | Conditional finite-gamma-to-general reduction; consumes `GGC.Basic`, `GGC.WeakClosure`, and approximation from the original definition; no final theorem assumed or claimed | [WIP-6.21](../ledger/23-power-theorem-assembly-audit.md#wip-6-21); [completion section](../manuscript/sections/06-completion.tex) |
 | `GGC/Foundations/RandomMeasure.lean` | Actual random-measure evaluation, finite-partition Dirichlet semantics including zero-mass cells, and required measurable structures; no project conclusions or external axioms | [foundations](../manuscript/sections/01-foundations.tex), Dirichlet-process convention; [measurable realizations](../manuscript/sections/07-measurable-realizations.tex); E-J1--E-J3 and E-T1 prerequisites |
 | `GGC/GammaAnalysis.lean` | Gamma/beta density conventions, digamma semantics, gamma and beta logarithmic integrals, and uniform bounds on compact positive mass intervals; reuse mathlib and prove missing analytic adapters locally | [tangent](../manuscript/sections/02-power-tangent.tex), proof of `lem:tangent`; [generator](../manuscript/sections/03-log-generator.tex), proof of `lem:bounds`; [identification](../manuscript/sections/05-identification.tex), `eq:id-log-moment` |
@@ -291,7 +323,7 @@ The first table preserves the original contract decomposition and manuscript loc
 | `GGC/Identification/Moments.lean` | `valueLaw_logMoment_bound`, strict positivity, narrow continuity of value laws, Thorin admissibility | [WIP-6.20, Sections 1--2](../ledger/22-power-flow-identification.md#wip-6-20); [identification section](../manuscript/sections/05-identification.tex), `eq:id-log-moment` |
 | `GGC/Identification/WeakEquation.lean` | Test-domain extension, `tangent_spaceTime_integrable`, `zero_endpoint_bound`, `laplace_weak_equation`, `value_weak_equation` | [WIP-6.20, Sections 3--7](../ledger/22-power-flow-identification.md#wip-6-20); [identification section](../manuscript/sections/05-identification.tex), `eq:id-absolute-fubini`, `eq:id-value-weak` |
 | `GGC/Identification/Transport.lean` | `log_value_transport_unique`, `identify_power_flow` | [WIP-6.20, Section 8](../ledger/22-power-flow-identification.md#wip-6-20); [identification section](../manuscript/sections/05-identification.tex), `thm:identification` |
-| `GGC/PowerClosure.lean` | Finite-input closure and detailed assembly; E1 moves the public `ggc_rpow : GGCPowerClosure` to `main.lean`. No random-variable corollary is required | [WIP-6.21](../ledger/23-power-theorem-assembly-audit.md#wip-6-21); [completion section](../manuscript/sections/06-completion.tex); [full-scope audit](../ledger/25-mathematical-completion-audit.md#wip-6-23) |
+| `GGC/PowerClosure.lean` | Finite-input closure and detailed assembly; E1 has moved the public `ggc_rpow : GGCPowerClosure` to `main.lean`. No random-variable corollary is required | [WIP-6.21](../ledger/23-power-theorem-assembly-audit.md#wip-6-21); [completion section](../manuscript/sections/06-completion.tex); [full-scope audit](../ledger/25-mathematical-completion-audit.md#wip-6-23) |
 
 | Contract / stage | Actual implementation and principal endpoint |
 |---|---|
@@ -302,7 +334,7 @@ The first table preserves the original contract decomposition and manuscript loc
 | M5 finite-time evolution | `LogRate/Euler`, `EulerMoments`, `EulerTightness`, `EulerInterpolation`, `EulerLimitCurve`, `EulerWeakEquation`, `Existence`; endpoint `exists_weakLogRateSolution`. |
 | M6 moments and time equations | `Identification/ValueLaw`, `Moments`, `LogValueContinuity`, `TangentSpaceTime`, `TestExtension`, `LaplaceEvolution`, `LogTransport` and their supporting modules. |
 | M6 identification | `Identification/TransportUniqueness`, `DynamicIdentification`; endpoint `valueAt_eq_powerLaw`, followed by `isGGC_power_valueLaw_of_weakSolution`. |
-| M7 assembly | `Identification/InitialData` and `PowerClosure`; actual finite-gamma law is matched to its initial value law, and `ggc_rpow` discharges the full original-definition target. Distribution delivery accepted; E1 presentation migration planned. |
+| M7 assembly | `Identification/InitialData` and `PowerClosure`; actual finite-gamma law is matched to its initial value law, and `ggc_rpow` discharges the full original-definition target. Distribution delivery accepted; the readable final theorem is in `main`. |
 
 WIP-6.23 audits the assembled proof; it is not a second independent theorem. Exact foundational source interfaces are recorded in the [primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md) and the README whitelist. Parameterized realizations, measurable representatives and their applications are local Lean constructions, separate from the literature axioms.
 
@@ -328,7 +360,7 @@ Blueprint remains a designer-maintained construction specification.
 Prefer standard objects; retain project definitions where required for the
 readable statement or mathematical conventions, with proved compatibility
 lemmas in their owner modules. Consumers reuse the bridge. Do not move proof
-dependencies into `GGC.Definitions` under E1, create external/project import cycles, or alter
+dependencies into `Definitions` under E1, create external/project import cycles, or alter
 public hypotheses merely to match an available theorem. A broad kernel or
 measure theorem can replace infrastructure only after its exact assumptions
 and resulting semantics are checked.
@@ -400,7 +432,7 @@ not evidence that every supporting construction must be written locally.
 
 ### Foundational adapters shared by the proof nodes
 
-`GGC/Laplace.lean` now proves `nonnegLaw_eq_of_laplace_eq`: two nonnegative probability laws with the same Laplace transform at every positive parameter are equal, without extra moments. E-B1 gives existence only; `existsUnique_law_thorinLaplace` combines it with local uniqueness. Reuse uniqueness to identify realizations with gamma--Dirichlet products and subsequential limits in M6. Choosing one E-B1 witness does not itself prove continuity or measurability as its data vary. Those properties remain outputs of `Identification/Moments.lean`, using the logarithmic tail bounds. For the supported-real model, also justify the passage to probabilities on the positive subtype and continuity of the log pushforward; `Real.log` is not continuous at zero.
+`GGC/Laplace.lean` now proves `nonnegLaw_eq_of_laplace_eq`: two nonnegative probability laws with the same Laplace transform at every positive parameter are equal, without extra moments. The locally proved E-B1 gives existence; `existsUnique_law_thorinLaplace` combines it with local uniqueness, using standard logic only. Reuse uniqueness to identify realizations with gamma--Dirichlet products and subsequential limits in M6. Choosing one E-B1 witness does not itself prove continuity or measurability as its data vary. Those properties remain outputs of `Identification/Moments.lean`, using the logarithmic tail bounds. For the supported-real model, also justify the passage to probabilities on the positive subtype and continuity of the log pushforward; `Real.log` is not continuous at zero.
 
 `GGC/GammaAnalysis.lean` must use shape/rate gamma conventions and actual beta laws; below \(B>0\) and \(G_B\sim\mathrm{Gamma}(B,1)\) has unit rate. Set \(\psi=\Gamma'/\Gamma\) on positive arguments (or prove equivalence with a reused definition), and supply
 \[
@@ -558,24 +590,27 @@ unchanged.
 | Stage | Status | Deliverables and acceptance criteria |
 |---|---|---|
 | M0: Reproducible project and fixed interfaces | `verified` | Pins, original-definition semantics, helper ownership and build/audit coverage pass review. Empty-sum, single-gamma, exponent-one and constant-power cases, Laplace integrability, normalization and positivity pass. Historical evidence: Section 10; formerly deferred contracts are covered by M2. |
-| M1: Characterization and final reduction | `verified` | Transforms, local Laplace uniqueness, finite-atomic/admissibility adapters, endpoint equivalence, constant-law membership, original-GGC weak closure and reduction pass. Characterization uses E-B2/E-B3; realization uses E-B1. See Section 11; the finite-input premise is now discharged in `PowerClosure`. |
+| M1: Thorin adapters and final reduction | `verified` | Transforms, local Laplace uniqueness, finite-atomic/admissibility adapters, endpoint equivalence, constant-law membership, original-GGC weak closure and reduction pass. The unused characterization converse/equivalence were retired by E2-P; retained Thorin adapters, realization and constant-law membership use standard logic. Historical acceptance: Sections 11 and 17; the finite-input premise is now discharged in `PowerClosure`. |
 | M2: Dirichlet theory, phases, and tangent | `verified` relative to registered inputs | Shared finite-partition semantics, full external types, Gamma/Beta analysis, actual posterior laws, fixed common space, ordered quantiles, common event and joint measurability pass review. Canonical measurable phase and actual power tangent are locally proved. |
 | M3: Generator and direct resolvent | `verified` relative to registered inputs | Actual `(B,F)` generator, quantitative bounds, compensated cancellation and absolutely integrable posterior/Palm resolvent identity pass. No hidden rate or log-rate moment hypothesis; the original mass determines `digamma (B + 1)`. |
 | M4: Weak continuity | `verified` relative to registered inputs | Phase pairing against every L¹ kernel, joint parameter continuity, common-space posterior coupling and integration against varying laws pass. Pointwise phase continuity is not assumed. |
 | M5: Positive Euler scheme and finite-time existence | `verified` relative to registered inputs | Actual Markov kernel, exact moments, tightness, whole-curve common subsequence, consistency and limiting equation pass. `exists_weakLogRateSolution` constructs every required finite-horizon solution; every compact C² test and every time share the same curve. |
 | M6: Dynamic identification | `verified` relative to registered inputs | Absolute logarithmic moments, strict positivity, zero-endpoint/Fubini bounds, test-domain extension and partition-based transport uniqueness pass. `valueAt_eq_powerLaw` identifies actual probability laws without assuming power closure. |
 | M7: Full distribution theorem | `verified` relative to registered inputs | The full law theorem passed the recorded clean build/type/axiom checks. The user withdrew RV-1; the distribution version completes the mathematical delivery. |
-| E1: Readable theorem entry point | `planned` | Rename the definitions module to `GGC/Definitions.lean`, put the unique main theorem with visible key steps and comments in new `main.lean`, and retain details in `GGC/PowerClosure.lean`. Follow Section 4.1. |
+| E1: Readable theorem entry point | `verified` | Root `Definitions.lean` owns the unchanged definitions; `main.lean` owns the unique theorem and four visible steps; `GGC/PowerClosure.lean` retains detail. Independent clean build: 137 fresh modules / 3940 jobs; direct audit: 883 matching checks. See Section 14. |
+| E2: Formalize E-B3 and E-B1 | `verified` | Same complete primitive contracts, proved from mathlib and local lemmas only; accepted common approximation/tightness infrastructure. Independent clean build: 147 fresh modules / 3950 jobs; direct audit: 957 matching checks. At E2 acceptance: five literature axioms in the main theorem and six project-wide. E2-P subsequently removes the unused sixth axiom. See Sections 15, 17 and 18. |
+| E2-P: Remove unused axiom and interfaces | `in_progress` verification | E-B2 and its two unused characterization consumers removed; E-B4 fallback withdrawn. Main theorem and retained proofs unchanged; default build and direct audit running. |
+| E3: Gamma-Dirichlet foundation and James reduction | `planned`, design proposal | Prove full E-J3, then the bounded Markov-Krein contract used by the main proof and retire the unused general E-J1 interface. Target: five remaining axioms to four, then three. See Section 19. |
 
 M0's acceptance checklist is:
 
 1. Reproduce the pinned version, default build, and existing audit; record the actual executable, working directory, commands and exit statuses, distinguishing cached validation from a clean rebuild. **Passed:** the independent M0 acceptance rerun verified Lean 4.32.2, the mathlib pin, the default build (`2788 jobs`) and direct audit; see the [review evidence](ConstructionReport.md#m0-design-acceptance-2026-09-23). This used cached dependencies, not a clean mathlib rebuild.
-2. Inspect the complete target quantifiers and public definitions, the three existing E-B contracts and their source adaptations, and the actual import/axiom graph. The original-definition semantics pass the migration audit. M1 now separately proves equivalence with Thorin representability using E-B2/E-B3. No core axiom or unfinished proof may enter the verified closure.
+2. Inspect the complete target quantifiers and public definitions, the three existing E-B contracts and their source adaptations, and the actual import/axiom graph. The original-definition semantics pass the migration audit. M1 originally supplied the two-direction characterization; current scope retains the locally proved represented-law membership direction and retires its unused converse. No core axiom or unfinished proof may enter the verified closure.
 3. **Passed:** the \(q=1\) lemmas, single-gamma and empty-sum membership cases, and actual power-pushforward identity for \(\delta_a\) are proved. `GGC/Laplace.lean` supplies `laplace_integrable` for every \(s\ge0\), `laplace_zero` and `laplace_pos` for every \(s\ge0\), for arbitrary `NonnegLaw` without moment assumptions. The separate positive-constant membership obligation has now also passed M1 review, with its E-B3 dependency disclosed.
-4. Implement and validate Section 2.1's original definition and Section 4.1's ownership changes, preserving the full target quantifiers and checking changed membership semantics explicitly. Update Lake module coverage and audit imports together. This migration is complete; the separate characterization has now passed M1 review and no unfinished final theorem was introduced.
+4. Implement and validate Section 2.1's original definition and Section 4.1's ownership changes, preserving the full target quantifiers and checking changed membership semantics explicitly. Update Lake module coverage and audit imports together. This migration is complete; the former characterization passed M1 review before its unused converse was retired by E2-P. No unfinished final theorem is introduced.
 
 M0–M7 are accepted within the registered trust boundary.
-The new construction handoff is E1 below. Earlier milestones need not
+E1 and E2 are also accepted; review evidence is recorded in Sections 14 and 17. Earlier milestones need not
 be reconstructed to supply this adapter; changes to their contracts would
 require fresh review of the affected proofs.
 
@@ -592,7 +627,7 @@ require fresh review of the affected proofs.
 | A theorem covering only restricted inputs | Audit every parameter of `ggc_rpow`; remove shape, mass, support, drift, or moment restrictions belonging only to intermediate construction. Check \(q=1\), \(\delta_0\), and positive drift. |
 | A mismatch with the written proof | Locate the issue by WIP ID and manuscript label; repair the proof or contract and update status. Do not absorb a mathematical gap into an external axiom. |
 
-**Next implementation handoff — E1:** implement Section 4.1's definition-file rename and readable final proof. RV-1 is withdrawn; do not construct the random-variable corollary. Preserve the accepted theorem and trust boundary, record actual imports and compiled proof steps in the shared API index, and submit fresh migration build/audit evidence. This changes presentation and ownership, not the mathematical scope.
+**Current handoff:** E2 is closed with no blocking findings; E-B1/E-B3 are locally proved at their complete original scope. D1 and S1-SOURCE are closed; RV-1 remains withdrawn. E2-P removes E-B2 and its unused auxiliary interfaces. The remaining trust boundary is exactly the five main-theorem literature axioms; Section 19 proposes the next reduction round. Future code changes should preserve the current definition/proof separation and scope and receive checks appropriate to that change.
 
 For each completed module, record the actual file, Lean declaration, precise WIP/manuscript source, verification command, and external-dependency status in [ConstructionReport.md](ConstructionReport.md). The designer updates this blueprint's accepted status and contracts after review. Retain the proposed label for nonexistent files. Completion evidence must be the main theorem's actual type, a dependency tree without core gaps, and a reproducible build, rather than this blueprint itself.
 
@@ -771,3 +806,283 @@ dependencies. Section 4.1 supersedes all earlier main-file ownership rules.
 
 This update changes documentation only. It does not claim that the rename,
 proof reorganization or a fresh migration build/audit has already occurred.
+
+<a id="e1-design-acceptance-2026-09-24"></a>
+## 14. E1 independent design acceptance — 2026-09-24
+
+**Verdict: E1 accepted as `verified`, with no blocking finding.** The actual
+root `Definitions.lean` layout and English Lean comments are accepted; the
+earlier subdirectory and Chinese-comment recommendations are superseded.
+M0–M7 remain accepted relative to the registered inputs; RV-1 stays withdrawn.
+
+At source commit `88b8529a29da851b015d545c2cee3a566b779b7c`, the moved
+definition body matches the accepted pre-migration file byte for byte after
+newline/trailing-whitespace normalization. The unique public `ggc_rpow` in
+`main` visibly extracts finite-gamma approximants, proves `hpowered`,
+proves `hpowered_lim` by power-pushforward continuity, and applies original-GGC
+weak closure. English comments explain the packaged finite-input construction
+and why its moment restrictions are absent from the final target.
+
+The independent project-only clean build passed (3940 jobs; 137/137 fresh
+project modules), followed by a direct audit (883/883 matched axiom checks).
+Pinned dependency caches were retained. The audit prints the actual proof
+body and checks its full type. The import graph is acyclic: `Definitions`
+imports only mathlib, `PowerClosure` retains detailed helpers, and only
+`AxiomAudit` imports `main`. Lake explicitly includes the root definitions
+module. No new core axiom or unfinished proof was found.
+
+The final theorem still uses exactly E-B1, E-B3, E-J1–3, E-T1 and E-S1 plus
+`propext`, `Classical.choice`, `Quot.sound`. These literature inputs remain
+assumptions. All Lean sources were left unchanged by this review.
+Three legacy path comments in `Definitions`, `Thorin` and `WeakClosure`
+are recorded as nonblocking D1; they do not change the correct imports or
+proofs. Commands, counts and locations are in
+[ConstructionReport Section 29](ConstructionReport.md#e1-design-acceptance-2026-09-24).
+
+<a id="e2-bondesson-formalization"></a>
+## 15. E2: finite-atomic approximation and Thorin realization — 2026-09-24
+
+**Status: `verified`; independently accepted with no blocking finding.**
+E2.0–E2.4 satisfy the following contracts. The constructor implemented the shared
+approximation and tightness route; the designer inspected the full proofs and
+independently reran the clean build, complete audit and original-type checks.
+M0–M7 and E1 remain accepted. API-062–066 are now `accepted` in the jointly
+maintained `MathlibAPI.md`; Section 17 and ConstructionReport Section 34 record
+the independent evidence. This section records the E2 contract and acceptance
+snapshot; Section 18 supersedes only its E-B2 retention, unused characterization
+scope and project-wide counts. The proved E-B1/E-B3 contracts remain unchanged.
+
+### 15.1 Deliverables and unchanged mathematical scope
+
+Replace these declarations in `External/Bondesson.lean` by theorems with the
+same fully elaborated types and public names:
+
+- E-B3: `GGC.External.Bondesson.finite_atomic_approximation`.
+- E-B1: `GGC.External.Bondesson.thorin_realization`.
+
+Both proofs and their new lower-level lemmas must depend only on mathlib and
+local proofs with standard logical axioms. Retaining the `GGC.External` names
+is a compatibility choice, not a reason to retain them as assumptions. Keep
+their source provenance and label them as locally proved after verification.
+Do not introduce a replacement axiom, invoke E-B2/E-B4, or assume a law exists
+inside the common approximation construction. E2 originally left E-B2 unchanged;
+the later E2-P scope cleanup in Section 18 removes it and the unused converse.
+
+Preserve arbitrary `a >= 0`, every positive-rate measure `U` satisfying only
+`Integrable (fun b => Real.log (1 + 1 / b.val)) U`, and all `s > 0`.
+Allow infinite total Thorin mass, rates approaching zero, nonatomic measures,
+zero mass and nonzero drift. No uniform moment hypothesis is permitted.
+E-B3 must produce one sequence of actual nonnegative probability laws converging
+to the supplied law, with zero-drift finite-atomic transforms and strictly
+positive shapes/rates. Empty sums are allowed. E-B1 must construct a probability
+law, not a subprobability limit or a formal transform.
+
+### 15.2 Construction stages and preferred common route
+
+| Gate | Deliverable | Acceptance evidence |
+|---|---|---|
+| E2.0 | Extract the existing axiom-free Thorin definitions/lemmas and generic Laplace tail estimate into an independent lower layer; preserve public names. | Import graph has no cycle; moved proofs have no literature dependency; affected modules compile. |
+| E2.1 | Prove tightness of nonnegative laws from a common Laplace lower bound tending to one at zero. | A compiled generic lemma, using the existing tail bound and mathlib tightness criterion; no moments or realized Thorin law assumed. |
+| E2.2 | Construct one finite-gamma sequence from `(a,U)`, prove its exact transforms, convergence for every positive parameter, a common lower bound and the target's normalization at zero. | Compiled witnesses and convergence statements at full admissibility scope, including zero cells and the drift branches. |
+| E2.3 | Prove E-B3 by the existing Laplace identification theorem; prove E-B1 by a tight subsequence and transform identification. | Both unchanged primitive endpoints compile and their `#print axioms` contain standard logic only. |
+| E2.4 | Integrate the theorem wrappers, update consumers/docs, run a clean project build and direct full audit, then submit for independent design acceptance. | Five remaining main-theorem literature axioms; six project-wide; all source modules and all requested audit declarations accounted for. |
+
+The following is the preferred mathematical route. Equivalent routes are
+allowed if they preserve the complete contracts and give stronger reuse evidence.
+
+1. **Truncate and round rates upward.** For `m = n + 1`, restrict `U` to
+   `K_m = {b : PosReal | 1/m <= b.val and b.val <= m}`. The existing
+   `ThorinAdmissible.measure_le_lt_top` proves finite mass of this restriction.
+   Push it through `r_m(b) = ceil(m*b.val)/m`, with natural-number ceiling.
+   On `K_m`, its range lies in `{j/m | 1 <= j <= m^2}`. Prove measurability,
+   `b.val <= r_m(b) < b.val + 1/m`, and eventual inclusion of every fixed
+   positive `b` in `K_m`. Express the pushforward as a finite sum of Dirac
+   measures. Prove each cell mass finite before taking `toReal`, and discard
+   zero-mass cells before constructing `PosReal` shapes; do not assume all
+   grid cells have positive mass.
+2. **Control the logarithmic kernels on the original measure.** Write
+   `J(s) = integral log(1+s/b) dU` and `J_m(s)` for the rounded finite sum.
+   For each fixed `s > 0`, the cut-off rounded kernel converges pointwise to
+   `log(1+s/b)` and lies between zero and that same integrable function.
+   Apply dominated convergence on `U`, without normalizing an infinite
+   measure or postulating weak convergence of `U`. Obtain
+   `0 <= J_m(s) <= J(s)` and `J_m(s) -> J(s)` for one common grid sequence.
+3. **Absorb drift into a finite gamma factor.** For `a > 0`, append the
+   shape/rate pair `(m, m/a)` to the finite convolution. Its Laplace exponent
+   is `m*log(1+a*s/m)`, which lies in `[0,a*s]` and tends to `a*s`.
+   Use the elementary logarithm limit and `laplace_finiteGammaLaw`; no new
+   Gamma moment or Gamma addition theorem is needed. For `a = 0`, append
+   nothing. With zero `U` and zero drift, use the empty convolution.
+4. **Obtain a common Laplace lower bound.** Set
+   `L(s) = exp(-a*s-J(s))`. The constructed laws `mu_m` satisfy
+   `L(s) <= laplace mu_m s <= 1` and `laplace mu_m s -> L(s)` for every
+   `s > 0`. Prove `L(s) -> 1` as `s -> 0+` directly from admissibility:
+   for `0 <= s <= 1`, the logarithmic kernel is dominated by
+   `log(1+1/b)`, and the drift term tends to zero. This step cannot invoke
+   E-B1's as-yet-unconstructed realizing law.
+5. **Prove tightness without moments.** Reuse the existing generic estimate
+   `mu((exp r,infinity)) <= 2*(1-laplace mu (exp(-r)))` from
+   `Identification/ValueTails.lean`, after extracting it below the external
+   inputs. The common lower bound makes the right side uniformly at most
+   `2*(1-L(exp(-r)))`, tending to zero. Together with nonnegative support,
+   compact intervals and mathlib's tightness criterion, this proves tightness
+   of the entire sequence. Pointwise Laplace convergence alone must not be
+   passed to an API that still requires a tightness argument.
+6. **Assemble the two endpoints.** For E-B3, the supplied target law has
+   transform `L`; apply `nonnegLaw_tendsto_of_laplace_tendsto` to the actual
+   finite-gamma sequence and the tightness proof. For E-B1, apply Prokhorov
+   compactness to extract a probability limit; reuse
+   `nonnegative_of_narrow_limit` and `tendsto_laplace_of_narrow` to identify
+   its support and transform. One extracted subsequence works for every
+   parameter because it converges as measures. Local Laplace uniqueness
+   continues to supply the existing unique-realization adapter.
+
+### 15.3 Module ownership and import contract
+
+The following implemented ownership is accepted. Construction split the planned
+approximation file into seven focused modules; this preserves the contract and
+introduces no extra assumptions. Existing public names and moved proof bodies
+are retained. All ten new modules are built and covered by the central audit.
+
+| Module | Ownership and permitted dependencies |
+|---|---|
+| `GGC/Thorin/Basic.lean` | Move `ThorinAdmissible`, endpoint equivalence, `ThorinData`, `thorinLaplace`, `HasThorinRepresentation` and finite-atomic certificates here. Depend on `Definitions`, `Laplace`, `FiniteGamma` and mathlib only; no `External` import. |
+| `GGC/LaplaceTightness.lean` | Generic extracted tail bound and the common-lower-bound tightness lemma. Use `LaplaceContinuity`, the independent `Foundations.TailMoments` layer and mathlib; never import `Identification`. Existing `ValueTails` consumes this layer. |
+| `GGC/Thorin/Approximation.lean` | Rounded positive rates, truncation windows, measurable kernels, domination and pointwise/integral convergence on the original Thorin measure. |
+| `GGC/Thorin/GridMeasure.lean`, `GridMeasureMap.lean` | Finite measurable cells, finite cell masses, exact finite-sum integrals and the explicit rounded pushforward/Dirac-sum identity. |
+| `GGC/Thorin/FiniteWeights.lean` | Filter zero weights and construct actual finite gamma laws with positive shapes/rates and a transform formula for every parameter. |
+| `GGC/Thorin/Drift.lean`, `Normalization.lean` | Gamma drift exponent bounds/limit and direct zero-endpoint normalization from admissibility. |
+| `GGC/Thorin/Sequence.lean` | One common actual finite-gamma sequence, exact transforms, common lower bound and convergence for all nonnegative parameters. These modules use only independent lower layers. |
+| `GGC/Thorin/Realization.lean` | Tightness-based E-B1/E-B3 core endpoints and their measure/transform adapters, using `Sequence` and the independent Laplace tools. |
+| `External/Bondesson.lean` | E-B1/E-B3 are same-type theorem wrappers over the independent proofs. E-B2 was retained at E2 acceptance and removed by the later E2-P cleanup. This is an explicit exception to the old mathlib-only import rule for this compatibility module. |
+| `GGC/Thorin.lean` | Keep the existing facade: import the new lower layer and `External.Bondesson`, retain the represented-law membership and realization adapters. E2-P retires the unused converse/equivalence. The facade must not be imported by the E2 proof layer. |
+
+All new proof modules must have no transitive import of `External`, the
+`GGC.Thorin` facade, `Identification`, `PowerClosure` or `main`. In particular,
+do not import `ValueTails` merely to reuse its generic estimate: its current
+module imports realized value-law results. Moving the generic proof down is
+necessary to prevent circular imports and keep the new endpoints independent.
+`Definitions.lean` remains mathlib-only; `main.lean` retains the readable
+four-step theorem. Update its dependency comment only after the new audit passes.
+
+### 15.4 Evidence and acceptance
+
+API-062–066 now record compiled production use and independent acceptance.
+The first feasibility pass covered E2.1 and the rounded kernel, followed by the
+full construction. The earlier 1–2-hour trial and 8–24-hour overall estimates
+were planning figures; they are not measured implementation times. Fresh
+verification commands, measured build time and exact dependency sets appear in
+[ConstructionReport Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).
+
+Acceptance requires all of the following:
+
+- Compare the complete elaborated E-B1/E-B3 types with the accepted primitive
+  contracts; check the quantifier order (one sequence, all `s > 0`), all
+  measure/integrability hypotheses and strictly positive finite shapes/rates.
+- Audit every new public core lemma and both compatibility endpoints: only
+  a subset of `propext`, `Classical.choice`, `Quot.sound` is allowed. In
+  particular, neither endpoint may depend on the other as an axiom or on
+  any remaining literature input. Existing `existsUnique_law_thorinLaplace`,
+  `HasThorinRepresentation.isGGC` and `isGGC_diracLaw` must become free of
+  literature axioms; the full characterization may retain E-B2 only.
+- Keep the eight source/interface IDs as provenance, but reduce the actual
+  project `axiom` declarations from eight to six. `#print axioms GGC.ggc_rpow`
+  must contain exactly E-J1, E-J2, E-J3, E-T1 and E-S1 beyond standard logic.
+  E-B2 stays absent. Check names, not just counts; no `sorryAx`,
+  `Lean.ofReduceBool` or unregistered replacement is accepted.
+- Review zero measure/zero drift, positive drift with zero measure, vanishing
+  grid cells and arbitrary admissible infinite mass through the generic
+  proofs. Do not discharge only concrete examples or finite-mass variants.
+- On the pinned toolchain, run project-only clean, default build and direct
+  `AxiomAudit.lean` in that order, using `LEAN_NUM_THREADS=2` on this machine.
+  Retain dependency caches and record actual counts for the revised layout;
+  137 modules/883 checks are the previous baseline, not required new totals.
+- Update current README, external inventory, main/source comments and API
+  status only to match the verified result. Preserve dated historical audit
+  evidence, and submit the construction report for independent acceptance.
+
+<a id="semantic-audit-followup"></a>
+## 16. Independent semantic-audit follow-up — 2026-09-24
+
+The [independent report](SemanticAudit-2026-09-24.md) remains auditor-owned and
+unchanged. This design response distinguishes its two follow-up items:
+
+- **D1, source-path comments: corrected.** `Definitions` now locates
+  `ggc_rpow` in `main.lean`; `Thorin` and `WeakClosure` locate the original
+  definition in `Definitions`. These are comment-only changes and also close
+  the three-path observation in Section 14.
+- **S1-SOURCE: independently verified and closed.** The constructor submitted
+  [the source comparison](SSVSourceCheck-2026-09-24.md); the designer freshly
+  rendered and inspected the same local [2010 first-edition PDF](../literature/pdf/SSV.pdf).
+  Title/copyright pages establish the edition; printed pp.11, 58–60 and 63 map
+  to PDF pp.24, 71–73 and 76. The real and complex contracts, principal branch,
+  anchor at one, integrability, uniqueness and first-edition errata all pass.
+  Source identity, hashes and adaptations are recorded in Section 17 and
+  ConstructionReport Section 34. This closes the historical access/review gap
+  without changing the auditor-owned report. E-S1 remains an axiom; this source
+  review is separate from E2. `literature/pdf` remains a directory junction to
+  the local reference library.
+
+**Ownership confirmed by the user:** the constructor owns S1-SOURCE's material
+preparation and self-check: verify the title/copyright page, identify the 2010
+first edition, map printed pages to PDF pages, compare the full theorem
+hypotheses/conclusions and the principal-log/anchor/errata adaptations, and
+submit the file path or hash and precise page references in the construction
+report. The designer or independent auditor owns independent verification and
+the closure decision. The auditor alone maintains the independent report;
+the designer records acceptance in this blueprint. Finding the PDF does not
+authorize either role to mark the mathematical/source check passed without
+the corresponding evidence.
+
+The designer's response and validation are recorded in
+[ConstructionReport Section 30](ConstructionReport.md#e2-design-2026-09-24);
+the local-file inventory and confirmed assignment are recorded in
+[Section 31](ConstructionReport.md#source-review-ownership-2026-09-24).
+The completed preparation is in Section 32 and `SSVSourceCheck`; independent
+closure is in [Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).
+
+<a id="e2-design-acceptance-2026-09-24"></a>
+## 17. E2 and S1-SOURCE independent acceptance — 2026-09-24
+
+Historical E2 snapshot: Section 18 subsequently removes E-B2 and its unused
+characterization interfaces; the verification evidence below is preserved.
+
+**Verdict: E2.0–E2.4 accepted as `verified`; S1-SOURCE closed. No blocking
+finding remains in this submission.** The original distribution-only scope
+and RV-1 withdrawal remain unchanged. E-B1/E-B3 keep their public names and
+complete primitive types; an independent Lean probe using the original
+committed declarations confirms compatibility. The GGC definitions, main
+proof code and extracted Thorin foundation are unchanged modulo comments
+and whitespace.
+
+The inspected construction handles arbitrary admissible Thorin measures,
+including infinite total mass, zero cells, zero measure and positive drift.
+It selects one actual finite-gamma sequence before quantifying over parameters.
+Tightness follows from a common Laplace lower bound and direct normalization;
+realization extracts a probability limit without assuming its existence.
+The graph of 147 project modules is acyclic. The ten new modules have a
+16-module local dependency closure without External, the Thorin facade,
+Identification, PowerClosure or main.
+
+On the pinned Lean 4.32.2/mathlib revision, the independent project-only clean
+build passed **3950 jobs**, freshly compiling **147/147 project modules**.
+The subsequent direct audit matched **957/957** requested declarations by
+name, including all 74 added checks; the separate original-type probe passed.
+There were no compiler warnings/errors, unfinished proofs or extra trust
+axioms. Dependency caches were retained. Full commands, logs and the measured
+13 minute 17 second build are in
+[ConstructionReport Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).
+
+E-B1/E-B3, all new core declarations, unique realization, reverse
+characterization and constant-law membership use standard logic only.
+The full characterization retains E-B2 alone. The main theorem uses exactly
+E-J1, E-J2, E-J3, E-T1 and E-S1 beyond standard logic; the project has six
+actual mathematical axioms. The remaining five main inputs are still
+assumptions, not formalized by E2.
+
+S1-SOURCE passed a separate independent visual review of the specified
+2010 pages and 2022-12-01 errata, including all local adaptations to E-S1.
+This closes the original-page review issue and does not turn E-S1 into a
+Lean theorem. The auditor-owned report remains byte-for-byte unchanged.
+Current README/API/source comments are synchronized; dated construction and
+acceptance snapshots are retained as history.

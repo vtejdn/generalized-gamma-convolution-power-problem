@@ -64,11 +64,11 @@ As of 2026-09-24, the pinned Lean project contains the
 The original finite-gamma weak-limit definition is preserved; no moment,
 drift or Thorin-mass restriction remains in the final type. The construction
 uses proved Euler existence, dynamic identification and the weak-limit reduction.
-Its actual dependencies include seven [registered literature axioms](formalization/External/README.md):
-E-B1, E-B3, E-J1–3, E-T1 and E-S1, in addition to Lean's standard logical axioms.
+Its actual dependencies include five [registered literature axioms](formalization/External/README.md):
+E-J1–3, E-T1 and E-S1, in addition to Lean's standard logical axioms.
 This is verification of the project derivation relative to those inputs,
-not a formalization of the external inputs themselves. Build and axiom-audit
-evidence is recorded in the [construction report](formalization/ConstructionReport.md#m7-completion-2026-09-24);
+with E-B1/E-B3 now proved locally; the remaining five inputs are still assumptions. Build and axiom-audit
+evidence is recorded in the [construction report](formalization/ConstructionReport.md#e2-construction-2026-09-24);
 independent design acceptance remains separate. This does not revise the
 written mathematical assessment above or establish external peer review or priority.
 

@@ -17,9 +17,11 @@ Current design acceptance: **M0–M7 accepted as `verified` within the registere
 trust boundary.** The user accepts the distribution version as the complete
 deliverable and withdraws RV-1; it is not recorded as implemented. Section 26's
 successful independent verification remains the evidence for the law theorem.
-A separate entry-point/readability migration, **E1, is `planned`**; see
-[Section 27](#entrypoint-design-2026-09-24). No Lean code has changed in this
-scope/design update, and no new build is claimed.
+**E1 is independently accepted as `verified`**; see
+[Section 29](#e1-design-acceptance-2026-09-24). The root definitions module,
+readable final proof and import boundary passed review; the fresh project
+build covered 137 modules / 3940 jobs and the subsequent audit matched all
+883 checks. Three legacy path comments are recorded as nonblocking D1.
 M1's characterization and realization are verified relative to the registered
 literature axioms, as detailed in the independent acceptance record.
 The main theorem and clean project build pass; the [M7 record](#m7-completion-2026-09-24)
@@ -2282,3 +2284,456 @@ E-B2 仍仅出现在更广的特征刻画审计中，不在主定理依赖中。
 未变。施工结论：E1 `verified`（相对于原信任边界），独立设计验收待进行。
 
 后续用户约定：项目 Lean 源码注释统一使用英文。已将本节所述 main.lean 的中文模块说明、定理文档和行内注释全部译为英文，并在 README 记录约定；定义和证明代码不变。扫描项目全部 Lean 源文件未再发现汉字，diff 空白检查通过。此项仅修改注释，未重复运行完整构建。
+
+<a id="e1-design-acceptance-2026-09-24"></a>
+## 29. E1 独立设计验收 — 2026-09-24
+
+**结论：E1 验收通过，状态为 `verified`。** 分布版本、定义语义和七个登记文献
+公理边界保持不变；M0–M7 的既有验收继续有效，RV-1 仍为已撤销。本次另记录三处
+不阻塞验收的旧路径注释，不要求重做已完成的证明。
+
+### 实际交付与语义复核
+
+验收源码提交为 `88b8529a29da851b015d545c2cee3a566b779b7c`，开始时工作树干净。
+实际定义文件为 formalization 根目录的 `Definitions.lean`，按第 28 节和 README
+记录的后续路径约定接受，替代原推荐的子目录路径。Lean 注释采用英文，与当前
+README 约定一致；蓝图已同步。设计验收没有修改 Lean 文件。
+
+- `Definitions.lean` 从 `noncomputable section` 起，与 `e2edc76` 中原
+  `main.lean` 的对应部分逐字一致（统一换行、忽略末尾空白）。包括全部定义、
+  构造证明字段和 `GGCPowerClosure`，未加入新参数或改变原始弱极限语义。
+- 新 `main.lean` 只声明一份 `GGC.ggc_rpow`。它从 `IsGGC` 提取近似列，
+  用有限输入定理证明命名事实 `hpowered`，用固定幂推前连续性证明
+  `hpowered_lim`，最后应用 `isGGC_of_tendsto`。注释解释各步骤的数学作用、
+  空和与指数一分支所在位置，以及为什么中间的矩/有限质量条件不进入结论。
+- `GGC/PowerClosure.lean` 保留原有三个有限输入辅助定理，移出的仅为最终
+  公共定理；其余分析、Euler 和动态识别证明未改写。此次使用已有生产引理，
+  没有新增通用基础证明或文献公理。
+- 137 个项目模块的导入图无环。定义层只导入 mathlib；旧定义层消费者改用
+  `import Definitions`；只有 `AxiomAudit` 导入 `main`。
+  外部文件的本地依赖闭包仍只含 `RandomMeasure`、`Posterior`、
+  `StickBreaking`，未反向依赖主定理。
+- Lake roots/globs 显式覆盖根 `Definitions`、新 `main` 和审计入口。
+  `AxiomAudit` 检查完整量词类型、实际四步证明体以及传递公理。
+
+### 独立验证证据
+
+工作目录为 `formalization`，使用固定 Lean 4.32.2 的实际 Lake 可执行文件。
+依次执行以下命令；审计在构建成功后运行：
+
+```powershell
+$taskLake = 'C:\Users\vtejd\.elan\toolchains\leanprover--lean4---v4.32.2\bin\lake.exe'
+$env:LEAN_NUM_THREADS = '2'
+& $taskLake env lean --version
+& $taskLake clean ggc_power_closure
+& $taskLake build
+& $taskLake env lean AxiomAudit.lean
+```
+
+清理前检查了项目构建目录的绝对路径；清理退出 0，并确认 `.lake/build` 已不存在。
+保留固定依赖缓存，未声称从零编译 mathlib。mathlib HEAD 仍为
+`905b95818eb32af7874a58b427f50c1711a5e96c`，其检出无本地修改。
+
+默认构建退出 0，**3940 jobs**；源码模块与本次 `Built` 记录逐项核对，
+**137/137** 个项目模块均重新编译。随后直接审计退出 0，
+**883/883** 条 `#print axioms` 请求与输出声明逐项匹配。普通 `#print ggc_rpow`
+输出实际证明体，不计入这 883 条公理检查。构建和审计日志无 warning、error、
+`sorryAx` 或 `ofReduceBool`。
+
+主定理依赖仍恰为 E-B1、E-B3、E-J1、E-J2、E-J3、E-T1、E-S1，加
+`propext`、`Classical.choice`、`Quot.sound`；整个审计额外包含用于独立刻画的
+E-B2，没有其他公理。完整类型仍为任意非负概率法则、实数 `q ≥ 1` 和原始
+`IsGGC` 假设推出实际幂推前的 GGC 性质。
+
+本机日志：`.lake/e1-design-clean.log`、`.lake/e1-design-build.log`、
+`.lake/e1-design-audit.log`；静态核对及逐项审计结果分别保存在
+`.lake/e1-design-static.json`、`.lake/e1-design-summary.json`。
+这些忽略目录中的产物不是版本化证据；可复现命令、计数和结果已保存在本节。
+
+### 非阻塞文档意见 D1（P3）
+
+三个源文件注释仍使用旧位置，建议后续维护时统一校正：
+
+| 位置（本次提交行号） | 注释修正 |
+|---|---|
+| `Definitions.lean:119` | `ggc_rpow` 的证明所在文件应为 `main.lean`，不是 `GGC/PowerClosure.lean`。 |
+| `GGC/Thorin.lean:10` | 原始 `IsGGC` 定义位于 `Definitions.lean`，不再位于 `main`。 |
+| `GGC/WeakClosure.lean:10` | 同样将序列定义的文件位置改为 `Definitions`。 |
+
+这是同一类遗留路径注释；实际导入、定义和证明均正确，新主入口的数学说明清楚，
+故不阻塞 E1 验收，也不形成新的证明交付节点。API-061 更新为设计验收通过。
+
+<a id="e2-design-2026-09-24"></a>
+## 30. E2 设计交付与独立语义审计跟进 — 2026-09-24
+
+**身份与状态：设计师交付施工规范，E2 为 `planned`，已获用户授权施工。**
+本次没有实现 E-B3/E-B1 的替代证明，也没有减少实际公理依赖。M0–M7 和 E1
+的既有相对验收继续有效。完整施工规范见
+[Blueprint 第 15 节](Blueprint.md#e2-bondesson-formalization)，API 检索与复用证据
+见共享表 API-062–066；新增证明和最小编译试作均待施工方完成。
+
+### 授权范围与施工拆分
+
+目标是把 `GGC.External.Bondesson.finite_atomic_approximation`（E-B3）和
+`GGC.External.Bondesson.thorin_realization`（E-B1）改为完整同类型定理，公共名称
+保留以兼容现有消费者。两项及公共基础只允许依赖 mathlib、本地证明和标准逻辑
+公理；不得改用 E-B2、E-B4 或别的文献输入代替。E-B2 的独立刻画用途保留。
+
+| 子阶段 | 施工内容 | 本次状态 |
+|---|---|---|
+| E2.0 | 抽出不依赖外部公理的 Thorin 定义/引理及通用 Laplace 尾界，隔离重型消费者导入。 | `planned` |
+| E2.1 | 公共 Laplace 下界在零端趋于一，推出整列非负概率律紧性。 | `planned` |
+| E2.2 | 速率截断和向上网格取整、删除零权重单元、Gamma 因子吸收漂移；构造一列实际有限 Gamma 卷积，证明全正参数变换收敛和统一下界。 | `planned` |
+| E2.3 | 利用已有 Laplace 唯一性/连续性完成 E-B3；利用 Prokhorov 概率子列极限完成 E-B1。 | `planned` |
+| E2.4 | 集成同类型兼容定理、更新文档、项目干净构建和完整直接公理审计，提交独立验收。 | `planned` |
+
+设计中的关键简化：令 `m=n+1`，在 `[1/m,m]` 上把速率取为 `ceil(m*b)/m`。
+取整后的速率不小于原速率，所以离散对数核不大于原核。对正漂移追加
+`Gamma(m,m/a)`，其指数 `m*log(1+a*s/m)` 不大于 `a*s`。
+因此整列近似律的 Laplace 变换不小于目标变换。结合已有
+`measureReal_Ioi_exp_le_one_sub_laplace`，可直接获得统一尾界与紧性。
+这条路线保留无限 Thorin 总质量和无矩条件，不先假设目标律存在。
+
+已批准的拟建模块为 `GGC/Thorin/Basic.lean`、`GGC/LaplaceTightness.lean`、
+`GGC/Thorin/Approximation.lean`、`GGC/Thorin/Realization.lean`。它们在本次更新中
+尚未创建。现有 `GGC/Thorin.lean` 保留上层刻画/实现适配；新证明层不得反向导入
+它、`External`、`Identification` 或主定理。`External/Bondesson.lean` 的 B1/B3
+兼容定理可以导入这个独立证明层，这是蓝图明确批准的导入规则调整。
+
+第一轮试作优先验证 E2.1 和 E2.2 的离散对数核接口。先前讨论的 1–2 小时试作、
+8–24 小时总工期只是低置信度排期估计，应按实际编译证据修订，不作为完成保证。
+施工期间由施工方更新本报告和 API 表；蓝图状态由设计师验收后更新。
+
+验收目标为：两项新定理不含文献公理；项目实际公理由八项降为六项；
+`ggc_rpow` 的文献依赖由七项降为五项，即 E-J1、E-J2、E-J3、E-T1、E-S1。
+目前仍为原八项/七项。保留所有旧接口的漂移、零质量、无限质量、正形状/速率、
+单一逼近列及全正参数量词；不得把一般结论改为有限质量特例。
+
+### 独立报告中的两个后续事项
+
+已阅读 [SemanticAudit-2026-09-24.md](SemanticAudit-2026-09-24.md)，保留其独立维护
+身份，未编辑该文件。报告确认主定理语义通过，并区分七项原文核验与 E-S1
+原页证据尚未齐备。
+
+1. **旧路径注释 D1：已修正。** `Definitions.lean` 将主定理证明位置改为
+   `main.lean`；同时修正第 29 节已指出的 `GGC/Thorin.lean` 与
+   `GGC/WeakClosure.lean` 中原始定义位置为 `Definitions`。三处均仅改注释。
+2. **E-S1 原页核验 S1-SOURCE：证据说明已补齐，原页核验仍待完成。** README、
+   外部输入目录说明、蓝图和 `External/SSV.lean` 注释现明确记录：公式、分支、
+   锚点和勘误核对未发现错误，但未取得 2010 第一版指定页图像；本地
+   `literature/SSV.pdf` 当前缺失。不能把此项表述成八项均已完成原页核验，
+   也不能据此声称 E-S1 存在数学错误。
+
+本次补查了[作者书籍页面](https://www.motapa.de/bernstein_functions/)，页面区分
+2010/2012 两版勘误，但未提供所需第一版正文页；出版社第一版页面的读取返回
+HTTP 405。本次没有新增原页核验通过的证据。关闭条件仍为取得对应版本
+印刷 pp.58–60、63（历史本地 PDF pp.71–73、76），核对定理、分支和勘误，
+记录可复核证据。此来源事项独立于 E2，不能用未来 B1/B3 形式化替代。
+
+### 本次设计修改的验证
+
+修改限于设计/协作文件与四个 Lean 文件的注释。逐一去除注释和空白后，与
+`HEAD` 比较 `Definitions.lean`、`GGC/Thorin.lean`、`GGC/WeakClosure.lean`、
+`External/SSV.lean` 的代码一致；定义、命题、证明和导入均未改变。
+`git diff --check` 通过。未重复运行 Lean 完整构建或公理审计，也不把历史
+3940 jobs / 883 checks 记作本次新验证。E2 完工仍须执行蓝图规定的干净构建、
+直接完整审计和独立验收。
+
+<a id="source-review-ownership-2026-09-24"></a>
+## 31. 文献本地位置确认与来源核验分工 — 2026-09-24
+
+用户明确确认：**施工方负责补证及自查，设计师／独立审计方负责复核验收。**
+已将此分工写入 README 来源规则、蓝图第 16 节及外部输入说明。S1-SOURCE
+由施工方核对指定版本、印刷页与 PDF 页码、原文假设/结论、复对数分支、锚点和
+勘误适配，并在施工报告提交路径或指纹及逐项证据；设计师／独立审计方复核后
+确认结案，独立审计报告仍由审计方维护。
+
+本次只核查文件位置和可读取性，未执行原页语义审计。发现 `literature/pdf`
+为指向 `E:\AI\GitHub\literature\ggcpp` 的目录联接；默认 `rg --files` 没有
+展开该联接。使用 `rg --files --hidden --no-ignore --follow literature/pdf`
+后，列出 14 份 PDF，包括 Bondesson 与 SSV。
+
+SSV 实际入口为 [literature/pdf/SSV.pdf](../literature/pdf/SSV.pdf)，大小
+1,865,683 字节，SHA-256 为
+`8A06BBC186F355C3A4475DAB588F65FE41E5E5552794D2C896A41BCA1CD36702`。
+此前基于旧路径 `literature/SSV.pdf` 的“本地缺失”观察由本次位置核查更新。
+文件名和存在性尚不足以证明它是指定第一版；施工方应先查版权页和正文页码。
+当前状态为**本地文件已定位，施工自查与独立复核待完成**，并未宣称所有参考
+文献都已完成版本匹配或逐页审计。
+
+本次保留独立审计报告及其历史结论，未改动任何 Lean 定义、命题或证明。
+E2 的形式化范围和验收目标不变。
+
+<a id="ssv-source-construction-2026-09-24"></a>
+## 32. S1-SOURCE 原文准备与施工自查 — 2026-09-24
+
+按蓝图第 16 节和用户确认的分工，施工方已完成原页材料准备与逐项自查。
+详细可复核材料见 [SSVSourceCheck-2026-09-24.md](SSVSourceCheck-2026-09-24.md)。
+实际渲染并检查了标题、版权、完整定理和官方勘误页；不是仅根据搜索摘要作判断。
+本地 `literature/pdf/SSV.pdf` 为 2010 第一版，328 页，ISBN 978-3-11-021530-4；
+SHA256 为 `8A06BBC186F355C3A4475DAB588F65FE41E5E5552794D2C896A41BCA1CD36702`。
+印刷 pp.58–60、63 对应一基 PDF pp.71–73、76；标题、版权为 PDF pp.4、5。
+
+自查覆盖非零 Stieltjes 变换的完整假设、倒数与完整 Bernstein 函数的关系、主值复对数、
+锚点 1、可测且处处取值于 [0,1] 的代表、a.e. 唯一性及官方第一版勘误。
+未发现当前 E-S1 适配契约遗漏必要假设或强化结论。临时提取文本与页图留在
+`tmp/pdfs/ssv-source-check-2026-09-24/`，作为本地审阅材料，不作为新增项目源文件。
+
+状态：**施工自查完成，独立复核与结案待设计师／审计方决定**。E-S1 仍是文献公理；
+未修改审计者专属 `SemanticAudit-2026-09-24.md`，亦未在蓝图代签验收。
+
+<a id="e2-construction-2026-09-24"></a>
+## 33. E2 有限原子逼近与 Thorin 实现本地证明 — 2026-09-24
+
+本轮遵循蓝图第 15 节，保留完整原始 GGC 定义、主定理量词及 E-B1/E-B3 原始接口。
+两个兼容端点已由 `axiom` 替换为 `theorem`，E-B2 的完整声明保持不变。
+本节是施工证据，独立设计验收仍待进行；蓝图、审计者专属语义审计报告保持只读。
+S1-SOURCE 的独立材料准备与施工自查另见第 32 节，不混同于 E2 形式化。
+
+### 实际模块与接口
+
+| 阶段 | 实际文件与关键声明 | 施工内容 |
+|---|---|---|
+| E2.0 | `GGC/Thorin/Basic.lean`；原公开 Thorin 定义、可积性和有限原子证书 | 从 facade 提取，公开名称不变；仅依赖 Definitions、Laplace、FiniteGamma 和 mathlib |
+| E2.0–1 | `GGC/LaplaceTightness.lean`；`isTightMeasureSet_of_laplace_lower_bound` | 下移已有三个尾界，保留 `GGC.Identification` 名称；由共同 Laplace 下界趋于 1 得到任意指标族紧性，无矩条件 |
+| E2.1 | 同上；`exists_nonnegLaw_subseq_of_isTightMeasureSet`、`exists_nonnegLaw_of_laplace_tendsto` | Prokhorov 概率子列、非负支撑和 Laplace 识别；不预设实现律 |
+| E2.2 | `GGC/Thorin/Approximation.lean`；`roundedRate`、`eventually_mem_window`、`tendsto_integral_kernel` | m=n+1 的截断、自然数上取整、有限范围、点态收敛及原始 U 上的 DCT |
+| E2.2 | `GGC/Thorin/GridMeasure.lean`；`cell_mass_lt_top`、`integral_kernel_eq_sum` | 有限可测网格，每个质量先证有限再取 toReal；积分等于精确有限和 |
+| E2.2 | `GGC/Thorin/GridMeasureMap.lean`；`map_restrict_window_roundedRate` | 显式证明截断测度的取整推前等于网格质量加权 Dirac 有限和；此等式对任意 U 成立 |
+| E2.2 | `GGC/Thorin/FiniteWeights.lean`；`exists_finiteGammaLaw_of_nonneg_weights` | 过滤零权重，用正权子类型和 `Fintype.equivFin` 构造实际有限 Gamma 卷积；同一个律满足全部参数公式 |
+| E2.2 | `GGC/Thorin/Drift.lean`；`driftGammaExponent_le`、`tendsto_driftGammaExponent` | Gamma(m,m/a) 指数处于 [0,a*s] 并趋于 a*s；a=0 省略该因子 |
+| E2.2 | `GGC/Thorin/Normalization.lean`；`tendsto_thorinLaplace_zero` | 仅由 admissibility 和 DCT 证明变换右端点归一化，不调用 E-B1 |
+| E2.2 | `GGC/Thorin/Sequence.lean`；`law`、`laplace_law`、`thorinLaplace_le_laplace_law`、`tendsto_laplace_law` | Option(Grid n) 合并漂移与网格；先选定一个序列，再量化所有 s≥0，精确变换、共同下界和收敛 |
+| E2.3 | `GGC/Thorin/Realization.lean`；`thorin_realization_core`、`finite_atomic_approximation_core` | 紧性实现与已给目标的 Laplace 唯一识别；均无文献公理 |
+| E2.3–4 | `External/Bondesson.lean` | 相同公开名称和完整 primitive 类型的两个薄定理包装；仅 E-B2 保留为公理 |
+
+数学出处为蓝图 15.2 的完整共同构造及 E-B1/E-B3 的 Bondesson 来源接口；
+其与总定理的连接仍为 WIP-6.21、WIP-6.23 和 manuscript/sections/06-completion.tex。
+实现将原拟单个 Approximation 模块细分以独立验证；数学合同未缩窄。
+
+### 复用、边界和第一次可行性验证
+
+API-062–066 已从源码检索推进为实际编译调用。复用 `Nat.ceil`、`Nat.ceil_le`、
+`Nat.ceil_lt_add_one`、`Nat.measurable_ceil`，`integral_finsetSum`、
+`Measure.map_apply`、`measure_iUnion`、`tsum_fintype`，
+`Fintype.equivFin`、`Fintype.sum_subtype_add_sum_subtype`，
+`Real.tendsto_mul_log_one_add_div_atTop`，两种支配收敛 API，
+mathlib 的紧性紧集判据和 Prokhorov 紧性，以及项目原有 Laplace 连续性/唯一性。
+没有引入 Gamma 加法或额外 Gamma 矩基础设施。
+
+首轮目标 E2.1 与取整核已经成功，随后继续完成 E2.2–3。
+保留的定向日志包括 `.lake/e2-approximation-build.log`（2828 jobs，新模块 8.6s）、
+`.lake/e2-grid-build.log`（2829 jobs，新模块 10s）、
+`.lake/e2-realization-build.log`（3494 jobs）。这些是缓存依赖上的定向编译耗时，
+不是本轮总耗时，也不把蓝图的试验时间估计用作完成证据。
+端点预审日志 `.lake/e2-realization-audit.log` 的 17 个请求均通过，
+两个端点及其实现适配器仅依赖标准逻辑；E-B2 仅报告它自己。
+
+边界检查来自通用证明本身：U=0、a=0 时所有权重为零，正权过滤可产生空索引；
+U=0、a>0 时留下漂移因子；零单元不被强制赋予正形状；任意无限总质量 U 的
+支配收敛都在原测度上进行。序列选择的 existential 内部包含全部 s，
+故没有把“每个 s 一个序列”误作共同序列。有限逼近只要求单个网格的质量有限。
+
+### 导入、合同与审计验证
+
+147 个项目模块的导入图经 DFS 检查无环。十个新 E2 模块的本地传递闭包有 16 个
+模块，无任何 External、`GGC.Thorin` facade、Identification、PowerClosure 或 main
+导入（日志 `.lake/e2-import-audit.log`）。原三个通用尾界仍使用已有公开名称，
+`ValueTails` 现在消费独立的紧性层。`Definitions` 保持 mathlib-only，主定理证明步骤不变。
+
+E-B1/E-B3 的原签名已保存在 `.lake/e2-bondesson-before.lean`，源码比较忽略换行/空白后
+完全相同；E-B2 声明逐字相同。`.lake/e2-contract-types.lean` 从这份原声明提取完整
+primitive 类型，将新定理放入该类型的 `#check`，进一步检验 elaborated 类型兼容。
+中央 `AxiomAudit.lean` 纳入所有新公开核心声明及两个兼容端点，保留已有审计。
+
+最终复现命令，在 `formalization` 目录运行：
+
+```powershell
+$env:LEAN_NUM_THREADS = '2'
+$lake = 'C:/Users/vtejd/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe'
+& $lake clean ggc_power_closure
+& $lake build *> .lake/e2-clean-build.log
+& $lake env lean AxiomAudit.lean *> .lake/e2-audit.log
+& $lake env lean .lake/e2-contract-types.lean *> .lake/e2-contract-types.log
+```
+
+项目清理后确认 `.lake/build` 已不存在，依赖缓存保留。工具链仍为 Lean 4.32.2、
+mathlib `905b95818eb32af7874a58b427f50c1711a5e96c`，未更新 pin。
+
+### 最终结果与施工结论
+
+按上述顺序，项目清理、干净构建、随后直接中央审计及原始类型兼容检查均退出 0。
+干净构建 **3950 jobs**；逐项比较源文件模块名和日志的 `Built` 项，
+**147/147 项目 Lean 模块全部重新编译**，无缺项。构建日志的创建至完成写入跨度
+为 **14 分 17 秒**；该数仅指此干净构建阶段，不包含之前的实现、定向探针或审计。
+
+中央审计请求与输出声明逐项匹配 **957/957**（原 883 项加本轮 74 项）；
+构建及中央审计均无警告、错误、`sorryAx` 或 `Lean.ofReduceBool`。
+完整 primitive 类型检查保留所有原证明绑定名，因此 probe 仅关闭 unusedVariables
+风格检查；未关闭内核类型检查或改变假设，最终检查也无警告。
+
+- `thorin_realization`、`finite_atomic_approximation`、全部新独立核心声明及
+  `existsUnique_law_thorinLaplace`、`HasThorinRepresentation.isGGC`、
+  `isGGC_diracLaw`：只依赖 `propext`、`Classical.choice`、`Quot.sound`。
+- 完整 Thorin 特征刻画：除标准逻辑外只保留 E-B2。
+- `GGC.ggc_rpow`：除标准逻辑外恰为
+  `GGC.External.James.markov_krein`、`GGC.External.James.posterior_palm_nonneg`、
+  `GGC.External.James.beta_atom_posterior`、`GGC.External.Sethuraman.stick_breaking`、
+  `GGC.External.SSV.phase_representation`。E-B1、E-B3 和 E-B2 均不在其依赖中。
+- 全项目 `axiom` 声明恰为六项：上述五项与 E-B2；所有审计依赖均在这个白名单内。
+  原八个文献来源 ID 仍保留以记录 provenance。
+
+主定理 `main.lean` 与已接受版本去除注释和空白后的证明代码一致；仅更新了依赖说明。
+全部新 Lean 注释为英文。蓝图 SHA256 保持
+`B7169FE084E4778F9E9020B5994F19080B043CA1E6E918A694C9ABB654C0ABC4`；
+审计者报告保持 `4A99E2420CFA168A4A63037F0B5A9B708C0375FB4DFD84F622FAEE89592AF94F`。
+`git diff --check` 通过。已有设计方修改及本地临时文件未被丢弃。
+
+**E2.0–E2.4 施工完成并通过验证；独立设计验收待进行。** 这不代表剩余五项主定理
+文献输入已在 Lean 内证明；S1-SOURCE 的施工自查结论也仍待独立来源验收。
+
+<a id="e2-design-acceptance-2026-09-24"></a>
+## 34. E2 与 S1-SOURCE 独立设计验收 — 2026-09-24
+
+**结论：E2.0–E2.4 全部验收通过，标记为 `verified`；S1-SOURCE 原页核验关闭。
+本次提交没有阻塞性问题。** 这是设计师对第 32–33 节施工提交的独立复核，
+不是直接沿用施工方的编译或来源结论。分布版本仍为完整交付，RV-1 继续撤回。
+E-B1／E-B3 已成为本地定理；主定理仍相对于五项文献公理成立。
+
+### 34.1 合同、数学证明与模块边界
+
+验收对象为当前工作树，以已提交版本
+`88b8529a29da851b015d545c2cee3a566b779b7c` 的原始声明为比较基准。
+独立读取 `git show HEAD:formalization/External/Bondesson.lean`，提取旧 E-B1／E-B3
+的完整 primitive 类型，生成 `.lake/e2-design-contracts.lean` 的两个 `example`，
+由新同名定理直接填入，编译通过。另行比较三个 E-B 声明的类型，忽略注释和空白后
+均未改变。没有删减量词、积分条件、正形状／正速率条件，也没有增加参数或隐藏前提。
+
+- `Definitions.lean` 的定义和 `main.lean` 的证明代码与基准相同；
+  `IsGGC` 仍是实际独立有限 Gamma 和的弱极限，主定理保留四个显式步骤。
+  抽到 `Thorin.Basic` 的原 Thorin 定义、可积性与有限原子证书代码也保持一致。
+- 逐段检查截断、向上取整、有限单元分割及推前测度等式。每个单元先证质量有限，
+  再取 `toReal`；正权子类型过滤零单元，经 `Fintype.equivFin` 构造实际有限 Gamma 律。
+  没有将零权重强行变成正形状。
+- 离散对数核在原始 U 上受可积的 `log(1+s/b)` 支配；没有假定 U 的总质量有限。
+  漂移因子直接复用 mathlib 的 `Real.tendsto_mul_log_one_add_div_atTop`。
+  U=0、a=0 时正权索引可为空；U=0、a>0 时保留 Gamma 漂移因子。
+- `Sequence.law` 先选择同一列实际有限 Gamma 律，再对全部参数给出精确变换、
+  共同下界与收敛。零端归一化直接由 admissibility 和支配收敛得到，没有先使用实现律。
+  通用 Laplace 尾界推出整族紧性，无新增矩条件。
+- E-B3 向已有 Laplace 连续性定理同时提供紧性和变换收敛，识别给定目标律；
+  E-B1 先提取一个概率子列极限，再识别非负支撑和全部参数的变换。
+  概率极限和共同子列均实际构造，没有用条件式中尚未构造的见证代替端点证明。
+- 独立 DFS 检查全部 **147 个项目模块**，导入图无环。十个新 E2 模块的本地
+  传递闭包恰有 **16 个模块**，不含 External、`GGC.Thorin` facade、Identification、
+  PowerClosure 或 main。`Definitions` 继续只导入 mathlib。
+  原三个通用尾界下移后名称不变；上层 `ValueTails` 使用新的独立层。
+
+接受施工方将原计划的 `Thorin/Approximation` 拆成 Approximation、GridMeasure、
+GridMeasureMap、FiniteWeights、Drift、Normalization 和 Sequence 七个模块。
+这只是同一合同的证明组织调整。共享表 API-062–066 已升级为 `accepted`，记录实际
+模块归属和复用证据；没有用一般取整、支配收敛、Prokhorov 或对数极限的重复证明
+替代可用的 mathlib 接口。
+
+### 34.2 独立干净构建与直接审计
+
+工作目录为 `formalization`。工具链独立核实为 Lean 4.32.2；mathlib 仍固定在
+`905b95818eb32af7874a58b427f50c1711a5e96c`，其源码工作树干净。
+独立执行顺序如下，日志与施工方第 33 节的日志分开保存：
+
+```powershell
+$env:LEAN_NUM_THREADS = '2'
+$taskLake = 'C:/Users/vtejd/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe'
+& $taskLake env lean --version
+& $taskLake clean ggc_power_closure *> .lake/e2-design-clean.log
+& $taskLake build *> .lake/e2-design-build.log
+& $taskLake env lean AxiomAudit.lean *> .lake/e2-design-audit.log
+& $taskLake env lean .lake/e2-design-contracts.lean *> .lake/e2-design-contracts.log
+```
+
+清理前核对 `.lake/build` 的绝对路径属于本项目且非重解析点；清理成功后确认
+该目录不存在，依赖缓存保留。清理、构建、直接审计和原始类型探针均退出 **0**。
+
+| 检查 | 独立验收结果 |
+|---|---|
+| 默认干净构建 | **3950 jobs** 成功；源模块名与日志 `Built` 项逐个比较，**147/147** 项目模块全部重新编译 |
+| 构建用时 | 本地时间 20:20:32–20:33:49，**13 分 17 秒**；仅为本次干净构建阶段，不是形式化总工时 |
+| 构建后直接中央审计 | 20:34:10–20:34:22，约 12 秒；全部 **957/957** 请求与输出声明按名称及重复次数逐项匹配 |
+| 原始类型兼容检查 | 至 20:34:34 完成，约 11 秒；两个旧完整类型由新同名端点直接满足 |
+| 新公开声明覆盖 | 十个新模块的所有公开定义／定理均在中央审计内；新增 **74 条** 检查全部仅有标准逻辑依赖 |
+| 诊断与信任例外 | 构建、直接审计、类型探针均无警告或错误；无 `sorryAx`、`Lean.ofReduceBool` 或未登记公理 |
+| 源码稳定性 | 构建与审计后逐个比较 147 个源模块的 SHA256，均与启动验收时一致 |
+
+静态检查及摘要另存于 `.lake/e2-design-static.json`、
+`.lake/e2-design-results.json`；起止时间分别保存于
+`.lake/e2-design-build-timing.json` 和 `.lake/e2-design-audit-timing.json`。
+这些忽略目录中的日志是本机复核证据；本节保存可持续查阅的命令和结果。
+
+依赖结论按**声明名称**核对，而不是仅比较数量：
+
+| 声明／范围 | 文献公理依赖 |
+|---|---|
+| E-B1 `thorin_realization`、E-B3 `finite_atomic_approximation` 及两个 core 端点 | 无；只有 `propext`、`Classical.choice`、`Quot.sound` |
+| 全部新增核心声明；`existsUnique_law_thorinLaplace`、`HasThorinRepresentation.isGGC`、`isGGC_diracLaw` | 无；标准逻辑子集 |
+| `isGGC_iff_hasThorinRepresentation` | 仅 E-B2 `GGC.External.Bondesson.weak_closure` |
+| `GGC.ggc_rpow` | 恰为下列五项，另加三项标准逻辑公理 |
+
+```text
+GGC.External.James.markov_krein
+GGC.External.James.posterior_palm_nonneg
+GGC.External.James.beta_atom_posterior
+GGC.External.Sethuraman.stick_breaking
+GGC.External.SSV.phase_representation
+```
+
+全项目 `axiom` 声明及审计出现的数学公理恰为上述五项加 E-B2，共 **六项**；
+没有新增替代公理。E-B2 不在主定理依赖中；八个来源 ID 继续保留作 provenance。
+
+### 34.3 S1-SOURCE 独立原页复核
+
+未仅依赖施工报告或旧截图：设计师从同一本本地 PDF 重新渲染并查看标题、版权、
+定义及定理页，并查看本地官方第一版勘误的前两页。
+
+- 原书：[literature/pdf/SSV.pdf](../literature/pdf/SSV.pdf)，路径经目录 junction
+  指向 `E:\AI\GitHub\literature\ggcpp\SSV.pdf`；独立核实 **1,865,683 字节、328 页**。
+  SHA256 为 `8A06BBC186F355C3A4475DAB588F65FE41E5E5552794D2C896A41BCA1CD36702`。
+- PDF 第 4、5 页的标题／版权与作者名、2010 年、ISBN `978-3-11-021530-4`
+  相符；勘误第一页明确标为第一版并给出相同 ISBN，日期 **2022-12-01**。
+- 实际原页对应：Definition 2.1，印刷 p.11 / PDF p.24；Theorem 6.10 及证明，
+  印刷 pp.58–59 / PDF pp.71–72；Remark 6.11，印刷 p.60 / PDF p.73；
+  Theorem 7.3，印刷 p.63 / PDF p.76。上述页均按完整图像检查。
+- 勘误本地副本：`tmp/pdfs/ssv-source-check-2026-09-24/misprints-ssv.pdf`，
+  SHA256 为 `8B1A84D42F825BA4F6DC4EADF6C1EDEC9703D386E1F53ECA912A003328EB4A7C`；
+  来源为作者的 [官方第一版勘误](https://www.motapa.de/bernstein_functions/misprints-ssv.pdf)。
+  新渲染的原书／勘误图像保存在忽略目录 `tmp/pdfs/e2-design-source-review/`。
+
+逐项复核了 `External.SSV.phase_representation` 的本地适配：正速率概率测度给出
+非零 Stieltjes 变换；经 7.3 取倒数得到非零 CBF，再用 6.10、取负对数并减去
+s=1 的值，得到正确符号的实锚定公式。上半平面中原变换的虚部严格为负，
+从而倒数的主对数转换没有额外的 2πi 项。锚定核在零端有界、无穷端按二阶衰减，
+不需逆矩或零端锚定。可测相位取 Borel 版本并在零测集修正保持 [0,1]；
+任意满足 `RealPhase` 的候选相位可恢复 6.10 的常数及表示，故原文唯一性确实
+给出所声明的正半轴 a.e. 唯一性，而非只在较强复表示条件下唯一。
+
+勘误对中间 Herglotz 测度的定义域与有限性修正，以及 Remark 6.11 的等号改包含，
+均与代码说明一致。没有使用错误的反向包含、零锚公式或附加逆矩条件。
+因此 **S1-SOURCE 通过并关闭**；这是文献来源验收，E-S1 仍为显式公理。
+
+审计者维护的 `SemanticAudit-2026-09-24.md` 未作修改，SHA256 仍为
+`4A99E2420CFA168A4A63037F0B5A9B708C0375FB4DFD84F622FAEE89592AF94F`。
+其当时的原页访问缺口作为历史记录保留，由本节独立验收补齐。
+
+### 34.4 状态同步与修改范围
+
+设计师更新 Blueprint 当前状态／模块表／第 15–17 节、形式化 README、外部输入清单、
+共享 MathlibAPI 表和根 README 的验收入口；SSV 自查材料增加独立验收链接。
+E1 的 D1 路径注释问题已关闭。本次另修正 Thorin facade／Basic 中把 E-B1／E-B3
+仍称为外部假设的旧注释、Bondesson 本地 PDF 路径和 SSV 来源核验状态。
+
+这些 Lean 改动仅为英文注释；验收后的代码比较确认所有定义、声明与证明仍与本次
+干净构建所验版本一致。未修改证明、外部接口、工具链 pin、独立审计报告或论文，
+也未覆盖施工方及已有工作树的其他修改。最后通过 `git diff --check` 和文档链接／
+当前状态一致性检查。历史构建次数、七项／八项公理记录和原先待验收提交保留为历史。
+
+E2 关闭后，没有本轮待补交付；主定理的五项剩余文献公理和单独特征刻画的 E-B2
+继续明确列入信任边界，不能把本次验收表述为项目完全消除数学公理。

@@ -13,28 +13,39 @@ independent acceptance. Record the reason when revising another entry; preserve
 its evidence link. Updating this file does not authorize changing the Blueprint
 or expanding the external-axiom whitelist.
 
+**E2 independently accepted:** API-062–066 record compiled local proofs
+for E-B1/E-B3 and are `accepted` at their full contracts. Construction evidence
+is in the [E2 report](ConstructionReport.md#e2-construction-2026-09-24); the fresh
+independent build, audit and type checks are in
+[Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).
+The source inventory retains eight IDs; E-B1/E-B3 now denote local theorems.
 <a id="design-acceptance-2026-09-24"></a>
 ## Current independent acceptance — 2026-09-24
 
-The designer reran a clean project build (3939 jobs; 136/136 fresh project
-modules), the direct audit (883/883 matching axiom checks), and a separate
-final-proof/type check. See the
-[independent record](ConstructionReport.md#final-design-acceptance-2026-09-24).
+The latest independent E2 review reran a clean project build (3950 jobs;
+147/147 fresh project modules), the direct audit (957/957 matching checks),
+and a separate full original-type compatibility probe. All new public core
+declarations and both endpoints use standard logic only. See the
+[E2 independent record](ConstructionReport.md#e2-design-acceptance-2026-09-24).
+Earlier M7/E1 evidence remains in its dated reports; the current main proof
+retains its full type and four steps with five literature dependencies.
 
 | Entries / scope | Current design decision |
 |---|---|
 | API-001, API-009–010 | Prior M1 acceptance retained and revalidated in the complete build. |
 | API-002–008, API-011–059 | `accepted` for the submitted production contracts in M2–M6 at the pinned revision. External-interface entries accept the stated trust boundary and local adapters, not proofs of the literature axioms. |
 | API-060 | Initial data and final law assembly `accepted`; M7 is closed after the user withdrew RV-1. E1 is tracked separately under API-061. |
+| API-061 | `accepted`: root `Definitions` migration, explicit main proof and audit ownership independently verified. E1 preserved the then-seven literature dependencies; E2 separately reduces the current set to five without changing the theorem's scope. |
+| API-062–066 | `accepted`: independent foundation, generic Laplace tightness, finite grid and positive weights, drift/normalization, and unchanged E-B1/E-B3 endpoints. Full scope, imports, original types and standard-logic-only audit verified independently. |
 | GAP-001–004, GAP-006 | Project proof obligations closed in the accepted implementations; scoped library-search gaps remain documented. |
-| GAP-005 | Retained literature trust boundary, not an unproved core project node. |
+| GAP-005 | E-B1/E-B3 closed by local proofs; six actual literature axioms remain project-wide and five in the main theorem. S1-SOURCE is closed by independent source review; E-S1 still requires a Lean proof to remove its axiom status. |
 
 Acceptance concerns the actual types, adapters and compiled consumers. It does
 not assert that every possible library reuse has been exhausted. Earlier
 construction evidence remains below with its original build counts; this
 section supplies the current decision for those entries. The user has withdrawn
-RV-1; no random-variable adapter is needed. E1 is construction-verified with root `Definitions.lean`; independent design acceptance
-remains pending, with the existing mathematical acceptance preserved.
+RV-1; no random-variable adapter is needed. E1 is independently accepted with
+root `Definitions.lean`, preserving the existing mathematical acceptance.
 
 ## Evidence and maintenance conventions
 
@@ -180,9 +191,21 @@ names on the project side are compatibility lemmas or consumers.
 | API-058 — M6 transfer of value tests and logarithmic coordinates | `BoundedContinuousFunction.mkOfBound`, probability integral continuity, `norm_integral_le_of_norm_le_const`, `intervalIntegral.norm_integral_le_of_norm_le_const`; `hasCompactSupport_iff_eventuallyEq`, `Real.tendsto_log_nhdsNE_zero`, `ContDiffAt.congr_of_eventuallyEq`, `HasCompactSupport.intro`, `integral_map` | Reuse a shared bounded-test adapter for nonnegative laws. Polynomial induction consumes the actual Laplace evolution; simultaneous uniform bounds pass both sides of the weak equation. For logarithmic coordinates, compact support makes compositions identically zero near the singular endpoint, so the zero extension is smooth before using change of variables. | `NonnegTests`, `Identification/ExponentialTests`, `PolynomialEvolution`, `C1Evolution`, `Foundations/LogTestCoordinates`, `Identification/ValueWeakEquation` and `LogTransport` compile and are audited (3932 jobs, 857 declarations). `minimal_use_compiled`; see report Section 23. Transport uniqueness is a separate remaining obligation. design accepted (2026-09-24). |
 
 | API-059 — M6 partition proof of dilation transport uniqueness | `IsCompact.uniformContinuousOn_of_continuous`, `Metric.uniformContinuousOn_iff`, `intervalIntegral.norm_integral_le_of_norm_le_const`, `Finset.sum_range_sub`, `ContinuousMap.continuous_of_continuous_uncurry`, `hasDerivAt_integral_of_dominated_loc_of_deriv_le`, interval FTC, `Measure.map_map`, `Measure.map_congr`, `Real.rpow_def_of_pos`; existing compact C² measure separation | Exact fixed-test increments imply the backward-test cell identity. Joint continuity controls each cell; telescoping and smooth-test separation identify the measures. Exponential inversion gives the actual power law. Focused mathlib `Analysis/ODE` and `MeasureTheory` searches found no matching measure-valued weak transport uniqueness theorem; point-path ODE uniqueness alone does not discharge it. | `minimal_use_compiled`: `PartitionCancellation`, `JointProbabilityIntegral`, `BackwardTests`, `TransportUniqueness`, `DynamicIdentification`; default build 3937 jobs and independent audit 876 declarations. [M6 completion](ConstructionReport.md#m6-completion-2026-09-24). Generic uniqueness uses standard logic only. design accepted (2026-09-24). |
-| API-060 — M7 finite initial data and final assembly | `FiniteMeasure.normalize`, `FiniteMeasure.self_eq_mass_smul_normalize` in `MeasureTheory/Measure/ProbabilityMeasure.lean`; `integrable_smul_measure`, `integrable_map_measure` in `MeasureTheory/Function/L1Space/Integrable.lean`; `ENNReal.sum_lt_top`, `Real.exp_log`, `Real.log_pos`; existing finite Thorin integrals, rate/log measurable equivalence, M5 existence, M6 identification and M1 weak-limit reduction | Normalize the actual finite Thorin measure, transfer its square-log integrability, identify the initial value law by proved Laplace uniqueness, then take T=log q. Treat the empty gamma sum and q=1 explicitly; general inputs use the existing power-pushforward continuity and original-definition weak closure. No new existence or closure axiom is needed. | `minimal_use_compiled`: `Identification/InitialData` and `PowerClosure`; default and clean project builds 3939 jobs, all 136 project modules freshly compiled, independent audit 883 declarations, including the complete main theorem type and axiom checks. [M7 report](ConstructionReport.md#m7-completion-2026-09-24) records exact commands and the seven literature dependencies. design accepted; M7 closed by the user scope correction; E1 migration separately pending. |
+| API-060 — M7 finite initial data and final assembly | `FiniteMeasure.normalize`, `FiniteMeasure.self_eq_mass_smul_normalize` in `MeasureTheory/Measure/ProbabilityMeasure.lean`; `integrable_smul_measure`, `integrable_map_measure` in `MeasureTheory/Function/L1Space/Integrable.lean`; `ENNReal.sum_lt_top`, `Real.exp_log`, `Real.log_pos`; existing finite Thorin integrals, rate/log measurable equivalence, M5 existence, M6 identification and M1 weak-limit reduction | Normalize the actual finite Thorin measure, transfer its square-log integrability, identify the initial value law by proved Laplace uniqueness, then take T=log q. Treat the empty gamma sum and q=1 explicitly; general inputs use the existing power-pushforward continuity and original-definition weak closure. No new existence or closure axiom is needed. | `minimal_use_compiled`: `Identification/InitialData` and `PowerClosure`; default and clean project builds 3939 jobs, all 136 project modules freshly compiled, independent audit 883 declarations, including the complete main theorem type and axiom checks. [M7 report](ConstructionReport.md#m7-completion-2026-09-24) records exact commands and the seven literature dependencies. design accepted; M7 closed by the user scope correction; E1 migration separately accepted under API-061. |
 
-| API-061 — E1 readable main theorem and definition-module migration (designer, 2026-09-24) | Existing project endpoints: `isGGC_power_of_isFiniteGammaConvolution` in `GGC/PowerClosure.lean`; `power_pushforward_tendsto` in `GGC/Basic.lean` (using mathlib `ProbabilityMeasure.tendsto_map_of_tendsto_of_continuous`); `isGGC_of_tendsto` in `GGC/WeakClosure.lean`; current `GGC/Reduction.lean` demonstrates their composition. | Reuse the accepted lemmas in explicit named steps in new `main.lean`; move complete target definitions to `Definitions.lean`. Retain finite-input evolution/identification detail in `PowerClosure` and its dependencies. User override: place `Definitions.lean` in the formalization root, explicitly list `Definitions` in Lake roots/globs, and redirect helpers to `import Definitions`; audit imports `main`. No fresh generic foundation or literature axiom is needed. | `minimal_use_compiled`: final root `Definitions`, `main`, and audit passed a fresh project clean build (3940 jobs; 137/137 modules freshly built), followed by direct audit (883/883 checks). The proof body exposes the four named steps and retains exactly the seven literature axioms. [E1 report](ConstructionReport.md#e1-construction-2026-09-24); independent migration design acceptance remains pending. |
+| API-061 — E1 readable main theorem and definition-module migration (designer, 2026-09-24) | Existing project endpoints: `isGGC_power_of_isFiniteGammaConvolution` in `GGC/PowerClosure.lean`; `power_pushforward_tendsto` in `GGC/Basic.lean` (using mathlib `ProbabilityMeasure.tendsto_map_of_tendsto_of_continuous`); `isGGC_of_tendsto` in `GGC/WeakClosure.lean`; current `GGC/Reduction.lean` demonstrates their composition. | Reuse the accepted lemmas in explicit named steps in new `main.lean`; move complete target definitions to `Definitions.lean`. Retain finite-input evolution/identification detail in `PowerClosure` and its dependencies. User override: place `Definitions.lean` in the formalization root, explicitly list `Definitions` in Lake roots/globs, and redirect helpers to `import Definitions`; audit imports `main`. No fresh generic foundation or literature axiom is needed. | `minimal_use_compiled`: final root `Definitions`, `main`, and audit passed a fresh project clean build (3940 jobs; 137/137 modules freshly built), followed by direct audit (883/883 checks). The proof body exposes the four named steps and retains exactly the seven literature axioms. [E1 report](ConstructionReport.md#e1-construction-2026-09-24); independently revalidated and design accepted in [Section 29](ConstructionReport.md#e1-design-acceptance-2026-09-24), including the final English-comment version. |
+
+The following E2 entries describe the implemented and independently accepted
+construction. The owner column includes the accepted decomposition of the
+original approximation contract into focused modules.
+
+| ID / contract and owner | Pinned source and API | Decision / proposed use | Evidence and remaining work |
+|---|---|---|---|
+| API-062 — E2.0 independent Thorin foundation; `GGC/Thorin/Basic.lean` | Existing `GGC/Thorin.lean`: `ThorinAdmissible.integrable_log`, `ThorinAdmissible.measure_le_lt_top`, endpoint equivalence, `ThorinData`, `thorinLaplace`, `HasThorinRepresentation`, finite-atomic certificates; API-001/009/010 | Extract the existing axiom-free definitions and proofs, preserving namespaces/names; keep axiom-using characterization/realization adapters in the old facade. New proof modules may import the lower layer, never the facade or `External.Bondesson`. | `minimal_use_compiled`: `Thorin.Basic` and the existing `Thorin` facade compile with unchanged public names; lower-layer axioms are standard logic only. Existing accepted proofs are moved, not duplicated. Independently revalidated; design accepted (2026-09-24), report Section 34. |
+| API-063 — E2.1 tightness from a common Laplace lower bound; `GGC/LaplaceTightness.lean` | Existing `Identification/ValueTails.lean`: `measureReal_Ioi_exp_le_one_sub_laplace`; mathlib `MeasureTheory/Measure/Tight.lean`: `MeasureTheory.isTightMeasureSet_iff_exists_isCompact_measure_compl_le`; API-048 | Move the generic estimate below `Identification`; prove that `L(s) <= laplace (mu_n) s` for every n and positive s, with `L(s) -> 1` at zero from the right, implies tightness of all laws. Use nonnegative support and compact intervals; the chosen rounding/drift construction provides the common lower bound. | `minimal_use_compiled`: `isTightMeasureSet_of_laplace_lower_bound`, `exists_nonnegLaw_subseq_of_isTightMeasureSet`, `exists_nonnegLaw_of_laplace_tendsto` in `LaplaceTightness`; generic tail proofs moved without renaming. Only standard logic; arbitrary family and no moments. ValueTails consumer compiles. Independently revalidated; design accepted (2026-09-24), report Section 34. |
+| API-064 — E2.2 finite-atomic rate grid and kernel convergence; `Thorin/Approximation`, `GridMeasure`, `GridMeasureMap`, `FiniteWeights`, `Sequence` | `Algebra/Order/Floor/Defs.lean`: `Nat.ceil`, `Nat.ceil_le`; `MeasureTheory/Function/Floor.lean`: `Nat.measurable_ceil`; `MeasureTheory/Integral/DominatedConvergence.lean`: `MeasureTheory.tendsto_integral_of_dominated_convergence`; existing API-062 finite-mass/atomic adapters | Restrict U to `[1/m,m]`, round positive rates upward to `ceil(m*b)/m`, represent finite cell masses by Dirac weights, discard zero cells and index positive weights by `Fin k`. Prove pointwise convergence and domination by `log(1+s/b)` on the original U. | `minimal_use_compiled`: `Thorin.Approximation` proves upward rounding and DCT on original U; `GridMeasure` proves finite cell masses and exact finite-sum integrals; `GridMeasureMap` proves the Dirac-sum pushforward. `FiniteWeights` filters zero weights using Fintype.equivFin before choosing positive shapes. `Sequence` chooses one actual finite-gamma law sequence for all s. No direct matching atomic-approximation theorem was found in the scoped library search; local adapters reuse the inspected primitives. Independently revalidated; design accepted (2026-09-24), report Section 34. |
+| API-065 — E2.2 drift and zero-endpoint normalization; `Thorin/Drift`, `Normalization`, `Sequence` | Existing `GGC/FiniteGamma.lean`: `laplace_finiteGammaLaw`; `Analysis/SpecialFunctions/Log/Basic.lean`: logarithm bounds/continuity; `MeasureTheory/Integral/DominatedConvergence.lean`: `MeasureTheory.tendsto_integral_filter_of_dominated_convergence` | For a>0 append Gamma(m,m/a), prove `m*log(1+a*s/m) -> a*s` and the bound by `a*s`; omit the factor for a=0. Prove target transform tends to one at zero by domination by `log(1+1/b)` for `0<=s<=1`. | `minimal_use_compiled`: `Thorin.Drift` directly reuses Real.tendsto_mul_log_one_add_div_atTop from Analysis/SpecialFunctions/Complex/LogBounds.lean; no derivative or Gamma moment reproving. `Normalization` proves tendsto_thorinLaplace_zero directly by DCT. `Sequence` combines optional drift and finite grid and proves exact transforms, common lower bound and convergence. Both zero drift and positive drift supported; no E-B1 assumption. Independently revalidated; design accepted (2026-09-24), report Section 34. |
+| API-066 — E2.3 realization/approximation assembly and E2.4 audit | `MeasureTheory/Measure/Prokhorov.lean`: `MeasureTheory.isCompact_closure_of_isTightMeasureSet`; current `GGC/LaplaceContinuity.lean`: `nonnegative_of_narrow_limit`, `tendsto_laplace_of_narrow`, `nonnegLaw_tendsto_of_laplace_tendsto`; `GGC/Laplace.lean`: `nonnegLaw_eq_of_laplace_eq` | Use API-063/064/065 to supply tightness and one actual finite-gamma sequence. Identify it with an existing target for E-B3; extract a probability subsequence to construct the target for E-B1. Keep same-type public theorem wrappers in `External.Bondesson`, backed by an independent `Thorin.Realization` layer. | `minimal_use_compiled`: `thorin_realization_core` and `finite_atomic_approximation_core` in `Thorin.Realization`; original-type wrappers in External.Bondesson now theorems. Directed endpoint audit confirms standard logic only, including existing realization/reverse-characterization consumers. E-B2 remains unchanged. Full clean build and audit evidence: E2 construction report; independently revalidated; design accepted (2026-09-24), report Section 34. |
 
 API-001–010 preserve R10's original evidence; API-011–060 record subsequent
 focused source searches and tracked production uses. All new external
@@ -210,7 +233,7 @@ API-036–042's completed production uses and verification are in the
 | GAP-002 — probability measurable structures | R10 found no direct instance; API-015/016 provide the locally proved bridge. | Closed and design accepted through `probabilityMeasure_measurable_eq_borel`, with the existing Giry structure preserved. |
 | GAP-003 — phase representation and varying-law continuity | API-006/014/019 supply M2's transform and canonical boundary recovery; API-024/025 provide the varying-law and scaling bridges. | Closed and design accepted: continuous pairing against every real L¹ kernel on `(0,∞)`, including simultaneous kernel and positive-scale variation. Pointwise phase continuity is not inferred. API-026–031 separately supply the accepted averaged-generator proof. |
 | GAP-004 — absolute Gamma/Beta log moments | R10 found Mellin/Gamma differentiation and complex digamma support, but no direct replacement for the project's full moment contracts. | Project obligations closed and design accepted through `GammaAnalysis`, `BetaAnalysis` and the identification moment/endpoint modules. Retain absolute-integrability estimates; a derivative formula alone is not a replacement. Reopen the reuse question only for a candidate with a matching contract. |
-| GAP-005 — Thorin/Dirichlet/Markov–Krein external interfaces | R10 did not locate direct statements in its pinned probability/measure/analysis search. `Analysis/SpecialFunctions/Bernstein.lean` concerns polynomial approximation. | Retained trust boundary: eight registered literature axioms, seven used by the final law theorem. The accepted local adapters do not prove these inputs. Before any further permitted declaration, search its primitive contract and general supporting results; no core axiom is authorized. |
+| GAP-005 — Thorin/Dirichlet/Markov–Krein external interfaces | R10 did not locate direct statements in its pinned probability/measure/analysis search. `Analysis/SpecialFunctions/Bernstein.lean` concerns polynomial approximation. E2 adds the scoped decomposition and candidates in API-062--066. | E-B3/E-B1 are locally proved and independently accepted; remaining actual axioms are six project-wide and five in the main theorem. E-B2/J1--3/T1/S1 are not formalized by E2. E-S1 original-page self-check and independent review are complete, closing S1-SOURCE; see SSVSourceCheck-2026-09-24.md and ConstructionReport Section 34. No new axiom is authorized. |
 | GAP-006 — compensated generator/resolvent arguments | R10's Taylor/compact-support reuse and API-020/021 now have tracked production proofs. | Closed and design accepted by the actual `(B,F)` generator, sample cancellation, absolute posterior/Palm estimates and `integral_generator_eq_normalized_powerTangent`. M4 continuity and M5 constructed existence are also accepted through their separate contracts. |
 
 ## New-entry template and updates
@@ -261,3 +284,36 @@ Change reason / superseded decision (if any):
   Earlier update notes retain the decision that applied at their time.
 
 - **2026-09-24 — constructor, E1:** implemented the readable main proof and root Definitions module per the user's path override. API-061 now has fresh clean-build and direct-audit evidence; mathematical scope and literature inputs are unchanged. Independent design acceptance remains pending.
+
+- **2026-09-24 — designer, E1 acceptance:** API-061 accepted after independent
+  clean compilation of all 137 project modules (3940 jobs) and the direct
+  883-check audit. Moved definition bodies match the accepted original;
+  the main proof explicitly reuses the three existing endpoints. The same
+  seven literature dependencies remain. Three legacy source-path comments
+  are nonblocking D1 in the acceptance report; no Lean source was changed.
+
+- **2026-09-24 — designer, E2 handoff and semantic-audit follow-up:** added
+  API-062--066 after inspecting the pinned APIs and existing production lemmas.
+  The upward rounding and Gamma drift bounds provide a common Laplace lower
+  bound, simplifying uniform tightness. New proofs/probes remain pending;
+  current axiom counts are unchanged. Corrected the three legacy path comments
+  and clarified E-S1's open original-page review without editing the auditor's
+  report. See [the design record](ConstructionReport.md#e2-design-2026-09-24).
+
+- **2026-09-24 — constructor, E2:** API-062–066 now have compiled production
+  proofs and complete integration evidence: clean build 3950 jobs, 147/147
+  fresh project modules, subsequent direct audit 957/957 checks, and original
+  primitive type checks. E-B1/E-B3 and all new core proofs use standard logic
+  only; six project axioms and exactly five final-theorem literature dependencies
+  remain. Independent E2 acceptance is pending. S1-SOURCE has a completed
+  construction self-check, with independent source review pending.
+
+- **2026-09-24 — designer, E2 acceptance:** API-062–066 accepted after independent
+  proof/contract review, clean build (3950 jobs; 147/147 fresh project modules),
+  direct audit (957/957 names matched) and a probe using the original committed
+  endpoint types. All 74 added audit checks and both E-B1/E-B3 endpoints use
+  standard logic only. The accepted module split is recorded in the Blueprint.
+  GAP-005 now records six project axioms/five main dependencies; no new axiom
+  was introduced. Independently reviewed the specified SSV first-edition pages
+  and errata, closing S1-SOURCE while retaining E-S1 as an axiom. See
+  [Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).

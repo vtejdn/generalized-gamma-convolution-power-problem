@@ -11,6 +11,12 @@ extension) and Theorem 7.3 (printed p.63). Official first-edition errata:
 https://www.motapa.de/bernstein_functions/misprints-ssv.pdf (2022-12-01).
 Publisher: https://doi.org/10.1515/9783110215311
 
+Source-review status (2026-09-24): S1-SOURCE is independently verified and closed.
+The designer freshly rendered and inspected the 2010 first-edition pages and
+official errata, confirming the file identity and all interface adaptations.
+See `SSVSourceCheck-2026-09-24.md` and `ConstructionReport.md`, Section 34.
+`SemanticAudit-2026-09-24.md` retains its historical findings unchanged.
+This declaration remains an assumption. Local source: `literature/pdf/SSV.pdf`.
 This is a source-derived specialization to the nonzero Stieltjes transform
 of a probability measure on positive rates. Apply 6.10 to its reciprocal
 using 7.3, negate the logarithm and subtract the value at one. The upper
