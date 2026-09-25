@@ -1,6 +1,11 @@
-# Independent Semantic Audit: Second Round
+# Independent Semantic Audit: Second Round and Final Review
 
 Date: 2026-09-25. Maintainer: independent auditor. Report language: English.
+
+**Latest review:** see the [final independent audit](#final-independent-audit).
+The second-round text below retains its historical snapshot and three-axiom
+boundary. Finding F-01 corrects its earlier claim that E-J3's complete original
+Lean type was preserved; that claim must not be carried forward as accepted.
 
 This report is maintained beside `Blueprint.md`, as requested by the user.
 Findings and proposed corrections are recorded here; existing project documentation
@@ -292,3 +297,94 @@ logs, and rendered source pages are retained under
 `../tmp/semantic-audit-2026-09-25/`. The result is a successful statement/interface
 audit and checked Lean proof relative to the stated trust boundary, not a claim
 that the three external axioms have themselves been formally proved.
+
+<a id="final-independent-audit"></a>
+## Final independent audit — 2026-09-25
+
+Scope: the current uncommitted working tree based on
+`5f1b295a6cf3ef2561f0b109ccfa5239a55c07b1`, including the completed E4 delivery.
+All 166 Lean files and three pinned configuration files match the designer's
+`../tmp/designer-acceptance-2026-09-25/source-end.json`; this verdict concerns
+that working tree, not the base commit alone. This update changes only this
+auditor-owned report; neither finding has been repaired.
+
+**Verdict: no blocking defect in the main theorem was found within the reviewed
+scope, relative to E-S1; two nonblocking findings remain open.**
+
+### F-01 — Medium priority: J2/J3 public wrappers narrow the original Lean types
+
+The original axioms actually quantify over any measurable space, whereas the
+new public wrappers additionally require `TopologicalSpace E`, `PolishSpace E`
+and `BorelSpace E`. This is a confirmed interface and acceptance-baseline defect,
+not a failure of the main power-closure theorem.
+
+| Interface | Historical declaration checked | Current public wrapper |
+|---|---|---|
+| E-J2 | `5f1b295:formalization/External/James.lean`, `GGC.External.James.posterior_palm_nonneg` | [GGC/DirichletPalm.lean](GGC/DirichletPalm.lean), lines 24–25 |
+| E-J3 | `baae2e9:formalization/External/James.lean`, `GGC.External.James.beta_atom_posterior` | [GGC/DirichletPosterior.lean](GGC/DirichletPosterior.lean), lines 16–27 |
+
+The historical sources were independently re-elaborated with the pinned Lean
+executable through `--stdin`, alongside the corresponding current import.
+`#check @...` on each old declaration, public wrapper and lower theorem exited
+successfully and confirmed these different binder lists:
+
+```lean
+-- Historical axioms and current lower theorems:
+{E : Type*} [MeasurableSpace E]
+-- Current public wrappers:
+{E : Type*} [MeasurableSpace E] [TopologicalSpace E] [PolishSpace E] [BorelSpace E]
+```
+
+The unused topology section variables were omitted from the old `axiom` types.
+J2 now binds them explicitly; J3 includes them when elaborated as a `theorem`.
+Comparing source parameter text, or manually prepending ambient variables, does
+not establish equality of the resulting Lean types.
+
+The error is already present in [Blueprint.md](Blueprint.md), lines 1218–1224
+and 2066–2089, which call those topology parameters original and require their
+preservation. The implementations follow that blueprint, but the exact-type
+acceptance claims in [ConstructionReport.md](ConstructionReport.md), lines
+3741–3748 and 4608–4610, are not justified. The examples in
+[E3GammaDirichletContract.lean](Checks/E3GammaDirichletContract.lean), lines
+64–75, and [E4PalmContract.lean](Checks/E4PalmContract.lean), lines 21–32,
+already assume the added instances, so their passing results do not detect
+this narrowing. The earlier second-round E-J3 preservation assessment above
+is corrected by this finding.
+
+**Impact:** a caller with only a measurable-space instance cannot migrate by
+renaming the old declaration to the new public name. Full generality remains
+proved in `GGC.RandomMeasure.beta_atom_posterior`
+([DirichletUpdate.lean](GGC/Foundations/DirichletUpdate.lean), line 198) and
+`GGC.RandomMeasure.posterior_palm_nonneg`
+([DirichletPalm.lean](GGC/Foundations/DirichletPalm.lean), line 147); the current
+positive-real consumers have the topology instances and are unaffected.
+
+**Recommendation:** restore the public wrappers to the historical elaborated
+types, correct the blueprint and acceptance baseline, and check compatibility
+without supplying the additional topology instances. This requires no new
+mathematical proof because the lower theorems already have the required scope.
+
+### F-02 — Low priority: stale declaration count in the blueprint
+
+[Blueprint.md](Blueprint.md), line 249, says the central audit covers **954**
+declarations. The current [AxiomAudit.lean](AxiomAudit.lean) contains **1067**
+distinct requests, and this review matched all 1067 to their fresh outputs.
+Update that inventory entry to 1067; this discrepancy does not affect any proof.
+
+### Passed checks and evidence limits
+
+The main theorem's full scope, the E4 proof contracts apart from F-01, and the
+E-S1 source adaptation showed no blocking defect; E-S1's source pages and
+[official errata](https://www.motapa.de/bernstein_functions/misprints-ssv.pdf)
+were independently revisited.
+Fresh checks of `main.lean`, all seven `Checks/*.lean` files and
+`lean -t 0 AxiomAudit.lean` passed without Lean warnings or errors, with 1067/1067
+audit results, 28 standard-logic-only contract outputs, and exactly `propext`,
+`Classical.choice`, `Quot.sound` and `GGC.External.SSV.phase_representation` in
+the main theorem's dependency set.
+
+These checks used the installed Lean 4.32.2 executable and the pinned dependency
+paths, without output-file options; no clean build or new line-by-line
+rederivation of every historical analytic lemma was performed. Fresh outputs
+were inspected in the audit session; no new probe or log file was saved.
+R2-01's stale main-theorem comment is now resolved; F-01 and F-02 remain open.

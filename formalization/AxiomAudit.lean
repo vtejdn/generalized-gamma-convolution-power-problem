@@ -1,6 +1,7 @@
 import GGC.Foundations.BetaGamma
 import GGC.Foundations.GammaDirichlet
 import GGC.Foundations.DirichletUpdate
+import GGC.Foundations.DirichletSizeBias
 import GGC.Foundations.MarkovKrein
 import GGC.Thorin.GridMeasureMap
 import GGC.FiniteGamma
@@ -45,8 +46,8 @@ import GGC.Identification.DynamicIdentification
 import main
 import GGC.Thorin.Interfaces
 import GGC.DirichletPosterior
-import External.James
-import External.Sethuraman
+import GGC.DirichletPalm
+import GGC.DirichletStickBreaking
 import External.SSV
 
 /-!
@@ -220,7 +221,7 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print GGC.LogRate.phaseAcceptance
 #print GGC.LogRate.phaseGenerator
 #print GGC.RandomMeasure.markov_krein_of_bounded
-#print GGC.External.James.posterior_palm_nonneg
+#print GGC.posterior_palm_nonneg
 #print GGC.beta_atom_posterior
 
 #check GGC.tiltedLaw_eq_gammaDirichlet
@@ -292,7 +293,7 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.LogRate.integrable_phaseGenerator_jumps
 #print axioms GGC.LogRate.phaseGenerator_nonneg_at_min
 #print axioms GGC.LogRate.phaseGenerator_sq_le
-#print axioms GGC.External.James.posterior_palm_nonneg
+#print axioms GGC.posterior_palm_nonneg
 #print axioms GGC.beta_atom_posterior
 
 -- Canonical integer-boundary phase and parameter-measurable posterior generator.
@@ -348,7 +349,7 @@ Printing the axioms of the proposition definition alone would not certify its tr
 
 -- M2 completion: actual derivatives, measurable DP realizations and canonical phase.
 -- Printing the external contracts checks their complete types, not their proofs.
-#print GGC.External.Sethuraman.stick_breaking
+#print GGC.stick_breaking
 #print GGC.External.SSV.RealPhase
 #print GGC.External.SSV.Phase
 #print GGC.External.SSV.phase_representation
@@ -1244,3 +1245,69 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.RandomMeasure.norm_mean_rpow_le_one
 #print axioms GGC.RandomMeasure.norm_log_one_add_le
 #print axioms GGC.RandomMeasure.markov_krein_of_bounded
+
+-- E4.0: size bias and stationarity, including zero shapes.
+#print axioms GGC.RandomMeasure.map_withDensity_comp
+#print axioms GGC.RandomMeasure.gammaShape_withDensity_self
+#print axioms GGC.RandomMeasure.gammaVector_withDensity_coordinate
+#print axioms GGC.RandomMeasure.gammaVector_map_normalize_withDensity
+#print axioms GGC.RandomMeasure.dirichlet_withDensity_coordinate
+#print axioms GGC.RandomMeasure.dirichlet_weighted_increment
+#print axioms GGC.RandomMeasure.coordinateChoice_isProbabilityMeasure
+#print axioms GGC.RandomMeasure.dirichlet_stationary_update
+
+-- E4.1/E4.2: all new independent foundations and public contracts.
+#print axioms GGC.RandomMeasure.coordinateChoice
+#print axioms GGC.RandomMeasure.hasSum_stickWeight_of_mass_one
+#print axioms GGC.RandomMeasure.stickPrefix
+#print axioms GGC.RandomMeasure.measurable_stickPrefix
+#print axioms GGC.RandomMeasure.dirichlet_stationary_update_paired
+#print axioms GGC.RandomMeasure.stickPrefix_map
+#print axioms GGC.RandomMeasure.stickResidual_succ_shift
+#print axioms GGC.RandomMeasure.stickWeight_succ_shift
+#print axioms GGC.RandomMeasure.stickPrefix_eq
+#print axioms GGC.RandomMeasure.Partition.label
+#print axioms GGC.RandomMeasure.Partition.mem_label
+#print axioms GGC.RandomMeasure.Partition.label_eq_iff
+#print axioms GGC.RandomMeasure.Partition.measurable_label
+#print axioms GGC.RandomMeasure.stickPrefix_tendsto
+#print axioms GGC.RandomMeasure.infinitePi_map_prefix
+#print axioms GGC.RandomMeasure.paired_prefix_map
+#print axioms GGC.RandomMeasure.Partition.label_map
+#print axioms GGC.RandomMeasure.stickInput_prefix_map
+#print axioms GGC.RandomMeasure.map_eq_of_constant_law_limit
+#print axioms GGC.RandomMeasure.stick_partition_law
+#print axioms GGC.RandomMeasure.stick_breaking
+#print axioms GGC.RandomMeasure.Partition.trivial
+#print axioms GGC.RandomMeasure.Partition.binary
+#print axioms GGC.RandomMeasure.Partition.binary_zero
+#print axioms GGC.RandomMeasure.partitionEval_binary_zero
+#print axioms GGC.RandomMeasure.ofReal_partitionEval_binary_zero
+#print axioms GGC.RandomMeasure.Partition.refine
+#print axioms GGC.RandomMeasure.Partition.refine_cell
+#print axioms GGC.RandomMeasure.leftSum
+#print axioms GGC.RandomMeasure.rightSum
+#print axioms GGC.RandomMeasure.measurable_leftSum
+#print axioms GGC.RandomMeasure.measurable_rightSum
+#print axioms GGC.RandomMeasure.Partition.refine_left_union
+#print axioms GGC.RandomMeasure.Partition.refine_right_union
+#print axioms GGC.RandomMeasure.leftSum_partitionEval
+#print axioms GGC.RandomMeasure.rightSum_partitionEval
+#print axioms GGC.RandomMeasure.measure_eq_sum_refine_binary
+#print axioms GGC.RandomMeasure.partitionCylinders
+#print axioms GGC.RandomMeasure.measurableSet_partitionCylinder
+#print axioms GGC.RandomMeasure.univ_mem_partitionCylinders
+#print axioms GGC.RandomMeasure.isPiSystem_partitionCylinders
+#print axioms GGC.RandomMeasure.giry_eq_generate_partitionCylinders
+#print axioms GGC.RandomMeasure.measure_ext_of_partitionCylinders
+#print axioms GGC.RandomMeasure.slice_apply
+#print axioms GGC.RandomMeasure.joint_measure_ext_of_partitionCylinders
+#print axioms GGC.RandomMeasure.IsDirichletProcess.partition_map
+#print axioms GGC.RandomMeasure.partition_shape_sum
+#print axioms GGC.RandomMeasure.normalized_base_cell
+#print axioms GGC.RandomMeasure.partition_coordinate_sizeBias
+#print axioms GGC.RandomMeasure.posterior_cylinder_on_cell
+#print axioms GGC.RandomMeasure.partitionCylinder_refine
+#print axioms GGC.RandomMeasure.dirichlet_palm_rectangle
+#print axioms GGC.RandomMeasure.posterior_palm_nonneg
+#print axioms GGC.stick_breaking

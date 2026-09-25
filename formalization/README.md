@@ -1,5 +1,13 @@
 # GGC Power Closure: Status and Project Rules
 
+**Final acceptance (2026-09-25): F-01 and F-02 are closed.** Both J2/J3
+public interfaces have the historical measurable-only types, verified by fresh
+Lean elaboration and exact type-expression comparison. The main theorem remains
+accepted relative to E-S1. Earlier claims that topology instances belonged to
+the original types remain withdrawn; the repaired interfaces are accepted on
+new evidence. See [Section 56](ConstructionReport.md#f01-designer-acceptance-2026-09-25)
+for the build, seven contract checks and 1067-result audit.
+
 ## Current status
 
 [GGC.ggc_rpow](main.lean) proves that every nonnegative GGC probability law
@@ -8,14 +16,15 @@ remains GGC under the deterministic power map \(x \mapsto x^q\) for every real
 The result includes arbitrary drift, infinite Thorin mass and degenerate laws,
 with no additional moment assumptions.
 
-The proof is relative to three literature axioms: **E-J2** (James posterior/Palm
-identity), **E-T1** (Sethuraman stick-breaking) and **E-S1** (SSV phase
-representation). Thorin realization, finite atomic approximation, the Beta atom
-posterior and the bounded Markov-Krein formula have local Lean proofs.
+The proof is relative to **E-S1** (SSV phase representation). Thorin realization,
+finite atomic approximation, the Beta atom posterior, the bounded Markov-Krein
+formula, stick-breaking and the nonnegative Palm identity have local Lean proofs.
 [Definitions.lean](Definitions.lean) contains the public definitions;
 [main.lean](main.lean) assembles the theorem, with details in
 [GGC/PowerClosure.lean](GGC/PowerClosure.lean).
 [AxiomAudit.lean](AxiomAudit.lean) inspects the actual declarations and dependencies.
+E4's local replacements and the final E-S1 boundary have passed
+[independent designer acceptance](ConstructionReport.md#e4-design-acceptance-2026-09-25).
 
 All comments and documentation comments in project Lean source files must be
 written in English. Maintain [Blueprint.md](Blueprint.md) in English, including
@@ -295,8 +304,8 @@ Retain the repository's established policy: precisely audited literature
 results not yet formalized may be registered as explicit external axioms.
 The target is **Lean verification of the project's GGC power closure
 derivation relative to the registered literature axioms**.
-Do not re-axiomatize mathlib results. The active mathematical axioms are
-E-J2, E-T1 and E-S1; all occur in the main theorem. E-B1, E-B3 and E-J3 are
+Do not re-axiomatize mathlib results. The active mathematical axiom is E-S1,
+which occurs in the main theorem. E-B1, E-B3, E-J2, E-J3 and E-T1 are
 local theorems. The bounded Markov-Krein formula is proved locally; the
 general E-J1 interface is retired and is not claimed as proved. E-B2/E-B4
 are not active inputs. The [external inventory](External/README.md) identifies
@@ -330,10 +339,10 @@ Do not append conclusions the source does not supply.
 | E-B1 (local theorem) | Bondesson (1992), Section 3.1, printed p.29 and pp.34–35: realization of Thorin-admissible data by a nonnegative probability law | Gives `HasThorinRepresentation`; original-GGC membership uses the locally proved represented-law direction. No power closure input |
 | E-B3 (local theorem) | Same book, final paragraph of p.35: the declared interface approximates every represented law by laws with finite-atomic Thorin transforms | Identify approximants with actual finite gamma sums using their transforms and Laplace uniqueness. This gives the representation-to-original-definition direction, not finite-input power closure |
 | E-J1 (retired general interface) | James (2005), arXiv:math/0505606v1, reprint p.2, (1)–(3): original unbounded/log-integrable statement is no longer declared or whitelisted | The unchanged consumer uses the separately named local bounded Markov-Krein theorem; the general statement is not claimed as proved |
-| E-J2 | Same paper, pp.4–5, posterior formula and (8): nonnegative one-observation Palm/posterior identity for atomic, nonatomic and mixed bases | Absolute integrability before the signed version; arbitrary signed Fubini is not an input |
+| E-J2 (local theorem) | Same paper, pp.4–5, posterior formula and (8): nonnegative one-observation Palm/posterior identity for atomic, nonatomic and mixed bases | Absolute integrability before the signed version; arbitrary signed Fubini is not an input |
 | E-J3 (local theorem) | A source-derived interface from the posterior result and Gamma normalization: independent \(Q\sim DP(U)\), \(Z\sim\mathrm{Beta}(1,B)\) give \((1-Z)Q+Z\delta_b\sim DP(U+\delta_b)\); proved locally | Posterior logarithmic bounds and joint continuity; the original tangent coefficient stays \(\psi(B+1)\), not \(\psi(B+2)\) |
 | E-S1 | SSV (2010 first edition), Theorems 6.10 and 7.3, printed pp.58–60 and 63, with the 2022-12-01 errata: reciprocal representation for nonzero Stieltjes functions, bounded phase and a.e. uniqueness | Jointly measurable representatives, boundary-recovery adaptations, scaling, weak-star limits and generator continuity |
-| E-T1 | Sethuraman (1994), Section 2, (2.1), pp.642–643; Theorem 3.4, p.645: the DP law of stick-breaking with independent Beta break variables and independent base locations | Common-coordinate convergence as \(B,F,y\) vary, tail control and uniform integrability |
+| E-T1 (local theorem) | Sethuraman (1994), Section 2, (2.1), pp.642–643; Theorem 3.4, p.645: the DP law of stick-breaking with independent Beta break variables and independent base locations | Common-coordinate convergence as \(B,F,y\) vary, tail control and uniform integrability |
 
 These locators come from the retained
 [primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md)
@@ -349,7 +358,7 @@ Preserve the following contract details:
   \(\mathbb E(1+\int g\,dP)^{-B}=\exp(-\int\log(1+g)\,dU)\).
   Boundedness supplies integrability for every probability P and finite U.
   The unused general E-J1 statement is retired, not an active assumption.
-- **E-J2:** First register the nonnegative measurable identity
+- **E-J2 (local theorem):** The nonnegative measurable identity is
   \(\mathbb E_{DP(U)}\int\Phi(b,P)P(db)
   =\int(U/B)(db)\,\mathbb E_{DP(U+\delta_b)}\Phi(b,P)\).
   Make joint measurability and random-measure evaluation explicit.
@@ -361,7 +370,7 @@ Preserve the following contract details:
   specialization as source-derived. If boundary recovery uses the complex
   representation, retain its complex-domain contract; an insufficient
   real-axis interface does not supply the boundary formula.
-- **E-T1:** For \(B>0\), take i.i.d. \(V_j\sim\mathrm{Beta}(1,B)\),
+- **E-T1 (local theorem):** For \(B>0\), take i.i.d. \(V_j\sim\mathrm{Beta}(1,B)\),
   i.i.d. \(Y_j\sim F\), and independence of the two sequences.
   Set \(W_j=V_j\prod_{i<j}(1-V_i)\), \(Q=\sum_jW_j\delta_{Y_j}\).
   The weights \(W_j\) are not independent. Prove unit total mass or include

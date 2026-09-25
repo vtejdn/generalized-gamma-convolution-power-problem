@@ -11,37 +11,21 @@ Here \(X^q\) is a deterministic power, not a convolution power or a
 product of independent copies.
 
 **Recorded status (2026-09-06): proved in project; internal mathematical
-audit complete.** This is not external peer review, publication, Lean
-verification or a priority claim. The scope, evidence and qualifications
+audit complete.** This written-proof assessment is not external peer review,
+publication or a priority claim. The scope, evidence and qualifications
 are maintained in [ResearchStatus.md](ResearchStatus.md).
-The separate Lean construction now includes the [complete power-closure proof](formalization/main.lean),
-relative to three registered literature axioms. Thorin realization, finite-atomic
-approximation, finite Gamma normalization independence and the full Beta atom
-posterior are proved locally. E3.3 now proves the bounded Markov-Krein formula
-and retires the unused general E-J1 interface; [Section 45](formalization/ConstructionReport.md#e3-three-construction-2026-09-25)
-records construction and validation; independent acceptance is complete in [Section 46](formalization/ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
-The independently accepted E3.1/E3.2 construction and validation
-are recorded in [Section 43](formalization/ConstructionReport.md#e3-one-two-construction-2026-09-25);
-independent design acceptance is recorded in [Section 44](formalization/ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25).
-Unused E-B2 and its optional characterization interfaces have been removed.
-The [next reduction plan](formalization/Blueprint.md#e3-james-reduction-plan)
-has now reached the bounded Markov-Krein formula used by the main theorem
-(E3.3). J2, T1 and S1 remain separate work. The general unbounded E-J1 statement
-is retired, not claimed as proved.
-The [E3.0 construction handoff](formalization/Blueprint.md#e3-zero-construction-handoff)
-specifies the first joint-law contract. Its [production proof](formalization/GGC/Foundations/BetaGamma.lean)
-is independently accepted; see the [E3.0 acceptance](formalization/ConstructionReport.md#e3-zero-design-acceptance-2026-09-24). E3.1/E3.2 are independently accepted; E3.3 is independently accepted; see [Section 46](formalization/ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
-The locally proved Thorin interfaces now live in
-[GGC/Thorin/Interfaces.lean](formalization/GGC/Thorin/Interfaces.lean), with
-[independent migration acceptance](formalization/ConstructionReport.md#tidy-thorin-design-acceptance-2026-09-25); the obsolete External module is removed.
-The [second-round independent audit](formalization/SemanticAudit-2026-09-25.md)
-passes within its scope. Its comment correction and the required E-J3 interface
-relocation are now implemented under [Blueprint Section 24](formalization/Blueprint.md#audit-r2-and-j3-relocation):
-`GGC.beta_atom_posterior` lives in [DirichletPosterior.lean](formalization/GGC/DirichletPosterior.lean),
-and External retains only J2/T1/S1. [Section 48](formalization/ConstructionReport.md#r2-j3-closeout-2026-09-25)
-records construction validation, pending independent design acceptance.
 The [manuscript source](manuscript/ggc-power-closure.tex) is available;
 compilation remains user-controlled.
+
+## Lean formalization
+
+**Completed and accepted (2026-09-25).** The [Lean proof](formalization/main.lean)
+establishes GGC closure under every real power \(q\ge1\), using the original
+finite-gamma weak-limit definition. Beyond Lean's standard logical axioms, its
+sole external input is the SSV phase-representation theorem (E-S1).
+The project build, contract checks and dependency audit pass; all final review
+findings are closed. See the [formalization overview](formalization/README.md)
+and [final acceptance record](formalization/ConstructionReport.md#f01-designer-acceptance-2026-09-25).
 
 ## Where to read and where to write
 
@@ -55,7 +39,8 @@ compilation remains user-controlled.
 | Where are the full proofs and their dependencies? | [ledger/README.md](ledger/README.md), the thematic module map |
 | What exactly do the external sources say? | [notes/README.md](notes/README.md), [ledger/references.md](ledger/references.md) and [literature/README.md](literature/README.md) |
 | What can be checked by code? | [computations/README.md](computations/README.md) |
-| What is the presentation or formalization artifact? | [manuscript](manuscript/ggc-power-closure.tex), [bibliography](manuscript/references.bib), [Lean principles](formalization/README.md), [Lean blueprint](formalization/Blueprint.md), [complete Lean target statement](formalization/main.lean), [Lean proof](formalization/main.lean) and [external inputs](formalization/External/README.md) |
+| Where is the written presentation? | [Manuscript](manuscript/ggc-power-closure.tex) and [bibliography](manuscript/references.bib) |
+| What is the Lean formalization status? | [Formalization overview](formalization/README.md), [main theorem](formalization/main.lean) and [external input](formalization/External/README.md) |
 
 For a quick orientation, read ResearchStatus, then BigPicture.
 For a proof audit, start with the

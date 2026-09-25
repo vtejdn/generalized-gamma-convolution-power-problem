@@ -1,5 +1,13 @@
 # Formalization Construction Report
 
+**Final acceptance (2026-09-25): F-01 and F-02 are closed.** Both J2/J3
+public interfaces have the historical measurable-only types, verified by fresh
+Lean elaboration and exact type-expression comparison. The main theorem remains
+accepted relative to E-S1. Earlier claims that topology instances belonged to
+the original types remain withdrawn; the repaired interfaces are accepted on
+new evidence. See [Section 56](ConstructionReport.md#f01-designer-acceptance-2026-09-25)
+for the build, seven contract checks and 1067-result audit.
+
 This report records implementation work, completed declarations, API evidence,
 build commands and results, axiom audits, current milestone status and remaining
 gaps. [Blueprint.md](Blueprint.md) is the read-only construction specification:
@@ -14,7 +22,11 @@ Historical entries retain their status at the time; later entries supersede
 those statuses without claiming that earlier checks have been rerun.
 
 Current design acceptance: **M0–M7 accepted as `verified` within the registered
-trust boundary.** The user accepts the distribution version as the complete
+trust boundary; E4.0–E4.2 are independently accepted, with E-S1 as the sole
+remaining literature axiom.** The latest clean build, full audit and contract
+evidence are in [Section 53](#e4-design-acceptance-2026-09-25). Earlier counts
+and dependency sets below describe their dated acceptance snapshots.
+The user accepts the distribution version as the complete
 deliverable and withdraws RV-1; it is not recorded as implemented. Section 26's
 successful independent verification remains the evidence for the law theorem.
 **E1 is independently accepted as `verified`**; see
@@ -4406,3 +4418,565 @@ Documentation validation passed: `git diff --check`, 422 local Markdown links
 and 194 anchors. All 162 protected file hashes and all 153 accepted production
 source hashes are unchanged; the 158-file Lean inventory is unchanged. The
 new handoff is English, and its explicit anchor and API-080/081 rows are unique.
+
+<a id="e4-construction-2026-09-25"></a>
+## 52. E4.0, E4.1 and E4.2 construction — 2026-09-25
+
+Role: constructor. This delivery implements Blueprint Sections 25.2, 25.3 and
+26 in sequence. It supplies local proofs of the original T1 and J2 contracts,
+with the deliberately retained E-S1 as the only mathematical axiom. These are
+construction and kernel-checking results; independent design acceptance is
+pending. The Blueprint and independent audit artifacts were not edited, and
+no new primary-source review or agent-time estimate is claimed.
+
+### E4.0: shared size bias and stationary updates
+
+New owner: [DirichletSizeBias](GGC/Foundations/DirichletSizeBias.lean), importing
+only accepted lower foundations and mathlib. It proves:
+
+- `gammaShape_withDensity_self`, including the separate Dirac-zero branch.
+  The positive-shape density calculation uses `Real.Gamma_add_one` away from
+  zero, on an explicitly almost-everywhere event for Lebesgue measure.
+- `gammaVector_withDensity_coordinate` by splitting the actual product at
+  the selected coordinate, followed by `gammaVector_map_normalize_withDensity`
+  using the existing normalized-vector/total product law.
+- `dirichlet_withDensity_coordinate` for every selected shape, including zero.
+  Cancellation uses an explicitly positive finite total. The result is an
+  equality of measures and imposes no integrability condition on tests.
+- `dirichlet_weighted_increment`, normalization of `coordinateChoice`, and
+  `dirichlet_stationary_update`, an equality of pushforwards of the actual
+  categorical/Dirichlet/Beta product measure.
+
+[E4SizeBiasContract](Checks/E4SizeBiasContract.lean) checks Gamma shape zero,
+the impossible positive-total empty vector, a zero selected shape, a single
+positive coordinate, and the full product-law statement. The focused module
+and check passed; all seven theorem requests in the check reported only
+`propext`, `Classical.choice`, and `Quot.sound`. Before replacing either
+external declaration, the complete default build passed with 3957 jobs in
+`.lake/e4-build.log`. E4.0 itself removed no axiom.
+
+### E4.1: complete stick-breaking contract
+
+[Foundations/DirichletStickBreaking](GGC/Foundations/DirichletStickBreaking.lean)
+constructs an attached independent finite Dirichlet vector and the finite
+prefix `stickPrefix`. `stickPrefix_map` proves its stationary law by finite
+product induction. `paired_prefix_map` and `stickInput_prefix_map` extract
+the required finite joint laws from the caller's exact countable-product
+input, using injective restriction, finite products and product rearrangement.
+No independence of the dependent stick weights is asserted.
+
+`hasSum_stickWeight_of_mass_one` derives real summability from the actual
+stick measure on univ, with explicit ENNReal-to-real sum transport.
+`stickPrefix_eq` proves the exact prefix-plus-residual formula.
+`stickPrefix_tendsto` then proves convergence for **every attached real
+vector**, from the coordinate series and residual tending to zero. This is
+a stronger pointwise convergence statement than the planned simplex-tail
+specialization: the proof does not need the proposed residual error bound,
+a moment estimate, or a random-measure tail law. Bounded continuous tests and
+dominated convergence identify the limit law in `stick_partition_law`.
+
+The public [GGC.stick_breaking](GGC/DirichletStickBreaking.lean) preserves all
+original binders: arbitrary measurable E/Omega, m, B/F/Z, the Beta marginal,
+measurable V/Y, the complete hInput, and arbitrary measurable Q with hSum.
+The full-contract check is [E4StickBreakingContract](Checks/E4StickBreakingContract.lean).
+The wrapper, lower theorem and `GGC.DirichletRealization` caller compile.
+The former `External/Sethuraman.lean` is deleted, with no alias or forwarding
+file. The source locator and original provenance remain in the new wrapper.
+
+### E4.2: complete nonnegative Palm contract
+
+The staged implementation consists of:
+
+- **E4.2a:** [PartitionRefinement](GGC/Foundations/PartitionRefinement.lean)
+  constructs trivial and binary partitions and pair-indexed intersection
+  refinements, retaining empty cells. Both coordinate-sum projections are
+  measurable on the full real vector space and agree pointwise with the
+  original partition evaluations. The binary inside-cell mass sum is proved.
+- **E4.2b:** [ProbabilityMeasureExt](GGC/Foundations/ProbabilityMeasureExt.lean)
+  proves the cylinder Pi-system and both inclusions identifying the existing
+  Giry structure with its generated sigma-algebra. The candidate measurable
+  structure remains local; the identity-map codomain explicitly names the
+  original `ProbabilityMeasure.instMeasurableSpace`. The finite-measure
+  extension permits zero measures. `slice_apply` and
+  `joint_measure_ext_of_partitionCylinders` use restricted second marginals
+  and mathlib `Measure.ext_prod`, without DP or topology assumptions.
+- **E4.2c:** [Foundations/DirichletPalm](GGC/Foundations/DirichletPalm.lean)
+  supplies the exact finite-shape law, normalized-base coefficient, transported
+  coordinate tilt and posterior cylinder mass on a supplied cell.
+  `dirichlet_palm_rectangle` reduces both integrals to the same explicit
+  finite sum over inside cells. It uses neither cell-mass division nor a
+  measurable choice of a representative or a canonical posterior.
+- **E4.2d:** Local evaluation/posterior Markov kernels and normalized-base
+  probability yield equality of the joint measures. Nonnegative compProd
+  integration gives `RandomMeasure.posterior_palm_nonneg` for arbitrary
+  measurable Phi, including infinite values. The lower theorem only requires
+  a measurable base; [GGC.posterior_palm_nonneg](GGC/DirichletPalm.lean) explicitly
+  retains the original TopologicalSpace/PolishSpace/BorelSpace binders.
+
+[E4PalmContract](Checks/E4PalmContract.lean) checks the complete public type,
+zero finite measures, zero-size/empty-base partition constructors, and Phi
+identically infinity. The structural endpoints, rectangle proof, lower/public
+Palm theorems and existing signed Palm caller compile. James is deleted after
+migration, with no alias or forwarding file. All existing signed-integrability
+conditions and upper kernel definitions are unchanged. J2 imports no T1 proof.
+
+### Validation and trust boundary
+
+The clean project build passed with **3961 jobs**, and the separate direct
+`AxiomAudit.lean` invocation exited successfully. All three constructor-owned
+contract files passed. The audit's **1067 requests match 1067 results**;
+all **63 new declarations** report at most the three standard logical axioms.
+In particular, `GGC.stick_breaking` and `GGC.posterior_palm_nonneg` report
+only `propext`, `Classical.choice`, and `Quot.sound`.
+
+The source inventory contains **158 production Lean modules**, or **165**
+including contract checks. Its only mathematical axiom declaration is
+`GGC.External.SSV.phase_representation`. The main theorem's dependency set is
+exactly that declaration plus the three standard logical axioms. No proof
+placeholders or references to the retired James/Sethuraman modules remain in
+production code. The checks also confirm that the protected files listed
+below and the main theorem's type and proof body are unchanged.
+
+This evidence describes the uncommitted construction working tree based on
+`5f1b295`; it is not an independent acceptance record.
+
+Commands run from `formalization`, using the pinned Lean v4.32.2 Lake binary:
+
+```powershell
+lake clean ggc_power_closure
+lake build
+lake env lean AxiomAudit.lean
+lake env lean Checks/E4SizeBiasContract.lean
+lake env lean Checks/E4StickBreakingContract.lean
+lake env lean Checks/E4PalmContract.lean
+```
+
+The named-package clean removes project outputs while retaining pinned
+dependency caches. Logs are `.lake/e4-clean-build.log`,
+`.lake/e4-direct-audit.log`, `.lake/e4-sizebias-contract.log`,
+`.lake/e4-stick-contract.log` and `.lake/e4-palm-contract.log`.
+The explicit request/result and allowed-axiom comparisons are summarized in
+`.lake/e4-evidence.json`. These ignored local logs are reproducible by the
+commands above; the source files and this report are the durable record.
+
+`Definitions.lean`, the main theorem type and four-step proof body, the SSV
+module, the Blueprint, and all independent semantic-audit artifacts are
+unchanged. The main comment and current inventories now describe E-S1 alone.
+API-072/073/077/078/080/081 record actual compiled uses rather than planned
+APIs. API-074/079 remain withdrawn by user scope. No commit or push is part
+of this construction request.
+
+<a id="e4-design-acceptance-2026-09-25"></a>
+## 53. Independent E4 designer acceptance — 2026-09-25
+
+**Verdict: E4.0, E4.1 and E4.2a/b/c/d accepted as `verified`, with no remaining
+blocking finding.** The full distribution theorem remains accepted at its
+original scope, relative only to E-S1 beyond standard logic. The submission is the
+uncommitted working tree based on `5f1b295a6cf3ef2561f0b109ccfa5239a55c07b1`.
+This is a designer review of Section 52, not a new independent-auditor report.
+The auditor-owned semantic/source reports retain their existing evidence scope.
+
+### Mathematical contracts and ownership
+
+The review follows the dependency gates of Blueprint Sections 25–26 within
+this combined delivery: E4.0, then E4.1, then E4.2a/b/c/d. The constructor's
+completion of all stages before this review is not recorded as prior separate
+designer acceptance of the intermediate stages.
+
+- **E4.0:** inspected the zero-shape Gamma density branch, almost-everywhere
+  positive-shape calculation, product transport and independent normalization.
+  Coordinate size bias cancels only the finite positive total, not a possibly
+  zero coordinate. Weighted increments and the categorical/product update
+  establish the complete stationarity law. The retained size-bias contract
+  checks zero shape, zero selected coordinate, a single positive coordinate
+  and the actual product pushforward; all pass.
+- **E4.1:** inspected finite-prefix product laws, the attached independent
+  finite Dirichlet vector, recursive stationarity, mass-to-real-summability
+  transport, residual convergence and bounded-test identification. The exact
+  prefix formula proves convergence for every attached real vector; this is
+  an accepted replacement for the proposed simplex-tail error bound because
+  it proves the same required limiting law without an additional hypothesis.
+  No DP tail, canonical sampler or independent-stick-weight premise is used.
+  The arbitrary measurable-space public contract and probability-version
+  assumptions are preserved.
+- **E4.2a/b:** inspected empty-cell partitions, full-vector coordinate-sum
+  projections, the cylinder Pi-system and both Giry-generation inclusions.
+  The local candidate measurable structure does not replace the original
+  global instance. Extension covers arbitrary finite measures and zero slices;
+  joint extension reuses `Measure.ext_prod` with restricted marginals.
+- **E4.2c/d:** both rectangle integrals reduce to the same finite sum over
+  refined inside cells. There is no division by a cell mass and no selected
+  representative of a cell. Local Markov kernels give joint-measure equality,
+  then nonnegative compProd integration permits arbitrary measurable Phi,
+  including infinity. The lower theorem needs only measurability; the public
+  wrapper explicitly retains the source interface's Polish/Borel binders.
+  Arbitrary supplied K/hpost remains in the contract. J2's lower import
+  closure contains no T1 proof or upper Palm/realization consumer.
+
+The full T1 type agrees with the previous primitive type after whitespace and
+comment normalization. J2 agrees after explicitly prepending the old module's
+ambient variable binders. The checked public `@GGC.posterior_palm_nonneg`
+application also exercises all intended instance binders. The deleted James
+and Sethuraman modules have no production/check import, alias or forwarding
+replacement under their old names. Their provenance remains in the new owners.
+
+### Review findings and changes
+
+No blocking mathematical defect was found in the inspected E4 proofs.
+Two small evidence/documentation issues were identified:
+
+1. The submitted Palm check used inferred instance arguments and did not
+   explicitly exercise binary empty/universal cells or a zero-base-mass cell.
+   The designer extended the existing shared `Checks/E4PalmContract.lean`
+   rather than creating a duplicate probe: explicit public instance arguments,
+   empty/universal evaluation identities and a zero-mass coordinate integral
+   are now compiled. The zero-mass example makes no empty-cell assumption and
+   therefore also covers nonempty null cells. Existing zero finite-measure,
+   empty-base and constant-infinity tests remain. Authorship of the original
+   file remains constructor/shared; the added cases are attributed in its header.
+2. The current API summary still called the implemented E4 entries
+   `source_read`, contradicting their detailed compiled-use rows. The designer
+   corrected the current summaries and promoted API-072/073/077/078/080/081
+   to accepted compiled uses. The Blueprint's live module inventory also
+   linked to the deleted James/Sethuraman files; it now links to the new owners.
+   Dated construction and independent-auditor reports remain unchanged.
+
+The shorter submitted filename `E4PalmContract.lean` is accepted for the
+planned `E4DirichletPalmContract.lean` deliverable; the interface and checks
+determine acceptance, not the suggested filename. No production Lean proof,
+definition, external axiom, toolchain or Lake configuration was edited by
+the designer during this review.
+
+### Independent verification
+
+Evidence is retained locally under `../tmp/designer-acceptance-2026-09-25/`.
+The initial source snapshot contains 158 production modules, seven shared
+contract files and the user's `ForHumanCheck.lean`: 166 Lean files total,
+plus the three pinned configuration files. The constructor's count of 165
+correctly excludes the user-owned human-check file.
+
+The executable reports Lean 4.32.2, commit
+`f3b06c705e6c85f5314019d5d3baab0fec5b580c`. The mathlib checkout is pinned to
+`905b95818eb32af7874a58b427f50c1711a5e96c`, and its working tree is clean.
+Commands run from `formalization` with the explicit executable
+`C:\Users\Jdn\.elan\toolchains\leanprover--lean4---v4.32.2\bin\lake.exe`:
+
+```powershell
+lake build
+lake clean ggc_power_closure
+lake build
+lake env lean AxiomAudit.lean
+lake env lean Checks/E4SizeBiasContract.lean
+lake env lean Checks/E4StickBreakingContract.lean
+lake env lean Checks/E4PalmContract.lean
+lake env lean Checks/E3BetaGammaContract.lean
+lake env lean Checks/E3GammaDirichletContract.lean
+lake env lean Checks/E3MarkovKreinContract.lean
+lake env lean Checks/ThorinInterfacesContract.lean
+```
+
+Every command exited 0. The initial cached build passed 3961 jobs. The
+independent clean project build also passed **3961 jobs**, freshly compiling
+**158/158 production modules**, with no warning or error. The subsequent direct
+audit produced **1067/1067** matching results, including declaration-name and
+request-multiplicity comparison. All **63 new declarations** use standard
+logic only. The main theorem's exact transitive set is:
+
+```text
+propext
+Classical.choice
+Quot.sound
+GGC.External.SSV.phase_representation
+```
+
+All **seven** active shared contract files passed. Their **28** axiom outputs
+contain standard logic only, including the E4 files' 11 outputs. The extended
+Palm check passed after the designer's changes. No unexpected mathematical
+axiom, `sorryAx` or native-evaluation trust dependency appears in the audit.
+The clean command removes only this project's generated outputs; dependency
+caches remain, so this is not a rebuild of all mathlib from source.
+
+Static inspection passed 21 checks: the protected definitions/shared semantics,
+finite-input theorem, reduction, weak closure, SSV contract and main theorem
+code are unchanged from the submitted base (ignoring comments/whitespace for
+the code comparisons). The import graph is acyclic and all five new lower
+foundations have independent import closures. All 63 new declarations have
+central audit requests. The only mathematical axiom declaration is
+`GGC.External.SSV.phase_representation`; no proof placeholder, native-evaluation
+shortcut or retired-module reference was found in project Lean code.
+
+The final source snapshot agrees with the initial snapshot on every production
+source and pin. The only changed Lean file during this review is the explicitly
+attributed shared Palm contract check; the user's `ForHumanCheck.lean` is
+unchanged. The final evidence is `verification-summary.json`,
+`static-review.json`, `contract-results.json`, `source-start.json`,
+`source-end.json`, `clean-build.log`, `direct-audit.log` and the seven named
+contract logs in the evidence directory. `verify_evidence.py` reproduces the
+request/count/dependency/build/source comparisons from those retained artifacts.
+
+The project has reached the user-approved **single-external-axiom completion
+boundary**. E-S1 remains deliberately unproved; no S1 formalization gate is
+pending. RV-1, general unbounded J1 and the unused converse characterization
+retain their existing withdrawn/retired scope status. This is verification
+relative to E-S1, not a claim of external-axiom-free formalization.
+
+This review inspects the new E4 argument and integration in detail and checks
+the unchanged public theorem's full scope. It does not claim a new page-by-page
+literature review or a new manual rederivation of every previously accepted
+Euler/transport lemma. Those dependencies are included in the clean build
+and final transitive axiom audit.
+
+Documentation validation: the six maintained formalization documents pass
+local-file link checks, apart from two deliberately preserved historical links
+to the retired James/Sethuraman files in earlier report entries. The wider root
+status page also has two pre-existing unavailable local bibliography PDF links;
+they are unchanged and were not used as new source evidence in this acceptance.
+The new acceptance anchors are unique, and `git diff --check` passes.
+
+<a id="final-audit-closeout"></a>
+## 54. Designer response to the final independent audit — 2026-09-25
+
+Reviewed the auditor-owned [final review](SemanticAudit-2026-09-25.md#final-independent-audit).
+The designer accepts both findings. The main theorem remains accepted relative
+to E-S1; final public-interface compatibility is qualified as follows.
+
+| Finding | Designer disposition | Remaining work |
+|---|---|---|
+| F-01, medium | Confirmed. Corrected the blueprint to arbitrary measurable E; withdrew the J2/J3 exact-original-type acceptance claims in Sections 44, 49 and 53. Local lower proof acceptance remains valid. | Constructor repairs the two public wrappers and shared contract examples, then designer reruns the Section 28 gate. Open until that evidence exists. |
+| F-02, low | Closed in the maintained blueprint inventory: 1067 distinct central audit requests. Historical 954-check milestone counts are retained as dated evidence. | None. |
+
+### Cause and correction
+
+The historical axiom types omit unused topology section variables. The designer
+incorrectly treated those source variables as part of the elaborated contract
+and required their preservation. The implementation followed that erroneous
+specification. Manually prepending ambient variables in the earlier static
+comparison did not prove type compatibility. The corresponding positive result
+in `tmp/designer-acceptance-2026-09-25/static-review.json` is invalid for this
+purpose; its other build/dependency evidence is not thereby invalidated.
+The old artifact is preserved rather than silently rewritten.
+
+[Blueprint Section 28](Blueprint.md#final-audit-closeout) gives the exact bounded
+repair and reacceptance conditions. Current status notices in the API index,
+Checks README, project READMEs, ResearchStatus and CurrentGoal prevent the dated
+unqualified acceptance statements from being read as the final disposition.
+
+### Fresh designer diagnostics and evidence limits
+
+Isolated probes were derived from the two shared contract files by removing
+the three topology instances and their explicit application arguments. The
+public variants still call the public theorem; lower variants substitute only
+the corresponding `GGC.RandomMeasure` name in that example. No production Lean,
+active shared check or independent audit report was modified in this response.
+
+From `formalization`, using the installed pinned executable
+`C:/Users/Jdn/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe`, with
+`LEAN_NUM_THREADS=2`, each probe was run as `lake env lean <probe-path>`.
+Probe paths and complete stdout/stderr logs are retained in
+`../tmp/final-audit-closeout-2026-09-25/`:
+
+| Probe | Exit | Result |
+|---|---|---|
+| `E4PalmContractPublic.lean` | 1 | Expected rejection: explicit measurable-only application is incompatible with the current public binder list. |
+| `E4PalmContractLower.lean` | 0 | The same general Palm contract and existing boundary examples compile using the lower theorem. |
+| `E3GammaDirichletContractPublic.lean` | 1 | Expected rejection: current public posterior wrapper has extra binders. |
+| `E3GammaDirichletContractLower.lean` | 0 | The measurable-only posterior contract and existing Gamma/Dirichlet examples compile using the lower theorem. |
+
+These failures are diagnostic reproductions, not a passing implementation
+acceptance. The lower successes establish that the proposed interface repair
+needs no new mathematical proof. This response did not rerun the complete
+project build or central dependency audit; the final independent review and
+Section 53 retain their stated evidence scope. The 1067 count was independently
+recounted from current source. SHA256 checks confirm that all 166 project Lean
+sources and the auditor's report are unchanged during this designer closeout.
+
+**Closeout verdict:** designer corrections and F-02 are complete. F-01 remains
+an explicit, nonblocking construction/reacceptance item. No claim is made that
+all independent findings are closed. The user limited this role to blueprint
+design, revision and engineering acceptance; production repair remains with
+the constructor. No commit, push or publication was performed.
+
+
+<a id="f01-constructor-repair-2026-09-25"></a>
+## 55. F-01 measurable-only public-interface repair — 2026-09-25
+
+Constructor delivery against Blueprint Section 28. The two public interfaces
+now require only `{E : Type*} [MeasurableSpace E]`. `GGC.DirichletPalm` and
+`GGC.DirichletPosterior` drop their unused Polish imports; the latter also drops
+the obsolete topology-preservation comment and `unusedSectionVars` suppression.
+Every mathematical argument, argument order, conclusion, public name and
+one-line lower proof is unchanged. The two shared public contract examples use
+`@GGC.<name> E _ U ...`, retaining all boundary examples and axiom requests.
+
+The earlier assertions that topology binders belonged to the original contracts
+were wrong, as explained in Section 54. This repair does not validate those
+earlier exact-type acceptance claims. Designer interface reacceptance and F-01
+closure must be recorded separately; the constructor does not edit the Blueprint
+or the auditor-owned report to close the finding.
+
+### Historical elaboration and exact type comparison
+
+The complete historical `formalization/External/James.lean` was retrieved with
+`git show baae2e9:formalization/External/James.lean`. In a temporary isolated
+`.lake/F01HistoricalTypes.lean`, the source is retained verbatim, including its
+ambient topology section variables and axiom declarations; only imports of
+`GGC.DirichletPalm`, `GGC.DirichletPosterior`, and `Lean` are added. The following
+command is appended, followed by `set_option pp.all true in #check @<name>` for
+each of the four names. Thus Lean itself decides which section variables occur
+in each historical type. No binder list is reconstructed from source text.
+
+```lean
+open Lean Elab Command in
+run_cmd do
+  let env ← getEnv
+  for (oldName, newName) in [
+      (`GGC.External.James.posterior_palm_nonneg, `GGC.posterior_palm_nonneg),
+      (`GGC.External.James.beta_atom_posterior, `GGC.beta_atom_posterior)] do
+    let some oldDecl := env.find? oldName | throwError "missing historical declaration"
+    let some newDecl := env.find? newName | throwError "missing repaired declaration"
+    unless oldDecl.type == newDecl.type do
+      throwError "elaborated types differ: {oldName} / {newName}"
+    logInfo m!"Exact elaborated type equality: {oldName} = {newName}"
+```
+
+Both expression comparisons passed, and all four fully printed types require
+only the measurable-space instance. The historical axioms exist only in this
+ignored, isolated diagnostic; no production or shared check imports it, and no
+axiom or alias was added to project sources.
+
+### Commands and results
+
+Working directory: `formalization`. Executable:
+`C:/Users/Jdn/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe`.
+The commands below use `lake` as shorthand for that exact executable. Shared
+checks set `LEAN_NUM_THREADS=2`; the default incremental build retains the
+normal environment. Source baseline: uncommitted delivery over `5f1b295`,
+including the designer's Section 28 handoff present at the start of this repair.
+
+```powershell
+lake build
+lake env lean .lake/F01HistoricalTypes.lean
+$env:LEAN_NUM_THREADS='2'
+Get-ChildItem -LiteralPath Checks -Filter '*.lean' | Sort-Object Name |
+  ForEach-Object { lake env lean $_.FullName }
+lake env lean AxiomAudit.lean
+git diff --check
+```
+
+- Default incremental build: exit 0, **3961 jobs**, no Lean warning or error.
+  A clean rebuild was not required or performed for this binder-only repair.
+- Historical type elaboration/comparison: exit 0, **2 exact equalities**.
+- All **7 shared contract files**: exit 0. Their **28** dependency outputs
+  match their requests by name and multiplicity and use only standard logic.
+- Subsequent direct audit: exit 0, **1067 requests / 1067 outputs**, matched by
+  name and multiplicity. Every dependency set lies within standard logic plus
+  E-S1; `GGC.ggc_rpow` uses exactly `propext`, `Classical.choice`, `Quot.sound`
+  and `GGC.External.SSV.phase_representation`.
+- Source inventory: **158 production modules**. Its only mathematical axiom
+  declaration remains the SSV phase representation. Protected-source hashes
+  confirm unchanged foundations, Definitions, main, SSV, Blueprint and the
+  final independent audit relative to the beginning of this repair.
+- `git diff --check`: exit 0. Git's LF/CRLF conversion notices do not indicate
+  Lean warnings or whitespace errors.
+
+Local logs: `.lake/f01-build.log`, `.lake/f01-types.log`,
+`.lake/f01-<contract basename>.log`, `.lake/f01-audit.log`.
+Exit statuses are in `.lake/f01-contract-results.json`; exact audit/suite
+comparisons and hashes are summarized in `.lake/f01-evidence.json`.
+These ignored diagnostics are not durable independent acceptance artifacts;
+the checked source, historical Git revision and commands above support reruns.
+
+### Checked source SHA256
+
+Hashes are of the actual file bytes, including local line endings.
+
+| Source | SHA256 |
+|---|---|
+| `GGC/DirichletPalm.lean` | `3436562ff03e66f9341ead59e9314124ad6e4847495cf193451f68ec4180f89a` |
+| `GGC/DirichletPosterior.lean` | `a3a87c5725f801c33d2b2b1aeda8141c947ba29e7136902b2f3d3dc84d506d63` |
+| `Checks/E3GammaDirichletContract.lean` | `c6c8d2f9670f32872c63801628369b9a6a2e223102e6cc6bec99c6c6f899b80f` |
+| `Checks/E4PalmContract.lean` | `7ae37e8f1ad9b5de25be34f959ebe9d2ea911b98294e0c8091250245cf8f7f44` |
+| `AxiomAudit.lean` | `be0f3ba580047b633450d3d0efb5932b845b2254aa6277bf82140ac4a6e31053` |
+| `main.lean` | `ab4c48d246222f9e2efb0fef593d857e2120c444fce850e6e18e34e08f9c173f` |
+| `Definitions.lean` | `5c1891361786b1961a1b5c4c985986aa2551c9080d25a424bbb3a24038e510f9` |
+| `External/SSV.lean` | `fd9ea2955d5840ca056371a68bb901916c1f1583b4ea50b9558cb8a543bd247e` |
+| `Blueprint.md` | `70c783b87639db8f105475716d014a234cb1c68319c5c228f6998a485a89b526` |
+| `SemanticAudit-2026-09-25.md` | `b61bf7c1a82b6cc56941dde137e1e78eb8e1a96dcf792ec6a1e89746f6216188` |
+| `.lake/F01HistoricalTypes.lean` | `2fa907f6a55da847ad5699b77de617a943cdb7db6e17726a2fcb9aa11fcb2070` |
+
+Current status and shared-check descriptions now distinguish completed
+constructor repair from pending designer reacceptance. The original lower
+proofs and accepted E-S1 mathematical boundary remain unchanged. No commit,
+push, new mathematical proof or out-of-scope S1 work was performed.
+
+
+<a id="f01-designer-acceptance-2026-09-25"></a>
+## 56. F-01 final designer reacceptance — 2026-09-25
+
+**Accepted; F-01 and F-02 are closed.** The Section 55 constructor delivery
+satisfies Blueprint Section 28. This supersedes the pending disposition in
+Section 54, without reinstating the invalid earlier exact-type claims. The
+auditor-owned report is left unchanged as evidence of its reviewed snapshot.
+
+### Scope and source review
+
+Compared with the protected-source snapshot from the designer handoff, exactly
+four of 166 project Lean files changed: the two public wrappers and their two
+shared contract files. Foundations, definitions, main, the SSV input, all other
+Lean sources and the independent report retain their hashes. Inspection confirms
+that the repair removes only the surplus topology assumptions and import/linter
+scaffolding, updates explanatory comments and explicit public applications,
+and retains the mathematical arguments, conclusions and lower proof calls.
+The shared boundary examples and all 28 dependency requests are preserved.
+
+### Fresh validation performed by the designer
+
+All commands used the installed pinned Lean 4.32.2 `lake.exe` at
+`C:/Users/Jdn/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe`, from
+`formalization`, with `LEAN_NUM_THREADS=2`. All exited zero without Lean warnings
+or errors. The constructor's logs were not substituted for these reruns.
+
+| Check | Fresh result |
+|---|---|
+| `lake build` | 3961-job default incremental build passes; caches retained. |
+| Historical J2 source at `5f1b295` | Full historical James source re-elaborates; its J2 type expression equals the repaired public type expression. |
+| Historical J3 source at `baae2e9` | Full historical James source re-elaborates; its J3 type expression equals the repaired public type expression. |
+| `lake env lean Checks/<file>.lean`, all seven files | Seven passes; 28 axiom outputs match requests by name and multiplicity and use only standard logic. |
+| `lake env lean -t 0 AxiomAudit.lean` | 1067 distinct requests and 1067 outputs match by name and multiplicity; every set is within the allowed boundary. |
+| Source integrity | All inspected Lean/configuration sources and the auditor-owned report are unchanged during acceptance. |
+
+For each historical probe, retrieve the original complete source with
+`git show <revision>:formalization/External/James.lean`, prepend imports of
+`Lean`, `GGC.DirichletPalm` and `GGC.DirichletPosterior`, and append a command
+that retrieves both declarations from `getEnv` and requires
+`oldDecl.type == newDecl.type`. Historical ambient variables are not added to
+or removed from the source. The probes are isolated under `tmp`; their historical
+axioms are neither production dependencies nor part of the central audit process.
+
+The main theorem's exact dependency set remains:
+
+```text
+propext
+Classical.choice
+Quot.sound
+GGC.External.SSV.phase_representation
+```
+
+Reproducible local evidence is retained under
+`../tmp/f01-designer-acceptance-2026-09-25/`: `source-start.json`, generated
+historical probes, `commands.json`, one UTF-8 log per command and
+`verification.json`. The driver is `../tmp/verify-f01-acceptance.py`.
+These ignored artifacts supplement the durable source revisions, commands and
+results recorded here. Source hashes for the four repaired files and main/SSV
+match the Section 55 delivery. Documentation checks include unique new anchors,
+valid new local links and `git diff --check`.
+
+### Final disposition and limits
+
+There is no remaining construction or acceptance item within the authorized
+scope. M0–M7 and E1–E4 remain accepted relative to E-S1; F-02's current count
+is 1067. E-S1 formalization, RV-1, general unbounded J1 and the unused Thorin
+converse remain outside the agreed scope. This is engineering acceptance,
+not publication or external mathematical peer review. No new clean rebuild,
+literature review or manual rederivation of unchanged analytic lemmas is claimed.
+No production proof was edited, and no commit or push was performed.

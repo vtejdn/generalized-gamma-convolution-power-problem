@@ -1,7 +1,7 @@
 import GGC.UniformBeta
 import GGC.Foundations.Quantile
 import GGC.Foundations.ProbabilityBorel
-import External.Sethuraman
+import GGC.DirichletStickBreaking
 import GGC.DirichletPosterior
 
 /-! # Dirichlet sampling on a fixed common probability space
@@ -108,7 +108,7 @@ theorem dirichletLaw_isDirichlet (B : PosReal) (F : ProbabilityMeasure ℝ) :
   have hY : Measurable (fun S : ℕ → UnitWeight => fun i => quantileSampler F (S i)) :=
     measurable_pi_iff.2 fun i => measurable_quantileSampler.comp
       (measurable_const.prodMk (measurable_pi_apply i))
-  apply External.Sethuraman.stick_breaking uniformCoreLaw B.val B.property F
+  apply GGC.stick_breaking uniformCoreLaw B.val B.property F
     (betaWeightLaw B) (betaWeightLaw_map_val B)
     (fun ω i => uniformBreak B (ω.1 i)) (fun ω i => quantileSampler F (ω.2 i))
     (hV.comp measurable_fst) (hY.comp measurable_snd)

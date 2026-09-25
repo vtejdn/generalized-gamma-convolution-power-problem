@@ -1,10 +1,10 @@
 import GGC.GammaDirichlet
-import External.James
+import GGC.DirichletPalm
 import Mathlib.Probability.Kernel.Composition.IntegralCompProd
 
 /-! # The actual posterior kernel and signed Palm transfer
 
-The signed identity is deduced locally from the nonnegative external
+The signed identity is deduced locally from the proved nonnegative
 disintegration. Its absolute-integrability hypothesis is on the concrete
 joint sampling measure, and is transferred to the posterior joint measure
 before either Bochner Fubini theorem is used.
@@ -49,7 +49,7 @@ theorem samplingJoint_swap_eq_posteriorJoint {U : Measure PosReal}
   intro s hs
   rw [Measure.map_apply measurable_swap hs]
   rw [← lintegral_indicator_one (measurable_swap hs), ← lintegral_indicator_one hs]
-  have hl := External.James.posterior_palm_nonneg U D hD B.val B.property hMass
+  have hl := GGC.posterior_palm_nonneg U D hD B.val B.property hMass
     (posteriorMixtureLaw D B) (measurable_atomMixtureLaw D (betaWeightLaw B))
     (posteriorMixture_isDirichlet hD B hMass) (s.indicator (fun _ => (1 : ℝ≥0∞)))
     (measurable_const.indicator hs)

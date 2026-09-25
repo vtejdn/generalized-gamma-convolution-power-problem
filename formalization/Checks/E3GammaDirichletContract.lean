@@ -10,16 +10,16 @@ This is not an independent-reviewer-owned artifact.
 
 Checks the full positive-total joint law, its all-zero extension, deterministic
 single-positive-coordinate case, zero selected shape, and the exact original
-E-J3 type with arbitrary Polish/Borel base, D, Z and atom. Production proofs
+E-J3 type with arbitrary measurable base, D, Z and atom. Production proofs
 replace the mathematical gaps; these examples check their exposed contracts.
 Axiom output must be compared with standard logic only. This does not establish
 independent design acceptance or replace the full project build/audit.
 
 Working directory: formalization. Pinned Lean: v4.32.2.
-Command: C:/Users/vtejd/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe env lean Checks/E3GammaDirichletContract.lean
-Evidence: ConstructionReport Sections 43 and 48; .lake/close-dirichlet.log.
-Maintenance: E-J3 relocation changes only its import/public name; the explicit
-topology-binder check and all original mathematical contracts are preserved.
+Command: lake env lean Checks/E3GammaDirichletContract.lean
+Evidence: ConstructionReport Sections 43, 48 and 55; .lake/f01-E3GammaDirichletContract.log.
+Maintenance: F-01 repairs the public example to the historical measurable-only
+contract (Blueprint Section 28); all mathematical and boundary checks are retained.
 Production: GGC/Foundations/GammaDirichlet.lean and DirichletUpdate.lean.
 Lifecycle: retain for full-interface and degenerate-case regression checks.
 -/
@@ -61,7 +61,7 @@ example {n : ℕ} (a : Fin n → ℝ≥0) (ha : ∑ i, a i ≠ 0) (j : Fin n)
     (dirichletLaw (incrementShape a j) : Measure (Fin n → ℝ)) :=
   dirichlet_coordinate_update a ha j
 
-variable {E : Type*} [MeasurableSpace E] [TopologicalSpace E] [PolishSpace E] [BorelSpace E]
+variable {E : Type*} [MeasurableSpace E]
 
 -- The original E-J3 declaration, preserving every binder and hypothesis.
 example
@@ -72,7 +72,7 @@ example
     (hZ : Measure.map (fun z : UnitWeight => z.val) (Z : Measure UnitWeight) =
       ProbabilityTheory.betaMeasure 1 B) (b : E) :
     IsDirichletProcess (U + Measure.dirac b) (atomMixtureLaw D Z b) :=
-  @GGC.beta_atom_posterior E _ _ _ _ U D hD B hB hMass Z hZ b
+  @GGC.beta_atom_posterior E _ U D hD B hB hMass Z hZ b
 
 #print axioms GGC.RandomMeasure.gammaVector_normalize_sum
 #print axioms GGC.RandomMeasure.gammaVector_normalize_sum_of_pos

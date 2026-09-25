@@ -1,27 +1,26 @@
 # Current goal
 
-Updated: **2026-09-23**.
+Updated: **2026-09-25**.
 
-## Current authorized work: blueprint-aligned Lean definition migration
+## Current authorized work: designer acceptance and final-audit closeout
 
-Following the [principles](formalization/README.md) and
-[blueprint](formalization/Blueprint.md), establish a pinned Lean project,
-ignore `.lake/`, and provide a human-auditable [main.lean](formalization/main.lean)
-containing the full **GGC power closure** statement and its necessary definitions.
-Every introduced literature axiom belongs in the separate
-[External directory](formalization/External/README.md), with a complete Lean
-type, source locator and explicit scope.
+The main GGC power-closure theorem is implemented using the original finite-gamma
+weak-limit definition and accepted relative to the user-retained E-S1 axiom.
+The remaining literature replacements are locally proved. RV-1, the unused
+Thorin converse and general unbounded J1 retain their withdrawn/retired status.
 
-The current code defines `GGC.GGCPowerClosure` as the unproved target proposition.
-`main.lean` now uses actual finite gamma products and weak limits for `IsGGC`,
-with no external imports. Basic, finite-gamma, Laplace and Thorin declarations
-are separated into `GGC/` modules, and the audit and Lake coverage follow that
-layout. `HasThorinRepresentation` is a separate predicate; its characterization
-and positive-constant membership proof remain M1 work. The three Bondesson
-interfaces are unchanged. The main construction and proof remain pending; no
-core conclusion is assumed as an axiom or represented by an unfinished proof.
-This stage includes compilation and dependency inspection of the scaffold.
-The mathematical assessment in [ResearchStatus](ResearchStatus.md) is unchanged.
+The final independent audit found no blocking main-theorem defect. F-02's
+inventory count is corrected to 1067. F-01 exposes an error in the designer's
+original J2/J3 type baseline: only measurable-space instances belong in those
+public contracts. The lower proofs already provide this generality.
+
+Designer reacceptance is complete: both public wrappers match the actual
+historical axiom types, and all seven shared checks, the incremental default
+build and 1067-result direct audit pass. F-01 and F-02 are closed; no authorized
+construction or acceptance item remains pending. E-S1 is deliberately retained,
+not an outstanding formalization task. Production Lean and the auditor-owned
+report were unchanged during this acceptance. See
+[Section 56](formalization/ConstructionReport.md#f01-designer-acceptance-2026-09-25).
 
 ## Previous maintenance handoff (2026-09-06)
 

@@ -1,27 +1,30 @@
 # Literature interfaces and remaining mathematical axioms
 
-Six retained literature interfaces remain across the project. E-B1, E-B3 and E-J3 are locally
-proved theorems with their original types; E-J2, E-T1 and E-S1 are the three
-explicit literature axioms, all used by the main theorem. E-B2 and its unused
-converse/equivalence consumers are removed. Compiling the three axiom
-declarations checks their types, not their mathematical proofs.
+Six retained literature interfaces remain across the project. E-B1, E-B3, E-J2,
+E-J3 and E-T1 are locally proved theorems. E-S1 is the sole explicit literature
+axiom used by the main theorem. E-B2 and its unused converse/equivalence
+consumers are removed. Compiling the SSV axiom checks its type, not its proof.
 No project core result is registered as an axiom.
 
 Project scope retains E-S1 as the sole external mathematical input at
 completion. Its local formalization is excluded; `External/SSV.lean` and its
-complete audited contract remain required. The current inventory above still
-includes J2/T1 until their local replacements pass acceptance.
+complete audited contract remain required. Local proof checking and independent
+design acceptance are separate; the E4 construction evidence is recorded in
+[the construction report](../ConstructionReport.md#e4-construction-2026-09-25).
+The full local T1/J2 replacements have now passed
+[independent designer acceptance](../ConstructionReport.md#e4-design-acceptance-2026-09-25),
+including a clean build, complete type checks and the final single-axiom audit.
 
 [GGC/Thorin/Interfaces.lean](../GGC/Thorin/Interfaces.lean) now owns E-B1/E-B3
 and imports the independent `GGC.Thorin.Realization` layer. `External` contains
-only the three remaining literature axioms. The same-type E-J3 theorem is
+only the retained SSV axiom. The same-type E-J3 theorem is
 `GGC.beta_atom_posterior` in [DirichletPosterior.lean](../GGC/DirichletPosterior.lean),
 which reuses [DirichletUpdate.lean](../GGC/Foundations/DirichletUpdate.lean),
 whose finite Gamma/Dirichlet proofs import no External input.
 That Thorin lower layer imports neither this interface
 nor any `External` input, `GGC.Thorin`, `Identification`, `PowerClosure` or `main`.
-SSV remains mathlib-only; James and Sethuraman use mathlib and independent shared
-random-measure semantics. All retained primitive interface types retain actual measures,
+SSV remains mathlib-only. The local James and Sethuraman interfaces import their
+independent finite Gamma/Dirichlet foundations. All retained primitive interface types retain actual measures,
 integrals, nonnegative probability laws and the original quantifier order.
 
 E2's implementation and fresh verification are documented in the
@@ -53,9 +56,9 @@ The confirmed assignment and local-file check are recorded in
 | E-B1 (local theorem) | `GGC.thorin_realization` | Realize every nonnegative drift and Thorin-admissible positive-rate measure as a nonnegative probability law with the displayed Laplace transform. Intended for Thorin/value-law construction, Blueprint M0/M1 and M6. |
 | E-B3 (local theorem) | `GGC.finite_atomic_approximation` | Approximate every represented law by nonnegative probability laws with zero-drift finite-atomic Thorin transforms. After local identification of these approximants with actual finite gamma sums, this can supply the representation-to-original-membership direction in M1. |
 | E-J1 (retired) | Former `GGC.External.James.markov_krein`, deleted | The unused general unbounded/log-integrable interface is retired. `GGC.RandomMeasure.markov_krein_of_bounded` is a distinct proved specialization used by the unchanged `dirichletMean_laplace`; it is not a same-type proof of the former interface. |
-| E-J2 | `GGC.External.James.posterior_palm_nonneg` | Nonnegative one-observation disintegration for an explicitly measurable posterior kernel whose values have DP(U+δ_b) laws. Signed applications still require local L1 proofs. |
+| E-J2 (local theorem) | `GGC.posterior_palm_nonneg` in `GGC/DirichletPalm.lean` | Nonnegative one-observation disintegration for an explicitly measurable posterior kernel whose values have DP(U+δ_b) laws. Signed applications still require local L1 proofs. |
 | E-J3 (local theorem) | `GGC.beta_atom_posterior` in `GGC/DirichletPosterior.lean` | DP(U+δ_b) law of the actual independent-product atom mixture. The supplied weight law must push forward to mathlib's Beta(1,B) measure. M2 consumer: `posteriorMixture_isDirichlet`. |
-| E-T1 | `GGC.External.Sethuraman.stick_breaking` | Actual independent beta/location input law; measurable probability-valued stick sum supplied by the caller. Gives the shared finite-partition DP law. Consumer: `dirichletLaw_isDirichlet`. |
+| E-T1 (local theorem) | `GGC.stick_breaking` in `GGC/DirichletStickBreaking.lean` | Actual independent beta/location input law; measurable probability-valued stick sum supplied by the caller. Gives the shared finite-partition DP law. Consumer: `dirichletLaw_isDirichlet`. |
 | E-S1 | `GGC.External.SSV.phase_representation` | Bounded measurable real phase with anchor-one representation, principal-log representation on the upper half-plane, absolute integrability, and a.e. uniqueness on `(0,∞)`. Consumer: `phase_anchor_one`, via a locally proved Poisson boundary recovery. |
 
 The two active E-B theorem interfaces and retired E-B2 use L. Bondesson, *Generalized Gamma Convolutions and Related Classes
@@ -138,7 +141,8 @@ independently accepted; see [Section 46](../ConstructionReport.md#e3-three-desig
 ## James registration — 2026-09-23
 
 E-J1–E-J3 were originally declared. E3.2 proves J3; E3.3 retires the general J1
-interface after proving its required bounded specialization. The [primary reprint](https://arxiv.org/pdf/math/0505606)
+interface after proving its required bounded specialization. E4.2 proves J2 in
+`GGC/DirichletPalm.lean`, including the original explicit topology binders. The [primary reprint](https://arxiv.org/pdf/math/0505606)
 was read at its version-marked page 1 and reprint pp.2, 4–5. Bibliography:
 L. F. James (2005), *Annals of Statistics* 33, 647–660,
 [DOI 10.1214/009053604000001237](https://doi.org/10.1214/009053604000001237).
@@ -161,8 +165,8 @@ canonical phase, or a generator identity.
 
 ## Sethuraman registration — 2026-09-24
 
-E-T1 is declared in [Sethuraman.lean](Sethuraman.lean) as
-`GGC.External.Sethuraman.stick_breaking`. The primary reprint was inspected
+E-T1 is proved in [DirichletStickBreaking.lean](../GGC/DirichletStickBreaking.lean) as
+`GGC.stick_breaking`. The primary reprint was inspected
 at printed pp.642 and 645 (PDF pages 4 and 7); equation (2.1) continues on
 p.643. Source: J. Sethuraman, *Statistica Sinica* 4 (1994), 639–650,
 [primary reprint](https://www.cs.princeton.edu/courses/archive/fall07/cos597C/readings/Sethuraman1994.pdf).
@@ -235,8 +239,9 @@ directory and the `GGC.External` namespace. The old Bondesson/James wrapper
 exceptions are superseded. Bondesson has already migrated; the remaining
 E-J3 wrapper has moved to `GGC.DirichletPosterior` under
 [Blueprint Section 24](../Blueprint.md#audit-r2-and-j3-relocation).
-There is no External alias or forwarding wrapper. James retains E-J2 with an
-explicit `Foundations.Posterior` import and no DirichletUpdate proof import.
+There is no External alias or forwarding wrapper. E-J2 is now proved as
+`GGC.posterior_palm_nonneg` in [DirichletPalm.lean](../GGC/DirichletPalm.lean).
+The empty James and Sethuraman assumption modules have been deleted.
 Source provenance and historical audit records remain. Construction validation
 is in [Section 48](../ConstructionReport.md#r2-j3-closeout-2026-09-25);
 independent design acceptance is complete in
@@ -252,8 +257,9 @@ only. This keeps external inputs independent of the target and its proof.
 
 `AxiomAudit.lean` now imports `main` and uses
 `#print axioms GGC.ggc_rpow` to check the genuine proof's transitive dependencies
-against this inventory. The actual final dependency list and verification
-evidence are recorded in the [E2 independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24); the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24) preserves the earlier seven-input result.
+against this inventory. The E4 dependency list and construction evidence are recorded in the
+[E4 construction](../ConstructionReport.md#e4-construction-2026-09-25). Earlier
+verification evidence is recorded in the [E2 independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24); the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24) preserves the earlier seven-input result.
 A named target proposition alone is not a proof.
 
 
@@ -271,6 +277,6 @@ for the original-type checks, build and audit. At that migration acceptance,
 five mathematical axioms remained. E3.2 subsequently proves E-J3 at its full
 original type, reducing the count to four at E3.2; see
 [Section 43](../ConstructionReport.md#e3-one-two-construction-2026-09-25).
-E3.1/E3.2 are independently accepted; see [Section 44](../ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). E3.3 now reduces the current count to three, independently accepted; see [Section 46](../ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
+E3.1/E3.2 are independently accepted; see [Section 44](../ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). E3.3 reduced the count to three at that stage, independently accepted; see [Section 46](../ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
 The original general J1 declaration is absent; the bounded replacement is in
 [MarkovKrein.lean](../GGC/Foundations/MarkovKrein.lean).

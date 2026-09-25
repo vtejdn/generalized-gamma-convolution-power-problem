@@ -1,5 +1,11 @@
 # Research status: the GGC power problem
 
+**Lean final acceptance (2026-09-25):** F-01 and F-02 are closed by
+designer reacceptance. J2/J3 match their historical measurable-only types; the
+main theorem remains accepted relative to E-S1. See the
+[acceptance evidence](formalization/ConstructionReport.md#f01-designer-acceptance-2026-09-25).
+The independent audit report remains an unchanged record of its reviewed snapshot.
+
 Mathematical assessment recorded: **2026-09-06**, through WIP-6.23.
 This file is the current status record, not a second proof ledger.
 The documentation cleanup preserves that assessment without a new
@@ -58,18 +64,21 @@ sources or to the 2026 induction discussed below.
 The [manuscript sources](manuscript/ggc-power-closure.tex) and
 [bibliography](manuscript/references.bib) are written. The recorded handoff
 included static checks, not TeX compilation.
-As of 2026-09-24, the pinned Lean project contains the
+As of 2026-09-25, the pinned Lean project contains the
 [complete target definitions](formalization/Definitions.lean) and the genuine theorem
 `GGC.ggc_rpow` in [the proof entry point](formalization/main.lean).
 The original finite-gamma weak-limit definition is preserved; no moment,
 drift or Thorin-mass restriction remains in the final type. The construction
 uses proved Euler existence, dynamic identification and the weak-limit reduction.
-Its actual dependencies include five [registered literature axioms](formalization/External/README.md):
-E-J1–3, E-T1 and E-S1, in addition to Lean's standard logical axioms.
-This is verification of the project derivation relative to those inputs,
-with E-B1/E-B3 now proved locally; the remaining five inputs are still assumptions. Build and axiom-audit
-evidence is recorded in the [construction report](formalization/ConstructionReport.md#e2-construction-2026-09-24);
-independent design acceptance remains separate. This does not revise the
+Its remaining [registered literature axiom](formalization/External/README.md) is
+E-S1, in addition to Lean's standard logical axioms. The E4 construction proves
+the full stick-breaking and nonnegative Palm contracts locally; E-S1 is retained
+by user scope. This verifies the project derivation relative to E-S1.
+Build and axiom-audit evidence is recorded in the
+[construction report](formalization/ConstructionReport.md#e4-construction-2026-09-25);
+[independent designer acceptance](formalization/ConstructionReport.md#e4-design-acceptance-2026-09-25)
+also passed the clean project build, full dependency audit and shared contract checks.
+This does not revise the
 written mathematical assessment above or establish external peer review or priority.
 
 ## Independent results and separate questions

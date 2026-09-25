@@ -1,5 +1,13 @@
 # Lean Blueprint for GGC Power Closure
 
+**Final acceptance (2026-09-25): F-01 and F-02 are closed.** Both J2/J3
+public interfaces have the historical measurable-only types, verified by fresh
+Lean elaboration and exact type-expression comparison. The main theorem remains
+accepted relative to E-S1. Earlier claims that topology instances belonged to
+the original types remain withdrawn; the repaired interfaces are accepted on
+new evidence. See [Section 56](ConstructionReport.md#f01-designer-acceptance-2026-09-25)
+for the build, seven contract checks and 1067-result audit.
+
 **Language convention:** maintain this blueprint in English, including prose,
 tables, milestone descriptions and future updates. Preserve Lean identifiers
 and mathematical notation.
@@ -35,17 +43,22 @@ theorems. The unused E-B2 axiom and its forward/equivalence characterization
 interfaces have been removed; the undeclared E-B4 fallback is withdrawn. E3.1/E3.2 are independently accepted: E-J3 is now a locally proved theorem.
 E3.3 is also independently accepted: the bounded Markov-Krein formula is proved
 and the unused general E-J1 interface is retired, not fully formalized. The
-final law theorem now uses exactly E-J2, E-T1 and E-S1, plus `propext`,
-`Classical.choice`, and `Quot.sound`. See [Section 23](#e3-three-accepted).
+final law theorem used E-J2, E-T1 and E-S1 at the E3.3 acceptance snapshot.
+E4.0–E4.2 are now **independently accepted as `verified`**: full local T1/J2
+proofs leave exactly E-S1, plus `propext`, `Classical.choice`, and `Quot.sound`.
+See [Section 27](#e4-design-acceptance-2026-09-25) for current evidence and
+[Section 23](#e3-three-accepted) for the E3.3 snapshot.
 The R2-01 comment correction, E-J3 public-interface relocation and retirement
 of the superseded reuse probe are also accepted; see [Section 24](#audit-r2-and-j3-relocation).
-[Section 25](#e4-remaining-inputs-plan) specifies the next proposed reduction:
+[Section 25](#e4-remaining-inputs-plan) specifies the completed reduction:
 shared finite Dirichlet size-bias, full E-T1, then full E-J2.
 **User scope decision, 2026-09-25:** E-S1 is retained as the sole permitted
 external mathematical input at completion; its local formalization is outside
-this project. The actual current dependency set is still J2/T1/S1.
-[Section 26](#e4-j2-construction-handoff) gives the detailed J2 handoff. No E4
-proof or dependency reduction is implied by this scope decision.
+this project. The actual current dependency set now matches this boundary.
+[Section 26](#e4-j2-construction-handoff) retains the detailed J2 contract;
+its implementation is accepted in Section 27. The independent clean build
+passed 3961 jobs with 158/158 fresh production modules; the subsequent direct
+audit matched 1067/1067 requests. All seven shared contract checks passed.
 
 **E2 is independently accepted as `verified`.** E-B3 finite-atomic approximation
 and E-B1 Thorin realization preserve their original complete primitive types
@@ -238,10 +251,10 @@ Paths are relative to `formalization/`. The Lake library is `GGCPower`, with roo
 | [GGC/WeakClosure.lean](GGC/WeakClosure.lean) | `isGGC_iff_mem_closure` and `isGGC_of_tendsto` prove original-GGC weak closure through metrization and sequential closure, with no Thorin dependency. |
 | [GGC/Reduction.lean](GGC/Reduction.lean) | `isGGC_powerLaw_of_finiteGamma` and `ggcPowerClosure_of_finiteGamma` prove the conditional reduction. `GGC.PowerClosure` now discharges its explicit finite-input premise. |
 | [GGC/Thorin/Interfaces.lean](GGC/Thorin/Interfaces.lean) | E-B1 `thorin_realization` and E-B3 `finite_atomic_approximation`, with primitive measure/Laplace contracts and source annotations. Both are locally proved compatibility theorems. E-B2 is removed; this file declares no axiom. |
-| [GGC/DirichletPosterior.lean](GGC/DirichletPosterior.lean) | `GGC.beta_atom_posterior`, preserving the complete original E-J3 primitive type and Polish/Borel binders over the independent `Foundations.DirichletUpdate` proof. No External dependency; standard logic only. |
-| [External/README.md](External/README.md), [External/James.lean](External/James.lean), [External/SSV.lean](External/SSV.lean), [External/Sethuraman.lean](External/Sethuraman.lean) | Six retained literature interfaces: locally proved E-B1/E-B3/E-J3 and three remaining axioms. General E-J1 is retired; a separately named local bounded theorem serves its former consumer. E-B2 survives only in historical source/acceptance records; E-B4 is withdrawn. SSV imports mathlib; James and Sethuraman additionally use independent shared random-measure semantics. The relocated Thorin interfaces import the independent Thorin proof layer; James imports only independent posterior semantics and the required topology API; E-J3 is owned by `GGC.DirichletPosterior`. |
+| [GGC/DirichletPosterior.lean](GGC/DirichletPosterior.lean) | `GGC.beta_atom_posterior`, accepted after F-01 repair at the original measurable-only E-J3 primitive type over the independent `Foundations.DirichletUpdate` proof. No External dependency; standard logic only. |
+| [External/README.md](External/README.md), [External/SSV.lean](External/SSV.lean), [GGC/DirichletPalm.lean](GGC/DirichletPalm.lean), [GGC/DirichletStickBreaking.lean](GGC/DirichletStickBreaking.lean) | Six retained literature interfaces: locally proved E-B1/E-B3/E-J2/E-J3/E-T1 and the sole remaining axiom E-S1. General E-J1 is retired; a separately named bounded theorem serves its former consumer. E-B2 survives only in historical records; E-B4 is withdrawn. SSV imports mathlib only. Local Thorin, posterior, Palm and stick-breaking interfaces import their independent foundations. James/Sethuraman modules are deleted without old-name aliases. |
 | [GGC/PowerClosure.lean](GGC/PowerClosure.lean) | `isGGC_power_valueLaw`, `isGGC_power_finiteGammaLaw`, `isGGC_power_of_isFiniteGammaConvolution`; detailed finite-input assembly. The public `ggc_rpow` now lives in `main`. |
-| [AxiomAudit.lean](AxiomAudit.lean) | Prints definitions and complete external contracts, checks the expanded final theorem type, and audits 954 declarations including `ggc_rpow`. The persistent audit also prints its actual proof body. |
+| [AxiomAudit.lean](AxiomAudit.lean) | Prints definitions and complete external contracts, checks the expanded final theorem type, and audits 1067 declarations including `ggc_rpow`. The persistent audit also prints its actual proof body. |
 
 <a id="statement-proof-separation"></a>
 
@@ -1210,8 +1223,8 @@ b, use the original `hD` partition law, and apply this update. The exact product
 pushforward using the given `hZ` handles arbitrary `ProbabilityMeasure UnitWeight`
 with the specified Beta marginal.
 
-Keep the complete type of `External.James.beta_atom_posterior`: the original
-Polish/Borel E, arbitrary U/D satisfying `hD`, positive total B, arbitrary Z
+Keep the complete type of `External.James.beta_atom_posterior`: an arbitrary
+measurable space E (no topology instances), arbitrary U/D satisfying `hD`, positive total B, arbitrary Z
 satisfying `hZ`, and arbitrary b. Do not specialize to positive rates, positive
 cells or the project's sampler. This route needs no DP-law uniqueness theorem
 on random measures and no Gamma-process construction.
@@ -1821,8 +1834,10 @@ during acceptance. Mathematical scope and the three-axiom boundary are unchanged
 <a id="e4-remaining-inputs-plan"></a>
 ## 25. E4 plan: shared size-bias, stick-breaking and Palm — 2026-09-25
 
-**Status: `planned`; designer reassessment, not construction or acceptance.**
-The accepted baseline is 153 production modules, 1005 direct audit requests
+**Status: `verified`; independent E4 acceptance is recorded in Section 27.**
+The following design retains the original handoff and its pre-E4 baseline;
+future-tense statements describe that handoff, not current open obligations.
+The accepted baseline at planning was 153 production modules, 1005 direct audit requests
 and exactly E-J2/E-T1/E-S1 in both the actual axiom inventory and main theorem.
 The preceding clean-build evidence and designer rerun are in Section 24.5.
 This plan preserves the full law theorem, original definitions and each
@@ -2043,6 +2058,9 @@ must say verification relative to E-S1, not external-axiom-free formalization.
 <a id="e4-j2-construction-handoff"></a>
 ## 26. E4.2 J2 construction handoff — 2026-09-25
 
+**Completed and independently accepted in Section 27.** The staged design
+and original acceptance requirements below are retained for traceability.
+
 **Status: `planned`; full local proof required.** This section fixes the
 engineering decomposition of the full original nonnegative Palm identity.
 E4.2a/b may be delivered as an early structural gate before E4.0. E4.2c/d
@@ -2053,10 +2071,10 @@ Lean proof or compiled adapter is asserted by this design.
 
 The final public theorem is `GGC.posterior_palm_nonneg` in
 `GGC/DirichletPalm.lean`, replacing the entire original E-J2 declaration.
-Preserve its argument order, including all original topology instances:
+Preserve its argument order at the corrected measurable-only scope (F-01):
 
 ```lean
-{E : Type*} [MeasurableSpace E] [TopologicalSpace E] [PolishSpace E] [BorelSpace E]
+{E : Type*} [MeasurableSpace E]
 (U : Measure E) (D : ProbabilityMeasure (ProbabilityMeasure E))
 (hD : IsDirichletProcess U D) (B : ℝ) (hB : 0 < B)
 (hMass : U univ = ENNReal.ofReal B)
@@ -2074,10 +2092,10 @@ Its conclusion is unchanged:
       ∂(ENNReal.ofReal (1 / B) • U)
 ```
 
-A stronger lower theorem uses only `[MeasurableSpace E]`. The public wrapper
-must still expose the original explicit topology binders; write them explicitly
-or check their elaborated inclusion rather than relying on section-variable
-inference. Arbitrary supplied D and K, atomic/non-atomic/mixed bases, and
+Both the historical elaborated axiom and the lower theorem use only
+`[MeasurableSpace E]`. The public wrapper must expose that same contract, without
+`TopologicalSpace`, `PolishSpace` or `BorelSpace` binders. Section 28 corrects
+the previous, erroneous requirement to preserve those additional binders. Arbitrary supplied D and K, atomic/non-atomic/mixed bases, and
 possibly infinite Phi are required. No canonical-posterior, sampler, absolute
 continuity, pointwise positive shape or additional integrability assumption
 may replace the original contract.
@@ -2329,3 +2347,115 @@ independent audit to make a renamed interface look already reviewed.
   does not fit, report the actual missing type/semantic bridge and propose a
   local correction; do not change the Giry structure, weaken the endpoint,
   introduce a uniqueness axiom or reopen out-of-scope S1 work.
+
+<a id="e4-design-acceptance-2026-09-25"></a>
+## 27. E4 independent design acceptance — 2026-09-25
+
+**E4.0, E4.1 and E4.2a/b/c/d are accepted as `verified`.** No blocking
+mathematical or interface defect remains in the reviewed delivery. The complete
+law theorem preserves the original GGC definition and all real powers q >= 1.
+The user-approved final mathematical axiom set is now achieved:
+`{GGC.External.SSV.phase_representation}`, beyond standard Lean logic.
+
+Acceptance followed the shared size-bias gate, then full T1, then the structural
+partition/extension and full Palm gates within the submitted combined delivery.
+T1 preserves the original arbitrary-measurable-space input and supplied-Q
+contract. Its exact prefix formula and pointwise convergence for every attached
+vector satisfy the limiting-law requirement without needing the suggested
+simplex-tail error estimate. J2 preserves arbitrary K/hpost and nonnegative
+tests taking infinity; its lower proof needs only measurability. Empty cells,
+zero shapes and finite zero-mass slices remain supported. The Giry structure
+is unchanged, and the J2 proof does not import T1 or any upper consumer.
+
+The public theorems now live in `GGC.DirichletStickBreaking` and
+`GGC.DirichletPalm`, with complete original provenance and no old-name alias.
+The deleted External modules have no remaining production/check references.
+`Definitions.lean`, the main theorem's type/body, the retained SSV contract
+and the previously accepted core evolution/identification code are unchanged.
+
+Independent evidence: a clean project build passed **3961 jobs**, freshly
+compiling **158/158 production modules** with no warning or error. A subsequent
+direct audit matched all **1067** requests by name and multiplicity; all **63**
+new declarations use only standard logical axioms. All **seven** shared contract
+files passed, with **28** standard-logic-only dependency outputs. Dependency
+caches were retained; this does not claim a full source rebuild of mathlib.
+
+The designer supplemented the existing shared Palm check with the required
+explicit public instance application and empty/universal/zero-mass-cell cases.
+The shorter filename `Checks/E4PalmContract.lean` is accepted for the proposed
+`E4DirichletPalmContract.lean` deliverable. This check-only change preserves
+production code and is attributed in its header. Current API summaries and
+live module links were corrected; historical audit reports remain untouched.
+
+API-072/073/077/078/080/081 are accepted compiled uses. E-S1 remains an axiom
+by scope decision, and no S1 construction gate is pending. M0–M7 and the prior
+accepted reductions remain closed. The detailed contract review, executable,
+commands, hashes, evidence limits and final dependency set are in
+[ConstructionReport Section 53](ConstructionReport.md#e4-design-acceptance-2026-09-25).
+
+
+<a id="final-audit-closeout"></a>
+## 28. Final independent audit: corrected interface handoff
+
+The [final independent audit](SemanticAudit-2026-09-25.md#final-independent-audit)
+finds no blocking main-theorem defect relative to E-S1. Its F-01 is accepted:
+the design baseline, not the underlying mathematics, was wrong. This section
+supersedes all earlier instructions and acceptance claims calling J2/J3 topology
+binders original, including Sections 19.3, 22, 24, 26 and 27.
+
+**Status: closed.** F-02 documentation correction and F-01 production repair
+and designer reacceptance are complete. The retained requirements below are
+satisfied; [Section 56](ConstructionReport.md#f01-designer-acceptance-2026-09-25)
+records fresh evidence. Core proof acceptance and the E-S1 boundary remain in force.
+
+### Bounded constructor patch
+
+1. In `GGC/DirichletPalm.lean`, reduce the public theorem's initial binders to
+   `{E : Type*} [MeasurableSpace E]`. Remove the unused Polish import and correct
+   the sentence claiming the topology binders are original.
+2. In `GGC/DirichletPosterior.lean`, reduce the section variables to the same
+   measurable-only pair. Remove the unused Polish import, obsolete topology
+   preservation comment and the now-unnecessary `unusedSectionVars` suppression.
+3. Keep every mathematical argument, argument order, conclusion, public name
+   and existing one-line lower proof unchanged. No new proof, axiom, alias,
+   replacement measurable-space instance or lower-layer modification is needed.
+4. In `Checks/E3GammaDirichletContract.lean` and `Checks/E4PalmContract.lean`,
+   remove the three topology instances from the public contract examples.
+   Change explicit applications from `@GGC.<name> E _ _ _ _ U ...` to
+   `@GGC.<name> E _ U ...`. Correct the headers and Checks README descriptions;
+   retain all boundary examples and all 28 suite axiom outputs.
+
+### Reacceptance gate
+
+Elaborate both historical axiom declarations with the pinned toolchain and
+compare their actual full types with the repaired public declarations, allowing
+only namespace/name changes. Do not reconstruct the type by adding ambient
+section variables to source text. Both shared examples must compile with only
+`[MeasurableSpace E]`; instantiate the *public* names, not just the lower results.
+The lower results already establish feasibility at that scope.
+
+Run the default incremental project build, all seven shared contract files and
+the direct `AxiomAudit.lean`. Require 1067 matched requests/outputs, 28 standard
+logical-axiom-only contract outputs, and exactly standard logic plus E-S1 for
+`ggc_rpow`. Record source hashes and actual commands/results. A fresh clean build
+is not required for this binder-only repair if the incremental build is current.
+The designer then records F-01 closure separately; do not rewrite the auditor's
+report or claim the earlier exact-type acceptance was valid.
+
+
+<a id="f01-designer-acceptance-2026-09-25"></a>
+## 29. Final interface reacceptance — 2026-09-25
+
+The Section 28 gate is passed. Fresh historical-source elaboration at the
+auditor's exact revisions establishes equality of both actual type expressions.
+The public examples require only a measurable-space instance. The default
+incremental build passes 3961 jobs; all seven contract files pass with 28
+standard-logic-only outputs, and all 1067 central audit requests match outputs.
+The main theorem depends exactly on standard logic and E-S1. No production
+source or independent audit report was changed during acceptance.
+
+F-01 and F-02 are closed. API-070/072/076 public-interface compatibility is
+accepted on this new evidence, without validating the earlier mistaken type
+comparisons. Historical statements about the old topology requirements remain
+superseded by Section 28. Evidence and limits are in
+[report Section 56](ConstructionReport.md#f01-designer-acceptance-2026-09-25).

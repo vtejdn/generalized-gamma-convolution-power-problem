@@ -1,8 +1,8 @@
-import GGC.Foundations.StickBreaking
+import GGC.Foundations.DirichletStickBreaking
 import Mathlib.Probability.Distributions.Beta
 import Mathlib.Probability.Independence.InfinitePi
 
-/-! # Registered stick-breaking input E-T1
+/-! # Locally proved stick-breaking theorem (former E-T1)
 
 J. Sethuraman, A constructive definition of Dirichlet priors,
 Statistica Sinica 4 (1994), 639--650. Section 2, printed pp.642--643,
@@ -18,15 +18,15 @@ finite-partition DP predicate, including zero-mass cells.
 The caller supplies a measurable probability-valued version of the sum,
 equal to the stick measure almost surely. Thus this interface assumes no
 parameterized measurability, common event, sampling construction or tail
-estimate; those are local obligations. No project proof module is imported.
+estimate; those are local obligations. The proof is supplied by the independent finite-prefix foundation.
 -/
 
 open MeasureTheory Set
-namespace GGC.External.Sethuraman
+namespace GGC
 open RandomMeasure
 
 /-- E-T1: finite-partition laws of the actual independent beta stick sum. -/
-axiom stick_breaking
+theorem stick_breaking
     {E Ω : Type*} [MeasurableSpace E] [MeasurableSpace Ω]
     (m : ProbabilityMeasure Ω) (B : ℝ) (hB : 0 < B) (F : ProbabilityMeasure E)
     (Z : ProbabilityMeasure UnitWeight)
@@ -40,6 +40,7 @@ axiom stick_breaking
     (Q : Ω → ProbabilityMeasure E) (hQ : Measurable Q)
     (hSum : ∀ᵐ ω ∂(m : Measure Ω),
       (Q ω : Measure E) = stickMeasure (V ω) (Y ω)) :
-    IsDirichletProcess (ENNReal.ofReal B • (F : Measure E)) (m.map hQ.aemeasurable)
+    IsDirichletProcess (ENNReal.ofReal B • (F : Measure E)) (m.map hQ.aemeasurable) :=
+  RandomMeasure.stick_breaking m B hB F Z hZ V Y hV hY hInput Q hQ hSum
 
-end GGC.External.Sethuraman
+end GGC

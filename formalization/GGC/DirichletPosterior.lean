@@ -1,5 +1,4 @@
 import GGC.Foundations.DirichletUpdate
-import Mathlib.Topology.MetricSpace.Polish
 
 /-! # The locally proved James E-J3 posterior interface
 
@@ -13,10 +12,8 @@ open MeasureTheory Set
 open scoped ENNReal
 namespace GGC
 open GGC.RandomMeasure
-variable {E : Type*} [MeasurableSpace E] [TopologicalSpace E] [PolishSpace E] [BorelSpace E]
+variable {E : Type*} [MeasurableSpace E]
 
--- Preserve the original topology binders in the public E-J3 contract.
-set_option linter.unusedSectionVars false in
 /-- E-J3, source-derived, not quoted as a numbered theorem: add an independent
 unit-rate gamma of shape one at b to the gamma process of base U, then
 normalize. Gamma normalization on p.2 yields the independent Beta(1,B)

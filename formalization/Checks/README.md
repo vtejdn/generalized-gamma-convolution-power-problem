@@ -1,5 +1,13 @@
 # Reproducible auxiliary checks
 
+**F-01 constructor repair:** the active E3GammaDirichlet and E4Palm examples
+now instantiate the public names with only `[MeasurableSpace E]`, as required by
+[Blueprint Section 28](../Blueprint.md#final-audit-closeout). All boundary
+examples and 28 suite axiom outputs are retained. Construction validation is in
+[Section 55](../ConstructionReport.md#f01-constructor-repair-2026-09-25);
+designer interface reacceptance is complete in
+[Section 56](../ConstructionReport.md#f01-designer-acceptance-2026-09-25).
+
 Policy approved by the user on 2026-09-25. This directory holds durable checks
 supporting design, construction and independent review. It is not a production
 proof layer. The parent [project rules](../README.md#checks-governance) adopt
@@ -88,8 +96,18 @@ probes indefinitely or delete provenance along with obsolete checks.
 |---|---|---|
 | [E3BetaGammaContract.lean](E3BetaGammaContract.lean) | Constructor / shared designer-constructor | Active: E3.0, API-068. Applies the production theorem at the full primitive Blueprint type and prints its axioms. Independently rerun during design acceptance; not an independent-reviewer-owned artifact. |
 | [E3MarkovKreinContract.lean](E3MarkovKreinContract.lean) | Constructor / shared designer-constructor | Active: E3.3, API-071. Checks the bounded formula, mean measurability/integrability, C=0, zero-mass coordinates, the unchanged consumer and t=0; prints seven standard-logic-only endpoint lists. Excludes the retired general E-J1 interface. Construction: [Section 45](../ConstructionReport.md#e3-three-construction-2026-09-25). Not an independent-reviewer-owned artifact. |
-| [E3GammaDirichletContract.lean](E3GammaDirichletContract.lean) | Constructor / shared designer-constructor | Active: E3.1/E3.2 and E-J3 relocation, API-069/070/076. Checks the full joint law, all-zero extension, deterministic single-positive-coordinate case, zero selected shape and the original E-J3 type with explicit topology binders; prints seven endpoint axiom lists. Construction evidence: [Section 43](../ConstructionReport.md#e3-one-two-construction-2026-09-25); designer rerun and acceptance: [Section 44](../ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). Not an independent-reviewer-owned artifact. |
+| [E3GammaDirichletContract.lean](E3GammaDirichletContract.lean) | Constructor / shared designer-constructor | Active: E3.1/E3.2 and E-J3 relocation, API-069/070/076. Checks the full joint law, all-zero extension, deterministic single-positive-coordinate case, zero selected shape and the historical E-J3 type with only a measurable-space instance; prints seven endpoint axiom lists. Construction evidence: [Section 43](../ConstructionReport.md#e3-one-two-construction-2026-09-25); designer rerun and acceptance: [Section 44](../ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). Not an independent-reviewer-owned artifact. |
 | [ThorinInterfacesContract.lean](ThorinInterfacesContract.lean) | Constructor / shared designer-constructor | Active: Tidy-Thorin, API-075. Checks both relocated names against the original primitive types and prints their axioms; constructor validation is recorded in [Section 41](../ConstructionReport.md#tidy-thorin-construction-2026-09-25). Independently rerun and inspected by the designer: [Section 42](../ConstructionReport.md#tidy-thorin-design-acceptance-2026-09-25). Not an independent-reviewer-owned artifact. |
+| [E4SizeBiasContract.lean](E4SizeBiasContract.lean) | Constructor / shared designer-constructor | Active: E4.0, API-077. Checks zero and single-positive shapes, impossible positive-total empty vectors, and the actual stationary product law. Prints seven theorem axiom lists. |
+| [E4StickBreakingContract.lean](E4StickBreakingContract.lean) | Constructor / shared designer-constructor | Active: E4.1, API-073. Preserves the complete original arbitrary-measurable-space input/Q contract and checks the zero prefix and mass-to-summability adapter. |
+| [E4PalmContract.lean](E4PalmContract.lean) | Constructor / shared designer-constructor | Active: E4.2, API-072/078/080/081. Checks the historical measurable-only public contract, arbitrary K/Phi, zero finite measures, empty-base/zero-size partitions and an infinite-valued test. |
+
+E4 construction evidence is in [Section 52](../ConstructionReport.md#e4-construction-2026-09-25).
+These three checks were created by the constructor and independently inspected
+and rerun by the designer. The designer added explicit instance application and
+empty/universal/zero-mass-cell cases to the existing Palm check. All seven active
+checks pass; [Section 53](../ConstructionReport.md#e4-design-acceptance-2026-09-25)
+records acceptance without changing the original authorship or audit ownership.
 
 All listed files are outside the default build globs. Current E3.0 proof and acceptance
 evidence are the production module, the active contract check, the central
@@ -113,10 +131,11 @@ results remain in report Sections 37–39; the former probe is no longer current
 reproducible evidence. At designer acceptance, Blueprint Section 20.3 was
 updated to link to the live production proof and contract check.
 
-The four active contract files remain necessary for full interface and boundary
+The four pre-E4 contract files remain necessary for full interface and boundary
 checks. E3GammaDirichletContract now uses `GGC.DirichletPosterior` and
-`@GGC.beta_atom_posterior`, preserving all explicit topology binders and its seven
-endpoint checks. The import/name maintenance does not transfer prior independent
+`@GGC.beta_atom_posterior`, with measurable-only binders after F-01 and all seven
+endpoint checks. The earlier topology-preservation acceptance is superseded
+by Blueprint Section 28. The import/name maintenance does not transfer prior independent
 acceptance to this change. See [Section 48](../ConstructionReport.md#r2-j3-closeout-2026-09-25)
 for construction validation and
 [Section 49](../ConstructionReport.md#r2-j3-design-acceptance-2026-09-25) for
