@@ -2,7 +2,7 @@ import GGC.UniformBeta
 import GGC.Foundations.Quantile
 import GGC.Foundations.ProbabilityBorel
 import External.Sethuraman
-import External.James
+import GGC.DirichletPosterior
 
 /-! # Dirichlet sampling on a fixed common probability space
 
@@ -189,7 +189,7 @@ theorem posteriorSample_map (B : PosReal) (F : ProbabilityMeasure ℝ) (y : ℝ)
 theorem posteriorLaw_isDirichlet (B : PosReal) (F : ProbabilityMeasure ℝ) (y : ℝ) :
     IsDirichletProcess (ENNReal.ofReal B.val • (F : Measure ℝ) + Measure.dirac y)
       (atomMixtureLaw (dirichletLaw B F) (betaWeightLaw B) y) :=
-  External.James.beta_atom_posterior _ _ (dirichletLaw_isDirichlet B F) B.val B.property
+  GGC.beta_atom_posterior _ _ (dirichletLaw_isDirichlet B F) B.val B.property
     (by simp) (betaWeightLaw B) (betaWeightLaw_map_val B) y
 
 /-- Both laws live on the same fixed probability space. -/

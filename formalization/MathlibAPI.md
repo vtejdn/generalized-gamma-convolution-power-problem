@@ -1,6 +1,6 @@
-# Mathlib API 对照表 / shared reuse index
+# Mathlib API Cross-Reference / Shared Reuse Index
 
-Updated: 2026-09-24. Joint maintainers: **designer and constructor**.
+Updated: 2026-09-25. Joint maintainers: **designer and constructor**.
 Policy: [README reuse workflow](README.md#mathlib-reuse-workflow).
 Design gate: [Blueprint Section 4.3](Blueprint.md#module-reuse-gate).
 
@@ -18,27 +18,42 @@ for E-B1/E-B3 and are `accepted` at their full contracts. Construction evidence
 is in the [E2 report](ConstructionReport.md#e2-construction-2026-09-24); the fresh
 independent build, audit and type checks are in
 [Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).
-The source inventory retains eight IDs; E-B1/E-B3 now denote local theorems.
+The source inventory retains provenance; E-B1/E-B3 denote local theorems.
+E2-P removes unused E-B2 and its two optional interfaces (API-067, verified:
+3950-job default rebuild and 954/954 direct audit checks). The new E3 proposal uses API-068-071; API-072-074 are later
+candidates. API-068 is independently accepted for the complete E3.0 joint law
+and its 13 standard-logic-only theorems. API-069/070 now have complete local
+proofs, independently accepted in report Section 44. API-071 records the independently accepted bounded E3.3 proof (Section 46);
+API-072-074 retain their previous evidence levels. API-075 records the independently accepted Thorin interface relocation.
 <a id="design-acceptance-2026-09-24"></a>
 ## Current independent acceptance — 2026-09-24
 
-The latest independent E2 review reran a clean project build (3950 jobs;
+The accepted E2 baseline review reran a clean project build (3950 jobs;
 147/147 fresh project modules), the direct audit (957/957 matching checks),
 and a separate full original-type compatibility probe. All new public core
 declarations and both endpoints use standard logic only. See the
 [E2 independent record](ConstructionReport.md#e2-design-acceptance-2026-09-24).
-Earlier M7/E1 evidence remains in its dated reports; the current main proof
-retains its full type and four steps with five literature dependencies.
+Earlier M7/E1 evidence remains in its dated reports. E3.1/E3.2 preserve the main
+proof type and four steps while reducing its current literature dependencies
+to four at acceptance (Section 44). E3.3 now retires general J1 after proving
+the bounded replacement, leaving three; independent E3.3 acceptance is recorded in Section 46.
 
 | Entries / scope | Current design decision |
 |---|---|
 | API-001, API-009–010 | Prior M1 acceptance retained and revalidated in the complete build. |
 | API-002–008, API-011–059 | `accepted` for the submitted production contracts in M2–M6 at the pinned revision. External-interface entries accept the stated trust boundary and local adapters, not proofs of the literature axioms. |
 | API-060 | Initial data and final law assembly `accepted`; M7 is closed after the user withdrew RV-1. E1 is tracked separately under API-061. |
-| API-061 | `accepted`: root `Definitions` migration, explicit main proof and audit ownership independently verified. E1 preserved the then-seven literature dependencies; E2 separately reduces the current set to five without changing the theorem's scope. |
+| API-061 | `accepted`: root `Definitions` migration, explicit main proof and audit ownership independently verified. E1 preserved the then-seven literature dependencies; E2 separately reduced the set to five without changing the theorem's scope; E3.2 reduced it to four; E3.3 construction now leaves three. |
 | API-062–066 | `accepted`: independent foundation, generic Laplace tightness, finite grid and positive weights, drift/normalization, and unchanged E-B1/E-B3 endpoints. Full scope, imports, original types and standard-logic-only audit verified independently. |
+| API-067 | `accepted`: E2-P default rebuild passed 3950 jobs and direct audit matched 954/954 requests. Retires unused E-B2/converse/iff; preserves the main theorem and all production consumers. |
+| API-068 | `accepted`: complete E3.0 joint law, exact primitive type and 13 standard-logic-only proofs. Submitted 148-module clean-build evidence verified; fresh default build, 967/967 direct audit and contract check passed. See report Section 39. |
+| API-069–070 | `accepted`: E3.1/E3.2 production proofs and full-contract checks independently verified; report Section 44. This is a separate delivery from accepted E3.0. |
+| API-071 | Bounded E3.3 production proofs compiled; general J1 retired after consumer migration. Independent acceptance: `accepted`; see Section 46. |
+| API-076 | `accepted`: R2-01 correction, same-contract E-J3 relocation and superseded probe retirement; fresh build, 1005/1005 audit and seven contract endpoints passed. See report Section 49. |
+| API-075 | Implemented structural migration of locally proved E-B1/E-B3 into `Thorin.Interfaces`; no axiom reduction; independently accepted (report Section 42). |
+| API-072–074 | Later J2/T1/S1 feasibility candidates, `source_read`; not completed nodes or assumed infrastructure. |
 | GAP-001–004, GAP-006 | Project proof obligations closed in the accepted implementations; scoped library-search gaps remain documented. |
-| GAP-005 | E-B1/E-B3 closed by local proofs; six actual literature axioms remain project-wide and five in the main theorem. S1-SOURCE is closed by independent source review; E-S1 still requires a Lean proof to remove its axiom status. |
+| GAP-005 | E-B1/E-B3 closed by local proofs; E2-P removes unused E-B2; E3.2 proves full E-J3, leaving four at E3.1/E3.2 acceptance (Section 44). E3.3 bounded construction retires general J1, leaving three actual/main axioms; independent acceptance is complete (Section 46). S1-SOURCE is closed by independent source review; E-S1 still requires a Lean proof to remove its axiom status. |
 
 Acceptance concerns the actual types, adapters and compiled consumers. It does
 not assert that every possible library reuse has been exhausted. Earlier
@@ -48,6 +63,13 @@ RV-1; no random-variable adapter is needed. E1 is independently accepted with
 root `Definitions.lean`, preserving the existing mathematical acceptance.
 
 ## Evidence and maintenance conventions
+
+Check creation, role ownership, execution and retirement follow the user-approved
+[Checks policy](Checks/README.md). Record whether evidence comes from an active
+check, a superseded historical probe or a production proof. E3BetaGammaContract
+is constructor-authored and designer-verified; E3BetaGammaReuse was a historical
+designer probe covered by production proofs and is now deleted. Its dated
+results remain in the construction report; it is not a current check.
 
 - Stable IDs `API-001`, etc. identify reusable components; `GAP-001`, etc.
   identify unresolved obligations. Reports and consumers should cite these IDs.
@@ -105,7 +127,7 @@ names on the project side are compatibility lemmas or consumers.
 | API-011 — differentiate damped integrals without original-law moments | `Analysis/Calculus/ParametricIntegral.lean`: `hasDerivAt_integral_of_dominated_loc_of_deriv_le`; `Analysis/SpecialFunctions/Pow/Asymptotics.lean`: `tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero`; `Real.isLittleO_log_id_atTop` | Reuse dominated differentiation and asymptotics; local bounds handle `x=0`, positive parameter neighborhoods and arbitrary `NonnegLaw`. Tracked uses: `DampedMoments`, `PowerTangent`, `StieltjesCalculus`. `lake build GGC.GammaDirichletTangent` passed (2897 jobs). | Actual tangent, mixed derivatives and normalized formula proved; not a phase or Dirichlet existence theorem. `minimal_use_compiled`; design accepted (2026-09-24). |
 | API-012 — Gamma first moment and signed product integration | `Probability/Distributions/Gamma.lean`, `Analysis/SpecialFunctions/Gamma/Integral.lean`: `Real.GammaIntegral_convergent`, `Real.Gamma_eq_integral`; `MeasureTheory/Integral/Prod.lean`: `MeasureTheory.integral_prod_symm` | Reuse Gamma integrals, the recurrence and Fubini. `integrable_self_gammaLaw`, `integral_self_gammaLaw`, `integral_gammaDirichletLaw`, `normalized_powerTangent` compile. Integrability comes from actual tilted laws before splitting signed integrals. | Positive shape, unit rate; original mass coefficient is `digamma (B+1)`. No extra support or moment hypothesis. `minimal_use_compiled`; design accepted (2026-09-24). |
 | API-013 — fixed countable product space and independent coordinates | `Probability/Independence/InfinitePi.lean`: `MeasureTheory.Measure.infinitePi`, `ProbabilityTheory.iIndepFun_infinitePi`, `MeasureTheory.Measure.infinitePi_map_pi`; independent-product integration and `lintegral_tsum` | `CommonUniforms` proves the common event from summable residual-product expectations. `DirichletRealization` proves the input product law, joint maps and actual DP/posterior laws. The universal mass/base quantifiers are inside a single a.e. assertion. | Fractions and base locations are independent; stick weights are dependent. No parameter continuity is claimed. `minimal_use_compiled` through `GGC.RateRealization`; design accepted (2026-09-24). |
-| API-014 — Poisson boundary recovery | `Analysis/Complex/Poisson.lean` gives disk formulas; `MeasureTheory/Integral/PeakFunction.lean` requires continuity at the evaluation point; `VitaliFamily.ae_tendsto_average_norm_sub`, `Besicovitch.tendsto_filterAt`; `ProbabilityTheory.integrable_cauchyPDFReal`, `integral_cauchyPDFReal_eq_one` | Disk and continuous-point formulas are rejected as direct replacements. Adapt the closed-ball estimate in `ContDiffBump.ae_convolution_tendsto_right_of_locallyIntegrable`, with an L¹ tail bound. Tracked `ApproximateIdentity.ae_tendsto_dilation_integral` and `PoissonBoundary.ae_tendsto_halfLine_cauchy_integral` prove the required bounded-measurable recovery. | `GGC.StieltjesPhase` build passed: Poisson identity, a.e. recovery of the fixed-height limsup, anchor-one formula and a.e. uniqueness. Recovery uses no new axiom. `minimal_use_compiled`; the separate varying-law L¹-kernel convergence is now proved under API-024. |
+| API-014 — Poisson boundary recovery | `Analysis/Complex/Harmonic/Poisson.lean` gives disk formulas; `MeasureTheory/Integral/PeakFunction.lean` requires continuity at the evaluation point; `VitaliFamily.ae_tendsto_average_norm_sub`, `Besicovitch.tendsto_filterAt`; `ProbabilityTheory.integrable_cauchyPDFReal`, `integral_cauchyPDFReal_eq_one` | Disk and continuous-point formulas are rejected as direct replacements. Adapt the closed-ball estimate in `ContDiffBump.ae_convolution_tendsto_right_of_locallyIntegrable`, with an L¹ tail bound. Tracked `ApproximateIdentity.ae_tendsto_dilation_integral` and `PoissonBoundary.ae_tendsto_halfLine_cauchy_integral` prove the required bounded-measurable recovery. | `GGC.StieltjesPhase` build passed: Poisson identity, a.e. recovery of the fixed-height limsup, anchor-one formula and a.e. uniqueness. Recovery uses no new axiom. `minimal_use_compiled`; the separate varying-law L¹-kernel convergence is now proved under API-024. |
 | API-015 — narrow Borel versus Giry structure | Full pinned-source searches in `GiryMonad`, `ProbabilityMeasure`, `FiniteMeasure`, `LevyProkhorovMetric`, `Prokhorov`, and global `BorelSpace`/`StandardBorelSpace` probability-instance searches | No existing matching compatibility instance was located. `Foundations/ProbabilityBorel.probabilityMeasure_measurable_eq_borel` now proves equality for second-countable metric Borel spaces. | The installed `probabilityMeasureBorelSpace` certifies the existing Giry instance; it does not replace it. Applies to real and positive-rate laws. `minimal_use_compiled`; M2 measurable-structure gap closed, design accepted (2026-09-24). |
 | API-016 — finite atomic approximations for the measurable-structure bridge | `StronglyMeasurable.approx`, `StronglyMeasurable.tendsto_approx`; `Measure.ae_mem_finset_iff_map_eq_sum_dirac`; `FiniteMeasure` continuous addition/scaling; `measurable_of_tendsto_metrizable`; `ProbabilityMeasure.le_liminf_measure_open_of_tendsto`; `Measurable.measure_of_isPiSystem_of_isProbabilityMeasure` | `Foundations/ProbabilityBorel` approximates the identity by simple functions, writes each pushforward as a finite continuous atomic combination, and passes to its narrow limit. The reverse direction uses open-set evaluation and the Giry pi-system API. | Production bridge compiled with no external axiom. No new separability theorem for the whole probability space was needed. `minimal_use_compiled`; design accepted (2026-09-24). |
 | API-017 — positive-rate transport and normalization | `Real.expOrderIso.toHomeomorph.toMeasurableEquiv`, `Real.log_of_pos`; `FiniteMeasure.normalize`, `FiniteMeasure.self_eq_mass_smul_normalize`; `RandomMeasure.IsDirichletProcess.map` (tracked local finite-partition adapter) | `RateRealization` reuses the standard equivalence and normalization, proves both inverse law maps, transports common-space DP/posterior samples, and proves existence for arbitrary finite, nonzero positive-rate bases. | `lake build GGC.RateRealization` passed (3182 jobs). Normalization is used only at finite, positive total mass. `minimal_use_compiled`; design accepted (2026-09-24). |
@@ -201,11 +223,30 @@ original approximation contract into focused modules.
 
 | ID / contract and owner | Pinned source and API | Decision / proposed use | Evidence and remaining work |
 |---|---|---|---|
-| API-062 — E2.0 independent Thorin foundation; `GGC/Thorin/Basic.lean` | Existing `GGC/Thorin.lean`: `ThorinAdmissible.integrable_log`, `ThorinAdmissible.measure_le_lt_top`, endpoint equivalence, `ThorinData`, `thorinLaplace`, `HasThorinRepresentation`, finite-atomic certificates; API-001/009/010 | Extract the existing axiom-free definitions and proofs, preserving namespaces/names; keep axiom-using characterization/realization adapters in the old facade. New proof modules may import the lower layer, never the facade or `External.Bondesson`. | `minimal_use_compiled`: `Thorin.Basic` and the existing `Thorin` facade compile with unchanged public names; lower-layer axioms are standard logic only. Existing accepted proofs are moved, not duplicated. Independently revalidated; design accepted (2026-09-24), report Section 34. |
+| API-062 — E2.0 independent Thorin foundation; `GGC/Thorin/Basic.lean` | Existing `GGC/Thorin.lean`: `ThorinAdmissible.integrable_log`, `ThorinAdmissible.measure_le_lt_top`, endpoint equivalence, `ThorinData`, `thorinLaplace`, `HasThorinRepresentation`, finite-atomic certificates; API-001/009/010 | Extract the existing axiom-free definitions and proofs, preserving namespaces/names; keep represented-law membership/realization adapters in the facade; its unused E-B2-dependent converse is now retired. New proof modules may import the lower layer, never the facade or `External.Bondesson`. | `minimal_use_compiled`: `Thorin.Basic` and the existing `Thorin` facade compile with unchanged public names; lower-layer axioms are standard logic only. Existing accepted proofs are moved, not duplicated. Independently revalidated; design accepted (2026-09-24), report Section 34. |
 | API-063 — E2.1 tightness from a common Laplace lower bound; `GGC/LaplaceTightness.lean` | Existing `Identification/ValueTails.lean`: `measureReal_Ioi_exp_le_one_sub_laplace`; mathlib `MeasureTheory/Measure/Tight.lean`: `MeasureTheory.isTightMeasureSet_iff_exists_isCompact_measure_compl_le`; API-048 | Move the generic estimate below `Identification`; prove that `L(s) <= laplace (mu_n) s` for every n and positive s, with `L(s) -> 1` at zero from the right, implies tightness of all laws. Use nonnegative support and compact intervals; the chosen rounding/drift construction provides the common lower bound. | `minimal_use_compiled`: `isTightMeasureSet_of_laplace_lower_bound`, `exists_nonnegLaw_subseq_of_isTightMeasureSet`, `exists_nonnegLaw_of_laplace_tendsto` in `LaplaceTightness`; generic tail proofs moved without renaming. Only standard logic; arbitrary family and no moments. ValueTails consumer compiles. Independently revalidated; design accepted (2026-09-24), report Section 34. |
 | API-064 — E2.2 finite-atomic rate grid and kernel convergence; `Thorin/Approximation`, `GridMeasure`, `GridMeasureMap`, `FiniteWeights`, `Sequence` | `Algebra/Order/Floor/Defs.lean`: `Nat.ceil`, `Nat.ceil_le`; `MeasureTheory/Function/Floor.lean`: `Nat.measurable_ceil`; `MeasureTheory/Integral/DominatedConvergence.lean`: `MeasureTheory.tendsto_integral_of_dominated_convergence`; existing API-062 finite-mass/atomic adapters | Restrict U to `[1/m,m]`, round positive rates upward to `ceil(m*b)/m`, represent finite cell masses by Dirac weights, discard zero cells and index positive weights by `Fin k`. Prove pointwise convergence and domination by `log(1+s/b)` on the original U. | `minimal_use_compiled`: `Thorin.Approximation` proves upward rounding and DCT on original U; `GridMeasure` proves finite cell masses and exact finite-sum integrals; `GridMeasureMap` proves the Dirac-sum pushforward. `FiniteWeights` filters zero weights using Fintype.equivFin before choosing positive shapes. `Sequence` chooses one actual finite-gamma law sequence for all s. No direct matching atomic-approximation theorem was found in the scoped library search; local adapters reuse the inspected primitives. Independently revalidated; design accepted (2026-09-24), report Section 34. |
 | API-065 — E2.2 drift and zero-endpoint normalization; `Thorin/Drift`, `Normalization`, `Sequence` | Existing `GGC/FiniteGamma.lean`: `laplace_finiteGammaLaw`; `Analysis/SpecialFunctions/Log/Basic.lean`: logarithm bounds/continuity; `MeasureTheory/Integral/DominatedConvergence.lean`: `MeasureTheory.tendsto_integral_filter_of_dominated_convergence` | For a>0 append Gamma(m,m/a), prove `m*log(1+a*s/m) -> a*s` and the bound by `a*s`; omit the factor for a=0. Prove target transform tends to one at zero by domination by `log(1+1/b)` for `0<=s<=1`. | `minimal_use_compiled`: `Thorin.Drift` directly reuses Real.tendsto_mul_log_one_add_div_atTop from Analysis/SpecialFunctions/Complex/LogBounds.lean; no derivative or Gamma moment reproving. `Normalization` proves tendsto_thorinLaplace_zero directly by DCT. `Sequence` combines optional drift and finite grid and proves exact transforms, common lower bound and convergence. Both zero drift and positive drift supported; no E-B1 assumption. Independently revalidated; design accepted (2026-09-24), report Section 34. |
-| API-066 — E2.3 realization/approximation assembly and E2.4 audit | `MeasureTheory/Measure/Prokhorov.lean`: `MeasureTheory.isCompact_closure_of_isTightMeasureSet`; current `GGC/LaplaceContinuity.lean`: `nonnegative_of_narrow_limit`, `tendsto_laplace_of_narrow`, `nonnegLaw_tendsto_of_laplace_tendsto`; `GGC/Laplace.lean`: `nonnegLaw_eq_of_laplace_eq` | Use API-063/064/065 to supply tightness and one actual finite-gamma sequence. Identify it with an existing target for E-B3; extract a probability subsequence to construct the target for E-B1. Keep same-type public theorem wrappers in `External.Bondesson`, backed by an independent `Thorin.Realization` layer. | `minimal_use_compiled`: `thorin_realization_core` and `finite_atomic_approximation_core` in `Thorin.Realization`; original-type wrappers in External.Bondesson now theorems. Directed endpoint audit confirms standard logic only, including existing realization/reverse-characterization consumers. E-B2 remains unchanged. Full clean build and audit evidence: E2 construction report; independently revalidated; design accepted (2026-09-24), report Section 34. |
+| API-066 — E2.3 realization/approximation assembly and E2.4 audit | `MeasureTheory/Measure/Prokhorov.lean`: `MeasureTheory.isCompact_closure_of_isTightMeasureSet`; current `GGC/LaplaceContinuity.lean`: `nonnegative_of_narrow_limit`, `tendsto_laplace_of_narrow`, `nonnegLaw_tendsto_of_laplace_tendsto`; `GGC/Laplace.lean`: `nonnegLaw_eq_of_laplace_eq` | Use API-063/064/065 to supply tightness and one actual finite-gamma sequence. Identify it with an existing target for E-B3; extract a probability subsequence to construct the target for E-B1. At E2, keep same-type public theorem wrappers in `External.Bondesson`, backed by an independent `Thorin.Realization` layer. API-075 subsequently moves these interfaces into `GGC.Thorin.Interfaces`. | `minimal_use_compiled`: `thorin_realization_core` and `finite_atomic_approximation_core` in `Thorin.Realization`; original-type wrappers in External.Bondesson now theorems. Directed endpoint audit confirms standard logic only, including existing realization/reverse-characterization consumers. E-B2 was unchanged at E2 acceptance and is subsequently retired by E2-P. Full E2 clean build and audit evidence: E2 construction report; independently revalidated; design accepted (2026-09-24), report Section 34. |
+
+
+The following entries track the later scope cleanup and proposed reduction.
+Pinned mathlib remains `905b95818eb32af7874a58b427f50c1711a5e96c`.
+Source inspection is not minimal-use compilation; future owners are proposed.
+E3.0 has an independently accepted production joint-law proof (report Section 39). API-069/070 record independently accepted local proofs (Section 44). API-071 records the independently accepted bounded E3.3 proof; API-072–074 retain their separate evidence levels.
+
+| ID / contract and owner | Reuse and scoped source evidence | Design decision / outstanding proof | Status |
+|---|---|---|---|
+| API-067 — E2-P unused axiom removal | Project references and accepted E2 axiom output: E-B2 feeds only `IsGGC.hasThorinRepresentation`, then `isGGC_iff_hasThorinRepresentation`; neither has a production consumer. | Remove these three declarations and obsolete audit requests; retain `HasThorinRepresentation.isGGC` and all E-B1/E-B3 proofs. Withdraw E-B4 fallback. | `accepted`: default rebuild passed 3950 jobs (72/147 project modules recompiled), followed by 954/954 matched direct audit checks. This retires scope, not a proof of the converse. See report Section 35. |
+| API-068 — E3.0 Beta-Gamma joint law; `Foundations/BetaGamma` | `MeasureTheory.prod_withDensity`, `measurePreserving_prod_sub`, `MeasurePreserving.lintegral_comp`, `lintegral_image_eq_lintegral_abs_deriv_mul`, `lintegral_prod_symm`, `lintegral_withDensity_eq_lintegral_mul`, `Measure.ext_of_lintegral`; `ProbabilityTheory.beta`, `Real.Gamma_pos_of_pos`, `Real.mul_rpow`, `Real.rpow_add`, and existing `RandomMeasure.gammaShapeLaw_pos`. | The exact positive-real-shape, unit-rate contract in [Blueprint Section 20](Blueprint.md#e3-zero-construction-handoff) is proved by `GGC.BetaGamma.gamma_ratio_sum_map`. Open-support measure identities remove the Gamma zero boundary before the shear and interval scaling. `density_factorization` retains arbitrary real exponents and the explicit Jacobian. No general two-dimensional Jacobian or new normalization theory is required. | `minimal_use_compiled`: [BetaGamma.lean](GGC/Foundations/BetaGamma.lean) completes BG-0–4, including all restriction and joint-law assembly obligations. [Checks/E3BetaGammaContract.lean](Checks/E3BetaGammaContract.lean) checks the original primitive type and prints its standard-logic-only axioms. The superseded six-call design probe `Checks/E3BetaGammaReuse.lean` was deleted during API-076 closeout; its dated results remain in the report and its adopted uses are covered by production proofs. Clean build: 3951 jobs, 148/148 project modules; direct audit: 967/967 matching requests, all 13 new theorems standard-logic-only. [Section 38](ConstructionReport.md#e3-zero-construction-2026-09-24) records construction validation; [Section 39](ConstructionReport.md#e3-zero-design-acceptance-2026-09-24) records independent acceptance (`accepted`). |
+| API-069 — E3.1; `GGC/Foundations/GammaDirichlet.lean` | Reuses accepted `BetaGamma.gamma_ratio_sum_map`, `gammaShapeLaw_zero/pos`, `dirichletLaw_toMeasure`, zero-coordinate and simplex lemmas; mathlib `measurePreserving_piFinSuccAbove`, `measurePreserving_prodAssoc`, `Measure.measurePreserving_swap`, `MeasurePreserving.prod/comp`, and product marginals. | Proves the actual normalized-vector/total product law for every finite nonnegative shape vector, including the all-zero extension. Positive real total gives the primitive Gamma(B,1) contract. Single-positive-coordinate laws are explicitly Dirac vertices. Positive Beta laws are used only after nonzero-shape checks. | Production proofs compiled; clean default build 3953 jobs / 150 fresh modules and direct audit 992/992. Full joint and degenerate contracts in [Checks/E3GammaDirichletContract.lean](Checks/E3GammaDirichletContract.lean). Standard logic only. Construction validation: [Section 43](ConstructionReport.md#e3-one-two-construction-2026-09-25). Independent acceptance: `accepted`; [Section 44](ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). |
+| API-070 — E3.2; `GGC/Foundations/DirichletUpdate.lean` | Reuses API-069 Gamma addition and joint normalization, arbitrary-coordinate finite-product splitting, mathlib `Measure.map_prod_map` and `Measure.map_map`, existing partition and atom-mixture semantics, and finite measure/ENNReal sum APIs. | Proves Gamma coordinate addition and finite Dirichlet vertex mixing, then every partition of arbitrary U/D. Zero selected shape is allowed. Arbitrary original Z is transported only through hZ. The complete original Polish/Borel E-J3 type and binder order are preserved by the thin public theorem (now `GGC.DirichletPosterior`, API-076); the lower theorem needs only a measurable space. No DP-law uniqueness or Gamma process is assumed. | Production proofs and full original-type check compiled; clean default build 3953 jobs / 150 fresh modules and direct audit 992/992. All new proofs and the E-J3 wrapper use standard logic only. Five actual/main literature axioms become four. Construction validation: [Section 43](ConstructionReport.md#e3-one-two-construction-2026-09-25). Independent acceptance: `accepted`; [Section 44](ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). |
+| API-071 — E3.3 bounded Markov-Krein; `Foundations/MarkovKreinFinite` and `Foundations/MarkovKrein` | Reuses accepted `gammaVector_normalize_sum`, existing `GGC.laplace_gammaLaw_eq_exp`, mathlib `integral_fintype_prod_eq_prod`, finite indicator integrals, `SimpleFunc.approxOn`, `approxOn_mem`, `tendsto_approxOn`, and `tendsto_integral_of_dominated_convergence`. | Proves finite Dirichlet, partition and simple-function transforms, then bounded convergence with bounds C, 1 and log(1+C). Includes mean measurability, integrability for every probability, zero shapes, C=0 and t=0. The original `dirichletMean_laplace` type is unchanged; its bound t/s is discharged internally. Deletes the unused general J1 declaration. The unbounded/log-integrable statement is retired, not proved by the bounded theorem. | `minimal_use_compiled`: 14 new theorems and both identification consumers use standard logic only. The constructor-owned [contract check](Checks/E3MarkovKreinContract.lean) covers full and endpoint types. Three literature axioms remain. Construction evidence: [Section 45](ConstructionReport.md#e3-three-construction-2026-09-25); independent acceptance: `accepted`; [Section 46](ConstructionReport.md#e3-three-design-acceptance-2026-09-25). |
+| API-072 — later full E-J2 | Project partition evaluation and zero-coordinate lemmas; `Measure/Typeclasses/Finite.lean`: `MeasureTheory.ext_of_generate_finite`; `Measure/GiryMonad.lean`: `Measure.instMeasurableSpace`, `Measure.measurable_coe`; `Measure.lintegral_compProd`. | Finite Dirichlet size-bias, generating partition cylinders, then equality of joint measures and arbitrary nonnegative tests. Preserve arbitrary measurable posterior K; J3 does not by itself prove Palm. Any pure helpers in `Palm` must be moved down, not reverse-imported. | `source_read`; cylinder-generation and size-bias gates pending, separate from E3. |
+| API-073 — later full E-T1 | Project `sum_stickWeight`, `hasSum_stickWeight_iff`, `measurable_stickMeasure`; mathlib `Probability/Independence/InfinitePi.lean`: `iIndepFun_infinitePi`, `Measure.infinitePi_map_eval_prod`, `Measure.map_infinitePi_infinitePi_of_inj`; `HasOuterApproxClosed.lean`: `ext_of_forall_integral_eq_of_IsFiniteMeasure`. | Weighted Dirichlet update invariance, independent Dirichlet tail for finite prefixes, limit as residual tends to zero. hSum plus probability already gives total stick mass one; no new general geometric-tail moment theorem required. Preserve arbitrary measurable E/Omega and zero cells. | `source_read`; finite-dimensional invariance and deterministic residual-error gate pending. Do not reuse axiom-dependent `dirichletLaw_isDirichlet` as a proof. |
+| API-074 — later E-S1 feasibility | `Analysis/Complex/Harmonic/Poisson.lean`: `InnerProductSpace.HarmonicContOnCl.circleAverage_poissonKernel_smul`; `Analysis/Normed/Module/WeakDual.lean`: `WeakDual.isSeqCompact_closedBall`; existing local Poisson boundary recovery. | Disk Poisson and sequential weak-dual compactness are present, but not a direct phase-representation match. Need half-plane support/bounded density, principal-log and anchor-one identities plus real-formula uniqueness. Scoped complex-analysis search found no complete matching theorem; no whole-library absence claim. | `source_read`; separate research gate. S1 source review is closed, representation formalization remains open. |
+| API-075 — Tidy-Thorin interface migration; `GGC/Thorin/Interfaces.lean` | The original primitive wrappers reuse the unchanged `GGC.Thorin.Realization` cores; API-066 supplies accepted local proof evidence. | The new names are `GGC.thorin_realization` and `GGC.finite_atomic_approximation`, with original binder order, types, proof calls and provenance. The Thorin facade and audit use the new module; the former External module is deleted without aliases. No lower proof is copied or reproved. [Blueprint Section 21](Blueprint.md#thorin-interface-migration). | `minimal_use_compiled`: both relocated wrappers and the facade compile; The constructor-authored [Checks/ThorinInterfacesContract.lean](Checks/ThorinInterfacesContract.lean) checks both original primitive statements. Both wrappers and all retained Thorin endpoints audit to standard logic only. Clean build: 3951 jobs, 148/148 project modules; direct audit: 967/967 matched requests; original-type checks pass. [Section 41](ConstructionReport.md#tidy-thorin-construction-2026-09-25) records construction validation; [Section 42](ConstructionReport.md#tidy-thorin-design-acceptance-2026-09-25) records independent acceptance (`accepted`). Five external axioms remained at that acceptance. |
+| API-076 — R2-01 comment correction and E-J3 relocation | Existing accepted `GGC.RandomMeasure.beta_atom_posterior`, the same-type External wrapper, direct callers in GammaDirichlet/DirichletRealization, and the shared full-contract check. No new mathematical proof or mathlib search is needed. | Move the primitive wrapper to `GGC.beta_atom_posterior` in `GGC/DirichletPosterior.lean`; retain E-J2 in James and add its explicit import in Palm. Correct the main docstring to J2/T1/S1 without changing its type/proof. Apply the mandatory [lifecycle rule](README.md#external-interface-lifecycle). [Blueprint Section 24](Blueprint.md#audit-r2-and-j3-relocation). | `minimal_use_compiled`: wrapper, callers and shared topology-binder check migrated; main comment corrected with type/proof unchanged. Construction validation is in [Section 48](ConstructionReport.md#r2-j3-closeout-2026-09-25). Designer acceptance: `accepted`; [Section 49](ConstructionReport.md#r2-j3-design-acceptance-2026-09-25) verifies R2-01 closure, the full primitive type, independent imports, fresh 3956-job build, 1005/1005 direct audit and seven contract endpoints. The three-axiom boundary is unchanged. The redundant E3BetaGammaReuse probe is removed with production/contract replacement evidence. |
 
 API-001–010 preserve R10's original evidence; API-011–060 record subsequent
 focused source searches and tracked production uses. All new external
@@ -233,7 +274,7 @@ API-036–042's completed production uses and verification are in the
 | GAP-002 — probability measurable structures | R10 found no direct instance; API-015/016 provide the locally proved bridge. | Closed and design accepted through `probabilityMeasure_measurable_eq_borel`, with the existing Giry structure preserved. |
 | GAP-003 — phase representation and varying-law continuity | API-006/014/019 supply M2's transform and canonical boundary recovery; API-024/025 provide the varying-law and scaling bridges. | Closed and design accepted: continuous pairing against every real L¹ kernel on `(0,∞)`, including simultaneous kernel and positive-scale variation. Pointwise phase continuity is not inferred. API-026–031 separately supply the accepted averaged-generator proof. |
 | GAP-004 — absolute Gamma/Beta log moments | R10 found Mellin/Gamma differentiation and complex digamma support, but no direct replacement for the project's full moment contracts. | Project obligations closed and design accepted through `GammaAnalysis`, `BetaAnalysis` and the identification moment/endpoint modules. Retain absolute-integrability estimates; a derivative formula alone is not a replacement. Reopen the reuse question only for a candidate with a matching contract. |
-| GAP-005 — Thorin/Dirichlet/Markov–Krein external interfaces | R10 did not locate direct statements in its pinned probability/measure/analysis search. `Analysis/SpecialFunctions/Bernstein.lean` concerns polynomial approximation. E2 adds the scoped decomposition and candidates in API-062--066. | E-B3/E-B1 are locally proved and independently accepted; remaining actual axioms are six project-wide and five in the main theorem. E-B2/J1--3/T1/S1 are not formalized by E2. E-S1 original-page self-check and independent review are complete, closing S1-SOURCE; see SSVSourceCheck-2026-09-24.md and ConstructionReport Section 34. No new axiom is authorized. |
+| GAP-005 — Thorin/Dirichlet/Markov–Krein external interfaces | R10 did not locate direct statements in its pinned probability/measure/analysis search. `Analysis/SpecialFunctions/Bernstein.lean` concerns polynomial approximation. E2 adds the scoped decomposition and candidates in API-062--066. | E-B3/E-B1 are locally proved and independently accepted; E-B2 is retired by E2-P, leaving five at E2-P acceptance. E3.1/E3.2 prove full J3 and were accepted with four axioms (Section 44). E3.3 construction proves bounded Markov-Krein and retires unused general J1, leaving three actual/main axioms; independent acceptance is complete (Section 46). J2/T1/S1 remain later work. E-S1 original-page self-check and independent review are complete, closing S1-SOURCE; see SSVSourceCheck-2026-09-24.md and ConstructionReport Section 34. No new axiom is authorized. |
 | GAP-006 — compensated generator/resolvent arguments | R10's Taylor/compact-support reuse and API-020/021 now have tracked production proofs. | Closed and design accepted by the actual `(B,F)` generator, sample cancellation, absolute posterior/Palm estimates and `integral_generator_eq_normalized_powerTangent`. M4 continuity and M5 constructed existence are also accepted through their separate contracts. |
 
 ## New-entry template and updates
@@ -317,3 +358,112 @@ Change reason / superseded decision (if any):
   was introduced. Independently reviewed the specified SSV first-edition pages
   and errata, closing S1-SOURCE while retaining E-S1 as an axiom. See
   [Section 34](ConstructionReport.md#e2-design-acceptance-2026-09-24).
+
+- **2026-09-24 — designer, unused-axiom cleanup and E3 plan:** API-067 records
+  removal of unused E-B2 and its two auxiliary consumers, with E-B4 withdrawn.
+  API-068-071 propose a shared Gamma-Dirichlet foundation, complete J3 and the
+  bounded J1 formula required by the sole production consumer. API-072-074
+  retain concrete J2/T1/S1 follow-on gaps. Source inspections were cross-checked
+  by three independent planning agents; no new proof or compile probe is
+  claimed. The bounded J1 design explicitly retires the unused general contract.
+  See [Blueprint Sections 18-19](Blueprint.md#unused-axiom-cleanup).
+
+- **2026-09-24 — designer, E3.0 construction handoff:** refined API-068 into
+  a primitive measure contract and BG-0–4 proof cards. Promoted six successful
+  bounded experiments to tracked `Checks/E3BetaGammaReuse.lean`, outside the
+  default production globs, with an explicit acceptance command. Compilation
+  corrected the product-density namespace to `MeasureTheory.prod_withDensity`;
+  one-dimensional scaling and the definition of `ProbabilityTheory.beta`
+  replace the need for a generic two-dimensional Jacobian or complex integral
+  normalization in the primary route. All six probe proofs audit to standard
+  logic only. Support, full density factorization and joint-law assembly remain
+  construction work; E3.0 and the five-axiom boundary are unchanged. See
+  [Section 37](ConstructionReport.md#e3-zero-design-handoff-2026-09-24).
+
+- **2026-09-24 — construction, E3.0 joint law:** API-068 now records the complete
+  production proof, support and inverse lemmas, real-power density factorization,
+  shear/interval change of variables, and measure extensionality. The original
+  primitive type is independently checked. No evidence upgrade is made for
+  E3.1–3 or API-069–074; no literature axiom is removed. See
+  [Section 38](ConstructionReport.md#e3-zero-construction-2026-09-24).
+
+- **2026-09-24 — designer, E3.0 acceptance and structural handoff:** API-068
+  accepted after full proof/contract review, verification of all 148 submitted
+  clean-build source hashes/module records, fresh default build, 967/967 direct
+  audit and primitive-type check. Corrected a stale unproved-status paragraph
+  and the accidentally expanded four-column row in the two-column summary.
+  API-075 schedules the user-requested relocation of local Bondesson interfaces;
+  no production migration is claimed. See report Section 39.
+
+
+- **2026-09-25 — construction, Tidy-Thorin:** API-075 now records the relocated
+  primitive wrappers, unchanged core proof reuse, caller/audit migration,
+  removal of the old module, and durable original-type checks. This is an
+  ownership change with no mathematical axiom reduction. Independent acceptance
+  is pending; see [Section 41](ConstructionReport.md#tidy-thorin-construction-2026-09-25).
+
+- **2026-09-25 — designer, Tidy-Thorin acceptance:** API-075 accepted after
+  exact migration comparison, submitted clean-build/hash validation, fresh
+  incremental build, 967/967 direct audit and both primitive-type checks.
+  The lower import boundary and five-axiom set are preserved. Also corrected
+  a stale current E3.0 acceptance summary; dated reports retain their history.
+  See [Section 42](ConstructionReport.md#tidy-thorin-design-acceptance-2026-09-25).
+
+- **2026-09-25 — construction, E3.1/E3.2:** API-069/070 now have complete
+  finite Gamma/Dirichlet joint-law and full original E-J3 proofs. Degenerate
+  shapes and arbitrary weight realizations are included. E-J3 is a theorem,
+  leaving J1/J2/T1/S1 as the four actual/main axioms. The new contract check
+  follows Checks governance. Final clean build: 3953 jobs / 150 fresh modules;
+  direct audit: 992/992 matching requests. All 26 new/local endpoint checks
+  use standard logic only, and all contract checks pass. Independent design
+  acceptance is pending;
+  API-071-074 are unchanged. See [Section 43](ConstructionReport.md#e3-one-two-construction-2026-09-25).
+
+- **2026-09-25 — designer, E3.1/E3.2 acceptance:** API-069/070 accepted after
+  source/contract review, 150 matching clean-build hashes/module records, fresh
+  default build, 992/992 direct audit and seven contract endpoint checks.
+  All 25 new declarations plus E-J3 use standard logic only. Original J3 type,
+  zero-shape cases, independent import closures and unchanged main scope checked.
+  Four actual/main literature axioms remain; E3.3 is planned. See Section 44.
+
+- **2026-09-25 — constructor, E3.3:** API-071 now has finite/simple and bounded
+  Markov-Krein production proofs, preserving the full consumer type and retiring
+  the unused general J1 declaration. Clean build: 3955 jobs / 152 fresh modules;
+  direct audit: 1005/1005. All 14 new theorems and both identification consumers
+  use standard logic only; all four contract files pass. GAP-005 now records
+  J2/T1/S1 as the three actual/main axioms. The unbounded statement is not claimed
+  as proved. Independent acceptance is pending; see
+  [Section 45](ConstructionReport.md#e3-three-construction-2026-09-25).
+
+- **2026-09-25 — designer, E3.3 acceptance:** API-071 accepted after complete
+  proof/consumer review, verification of 152 clean-build hashes/module records,
+  fresh 3955-job default build, 1005/1005 direct audit and seven contract endpoints.
+  The 14 new theorems and both consumers use standard logic only. Three actual/main
+  axioms remain. General unbounded J1 is retired, not claimed fully formalized.
+  See [Section 46](ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
+
+- **2026-09-25 — designer, independent audit follow-up and lifecycle rule:**
+  read the second-round report (pass within its scope, one open low-priority
+  comment finding R2-01). Added API-076 and Blueprint Section 24 for the exact
+  comment correction plus E-J3 wrapper relocation. Identified Palm's transitive
+  James import as a migration dependency. No production source/check or
+  auditor-owned artifact was changed; construction and acceptance remain pending.
+
+
+- **2026-09-25 — constructor, API-076 closeout:** moved E-J3 to
+  `GGC.DirichletPosterior`, preserved its full primitive type/proof and E-J2,
+  corrected R2-01's dependency comment, and migrated callers/audit/shared check.
+  Deleted only the superseded E3BetaGammaReuse design probe; the four active
+  contract files remain and pass. Clean build: 3956 jobs / 153 fresh modules;
+  direct audit: 1005/1005. Both posterior theorems use standard logic only;
+  the main theorem still has exactly J2/T1/S1. Independent design acceptance
+  is pending; [Section 48](ConstructionReport.md#r2-j3-closeout-2026-09-25).
+
+- **2026-09-25 — designer, API-076 acceptance:** verified the exact comment-only
+  main change, full original posterior contract, unchanged E-J2 and consumer
+  types, independent imports and absence of old aliases. Matched 153 production
+  sources to construction clean-build evidence; fresh incremental build,
+  1005/1005 audit and seven E3GammaDirichlet contract endpoints passed. Accepted
+  probe retirement and updated Blueprint links. Removed the constructor-added
+  progress section from README under its current scope rule. See
+  [Section 49](ConstructionReport.md#r2-j3-design-acceptance-2026-09-25).

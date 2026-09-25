@@ -1,5 +1,5 @@
 import GGC.Thorin.Basic
-import External.Bondesson
+import GGC.Thorin.Interfaces
 
 /-!
 # Thorin representability, separate from GGC membership
@@ -22,7 +22,7 @@ with actual independent gamma sums by the locally proved Laplace uniqueness. -/
 theorem HasThorinRepresentation.isGGC {μ : NonnegLaw} (hμ : HasThorinRepresentation μ) :
     IsGGC μ := by
   obtain ⟨d, hd⟩ := hμ
-  obtain ⟨μs, hlim, hμs⟩ := External.Bondesson.finite_atomic_approximation μ.law μ.nonneg
+  obtain ⟨μs, hlim, hμs⟩ := finite_atomic_approximation μ.law μ.nonneg
     d.drift d.drift_nonneg d.measure d.admissible hd
   let νs : ℕ → NonnegLaw := fun n => ⟨μs n, (hμs n).1⟩
   refine ⟨νs, ?_, hlim⟩
@@ -40,7 +40,7 @@ theorem isGGC_diracLaw (a : ℝ) (ha : 0 ≤ a) : IsGGC (diracLaw a ha) :=
 /-- Realization of arbitrary admissible Thorin data, using the locally proved E-B1. -/
 theorem exists_law_thorinLaplace (d : ThorinData) :
     ∃ μ : NonnegLaw, ∀ s : ℝ, 0 < s → laplace μ s = thorinLaplace d s := by
-  obtain ⟨μ, hμ, hL⟩ := External.Bondesson.thorin_realization
+  obtain ⟨μ, hμ, hL⟩ := thorin_realization
     d.drift d.drift_nonneg d.measure d.admissible
   exact ⟨⟨μ, hμ⟩, hL⟩
 

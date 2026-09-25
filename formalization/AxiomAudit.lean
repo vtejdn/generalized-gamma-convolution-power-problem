@@ -1,3 +1,7 @@
+import GGC.Foundations.BetaGamma
+import GGC.Foundations.GammaDirichlet
+import GGC.Foundations.DirichletUpdate
+import GGC.Foundations.MarkovKrein
 import GGC.Thorin.GridMeasureMap
 import GGC.FiniteGamma
 import GGC.Thorin
@@ -39,7 +43,8 @@ import GGC.Identification.LaplaceEvolution
 import GGC.Identification.LogTransport
 import GGC.Identification.DynamicIdentification
 import main
-import External.Bondesson
+import GGC.Thorin.Interfaces
+import GGC.DirichletPosterior
 import External.James
 import External.Sethuraman
 import External.SSV
@@ -86,8 +91,8 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #check GGC.isGGC_diracLaw
 #check GGC.existsUnique_law_thorinLaplace
 
-#print GGC.External.Bondesson.thorin_realization
-#print GGC.External.Bondesson.finite_atomic_approximation
+#print GGC.thorin_realization
+#print GGC.finite_atomic_approximation
 
 #print axioms GGC.powerLaw_toMeasure
 #print axioms GGC.powerLaw_one
@@ -135,8 +140,8 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.exists_law_thorinLaplace
 #print axioms GGC.existsUnique_law_thorinLaplace
 
-#print axioms GGC.External.Bondesson.thorin_realization
-#print axioms GGC.External.Bondesson.finite_atomic_approximation
+#print axioms GGC.thorin_realization
+#print axioms GGC.finite_atomic_approximation
 
 -- M2/M3 construction: these are local results, not milestone completion.
 #print GGC.RandomMeasure.gammaShapeLaw
@@ -214,9 +219,9 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print GGC.LogRate.phaseDrift
 #print GGC.LogRate.phaseAcceptance
 #print GGC.LogRate.phaseGenerator
-#print GGC.External.James.markov_krein
+#print GGC.RandomMeasure.markov_krein_of_bounded
 #print GGC.External.James.posterior_palm_nonneg
-#print GGC.External.James.beta_atom_posterior
+#print GGC.beta_atom_posterior
 
 #check GGC.tiltedLaw_eq_gammaDirichlet
 #check GGC.posteriorMixture_isDirichlet
@@ -287,9 +292,8 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.LogRate.integrable_phaseGenerator_jumps
 #print axioms GGC.LogRate.phaseGenerator_nonneg_at_min
 #print axioms GGC.LogRate.phaseGenerator_sq_le
-#print axioms GGC.External.James.markov_krein
 #print axioms GGC.External.James.posterior_palm_nonneg
-#print axioms GGC.External.James.beta_atom_posterior
+#print axioms GGC.beta_atom_posterior
 
 -- Canonical integer-boundary phase and parameter-measurable posterior generator.
 #print GGC.complexStieltjesMean
@@ -1182,3 +1186,61 @@ Printing the axioms of the proposition definition alone would not certify its tr
 #print axioms GGC.isTightMeasureSet_of_laplace_lower_bound
 #print axioms GGC.exists_nonnegLaw_subseq_of_isTightMeasureSet
 #print axioms GGC.exists_nonnegLaw_of_laplace_tendsto
+
+-- E3.0: the complete Beta-Gamma joint law and its independent foundation.
+#print axioms GGC.BetaGamma.measurable_ratio_sum
+#print axioms GGC.BetaGamma.gamma_ae_pos
+#print axioms GGC.BetaGamma.gamma_prod_ae_pos
+#print axioms GGC.BetaGamma.ratio_sum_mem
+#print axioms GGC.BetaGamma.ratio_sum_inverse
+#print axioms GGC.BetaGamma.inverse_ratio_sum
+#print axioms GGC.BetaGamma.normalizing_constant
+#print axioms GGC.BetaGamma.density_factorization
+#print axioms GGC.BetaGamma.lintegral_interval_scale
+#print axioms GGC.BetaGamma.lintegral_quadrant
+#print axioms GGC.BetaGamma.gamma_eq_open_density
+#print axioms GGC.BetaGamma.beta_eq_open_density
+#print axioms GGC.BetaGamma.gamma_ratio_sum_map
+
+-- E3.1 and E3.2: finite joint laws and the complete local Beta atom posterior.
+#print axioms GGC.RandomMeasure.gammaShapeLaw_of_ne_zero
+#print axioms GGC.RandomMeasure.gammaRatioLaw
+#print axioms GGC.RandomMeasure.gammaShape_ratio_sum
+#print axioms GGC.RandomMeasure.gammaVector_nonneg
+#print axioms GGC.RandomMeasure.normalize_cons
+#print axioms GGC.RandomMeasure.measurePreserving_swap_first_two
+#print axioms GGC.RandomMeasure.gammaVector_normalize_sum
+#print axioms GGC.RandomMeasure.gammaRatioLaw_of_pos
+#print axioms GGC.RandomMeasure.gammaShape_sum
+#print axioms GGC.RandomMeasure.gammaVector_normalize_sum_of_pos
+#print axioms GGC.RandomMeasure.dirichletLaw_single_positive
+#print axioms GGC.RandomMeasure.incrementShape
+#print axioms GGC.RandomMeasure.addCoordinate
+#print axioms GGC.RandomMeasure.measurable_addCoordinate
+#print axioms GGC.RandomMeasure.gammaVector_addCoordinate
+#print axioms GGC.RandomMeasure.coordinateMixture
+#print axioms GGC.RandomMeasure.measurable_coordinateMixture
+#print axioms GGC.RandomMeasure.gammaVector_sum_pos
+#print axioms GGC.RandomMeasure.gammaVector_normalize_ratio
+#print axioms GGC.RandomMeasure.normalize_addCoordinate
+#print axioms GGC.RandomMeasure.dirichlet_coordinate_update
+#print axioms GGC.RandomMeasure.Partition.sum_shape
+#print axioms GGC.RandomMeasure.partitionEval_atomMixture
+#print axioms GGC.RandomMeasure.Partition.shape_add_dirac
+#print axioms GGC.RandomMeasure.beta_atom_posterior
+
+-- E3.3: bounded Markov-Krein; the unused general E-J1 interface is retired.
+#print axioms GGC.RandomMeasure.measurable_rpow_const
+#print axioms GGC.RandomMeasure.gammaShape_laplace
+#print axioms GGC.RandomMeasure.gammaShape_laplace_rpow
+#print axioms GGC.RandomMeasure.gammaVector_laplace
+#print axioms GGC.RandomMeasure.dirichlet_transform
+#print axioms GGC.RandomMeasure.Partition.integral_eq_sum
+#print axioms GGC.RandomMeasure.markov_krein_partition
+#print axioms GGC.RandomMeasure.markov_krein_simple
+#print axioms GGC.RandomMeasure.integrable_nonneg_bounded
+#print axioms GGC.RandomMeasure.measurable_probability_mean
+#print axioms GGC.RandomMeasure.measurable_mean_rpow
+#print axioms GGC.RandomMeasure.norm_mean_rpow_le_one
+#print axioms GGC.RandomMeasure.norm_log_one_add_le
+#print axioms GGC.RandomMeasure.markov_krein_of_bounded

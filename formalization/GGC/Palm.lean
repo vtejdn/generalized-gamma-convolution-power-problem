@@ -1,4 +1,5 @@
 import GGC.GammaDirichlet
+import External.James
 import Mathlib.Probability.Kernel.Composition.IntegralCompProd
 
 /-! # The actual posterior kernel and signed Palm transfer

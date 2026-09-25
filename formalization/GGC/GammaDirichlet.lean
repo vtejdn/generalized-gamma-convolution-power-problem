@@ -1,13 +1,14 @@
 import GGC.BetaPosterior
 import GGC.ExponentialTilt
 import GGC.Thorin
-import External.James
+import GGC.DirichletPosterior
+import GGC.Foundations.MarkovKrein
 
 /-! # Concrete gamma--Dirichlet products and the beta posterior adapter
 
 The law is a product pushforward, hence encodes independence. Distributional
-identification uses the explicit James contracts; analytic moment estimates
-remain in axiom-free modules.
+identification uses the local bounded Markov-Krein theorem and the proved
+Beta atom posterior. Analytic moment estimates remain in independent modules.
 -/
 
 noncomputable section
@@ -23,7 +24,7 @@ theorem posteriorMixture_isDirichlet {U : Measure PosReal}
     {D : ProbabilityMeasure (ProbabilityMeasure PosReal)} (hD : IsDirichletProcess U D)
     (B : PosReal) (hMass : U univ = ENNReal.ofReal B.val) (b : PosReal) :
     IsDirichletProcess (U + Measure.dirac b) (posteriorMixtureLaw D B b) :=
-  External.James.beta_atom_posterior U D hD B.val B.property hMass
+  GGC.beta_atom_posterior U D hD B.val B.property hMass
     (betaWeightLaw B) (betaWeightLaw_map_val B) b
 
 theorem measurable_gammaDirichlet_product (s : PosReal) :
@@ -92,20 +93,11 @@ theorem dirichletMean_laplace {U : Measure PosReal}
     {t : ℝ} (ht : 0 ≤ t) :
     laplace (gammaDirichletLaw D B s) t =
       Real.exp (-(∫ b : PosReal, Real.log (1 + t / (s.val + b.val)) ∂U)) := by
-  letI : IsFiniteMeasure U := hD.isFiniteMeasure
-  have hlog : Integrable (fun b : PosReal => Real.log (1 + t / (s.val + b.val))) U := by
-    apply (integrable_const (Real.log (1 + t / s.val))).mono'
-      ((show Measurable (fun b : PosReal => Real.log (1 + t / (s.val + b.val))) by
-        fun_prop).aestronglyMeasurable)
-    apply Filter.Eventually.of_forall
-    intro b
-    have hg : 0 ≤ t / (s.val + b.val) := div_nonneg ht (add_pos s.property b.property).le
-    rw [Real.norm_eq_abs, abs_of_nonneg (Real.log_nonneg (by linarith))]
-    apply Real.log_le_log (by linarith)
-    linarith [div_le_div_of_nonneg_left ht s.property (le_add_of_nonneg_right b.property.le)]
-  have hj := (External.James.markov_krein U D hD B.val B.property hMass
+  have hj := RandomMeasure.markov_krein_of_bounded U D hD B.val B.property hMass
     (fun b : PosReal => t / (s.val + b.val)) (by fun_prop)
-    (fun b => div_nonneg ht (add_pos s.property b.property).le) hlog).2
+    (fun b => div_nonneg ht (add_pos s.property b.property).le) (t / s.val)
+    (fun b => div_le_div_of_nonneg_left ht s.property
+      (le_add_of_nonneg_right b.property.le))
   rw [laplace_gammaDirichletLaw D B s ht]
   convert! hj using 1
   congr 1

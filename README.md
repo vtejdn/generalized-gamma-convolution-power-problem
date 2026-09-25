@@ -15,8 +15,31 @@ audit complete.** This is not external peer review, publication, Lean
 verification or a priority claim. The scope, evidence and qualifications
 are maintained in [ResearchStatus.md](ResearchStatus.md).
 The separate Lean construction now includes the [complete power-closure proof](formalization/main.lean),
-relative to five registered literature axioms; Thorin realization and finite-atomic approximation are now proved locally. Its fresh clean build, full axiom audit and independent design acceptance are recorded in the
-[E2 acceptance report](formalization/ConstructionReport.md#e2-design-acceptance-2026-09-24).
+relative to three registered literature axioms. Thorin realization, finite-atomic
+approximation, finite Gamma normalization independence and the full Beta atom
+posterior are proved locally. E3.3 now proves the bounded Markov-Krein formula
+and retires the unused general E-J1 interface; [Section 45](formalization/ConstructionReport.md#e3-three-construction-2026-09-25)
+records construction and validation; independent acceptance is complete in [Section 46](formalization/ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
+The independently accepted E3.1/E3.2 construction and validation
+are recorded in [Section 43](formalization/ConstructionReport.md#e3-one-two-construction-2026-09-25);
+independent design acceptance is recorded in [Section 44](formalization/ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25).
+Unused E-B2 and its optional characterization interfaces have been removed.
+The [next reduction plan](formalization/Blueprint.md#e3-james-reduction-plan)
+has now reached the bounded Markov-Krein formula used by the main theorem
+(E3.3). J2, T1 and S1 remain separate work. The general unbounded E-J1 statement
+is retired, not claimed as proved.
+The [E3.0 construction handoff](formalization/Blueprint.md#e3-zero-construction-handoff)
+specifies the first joint-law contract. Its [production proof](formalization/GGC/Foundations/BetaGamma.lean)
+is independently accepted; see the [E3.0 acceptance](formalization/ConstructionReport.md#e3-zero-design-acceptance-2026-09-24). E3.1/E3.2 are independently accepted; E3.3 is independently accepted; see [Section 46](formalization/ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
+The locally proved Thorin interfaces now live in
+[GGC/Thorin/Interfaces.lean](formalization/GGC/Thorin/Interfaces.lean), with
+[independent migration acceptance](formalization/ConstructionReport.md#tidy-thorin-design-acceptance-2026-09-25); the obsolete External module is removed.
+The [second-round independent audit](formalization/SemanticAudit-2026-09-25.md)
+passes within its scope. Its comment correction and the required E-J3 interface
+relocation are now implemented under [Blueprint Section 24](formalization/Blueprint.md#audit-r2-and-j3-relocation):
+`GGC.beta_atom_posterior` lives in [DirichletPosterior.lean](formalization/GGC/DirichletPosterior.lean),
+and External retains only J2/T1/S1. [Section 48](formalization/ConstructionReport.md#r2-j3-closeout-2026-09-25)
+records construction validation, pending independent design acceptance.
 The [manuscript source](manuscript/ggc-power-closure.tex) is available;
 compilation remains user-controlled.
 

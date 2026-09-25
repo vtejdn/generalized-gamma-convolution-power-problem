@@ -4,8 +4,8 @@ import GGC.Thorin.Realization
 # Bondesson interfaces: locally proved realization and approximation
 
 The realization and finite-atomic approximation interfaces are locally proved
-from the independent Thorin construction. The unused representability-closure
-axiom E-B2 was removed together with its two optional characterization consumers.
+from the independent Thorin construction. E-B2's unused representability-closure
+assumption was removed together with its two optional characterization consumers.
 The lower construction imports neither this facade nor any external mathematical input.
 
 The contracts below deliberately repeat their primitive measure, integrability,
@@ -30,7 +30,7 @@ states power closure or the project's finite-gamma power theorem.
 open MeasureTheory Filter Topology
 open scoped BigOperators
 
-namespace GGC.External.Bondesson
+namespace GGC
 
 /-- **E-B1 — realization of Thorin-admissible data.**
 
@@ -98,4 +98,4 @@ theorem finite_atomic_approximation
                   (α i).1 * Real.log (1 + s / (β i).1))) := by
   exact GGC.finite_atomic_approximation_core ⟨μ, hμ⟩ ⟨a, ha, U, hU⟩ hLaplace
 
-end GGC.External.Bondesson
+end GGC
