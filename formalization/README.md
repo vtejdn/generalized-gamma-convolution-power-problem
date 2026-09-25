@@ -302,6 +302,12 @@ general E-J1 interface is retired and is not claimed as proved. E-B2/E-B4
 are not active inputs. The [external inventory](External/README.md) identifies
 the exact declarations, source provenance and adaptations.
 
+**Project scope:** E-S1 is retained as a literature assumption; its local
+formalization is outside this project. The accepted completion boundary is
+standard logic plus E-S1 as the sole external mathematical input. Existing
+external declarations remain assumptions until their local replacements are
+proved and accepted; the intended boundary does not change the current inventory.
+
 For every actual declaration, record its stable ID, full source and version,
 theorem/formula/page locator, original statement or derived interface, exact
 inputs and conclusion, consumers, local adaptation obligations and Blueprint

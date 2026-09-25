@@ -7,6 +7,11 @@ converse/equivalence consumers are removed. Compiling the three axiom
 declarations checks their types, not their mathematical proofs.
 No project core result is registered as an axiom.
 
+Project scope retains E-S1 as the sole external mathematical input at
+completion. Its local formalization is excluded; `External/SSV.lean` and its
+complete audited contract remain required. The current inventory above still
+includes J2/T1 until their local replacements pass acceptance.
+
 [GGC/Thorin/Interfaces.lean](../GGC/Thorin/Interfaces.lean) now owns E-B1/E-B3
 and imports the independent `GGC.Thorin.Realization` layer. `External` contains
 only the three remaining literature axioms. The same-type E-J3 theorem is

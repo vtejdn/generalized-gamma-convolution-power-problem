@@ -4276,3 +4276,133 @@ R2-01 is closed in designer records on the basis of the actual correction and
 fresh dependency audit. The independent auditor's original report remains an
 unchanged record of its own snapshot. J2/T1/S1 remain separate future work;
 there is no further axiom reduction. No commit or push was performed.
+
+
+<a id="e4-design-reassessment-2026-09-25"></a>
+## 50. Remaining external inputs: E4 design reassessment — 2026-09-25
+
+**Designer delivery: new plan; no construction or axiom reduction claimed.**
+The user requested another round of consideration of the remaining external
+inputs. The designer re-read the actual E-J2/E-T1/E-S1 types, their production
+callers, accepted Gamma/Dirichlet foundations and prior follow-on plan, then
+searched the pinned mathlib source. The accepted baseline remains Section 49:
+153 production modules and exactly J2/T1/S1 in the main theorem.
+
+[Blueprint Section 25](Blueprint.md#e4-remaining-inputs-plan) now proposes a
+shared E4.0 finite size-bias/stationarity proof, E4.1 full T1, and E4.2 full J2.
+Both reductions reuse E4.0; J2 need not depend on T1. T1 is recommended first
+because its remaining law identification uses only finite-dimensional partition
+vectors and the original interface already supplies a probability-valued stick
+sum. The plan makes the remaining ENNReal-total-to-real-HasSum conversion
+explicit rather than treating `stickMeasure_univ` as a converse theorem.
+
+J2 uses the same size-bias identity and an additional Giry cylinder extension.
+Pinned `memPartition` already supplies finite refinements, disjointness and
+coverage, with measurable-cell lemmas; a project adapter and the generating
+sigma-algebra proof still need to be constructed. The original arbitrary
+posterior K and nonnegative test, including infinite values, remain mandatory.
+Neither the accepted Beta posterior nor first-moment formulas alone prove Palm.
+
+E-S1 remains a separate research gate. Alongside the prior harmonic route, the
+plan evaluates finite-atomic interlacing phases and a common weak limit in
+weighted L2. Pinned L2 Hilbert structure, Frechet-Riesz representation and
+sequential weak-dual compactness are candidates, not a compiled representation
+proof. The plan explicitly retains principal-log, common-representative,
+integrability and real-formula uniqueness obligations and forbids circular
+reuse of E-S1-dependent phase/continuity results. No full new Herglotz theory or
+S1 production relocation is assigned without reviewing that gate.
+
+API-072/073/074 are refined and API-077/078/079 record the shared size-bias,
+partition and alternative analytic bridges. The search inspected Gamma and
+with-density definitions; the Giry sigma-algebra; finite-measure extension;
+finite and infinite product laws; membership partitions; disk Poisson,
+resolvent holomorphy, weak-dual compactness, L2 and its dual/separability APIs.
+It does not claim that the whole library lacks a matching theorem. New uses
+remain `source_read`; adopted existing production proofs keep their prior
+compiled evidence. No new source-page review or calibrated agent-time estimate
+was performed.
+
+E4.0 is the immediate construction handoff. Each actual external-input proof
+must include migration to its appropriate project module, removal of an empty
+External file and old aliases, complete original-contract checks, updated
+callers/audit/comments, a pinned clean build and complete direct audit. The
+expected sequence is three axioms, then J2/S1 after T1, then S1 after J2;
+only actual audited output and designer acceptance can establish those changes.
+
+Only Blueprint, the shared API index and this report were edited. No production
+Lean source, check/probe, main theorem, human-check file or independent-audit
+artifact changed. README retains only current status and rules, with no new
+plan or progress block. The before-state hashes for the protected artifacts are
+in `.lake/e4-design-before.json`. This is source inspection and mathematical
+planning: no new Lean build, proof or acceptance is asserted.
+
+
+<a id="j2-detailed-design-2026-09-25"></a>
+## 51. Fixed S1 boundary and detailed J2 design — 2026-09-25
+
+**Designer delivery: scope and construction contracts updated; no new proof.**
+The user accepts E-S1 as the final project's sole external mathematical input
+and excludes its local formalization. Blueprint Section 25.5 and the project
+scope rule now record that decision. S1-R and API-074/079 are withdrawn from
+construction scope, with their prior source-inspection evidence retained as
+history. The earlier Section 50 research proposal is superseded. This does
+not discharge the still-existing J2/T1 axioms: the actual current baseline
+remains three literature inputs until their local replacements are accepted.
+
+[Blueprint Section 26](Blueprint.md#e4-j2-construction-handoff) refines the full
+J2 contract into four separately checkable deliveries:
+
+1. E4.2a builds only the needed trivial, binary and pair-intersection partitions,
+   together with measurable full-vector coordinate sums and pointwise evaluation
+   identities. Empty cells are retained; no representative point is chosen.
+2. E4.2b proves that those cylinders generate the original Giry sigma-algebra,
+   extends equality to arbitrary finite measures, and derives joint-measure
+   extension using restricted second marginals and mathlib `Measure.ext_prod`.
+   This generic early gate needs neither E4.0 nor T1 and isolates the main
+   measurable-space implementation risk before the probability argument.
+3. E4.2c uses accepted E4.0 size-bias and exact hD/hpost finite-dimensional laws.
+   Both joint rectangle masses reduce to the same explicit sum over cells of
+   a partition refined by A/complement. Zero-mass cells contribute zero without
+   forming a conditional probability or dividing by their mass.
+4. E4.2d proves the joint equality, integrates arbitrary nonnegative ENNReal
+   Phi, preserves the complete original public type, and migrates the theorem
+   and callers out of External before removing the empty James module.
+
+The key simplification follows a fresh read of the pinned `Measure.ext_prod`
+type and proof: the project need not develop a separate product-generator
+API. The cylinder theorem must concern finite measures rather than only
+probabilities because the relevant slices can have any mass, including zero.
+The reverse Giry inclusion is specified via binary evaluation, finite
+ENNReal-toReal reconstruction, `Measure.measurable_of_measurable_coe` and
+`Measurable.subtype_mk`, avoiding a new Borel identification or measurable-space
+instance. Pair-indexed intersection refinements suffice for the consumers;
+`memPartition` remains a source-inspected alternative, not a second required
+partition framework.
+
+The designer also read the exact compProd rectangle, mass and nonnegative
+integral APIs, their finite/probability instances, the current Palm consumer,
+the accepted shape/add-dirac adapter and finite-partition law semantics. These
+support the specified decomposition; they are not compiled applications to
+the new J2 helpers. New API-080/081 and refined API-072/078 remain `source_read`.
+The next probability proof must not assume DP uniqueness, depend on the T1
+sampler, specialize K to the canonical mixture or add finite-integral premises.
+
+The handoff fixes lower module ownership, generic and full public contracts,
+boundary checks, exact caller/audit migrations, and the final clean-build /
+direct-audit obligations. The topology binders of the public interface must
+be explicitly checked, even if the lower proof only uses measurability. S1's
+module, complete contract and source/audit evidence remain unchanged. After
+both T1 and J2 acceptance, the actual/main mathematical axiom set must be
+exactly `{GGC.External.SSV.phase_representation}`. No S1 proof gate remains.
+
+Only Blueprint, the API index, this report and the README/External scope rules
+were edited. README received a lasting scope rule, not a progress or acceptance
+log. No Lean source, active check, human-check file, independent audit artifact
+or installed library was changed. Protected hashes are recorded in
+`.lake/j2-design-before.json`. No new build, contract-check run, source-page
+review or mathematical acceptance is claimed by this documentation delivery.
+
+Documentation validation passed: `git diff --check`, 422 local Markdown links
+and 194 anchors. All 162 protected file hashes and all 153 accepted production
+source hashes are unchanged; the 158-file Lean inventory is unchanged. The
+new handoff is English, and its explicit anchor and API-080/081 rows are unique.

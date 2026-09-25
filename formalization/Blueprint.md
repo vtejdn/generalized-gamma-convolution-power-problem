@@ -39,6 +39,13 @@ final law theorem now uses exactly E-J2, E-T1 and E-S1, plus `propext`,
 `Classical.choice`, and `Quot.sound`. See [Section 23](#e3-three-accepted).
 The R2-01 comment correction, E-J3 public-interface relocation and retirement
 of the superseded reuse probe are also accepted; see [Section 24](#audit-r2-and-j3-relocation).
+[Section 25](#e4-remaining-inputs-plan) specifies the next proposed reduction:
+shared finite Dirichlet size-bias, full E-T1, then full E-J2.
+**User scope decision, 2026-09-25:** E-S1 is retained as the sole permitted
+external mathematical input at completion; its local formalization is outside
+this project. The actual current dependency set is still J2/T1/S1.
+[Section 26](#e4-j2-construction-handoff) gives the detailed J2 handoff. No E4
+proof or dependency reduction is implied by this scope decision.
 
 **E2 is independently accepted as `verified`.** E-B3 finite-atomic approximation
 and E-B1 Thorin realization preserve their original complete primitive types
@@ -646,7 +653,7 @@ require fresh review of the affected proofs.
 | A theorem covering only restricted inputs | Audit every parameter of `ggc_rpow`; remove shape, mass, support, drift, or moment restrictions belonging only to intermediate construction. Check \(q=1\), \(\delta_0\), and positive drift. |
 | A mismatch with the written proof | Locate the issue by WIP ID and manuscript label; repair the proof or contract and update status. Do not absorb a mathematical gap into an external axiom. |
 
-**Current handoff:** E2 is closed with no blocking findings; E-B1/E-B3 are locally proved at their complete original scope. D1 and S1-SOURCE are closed; RV-1 remains withdrawn. E2-P removes E-B2 and its unused auxiliary interfaces. E3.0–3 are now accepted: the remaining trust boundary is exactly J2/T1/S1. Section 23 records current acceptance; Section 19.5 retains the separate follow-on feasibility plans. Future code changes should preserve the current definition/proof separation and scope and receive checks appropriate to that change.
+**Current handoff:** E2 is closed with no blocking findings; E-B1/E-B3 are locally proved at their complete original scope. D1 and S1-SOURCE are closed; RV-1 remains withdrawn. E2-P removes E-B2 and its unused auxiliary interfaces. E3.0–3 are now accepted: the remaining trust boundary is exactly J2/T1/S1. Sections 23–24 record current acceptance; Sections 25–26 define E4 and the detailed J2 handoff. E-S1 formalization is excluded by the user; S1 is the accepted sole-external-input target after J2/T1 are locally proved. Future code changes should preserve the current definition/proof separation and scope and receive checks appropriate to that change.
 
 For each completed module, record the actual file, Lean declaration, precise WIP/manuscript source, verification command, and external-dependency status in [ConstructionReport.md](ConstructionReport.md). The designer updates this blueprint's accepted status and contracts after review. Retain the proposed label for nonexistent files. Completion evidence must be the main theorem's actual type, a dependency tree without core gaps, and a reproducible build, rather than this blueprint itself.
 
@@ -1156,7 +1163,7 @@ Thorin interface migration is structural and removes no axiom. See
 | E3.2 | Full original E-J3 `beta_atom_posterior` as a same-type theorem | Five actual/main axioms become four: J1, J2, T1, S1. Arbitrary original D, Z and b remain supported. |
 | E3.3 | Prove bounded Markov-Krein; replace its only production call; remove the old general E-J1 axiom | Four become three: J2, T1, S1. The general log-integrable E-J1 interface is retired, not claimed fully formalized. |
 | Later | E-J2 finite-dimensional size-bias and measure extension; E-T1 Dirichlet-invariant stick recursion | Share E3's foundation, with separate feasibility gates. Do not count anticipated reductions now. |
-| Last / separate research | E-S1 half-plane phase representation | Largest analytic adaptation risk. Source review is closed, but its Lean representation theorem remains an axiom. |
+| Retained external input | E-S1 half-plane phase representation | Local formalization is outside project scope by the user decision in Section 25.5. Keep the audited original interface as the sole external-input target after T1/J2. |
 
 E3 is medium to substantial work. Uncertainty is concentrated in the Beta-Gamma
 change of variables and the joint finite-dimensional law. Existing Gamma/Beta
@@ -1248,6 +1255,12 @@ independent lower layer with its name preserved; do not back-import the consumer
 
 ### 19.5 Separate follow-on contracts
 
+[Section 25](#e4-remaining-inputs-plan) refines these contracts after E3 and
+interface-migration acceptance. It prioritizes a shared size-bias proof, then
+T1 before J2; Section 26 refines the J2 engineering contracts. The complete
+J2/T1 types remain binding. The subsequent user decision in Section 25.5
+withdraws S1 formalization from this project.
+
 - **E-J2:** prove the finite Dirichlet size-bias identity, including zero selected
   shape, then equality of two joint measures on partition evaluation cylinders
   and extension through a generating pi system. Reuse Giry evaluation
@@ -1261,12 +1274,9 @@ independent lower layer with its name preserved; do not back-import the consumer
   bounded by that residual. Preserve arbitrary measurable E/Omega; use topology
   only on finite-dimensional vectors. Do not assume E Polish or re-prove the
   stronger common-parameter event already supplied by `CommonUniforms`.
-- **E-S1:** Poisson boundary recovery is downstream, not a proof of initial
-  phase representation. Investigate half-plane harmonic representation,
-  support/bounded density, principal-log branch, anchor-one integrability and
-  uniqueness from the real formula. Mathlib's disk Poisson formula and
-  `WeakDual.isSeqCompact_closedBall` are candidates, not the target theorem.
-  Do not infer absence of sequential compactness from an old weak-dual TODO.
+- **E-S1:** retain the complete audited phase-representation input. Local
+  formalization and the former S1 research gate are outside this project's
+  scope. Local downstream phase/continuity proofs retain their existing scope.
 
 ### 19.6 Construction and acceptance gates
 
@@ -1806,3 +1816,516 @@ fixed by the designer: the constructor-added closeout section was removed from
 README, which retains only a brief current summary and project rules.
 No production/check proof, human-check file or auditor-owned artifact was edited
 during acceptance. Mathematical scope and the three-axiom boundary are unchanged.
+
+
+<a id="e4-remaining-inputs-plan"></a>
+## 25. E4 plan: shared size-bias, stick-breaking and Palm — 2026-09-25
+
+**Status: `planned`; designer reassessment, not construction or acceptance.**
+The accepted baseline is 153 production modules, 1005 direct audit requests
+and exactly E-J2/E-T1/E-S1 in both the actual axiom inventory and main theorem.
+The preceding clean-build evidence and designer rerun are in Section 24.5.
+This plan preserves the full law theorem, original definitions and each
+remaining external input's complete mathematical contract.
+
+### 25.1 Priority, reuse and remaining engineering work
+
+| Stage | Delivery | Assessment and expected trust boundary |
+|---|---|---|
+| E4.0, first handoff | Finite Gamma size-bias, finite Dirichlet size-bias and weighted coordinate-update stationarity | A focused but substantive extension of the accepted Gamma/Dirichlet foundation. Shared by both next reductions; no axiom removed yet. |
+| E4.1, first reduction | Full original E-T1 stick-breaking theorem | Medium engineering risk after E4.0: finite-prefix independence and residual convergence in finite-dimensional partition vectors. No random-measure law extension is needed. Expected remaining axioms: J2/S1. |
+| E4.2, second reduction | Full original E-J2 nonnegative Palm identity | Higher extension risk: common refinements, generating evaluation cylinders and equality of joint measures. Reuses E4.0, without depending on E4.1. Expected remaining axiom: S1. |
+| E-S1, retained input | Keep the complete audited phase-representation axiom in `External/SSV.lean` | User-approved final external input. S1-R is withdrawn from project scope; no local representation proof or associated research gate is required. |
+
+The new shared bridge is size-bias, not another Gamma/Dirichlet construction.
+`gammaVector_normalize_sum`, `gammaVector_normalize_sum_of_pos`,
+`dirichletLaw_simplex`, `dirichletLaw_zero_coordinate`,
+`dirichlet_coordinate_update` and the full Beta atom posterior are already
+proved with standard logic only. Use them directly. J3 alone does not establish
+the weighted stationarity identity or the joint Palm identity.
+
+The estimates above compare engineering scope, not elapsed agent hours. Record
+actual E4.0 implementation and checking time before calibrating a later schedule.
+The dependency order is E4.0 -> E4.1 and E4.0 -> E4.2; T1 is recommended first
+because its remaining argument stays in finite-dimensional Euclidean spaces.
+Do not build a full DP existence/uniqueness theory as a prerequisite for T1.
+
+### 25.2 E4.0 complete shared contract
+
+Suggested owner: new `GGC/Foundations/DirichletSizeBias.lean`, namespace
+`GGC.RandomMeasure`, importing the accepted `Foundations.DirichletUpdate`
+layer and specific mathlib APIs. No External or upper consumer import is allowed.
+The names below are proposed project endpoints, not existing library declarations.
+
+Let `a : Fin n -> NNReal`, `B = sum_i (a i : Real) > 0`,
+`D_a = (dirichletLaw a : Measure (Fin n -> Real))`, and
+`a + e_j = incrementShape a j`. Complete these obligations:
+
+1. **Gamma tilt, including shape zero.** For every `a : NNReal`, prove the
+   measure identity
+   \[
+   \gamma_a.\mathrm{withDensity}(x\mapsto\operatorname{ofReal}(x))
+   =\operatorname{ofReal}(a)\,\gamma_{a+1}.
+   \]
+   Here `gamma_a` is the actual `gammaShapeLaw a`, and shape zero is Dirac zero.
+   Proposed name: `gammaShape_withDensity_self`. For positive shape, use the
+   existing Gamma density and `Real.Gamma_add_one`; establish the density
+   relation almost everywhere on the positive support. Do not demand a false
+   pointwise identity at zero from total real-power conventions. The zero-shape
+   branch is a separate Dirac calculation, with no Gamma(0) invocation.
+2. **Dirichlet coordinate size-bias.** For every j, including `a j = 0`, prove
+   \[
+   D_a.\mathrm{withDensity}(x\mapsto\operatorname{ofReal}(x_j))
+     = \operatorname{ofReal}(a_j/B)\,D_{a+e_j}.
+   \]
+   Proposed name: `dirichlet_withDensity_coordinate`. Equivalently, for every
+   measurable `g : (Fin n -> Real) -> ENNReal`, prove the corresponding
+   nonnegative integral identity, permitting infinite integrals. Use the
+   already proved joint independence of normalized Gamma coordinates and their
+   positive total, the Gamma tilt and its first moment. Any ENNReal cancellation
+   must use an explicitly finite, positive B. No new integrability premise on g
+   or positivity premise on the selected coordinate is allowed.
+3. **Weighted stationarity.** Summing the preceding identity and using the
+   existing simplex theorem gives
+   \[
+   D_a=\sum_j\operatorname{ofReal}(a_j/B)\,D_{a+e_j}.
+   \]
+   Proposed name: `dirichlet_weighted_increment`. Combine this with
+   `dirichlet_coordinate_update` to prove that, for mutually independent
+   `X ~ D_a`, `Z ~ Beta(1,B)` and `Pr(J=j)=a_j/B`,
+   `(1-Z) X + Z e_J` has law `D_a`. Encode this as an equality of pushforwards
+   of actual product measures, not an assumed random-variable coupling.
+
+The first two identities include zero shapes; the second and third require
+positive total only. The empty vector cannot meet that premise. Check a zero
+selected shape and a single positive coordinate explicitly. The all-zero Gamma
+tilt is part of item 1; no stationary Dirichlet probability on the zero-total
+simplex is asserted.
+
+Pinned-source reuse: Gamma density definitions, `Real.Gamma_add_one`,
+`Measure.withDensity_mul`, `Measure.withDensity_congr_ae`, product-with-density
+lemmas and nonnegative integration APIs are available. Existing production
+Gamma/Dirichlet proofs supply actual compiled transport and product-law evidence.
+The new tilt/size-bias/stationarity applications are not yet compiled; API-077
+records that boundary. An E4.0 submission must prove all three obligations,
+include their actual axiom audits and a minimal full-contract/boundary check,
+and leave the current three external declarations unchanged. A proof of only
+`E[X_j]=a_j/B`, or a check that the desired statement elaborates, is insufficient.
+
+### 25.3 E4.1 full E-T1 via finite prefixes
+
+Suggested lower owner: `GGC/Foundations/DirichletStickBreaking.lean`.
+Public owner: `GGC/DirichletStickBreaking.lean`, with the new public name
+`GGC.stick_breaking`. Preserve every binder and hypothesis of the original
+`External.Sethuraman.stick_breaking`: arbitrary measurable E and Omega, m, B,
+F, Z/hZ, V/Y and their measurability, the exact full product input law hInput,
+and the arbitrary measurable probability-valued Q satisfying hSum.
+Do not strengthen E to Polish, require a specific sampler, or assume a DP tail.
+
+For each original finite measurable partition p, put
+`a_i = B * F(p.cell i)` in NNReal. These shapes sum to B, including zero cells.
+Let J_k be the measurable cell label of Y_k and let `r_n = stickResidual V n`.
+On the product of the supplied input space with an **independent finite
+Dirichlet vector** X of law D_a, use
+\[
+ S_n=\sum_{k<n}W_k e_{J_k}+r_n X.
+\]
+
+- Prove the joint law of each finite input prefix from hInput. Prefer
+  `Measure.infinitePi_map_restrict`, finite-product transport and independence
+  APIs to a new countable-product construction. The existing
+  `map_infinitePi_infinitePi_of_inj` also supports shifted sequences.
+- Prove `Law(S_n)=D_a` by finite-prefix induction using E4.0 stationarity.
+  Peel independent coordinates in an order that leaves the tail independent;
+  do not assume that dependent stick weights are independent. The attached
+  tail is a finite vector with an already constructed law, not a DP supplied
+  by T1 or by its consumer.
+- From hSum and Q's probability status derive
+  `sum'_k W_k = 1` almost surely by evaluating the actual stick measure on
+  univ. Convert the nonnegative ENNReal sum carefully to `HasSum` over reals.
+  Reuse `sum_stickWeight` and `hasSum_stickWeight_iff` to get `r_n -> 0`.
+  The converse mass-to-HasSum adapter is a remaining proof obligation;
+  `stickMeasure_univ` alone states the opposite direction.
+- For every coordinate, both the genuine remaining partition mass and the
+  artificial tail contribution lie in `[0,r_n]`. Thus
+  `|S_n i - partitionEval p (Q omega) i| <= r_n`. This gives almost-everywhere
+  convergence on the product coupling without moments or topology on E.
+- Apply bounded continuous tests on `Fin n -> Real`, dominated convergence
+  and `ext_of_forall_integral_eq_of_IsFiniteMeasure` to identify the limiting
+  law. This proves the original finite-partition DP predicate for Q.
+
+Do not use `GGC.dirichletLaw_isDirichlet`, which currently depends on T1,
+`posteriorSample_isDirichlet`, or any downstream realization as a premise.
+No new Beta geometric-moment estimate or uniform-in-parameter common event
+is required by this interface; the caller already supplies Q and hSum.
+The original stronger sampling/common-event results must remain intact.
+
+On completion, migrate the sole current production call in
+`GGC/DirichletRealization.lean`, its import and all audit/contract requests to
+the new public theorem. Delete `External/Sethuraman.lean` once its last needed
+declaration moves, with no alias or forwarding file. Preserve the original
+source annotation. Recheck the main theorem's actual dependencies: expected
+J2/S1 after this stage, not standard logic alone.
+
+### 25.4 E4.2 full E-J2: detailed handoff in Section 26
+
+[Section 26](#e4-j2-construction-handoff) replaces the earlier broad extension
+outline with four deliverables: partition adapters, Giry-cylinder/finite-measure
+extension, the exact rectangle identity, and the complete public endpoint with
+migration. The first two form an early engineering gate independent of E4.0
+and T1. The rectangle proof requires accepted E4.0 size-bias; J2 never depends
+on T1 or a pre-existing DP uniqueness theorem.
+
+The selected route uses a binary partition and the common refinement of two
+already finite partitions. Their coordinate-sum equations are sufficient for
+all cylinder intersections and Palm rectangles. The source-inspected
+`memPartition` is retained as an alternative when it shortens an implementation,
+but general arbitrary-list Boolean-atom infrastructure is not a deliverable.
+
+For joint measure extension, use the project cylinder extensionality theorem
+on restricted second marginals, then mathlib `Measure.ext_prod`. This removes
+the need to develop a separate product-sigma-algebra theorem. The complete
+original arbitrary K/Phi contract, zero cells, module migration and standard-
+logic-only proof boundary remain mandatory.
+
+### 25.5 User scope: retain E-S1 as the final external input
+
+**Scope fixed by the user on 2026-09-25.** This project does not formalize E-S1.
+After full T1 and J2 replacement and acceptance, the permitted mathematical
+axiom set is exactly `{GGC.External.SSV.phase_representation}`, in addition
+to the standard logical axioms. This is the intended completion boundary;
+the current code still declares and uses J2/T1/S1 until the two reductions pass.
+
+Keep `External/SSV.lean`, its original Phase/RealPhase contracts, source/version
+records and direct/transitive audit checks. The lifecycle rule requires moving
+locally proved inputs; it does not require moving or deleting this deliberately
+retained axiom. No S1 proof, phase-contract relocation, Herglotz development,
+finite-atomic phase construction or weighted-L2 compactness project is required.
+The existing local downstream phase results remain in scope and unchanged.
+
+The former S1-R route comparison is **withdrawn by scope**, not proved, failed
+or blocked. API-074 and API-079 retain historical source-inspection evidence
+without a construction obligation. The earlier proposal is recorded in
+ConstructionReport Section 50; this decision supersedes it. Final reporting
+must say verification relative to E-S1, not external-axiom-free formalization.
+
+### 25.6 Delivery, validation and evidence discipline
+
+- Treat E4.0, E4.1 and E4.2 as separate deliveries with explicit mathematical
+  contracts and axiom audits. The immediate construction handoff is E4.0;
+  E4.1 and the J2 probability proof are sequenced behind its acceptance.
+  Section 26 permits the independent J2 partition/extension engineering gate
+  before E4.0. E-S1 is retained and has no formalization deliverable.
+- Preserve existing definitions, complete consumer types, main theorem scope,
+  accepted foundations, English source comments and all independent-auditor
+  artifacts. No new axiom or assumed fixed-point/DP uniqueness principle is
+  authorized. No source-review or agent-time claim follows from this design.
+- Each completed external-input replacement includes its namespace/module
+  migration, caller/import/audit update, old External module deletion when
+  empty, current trust-boundary comment correction, and source provenance.
+  No proved wrapper or old-name alias remains under External.
+- Run the pinned clean project build and subsequent full direct audit; match
+  requested names and actual output including axiom-free declarations, and
+  check every new core/public endpoint against standard logic only. Recompute
+  module/request counts. A folder move alone is not an axiom reduction.
+- Use production proofs as primary reuse evidence. Maintain API-072/073 and
+  the focused API-077/078/080/081 entries. API-074/079 are historical and
+  withdrawn from construction scope. Constructor full-contract checks belong
+  in Checks only when they add distinct interface/boundary evidence under its
+  approved rules; do not recreate the retired redundant API probe.
+- This reassessment inspected pinned sources and existing proofs. It did not
+  compile a new size-bias or partition-extension use, run a new
+  project build, or prove any remaining input. Candidates are `source_read`;
+  only subsequent compiled applications and designer acceptance can promote
+  their evidence or milestone status. Keep plans and progress out of README.
+
+
+<a id="e4-j2-construction-handoff"></a>
+## 26. E4.2 J2 construction handoff — 2026-09-25
+
+**Status: `planned`; full local proof required.** This section fixes the
+engineering decomposition of the full original nonnegative Palm identity.
+E4.2a/b may be delivered as an early structural gate before E4.0. E4.2c/d
+require the accepted E4.0 size-bias theorem. T1 is not a dependency. No new
+Lean proof or compiled adapter is asserted by this design.
+
+### 26.1 Exact endpoint, owners and dependency graph
+
+The final public theorem is `GGC.posterior_palm_nonneg` in
+`GGC/DirichletPalm.lean`, replacing the entire original E-J2 declaration.
+Preserve its argument order, including all original topology instances:
+
+```lean
+{E : Type*} [MeasurableSpace E] [TopologicalSpace E] [PolishSpace E] [BorelSpace E]
+(U : Measure E) (D : ProbabilityMeasure (ProbabilityMeasure E))
+(hD : IsDirichletProcess U D) (B : ℝ) (hB : 0 < B)
+(hMass : U univ = ENNReal.ofReal B)
+(K : E → ProbabilityMeasure (ProbabilityMeasure E)) (hK : Measurable K)
+(hpost : ∀ b, IsDirichletProcess (U + Measure.dirac b) (K b))
+(Φ : E × ProbabilityMeasure E → ℝ≥0∞) (hΦ : Measurable Φ)
+```
+
+Its conclusion is unchanged:
+
+```lean
+(∫⁻ (P : ProbabilityMeasure E), ∫⁻ b, Φ (b,P) ∂(P : Measure E)
+  ∂(D : Measure (ProbabilityMeasure E))) =
+    ∫⁻ b, ∫⁻ P, Φ (b,P) ∂(K b : Measure (ProbabilityMeasure E))
+      ∂(ENNReal.ofReal (1 / B) • U)
+```
+
+A stronger lower theorem uses only `[MeasurableSpace E]`. The public wrapper
+must still expose the original explicit topology binders; write them explicitly
+or check their elaborated inclusion rather than relying on section-variable
+inference. Arbitrary supplied D and K, atomic/non-atomic/mixed bases, and
+possibly infinite Phi are required. No canonical-posterior, sampler, absolute
+continuity, pointwise positive shape or additional integrability assumption
+may replace the original contract.
+
+| Delivery | Module / responsibility | Prerequisites and acceptance endpoint |
+|---|---|---|
+| E4.2a | `GGC/Foundations/PartitionRefinement.lean`: trivial/binary/refined partitions and evaluation projection | Existing `Foundations.RandomMeasure` plus mathlib. Pointwise projection identities, including empty cells, compiled. |
+| E4.2b | `GGC/Foundations/ProbabilityMeasureExt.lean`: generating cylinders and finite/joint measure extensionality | E4.2a. The generic extension theorem in Section 26.3 compiled without a Dirichlet or literature assumption. |
+| E4.2c | `GGC/Foundations/DirichletPalm.lean`: finite-shape adapter, normalized base, concrete kernels and rectangle formula | E4.2a/b and accepted E4.0. Both sides of the rectangle identity reduce to the same explicit finite sum. |
+| E4.2d | Same lower module plus `GGC/DirichletPalm.lean`: joint equality, arbitrary nonnegative integral identity and exact public wrapper | E4.2c. Full contract check, caller migration and axiom removal pass the final gates. |
+
+Import only the independent owners above, `Foundations.DirichletSizeBias` /
+`DirichletUpdate`, and focused mathlib modules. None of their transitive imports
+may reach External, upper `GGC.GammaDirichlet`, `GGC.DirichletRealization`,
+`GGC.Palm`, PowerClosure or main. Generic partition/measure modules must not
+import a Dirichlet proof just for a convenience lemma. Keep existing
+`Partition`, `partitionEval`, `IsDirichletProcess` and their measurable-space
+instances unchanged. All proposed helper names below denote deliverables,
+not names already present in the checkout.
+
+### 26.2 E4.2a: only the partition operations actually needed
+
+Use namespace `GGC.RandomMeasure` and the existing `Partition E n` structure.
+
+1. `Partition.trivial : Partition E 1`, with cell univ, supplies a cylinder
+   equal to univ without a `Nonempty E` or `Inhabited E` assumption.
+2. `Partition.binary A hA : Partition E 2` has cells A and its complement,
+   with index 0 fixed as A. Prove for every probability P that its first
+   evaluation is `((P : Measure E) A).toReal` and
+   `ENNReal.ofReal (partitionEval (binary A hA) P 0) = (P : Measure E) A`.
+   Use `ENNReal.ofReal_toReal` and `measure_ne_top`, including A empty or univ.
+3. For `p : Partition E n` and `q : Partition E m`, define `Partition.refine`
+   with cells `p.cell i ∩ q.cell j`, indexed by `Fin (n*m)` via the pinned
+   `finProdFinEquiv : Fin n × Fin m ≃ Fin (n*m)`. Do not choose a representative
+   point in a cell or discard empty cells. Existing measurability of intersections,
+   pairwise disjointness and finite-union coverage supply the fields. This thin
+   adapter is sufficient; it does not recreate a general partition library.
+4. Define the two coordinate-sum maps on the **entire real vector space**:
+   `leftSum x i = sum_j x (finProdFinEquiv (i,j))` and its right counterpart.
+   Prove both maps measurable, then the pointwise identities
+   `leftSum (partitionEval (p.refine q) P) = partitionEval p P` and similarly
+   for q, for every probability P. Use disjoint finite measure sums and explicit
+   finiteness when converting ENNReal to real. Do not require simplex support
+   just to make these maps or their preimages measurable.
+
+Using p refined with `binary A hA` yields cells `(i,0)` inside A and `(i,1)`
+outside A. Record the two equations used later: `partitionEval p P` is the
+left sum of the refined vector, and
+`P(A) = sum_i ENNReal.ofReal (partitionEval refined P (i,0))`.
+Prove the covering/disjointness facts before the measure sum. The constructors
+must also elaborate on an empty underlying space and at zero partition size
+when a partition exists; no arbitrary nonempty-cell choice is needed.
+
+`memPartition` was source-inspected in API-078. It remains an acceptable
+alternative implementation if it produces these exact constructors and
+projection contracts more simply. Do not implement both refinement frameworks
+or add a general arbitrary finite-set refinement engine without a consumer.
+
+### 26.3 E4.2b: Giry cylinders and library-backed joint extension
+
+For measurable `C : Set (Fin n → ℝ)`, write
+`Cyl(p,C) = partitionEval p ⁻¹' C`. Let Gamma be the collection of all such
+sets, with arbitrary n and p. These are cylinders of the **existing Giry
+sigma-algebra**; do not substitute the Borel sigma-algebra of weak convergence.
+No topological or countable-generation hypothesis on E is needed.
+
+Prove these reusable endpoints, in this order:
+
+- `measurableSet_partitionCylinder`, from `measurable_partitionEval`.
+- `univ_mem_partitionCylinders`, using the trivial partition and C=univ.
+- `isPiSystem_partitionCylinders`: intersect two cylinders by refining their
+  partitions and taking `leftSum ⁻¹' C ∩ rightSum ⁻¹' D`. Measurability holds
+  on the whole refined vector space. Empty intersections and empty cells are
+  allowed; agreement only on the support of one chosen law is insufficient.
+- `giry_eq_generate_partitionCylinders`: one inclusion follows from cylinder
+  measurability. For the reverse inclusion, under the candidate generated
+  structure the binary-partition coordinate is measurable. Reconstruct every
+  Giry evaluation by `ofReal` of that coordinate. Use
+  `Measure.measurable_of_measurable_coe` followed by `Measurable.subtype_mk`
+  to make the identity map into the original probability-measure subtype
+  measurable. This proves the reverse inequality of measurable structures.
+  An alternative is the explicit subtype-comap / `comap_iSup` calculation.
+  Keep the candidate structure local to this proof; install no replacement
+  instance in the project. Measurability of cylinders alone proves only one
+  inclusion and does not pass this gate.
+- `measure_ext_of_partitionCylinders`: for arbitrary **finite measures** mu, nu
+  on `ProbabilityMeasure E`, agreement on every measurable cylinder implies
+  mu=nu. Apply `MeasureTheory.ext_of_generate_finite`, the previous two
+  endpoints and equality on univ from the trivial cylinder. Do not restrict
+  this theorem to probability measures: its next consumer is a restricted
+  marginal whose total mass can be zero.
+
+For the joint extension, reuse the pinned `Measure.ext_prod` instead of proving
+another product-generator theorem. For finite measures M,N on
+`AType × ProbabilityMeasure E` and measurable `A : Set AType`, set
+
+```text
+slice(M,A) = Measure.map Prod.snd (M.restrict (A ×ˢ univ)).
+```
+
+These are finite measures. For measurable T, prove once with `map_apply` and
+`restrict_apply` that `slice(M,A)(T) = M(A ×ˢ T)`. If M and N agree on all
+`A ×ˢ Cyl(p,C)`, apply the cylinder extension to their slices. This gives
+agreement on all measurable rectangles, and `Measure.ext_prod` gives M=N.
+Proposed endpoint: `joint_measure_ext_of_partitionCylinders`, with only
+measurable structures and finite-measure assumptions.
+
+**Early engineering gate:** submit these actual production lemmas through the
+joint extension endpoint before starting the large Dirichlet rectangle proof.
+They must compile for arbitrary measurable E and AType with no hD, hpost,
+size-bias premise or literature axiom. A smoke check of library names or a
+replacement law definition does not discharge the gate. This work can be
+completed before E4.0 or T1 and isolates the principal measurable-space risk.
+
+### 26.4 E4.2c: concrete joint measures and the common finite sum
+
+Let `R = ProbabilityMeasure E`, `F = ENNReal.ofReal (1/B) • U`, and define
+local probability kernels
+
+```text
+ev : Kernel R E,       ev(P) = (P : Measure E)
+k  : Kernel E R,       k(b)  = (K b : Measure R)
+L = Measure.map Prod.swap ((D : Measure R) ⊗ₘ ev)
+N = F ⊗ₘ k.
+```
+
+Use `measurable_subtype_coe` and hK for kernel measurability. Install explicit
+local Markov-kernel instances from the probability values. Derive
+`IsFiniteMeasure U` from hD and `F(univ)=1` from hMass and hB before constructing
+its probability instance. The pinned compProd probability/finite instances
+and `compProd_apply_univ` now make L and N finite with total mass one. Do not
+rely on a default value for compProd outside its s-finite hypotheses.
+
+Prefer local kernels in the lower proof. Keep the existing specialized
+`GGC.evaluationKernel`, `samplingJoint`, `posteriorKernel` and `posteriorJoint`
+in upper Palm unchanged; no extraction is necessary merely to reuse their
+few-line kernel constructors. If a generic public kernel adapter proves useful,
+keep it in the lower owner and preserve the original upper types without
+introducing a reverse import.
+
+For any measurable A and C and `p : Partition E n`, let
+`r = p.refine (binary A hA)`, use pair indices k=(i,j), and set
+`a_k = (U(r.cell k)).toNNReal`. Let rho be the left coordinate-sum map and
+`H = rho ⁻¹' C`. Reuse `Partition.sum_shape` and hMass to obtain
+`sum_k (a_k : Real)=B`; H is measurable. Both sides must be proved equal to
+
+\[
+ L(A\times\operatorname{Cyl}(p,C))
+ =\sum_{i:\operatorname{Fin}n}
+       \operatorname{ofReal}(a_{(i,0)}/B)\,
+       D_{a+e_{(i,0)}}(H)
+ =N(A\times\operatorname{Cyl}(p,C)).
+\]
+
+Here `D_a` is the already defined finite Gamma-normalized Dirichlet law;
+no new distribution or simplex density is introduced.
+
+**Left calculation.** `map_apply` and `compProd_apply_prod` reduce L's rectangle
+mass to `integral_{Cyl(p,C)} P(A) dD`. Substitute the two refinement projection
+equations, turn P(A) into the finite sum of nonnegative coordinate weights,
+and push through hD's exact law of `partitionEval r`. Apply E4.0
+`dirichlet_withDensity_coordinate` to each selected coordinate on the measurable
+set H. This gives the displayed sum. Prove measurability once per map/test;
+keep the calculation in ENNReal so no signed Fubini or cancellation is needed.
+
+**Right calculation.** `compProd_apply_prod` gives
+`integral_A K(b)(Cyl(p,C)) dF`. Partition A into the disjoint cells `(i,0)`.
+For every b in such a cell, disjointness gives
+`b in r.cell k iff k=(i,0)`; reuse `Partition.shape_add_dirac` and hpost b.
+After applying rho, the resulting cylinder mass is exactly
+`D_(a+e_(i,0))(H)`, constant throughout the cell. Integrating that constant
+multiplies it by
+`F(r.cell(i,0)) = ENNReal.ofReal (a_(i,0)/B)`.
+Use nonnegative finite-union integration and scalar-measure evaluation; do not
+construct a conditional probability on the cell or divide by its mass.
+
+Factor the implementation into a finite-shape/pushforward adapter, a posterior
+cylinder-mass lemma under a supplied cell-membership hypothesis, and the two
+rectangle calculations. A global measurable choice of a cell label is not
+needed for J2. Empty cells yield vacuous pointwise statements; zero-U-mass
+cells yield zero coefficients even if their posterior cylinder mass is nonzero.
+The upper sampler and the locally proved Beta mixture are not premises.
+Proposed combined endpoint: `dirichlet_palm_rectangle`.
+
+### 26.5 E4.2d: full integral theorem and exact migration
+
+Apply `joint_measure_ext_of_partitionCylinders` to the rectangle endpoint,
+obtaining L=N. Apply equality of lintegrals to the original measurable Phi,
+then `lintegral_map` for Prod.swap and `Measure.lintegral_compProd` on each
+side. Their pinned types require measurability and s-finiteness, not finite
+values or integrability of Phi. The lower
+`GGC.RandomMeasure.posterior_palm_nonneg` and the public wrapper must therefore
+retain tests taking infinity; the real/signed Palm theorem keeps its existing
+separate absolute-integrability assumption.
+
+Migration is part of this delivery:
+
+| Existing source | Required final change |
+|---|---|
+| `External/James.lean` | Move the original E-J2 source docstring and complete public type to `GGC/DirichletPalm.lean`, replace the axiom by the local proof, then delete the now-empty James module. No old-name alias or forwarding file. |
+| `GGC/Palm.lean` | Replace the James import with `GGC.DirichletPalm` and its call with `GGC.posterior_palm_nonneg`. Update the docstring describing the nonnegative identity as external. Preserve all existing definitions, theorem types and signed-integrability conditions. |
+| `AxiomAudit.lean` | Replace the old import, full print and axiom request; audit new structural/core/public endpoints. Retain all existing signed Palm consumers and the actual main-theorem audit. |
+| `main.lean` and current inventories | Update only current trust-boundary descriptions to the actual output. If T1 has been accepted, list E-S1 alone; otherwise list T1/S1. Keep the main type, proof body and four readable steps unchanged. |
+| `External/SSV.lean` | Retain unchanged as the user-approved external representation input. Its structures, assumptions, source provenance and audit checks remain required. |
+
+Search production and shared checks for additional imports/callers instead of
+assuming this inventory is exhaustive. Preserve historical James citations
+and auditor-owned snapshots under their existing ownership; never edit an
+independent audit to make a renamed interface look already reviewed.
+
+### 26.6 Checks, sequencing and completion conditions
+
+- **Acceptance order:** E4.2a -> E4.2b is the early structural gate. E4.2c requires
+  both that gate and accepted E4.0. E4.2d follows the complete rectangle proof.
+  T1 remains the preferred first axiom reduction, but is not a Lean prerequisite
+  of any J2 proof. Partial gate completion removes no axiom.
+- **Contract evidence:** a constructor-owned shared
+  `Checks/E4DirichletPalmContract.lean` must exercise the complete original
+  public contract through an explicit `@GGC.posterior_palm_nonneg E _ _ _ _`
+  application, preserving arbitrary K/hpost and Phi/hPhi. Also check the stronger
+  lower contract on a merely measurable space and the generic finite-measure
+  extension on subprobability/zero slices. The constructor creates this check
+  when the referenced endpoints exist; do not add a placeholder with sorry or
+  an assumed target equality. Reuse production evidence rather than create an
+  additional designer API probe.
+- **Boundary evidence:** cover binary A empty/univ, a nonempty cell with U-mass
+  zero, and a single-positive-coordinate partition; prove mass identities and
+  preserve the original zero-shape behavior. Include a constant-infinity Phi
+  application to expose accidental integrability/finite-value restrictions.
+  Pure partition/extensionality lemmas must not acquire Nonempty, Polish or
+  countable-generation assumptions. Core hD with positive B already rules out
+  a genuinely empty base where necessary; do not add that as a public premise.
+- **Audit boundary:** every new partition, extension, finite-rectangle, lower
+  Palm and public-wrapper theorem uses only standard logic. Audit imports as
+  well as theorem dependencies: retaining an unused External import is not an
+  acceptable lower architecture. Signed consumers retain their full contracts.
+- **Validation:** record focused build/contract evidence for intermediate gates.
+  Final J2 submission requires the pinned project clean build, subsequent full
+  direct audit with name/multiplicity comparison, and the complete contract
+  check. Recompute actual module/audit counts; new helpers legitimately add
+  requests. Inspect source declarations as well as the final axiom list.
+- **Final project boundary:** after both full J2 and T1 are accepted, exactly
+  `GGC.External.SSV.phase_representation` may remain as a mathematical axiom,
+  plus `propext`, `Classical.choice` and `Quot.sound`. No S1 formalization gate
+  is pending. The current three-axiom baseline is not relabeled in advance.
+- **Evidence reporting:** maintain API-072/078/080/081 and record each gate's
+  result and exact remaining obstruction in ConstructionReport. All newly
+  selected applications are currently `source_read`. If a planned adapter
+  does not fit, report the actual missing type/semantic bridge and propose a
+  local correction; do not change the Giry structure, weaken the endpoint,
+  introduce a uniqueness axiom or reopen out-of-scope S1 work.
