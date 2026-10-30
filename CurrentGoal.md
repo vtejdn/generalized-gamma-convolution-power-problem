@@ -1,26 +1,26 @@
 # Current goal
 
-Updated: **2026-09-25**.
+Updated: **2026-10-31**.
 
-## Current authorized work: designer acceptance and final-audit closeout
+## Current state: accepted mathematics and reorganized formalization records
 
-The main GGC power-closure theorem is implemented using the original finite-gamma
-weak-limit definition and accepted relative to the user-retained E-S1 axiom.
-The remaining literature replacements are locally proved. RV-1, the unused
-Thorin converse and general unbounded J1 retain their withdrawn/retired status.
+The original-definition GGC power theorem is implemented and design accepted
+relative to E-S1. All construction and design-acceptance items in the agreed
+scope are closed. E-S1 is deliberately retained; RV-1, general unbounded J1
+and the unused Thorin converse/equivalence retain their withdrawn/retired status.
 
-The final independent audit found no blocking main-theorem defect. F-02's
-inventory count is corrected to 1067. F-01 exposes an error in the designer's
-original J2/J3 type baseline: only measurable-space instances belong in those
-public contracts. The lower proofs already provide this generality.
+The user authorized consolidating governance in the
+[formalization README](formalization/README.md), keeping current contracts in
+[Blueprint](formalization/Blueprint.md), replacing the construction diary with
+the rolling designer-owned [Acceptance Report](formalization/AcceptanceReport.md),
+and consolidating independent records in the auditor-owned
+[Audit Report](formalization/AuditReport.md). Historical text stays in Git.
 
-Designer reacceptance is complete: both public wrappers match the actual
-historical axiom types, and all seven shared checks, the incremental default
-build and 1067-result direct audit pass. F-01 and F-02 are closed; no authorized
-construction or acceptance item remains pending. E-S1 is deliberately retained,
-not an outstanding formalization task. Production Lean and the auditor-owned
-report were unchanged during this acceptance. See
-[Section 56](formalization/ConstructionReport.md#f01-designer-acceptance-2026-09-25).
+F-01/F-02 project closure and their missing recorded post-repair auditor recheck
+remain separate. The reorganization changes documentation and necessary source
+comment references, without renewing mathematical, literature or independent
+audit conclusions. Current acceptance evidence and pending items have one home
+in AcceptanceReport; auditor judgments have one home in AuditReport.
 
 ## Previous maintenance handoff (2026-09-06)
 

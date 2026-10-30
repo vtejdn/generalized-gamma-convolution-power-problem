@@ -4,7 +4,7 @@ import GGC.Foundations.DirichletSizeBias
 # E4.0 size-bias and stationarity boundary checks
 
 Creator: constructor. Maintainer: shared designer-constructor. Status: active.
-Target: Blueprint 25.2 / API-077. These checks cover shape zero, a zero selected
+Target: Blueprint Section 6.4 / API-077. These checks cover shape zero, a zero selected
 coordinate, a single positive coordinate, and the complete product-law endpoint.
 They do not constitute independent acceptance or prove T1/J2.
 Run from formalization with pinned Lean v4.32.2:

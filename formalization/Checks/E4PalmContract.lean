@@ -3,18 +3,18 @@ import GGC.DirichletPalm
 /-! # E4.2 measurable-space, finite-measure and nonnegative endpoint checks
 
 Creator: constructor. Maintainer: shared designer-constructor. Status: active.
-Target: Blueprint 26 and 28 / API-072/078/080/081. Checks the historical
+Target: Blueprint Section 6.3 / API-072/078/080/081. Checks the historical
 measurable-only public contract, arbitrary K/Phi, zero finite measures, empty-base/zero-size partitions,
 and a test identically infinity. No independent acceptance is claimed.
 Designer review on 2026-09-25 added explicit public instance application and
 empty/universal/zero-mass-cell boundary cases. Acceptance is recorded separately
-in ConstructionReport, not established by the authorship of this check.
+in AcceptanceReport.md, not established by the authorship of this check.
 Constructor F-01 repair on 2026-09-25 removes surplus topology assumptions
 from the public application; all boundary examples and axiom outputs remain.
 Run from formalization with pinned Lean v4.32.2:
 `lake env lean Checks/E4PalmContract.lean`.
 Production: GGC/DirichletPalm.lean and its independent foundations.
-Evidence: ConstructionReport, E4 construction. Retain for boundary regression.
+Evidence: AcceptanceReport.md, A-F01/A-FOUNDATIONS. Retain for boundary regression.
 -/
 noncomputable section
 open MeasureTheory Set GGC.RandomMeasure

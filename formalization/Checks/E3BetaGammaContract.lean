@@ -4,11 +4,11 @@ import GGC.Foundations.BetaGamma
 # E3.0 primitive contract check
 
 Created by: constructor. Maintenance: shared designer-constructor.
-Target: Blueprint Section 20.1 / E3.0 / API-068. Status: active.
+Target: Blueprint Section 6.2 / E3.0 / API-068. Status: active.
 This is not an independent-reviewer-owned artifact. The designer independently
-reran and inspected it; evidence is in ConstructionReport Section 39.
+reran and inspected it; evidence is indexed in AcceptanceReport.md (A-FOUNDATIONS).
 
-The type below is the primitive contract from Blueprint Section 20.1. This
+The type below is the primitive contract from Blueprint Section 6.2. This
 check uses the production theorem, without importing a literature input.
 It checks type compatibility and prints axioms; the axiom output must be
 reviewed against the allowed set. It does not replace semantic review or a

@@ -5,7 +5,7 @@ import GGC.GammaDirichlet
 # E3.3 bounded Markov-Krein and unchanged consumer contracts
 
 Created by: constructor. Maintainer: shared designer-constructor.
-Target: Blueprint Section 19.4 / API-071. Status: active.
+Target: Blueprint Section 6.2 / API-071. Status: active.
 This is not an independent-reviewer-owned artifact.
 
 Checks the arbitrary bounded measurable test, every finite base and supplied
@@ -17,7 +17,7 @@ this does not replace the full audit or independent design acceptance.
 
 Working directory: formalization. Pinned Lean: v4.32.2.
 Command: C:/Users/vtejd/.elan/toolchains/leanprover--lean4---v4.32.2/bin/lake.exe env lean Checks/E3MarkovKreinContract.lean
-Evidence: ConstructionReport Section 45 and .lake/e3-three-contract.log.
+Evidence: AcceptanceReport.md, A-FOUNDATIONS; original validation is in Git history.
 Production: GGC/Foundations/MarkovKreinFinite.lean and MarkovKrein.lean.
 Lifecycle: retain for the bounded contract, degenerate cases and consumer scope.
 -/
