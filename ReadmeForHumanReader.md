@@ -18,5 +18,4 @@ lake build
 lake env lean ForHumanCheck.lean
 ```
 
-As a separate personal experiment, the repository owner is developing a framework for autonomous and collaborative AI-assisted mathematical research, to be released when ready.
-We will also share our experiences of using this framework for AI-assisted mathematical exploration.
+As a separate personal experiment, the simple autonomous system used in this project has grown into [ACME](https://github.com/vtejdn/acme), a framework for Autonomous and Collaborative Mathematical Exploration.
