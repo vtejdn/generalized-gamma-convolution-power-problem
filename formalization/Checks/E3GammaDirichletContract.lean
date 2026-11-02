@@ -5,7 +5,7 @@ import GGC.DirichletPosterior
 # E3.1 and E3.2 complete contract and boundary checks
 
 Created by: constructor. Maintainer: shared designer-constructor.
-Target: Blueprint Sections 19.2-19.3 and 24, API-069/070/076. Status: active.
+Target: Blueprint Sections 6.2-6.3, API-069/070/076. Status: active.
 This is not an independent-reviewer-owned artifact.
 
 Checks the full positive-total joint law, its all-zero extension, deterministic
@@ -17,9 +17,9 @@ independent design acceptance or replace the full project build/audit.
 
 Working directory: formalization. Pinned Lean: v4.32.2.
 Command: lake env lean Checks/E3GammaDirichletContract.lean
-Evidence: ConstructionReport Sections 43, 48 and 55; .lake/f01-E3GammaDirichletContract.log.
+Evidence: AcceptanceReport.md, A-F01/A-FOUNDATIONS; original validation is in Git history.
 Maintenance: F-01 repairs the public example to the historical measurable-only
-contract (Blueprint Section 28); all mathematical and boundary checks are retained.
+contract (Blueprint Section 6.3); all mathematical and boundary checks are retained.
 Production: GGC/Foundations/GammaDirichlet.lean and DirichletUpdate.lean.
 Lifecycle: retain for full-interface and degenerate-case regression checks.
 -/

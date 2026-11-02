@@ -19,13 +19,16 @@ compilation remains user-controlled.
 
 ## Lean formalization
 
-**Completed and accepted (2026-09-25).** The [Lean proof](formalization/main.lean)
+**Completed and design accepted (2026-09-25).** The [Lean proof](formalization/main.lean)
 establishes GGC closure under every real power \(q\ge1\), using the original
 finite-gamma weak-limit definition. Beyond Lean's standard logical axioms, its
 sole external input is the SSV phase-representation theorem (E-S1).
-The project build, contract checks and dependency audit pass; all final review
-findings are closed. See the [formalization overview](formalization/README.md)
-and [final acceptance record](formalization/ConstructionReport.md#f01-designer-acceptance-2026-09-25).
+The [Acceptance Report](formalization/AcceptanceReport.md) records the passing
+build, contracts, dependency checks and project closure of F-01/F-02.
+The [Audit Report](formalization/AuditReport.md) separately preserves the
+independent pre-repair verdict and the absence of a recorded post-repair auditor
+recheck. Roles, evidence states and handoffs are defined in the
+[formalization README](formalization/README.md).
 
 ## Where to read and where to write
 

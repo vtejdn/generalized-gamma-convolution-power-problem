@@ -14,8 +14,9 @@ Publisher: https://doi.org/10.1515/9783110215311
 Source-review status (2026-09-24): S1-SOURCE is independently verified and closed.
 The designer freshly rendered and inspected the 2010 first-edition pages and
 official errata, confirming the file identity and all interface adaptations.
-See `SSVSourceCheck-2026-09-24.md` and `ConstructionReport.md`, Section 34.
-`SemanticAudit-2026-09-24.md` retains its historical findings unchanged.
+Source identities are in `External/README.md`; designer acceptance is in
+`AcceptanceReport.md` (A-SOURCE). `AuditReport.md` preserves the independent
+source-review snapshots and their evidence boundaries.
 This declaration remains an assumption. Local source: `literature/pdf/SSV.pdf`.
 This is a source-derived specialization to the nonzero Stieltjes transform
 of a probability measure on positive rates. Apply 6.10 to its reciprocal

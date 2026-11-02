@@ -4,10 +4,10 @@ import GGC.Thorin.Interfaces
 # Tidy-Thorin primitive contract checks
 
 Created by: constructor. Maintenance: shared designer-constructor.
-Target: Blueprint Section 21 / Tidy-Thorin / API-075. Status: active.
+Target: Blueprint Section 6.1 / Tidy-Thorin / API-075. Status: active.
 This is not an independent-reviewer-owned artifact. The designer independently
-reran and inspected it; acceptance is recorded in ConstructionReport Section 42.
-Construction evidence: Section 41 and API-075.
+reran and inspected it; acceptance is recorded in AcceptanceReport.md (A-FOUNDATIONS).
+Construction provenance: API-075 and its immutable Git evidence references.
 
 The complete primitive types were copied before migration. Each example uses
 the relocated production theorem, then its axioms are printed for comparison

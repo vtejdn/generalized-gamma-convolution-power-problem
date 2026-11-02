@@ -3,13 +3,13 @@ import GGC.DirichletStickBreaking
 /-! # E4.1 original arbitrary-space contract
 
 Creator: constructor. Maintainer: shared designer-constructor. Status: active.
-Target: Blueprint 25.3 / API-073. Checks the full original input and probability
+Target: Blueprint Section 6.4 / API-073. Checks the full original input and probability
 version contract, the zero-length prefix, and residual summability. No topology,
 canonical sampler or DP tail premise is introduced. This is not independent acceptance.
 Run from formalization with pinned Lean v4.32.2:
 `lake env lean Checks/E4StickBreakingContract.lean`.
 Production: GGC/DirichletStickBreaking.lean and its foundation.
-Evidence: ConstructionReport, E4 construction. Retain for full-contract regression.
+Evidence: AcceptanceReport.md, A-FOUNDATIONS. Retain for full-contract regression.
 -/
 noncomputable section
 open MeasureTheory Set GGC.RandomMeasure

@@ -1,10 +1,12 @@
 # Research status: the GGC power problem
 
-**Lean final acceptance (2026-09-25):** F-01 and F-02 are closed by
-designer reacceptance. J2/J3 match their historical measurable-only types; the
-main theorem remains accepted relative to E-S1. See the
-[acceptance evidence](formalization/ConstructionReport.md#f01-designer-acceptance-2026-09-25).
-The independent audit report remains an unchanged record of its reviewed snapshot.
+**Lean design acceptance (2026-09-25):** F-01 and F-02 are closed at project
+level. J2/J3 match their historical measurable-only types; the main theorem
+remains accepted relative to E-S1. See the
+[Acceptance Report](formalization/AcceptanceReport.md).
+The [Audit Report](formalization/AuditReport.md) preserves the independent
+reviewed snapshots and findings; no post-repair auditor recheck is recorded.
+The 2026-10-31 documentation reorganization does not renew these verdicts.
 
 Mathematical assessment recorded: **2026-09-06**, through WIP-6.23.
 This file is the current status record, not a second proof ledger.
@@ -37,7 +39,7 @@ Distributions that is Closed with Respect to Addition as Well as
 Multiplication of Independent Random Variables,” *Journal of Theoretical
 Probability* **28** (2015), 1063--1081, Conjecture 1, p. 1075,
 DOI 10.1007/s10959-013-0523-y.
-The [article](literature/Bondesson2015.pdf) states the target as a
+The [article](literature/pdf/Bondesson2015.pdf) states the target as a
 conjecture; the [source audit](notes/bondesson-2015-product-closure-audit.md)
 separates it from the proved independent-product theorem.
 
@@ -75,8 +77,8 @@ E-S1, in addition to Lean's standard logical axioms. The E4 construction proves
 the full stick-breaking and nonnegative Palm contracts locally; E-S1 is retained
 by user scope. This verifies the project derivation relative to E-S1.
 Build and axiom-audit evidence is recorded in the
-[construction report](formalization/ConstructionReport.md#e4-construction-2026-09-25);
-[independent designer acceptance](formalization/ConstructionReport.md#e4-design-acceptance-2026-09-25)
+[Acceptance Report](formalization/AcceptanceReport.md#main-theorem);
+[designer acceptance](formalization/AcceptanceReport.md#local-foundations)
 also passed the clean project build, full dependency audit and shared contract checks.
 This does not revise the
 written mathematical assessment above or establish external peer review or priority.
@@ -116,7 +118,7 @@ with \(X^2\), and HCM density is stronger than GGC membership.
 Convolutions (GGC) and Related Questions,” *Journal of Theoretical Physics
 & Mathematics Research* **4**(2) (2026), 1--7, Theorem 1,
 DOI 10.64030/3065-8802.04.02.02, claims (C1) for \(q>1\).
-The [locally retained published article](literature/the-power-problem-for-generalized-gamma-convolutions-ggc-and-related-questions.pdf)
+The [locally retained published article](literature/pdf/the-power-problem-for-generalized-gamma-convolutions-ggc-and-related-questions.pdf)
 is the version assessed.
 
 **[AUDIT-2026-09-04]** The existing project audit concludes that its proof

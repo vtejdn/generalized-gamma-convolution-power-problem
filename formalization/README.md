@@ -1,586 +1,331 @@
-# GGC Power Closure: Status and Project Rules
+# GGC Power Closure: Governance and Project Rules
 
-**Final acceptance (2026-09-25): F-01 and F-02 are closed.** Both J2/J3
-public interfaces have the historical measurable-only types, verified by fresh
-Lean elaboration and exact type-expression comparison. The main theorem remains
-accepted relative to E-S1. Earlier claims that topology instances belonged to
-the original types remain withdrawn; the repaired interfaces are accepted on
-new evidence. See [Section 56](ConstructionReport.md#f01-designer-acceptance-2026-09-25)
-for the build, seven contract checks and 1067-result audit.
+The public theorem [GGC.ggc_rpow](main.lean) establishes closure of every
+nonnegative GGC probability law under every deterministic real power q >= 1,
+using the original finite-gamma weak-limit definition. The accepted trust
+boundary is Lean's standard logical axioms plus **E-S1**, the SSV phase
+representation assumption. E-S1's local formalization is outside the agreed scope.
 
-## Current status
+The [Acceptance Report](AcceptanceReport.md) owns current design-acceptance
+conclusions. The [Audit Report](AuditReport.md) owns independent audit conclusions
+and their source snapshots. Project closure of F-01/F-02 is recorded; a
+post-repair auditor recheck is not recorded. These are separate statuses.
 
-[GGC.ggc_rpow](main.lean) proves that every nonnegative GGC probability law
-remains GGC under the deterministic power map \(x \mapsto x^q\) for every real
-\(q \ge 1\). GGC membership uses the original finite-gamma weak-limit definition.
-The result includes arbitrary drift, infinite Thorin mass and degenerate laws,
-with no additional moment assumptions.
+This README is the single governance specification for roles, permissions,
+handoffs and evidence states. [Blueprint.md](Blueprint.md) owns current
+mathematical and technical contracts. Maintain these documents and all Lean
+comments/docstrings in English, preserving Lean identifiers and notation.
 
-The proof is relative to **E-S1** (SSV phase representation). Thorin realization,
-finite atomic approximation, the Beta atom posterior, the bounded Markov-Krein
-formula, stick-breaking and the nonnegative Palm identity have local Lean proofs.
-[Definitions.lean](Definitions.lean) contains the public definitions;
-[main.lean](main.lean) assembles the theorem, with details in
-[GGC/PowerClosure.lean](GGC/PowerClosure.lean).
-[AxiomAudit.lean](AxiomAudit.lean) inspects the actual declarations and dependencies.
-E4's local replacements and the final E-S1 boundary have passed
-[independent designer acceptance](ConstructionReport.md#e4-design-acceptance-2026-09-25).
+<a id="document-ownership"></a>
+## 1. Document ownership and history
 
-All comments and documentation comments in project Lean source files must be
-written in English. Maintain [Blueprint.md](Blueprint.md) in English, including
-its prose, tables, milestone descriptions and future updates. Preserve Lean
-identifiers and mathematical notation.
-
-## 1. Document responsibilities
-
-Keep this README limited to a brief current-status summary and project rules.
-Record construction progress, milestone history, design handoffs and acceptance
-findings in the documents assigned below.
-
-| Content | Maintained in |
-|---|---|
-| Principles, trust boundary, development and acceptance rules | This README |
-| Read-only construction specification: dependency graph, interfaces, modules and acceptance criteria | [Blueprint](Blueprint.md) |
-| Shared mathlib API mapping, compatibility decisions, evidence pointers and search gaps | [Mathlib API](MathlibAPI.md), jointly maintained by designer and constructor |
-| Current milestone status, implementation/completion reports, API evidence, build results and axiom audits | [Construction Report](ConstructionReport.md) |
-| Independent semantic/source audits and their evidence limits | Dated `SemanticAudit-*.md` reports, maintained by the auditor; designer responses belong in the construction report |
-| Written proofs and stable result identifiers | [ledger](../ledger/README.md), [WIP](../WIP.md) |
-| Literature versions, locators and hypothesis audits | [Primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md), [reference map](../ledger/references.md) |
-| Mathematical research status | [ResearchStatus](../ResearchStatus.md) |
-| Manuscript presentation | [manuscript](../manuscript/ggc-power-closure.tex) |
-
-Use the assembly in [WIP-6.21](../ledger/23-power-theorem-assembly-audit.md#wip-6-21)
-and the requirements in [WIP-6.23](../ledger/25-mathematical-completion-audit.md#wip-6-23)
-to check the main theorem. TeX labels locate results; they do not replace proofs.
-Resolve discrepancies between the ledger, manuscript and Lean types explicitly.
-Do not silently weaken the theorem or strengthen its assumptions to make it compile.
-
-## 2. General principles
-
-1. **Check the proposition before proving its type.** Write the mathematical
-   statement, quantifiers, domains, assumptions and provenance first.
-   A proof of a weaker proposition does not complete the original obligation.
-2. **Give definitions mathematical semantics.** GGC membership, Thorin measures,
-   Dirichlet processes, power laws and weak solutions must refer to actual
-   measures, integrals and distributions. Do not define membership as `True`,
-   include power closure in its definition, or assume an unsupported object
-   possessing every required property.
-3. **Keep dependencies transparent.** Definitions must not import the main
-   theorem; external axioms must not import their consumer deductions.
-   Once a registered axiom is locally proved, move its public theorem/interface
-   out of `External` into the appropriate project module under the
-   [external-interface lifecycle rule](#external-interface-lifecycle).
-   The current-law tangent must not assume that positive-time powers are GGC.
-4. **Reuse mathlib first.** Search the pinned source, read the actual type and
-   compile a minimal use before building new foundations. Follow the
-   [reuse workflow](#mathlib-reuse-workflow): prefer library objects, then
-   library theorems with thin local adapters. A name remembered from another
-   version is not API evidence.
-5. **Make analytic obligations explicit.** Prove measurability, absolute
-   integrability, uniform parameter bounds, almost-everywhere conditions,
-   probability normalization and hypotheses for every limit interchange.
-6. **Remove intermediate restrictions.** Positive mass, zero drift and finite
-   second log-rate moments are valid construction hypotheses. Remove them by
-   proved extension steps. Taking logarithms must not exclude zero or constant
-   laws from the final statement.
-7. **Separate computation from proof.** Python output, plots and finite scans
-   do not prove analytic claims. An exact certificate needs a Lean-checked
-   connection to the proposition it certifies.
-8. **Report evidence, not apparent progress.** Distinguish plans, declarations,
-   incomplete scaffolding, local proofs and completed theorems. File counts
-   are not completion measures. Record genuine mathematical gaps against
-   their ledger nodes and resolve them.
-
-<a id="mathlib-reuse-workflow"></a>
-### 2.1 Required mathlib reuse workflow
-
-The objective is to minimize locally maintained foundations while preserving
-the full mathematical contract. Proof length or the number of library calls
-is not a completion metric. This workflow applies before substantial work on
-each new module and at the focused re-search triggers below; it does not
-require a repository-wide search before every elementary lemma.
-
-1. **Specify and decompose the contract.** Write the exact types, quantifiers,
-   hypotheses and conclusion. Separate distribution semantics, measurability,
-   integrability, measure transport, differentiation, uniqueness and limit
-   interchange. Search each reusable component before fixing new wrappers.
-2. **Search from specific terminology to general structure.** Start with the
-   shared API index and the pinned source in `.lake/packages/mathlib/Mathlib`.
-   Use `rg --files` and `rg`: search project terminology, mathematical synonyms,
-   then the underlying general structure. For example, Laplace uniqueness may
-   be a specialization of finite-measure separation; parameterized sampling
-   may be a kernel representation theorem. Inspect nearby declarations and
-   actual call sites. A filename or one unsuccessful guessed name is not
-   evidence of mathematical coverage or absence.
-3. **Prefer standard objects and small adapters.** Reuse a library definition
-   directly when its semantics match. When a project-facing definition is
-   needed, prove equality or the exact transport relation once and reuse that
-   bridge. Keep adapters in their mathematical owner module; shared consumers
-   should import them rather than copy proofs. Preserve `Definitions.lean`'s complete
-   public definitions and the external-input import boundary.
-4. **Read the full type and compile a real use.** Check implicit/typeclass
-   assumptions, domains, signs, parameter conventions, null sets and measure
-   structures. In particular distinguish Giry measurability from the Borel
-   structure of weak convergence, and integrability from a formal integral
-   identity. Do not accept extra moments, finite mass or support restrictions
-   unless they are proved from the existing contract. `#check` alone does not
-   establish that a candidate applies to the project's actual objects.
-5. **Record the decision and retain evidence.** Use the [shared API table](MathlibAPI.md) to
-   classify each substantial component as direct reuse, local adapter or
-   local proof required. State the exact missing bridge for partial matches.
-   Record searched paths, concepts and the closest candidates when none fits;
-   say "not found in the searched pinned sources", not "mathlib has none".
-6. **Re-search when the evidence changes.** Before introducing a generic
-   foundational definition, starting a substantial foundational proof,
-   declaring an allowed literature axiom, or copying an argument already used
-   elsewhere, perform a focused search. Also revisit candidates when a proof
-   stalls because of representation/typeclass mismatch. Stop when an applicable
-   API is compiled or a concrete gap and local route are documented; do not
-   repeatedly scan the entire library without a new reason. Search failure
-   does not authorize a new axiom or a weaker theorem.
-
-Use [MathlibAPI.md](MathlibAPI.md) as the single shared **API index and gap
-list**.
-Both designer and constructor may edit this file directly: the constructor
-records searches, actual uses, probes and unresolved mismatches; the designer
-records contract decisions, review conclusions and cross-module ownership.
-Distinguish reported compilation from independent acceptance. Neither role
-overwrites the other's evidence without recording the reason. This shared
-editing permission does not make the Blueprint writable during construction.
-ConstructionReport.md retains chronological implementation/build records and
-links to stable API IDs; the API table links back to those records.
-Update the table as work proceeds. Reuse a prior
-validated entry when its revision and hypotheses still match. Before fixing
-a module's implementation interfaces, supply these fields for its substantial
-reusable components:
-
-| Required field | Content |
-|---|---|
-| Contract / owner | Blueprint node, project module, exact required statement and assumptions |
-| Candidate | Pinned mathlib revision, source path, imports and full declaration name |
-| Compatibility / decision | Direct reuse, adapter or local proof; exact type, sign, measure-structure and hypothesis differences |
-| Evidence | `to_find → source_read → #check_passed → minimal_use_compiled`; actual tracked proof/probe location, command and result |
-| Remaining gap / search scope | Unmet obligations, closest rejected candidates and why; searched paths/concepts; recheck trigger |
-
-Production proofs using the API are preferred durable evidence; no duplicate
-probe is needed for them. Important probes that justify a future interface
-must be version-controlled in `Checks/` with an explicitly documented command
-by default; do not automatically include them in the production build.
-Follow the [Checks governance](#checks-governance). `.lake/` is suitable for temporary
-experiments and logs, but cannot be the only home of an adopted design's
-reproducible evidence. Do not count a probe as completion of its consumer.
-Record evidence against the pinned revision; a dependency upgrade is a
-separate change requiring renewed compatibility/build checks.
-
-<a id="checks-governance"></a>
-### Checks governance: designer, constructor and independent reviewer
-
-The user approved the [Checks rules](Checks/README.md) on 2026-09-25. That file
-is the authoritative operational policy for creation, ownership, headers,
-execution, evidence and retirement. Designers create design/API/contract probes;
-constructors create delivery compatibility/contract/regression checks;
-independent reviewers create and control their independent review checks.
-Creation and independent verification are distinct roles and must be recorded.
-
-Temporary experiments belong in `.lake/`; durable checks need a stated purpose,
-scope, owner, explicit command and evidence link. Production must not import
-`Checks`. No `sorry` or new axiom is permitted in a durable check, and a target
-assumed as a hypothesis is not counted as proved. Run affected checks on
-construction submission; designers assess the contract and independent reviewers
-choose their own verification method rather than adopting a passing log alone.
-
-Ordinary shared checks may be maintained by designer and constructor with a
-recorded reason. Do not change an independent reviewer's judgment logic without
-agreement; their confirmation is required to delete or replace their evidence.
-Retire redundant checks with replacement links while preserving dated results.
-These rules do not change ownership of user files or the independent audit.
-
-At review, justify retained generic definitions and substantial foundational
-proofs against the closest library alternative. Check the adapter semantics,
-unchanged mathematical scope, build coverage and axiom dependencies. A
-library-backed replacement must discharge the same obligations as the proof
-it replaces. The Blueprint's [module reuse gate](Blueprint.md#module-reuse-gate)
-turns this workflow into module-level construction and acceptance requirements.
-
-## 3. Shared modeling conventions
-
-Keep law and power-pushforward semantics in [Definitions.lean](Definitions.lean)
-and the separate Thorin predicate in `GGC/Thorin/Basic.lean`. Preserve the
-distinction between original GGC membership and Thorin representation.
-
-### 3.1 Laws, powers and coordinates
-
-- Use a law-first interface: `NonnegLaw` bundles
-  `MeasureTheory.ProbabilityMeasure ℝ` with `∀ᵐ x ∂μ, 0 ≤ x`.
-  The distribution version is the full required deliverable; no random-variable
-  corollary is required. Different laws need not share a probability space.
-- `powerLaw μ q hq` is the actual pushforward \((x\mapsto x^q)_*\mu\), with
-  exponent type `ℝ`. Prove measurability, nonnegativity and the continuous
-  mapping result for fixed \(q\ge1\). Handle \(q=1\) explicitly.
-  The implemented argument `hq : 0 ≤ q` supplies continuity; the main target
-  derives it from \(1\le q\), adding no hypothesis to the target theorem.
-- Use `PosReal := {b : ℝ // 0 < b}` for rates and `ℝ` for log-rates.
-  Rates may accumulate at zero. Do not strengthen concentration on positive
-  rates to a support condition excluding that behavior.
-- Distinguish the log-rate law \(F\), its Thorin measure \(U=B\exp_*F\),
-  the value law \(\mu\), and the log-value law \(\log_*\mu\).
-- Use log-value transport only after proving strict positivity of the
-  intermediate laws. Total definitions of `Real.log` and `Real.rpow`
-  do not discharge their mathematical side conditions.
-
-mathlib's `ProbabilityMeasure` carries the weak-convergence topology.
-Check coercions, pushforward arguments and imports in the version pinned
-by the project; see the [mathlib probability-measure documentation](https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Measure/ProbabilityMeasure.html).
-
-### 3.2 Original GGC definition, represented-law membership and integrals
-
-Define `gammaLaw`, `finiteGammaLaw`, `IsFiniteGammaConvolution` and `IsGGC`
-completely in `Definitions.lean`. A finite gamma convolution is the sum pushforward
-of a finite product of actual gamma laws with positive shapes and rates;
-the product encodes independence. Permit the empty sum, giving \(\delta_0\).
-Use mathlib's `ProbabilityTheory.gammaMeasure` with its shape/rate convention
-and supply normalization and nonnegative-concentration proofs.
-
-The original definition is
-
-\[
-\operatorname{IsGGC}(\mu)\iff
-\exists(\mu_n)_{n\in\mathbb N},\quad
-(\forall n,\ \operatorname{IsFiniteGammaConvolution}(\mu_n))
-\ \land\ \mu_n\Rightarrow\mu.
-\]
-
-Use weak convergence of the underlying `ProbabilityMeasure ℝ` values, with
-no uniform moments, common probability space or Thorin data in the definition.
-Prove weak closure locally by a closure/sequential-closure bridge or a metric
-diagonal argument. The final reduction extracts approximants from `IsGGC`
-itself, then uses fixed-power continuity and this closure theorem.
-
-`laplace` is in `GGC/Laplace.lean`; `ThorinData`, `ThorinAdmissible`
-and `thorinLaplace` are in `GGC/Thorin/Basic.lean`. The separate analytic predicate
-is named `HasThorinRepresentation`. It asserts the existence of \(a\ge0\) and a measure
-\(U\) on positive rates, with `Integrable` for \(\log(1+1/b)\), such that
-
-\[
-L_\mu(s)=\exp\!\left(-as-\int\log(1+s/b)\,U(db)\right),\qquad s>0.
-\]
-
-The mass of U need not be finite. The admissibility convention is locally
-proved equivalent to the endpoint conditions and gives integrability at every
-positive parameter. Arbitrary admissible Thorin data is realized by locally
-proved E-B1. `HasThorinRepresentation.isGGC` proves represented-law membership
-through locally proved E-B3, including zero/constant laws and positive drift.
-
-The forward/equivalence characterization and E-B2/E-B4 are outside the
-required scope. Do not introduce them as assumptions or premises of the main
-theorem. A local proof of the full characterization is optional.
-
-A real integral's default value outside the integrable case can make a
-meaningless identity hold. Include `Integrable` or equivalent conditions
-with signed integral identities and moment bounds. Prove finiteness before
-converting extended integrals to real numbers, and strict positivity before
-dividing by a mass or normalizer. Record hypotheses and dominating functions
-for Fubini, differentiation under integrals, dominated convergence and
-\(s\downarrow0\).
-
-### 3.3 Random measures, phases and weak solutions
-
-Give Dirichlet processes explicit finite-partition or stick-breaking
-semantics, including atomic and mixed bases and zero-mass partition cells.
-Pointwise existence or `Classical.choose` does not give joint measurability.
-SSV initially supplies phases only up to a.e. equality; jointly measurable
-representatives, parameter changes, scaling and weak-star limits remain
-project obligations. Fix the anchor at 1 without adding a zero-endpoint condition.
-
-`WeakLogRateSolution` describes an output: initial data, probability status,
-narrow continuity, a uniform second log-rate moment and the integral weak
-equation for compactly supported twice continuously differentiable tests.
-Its existence must be proved, not assumed in the main theorem.
-
-<a id="external-inputs"></a>
-## 4. External mathematical input whitelist
-
-Retain the repository's established policy: precisely audited literature
-results not yet formalized may be registered as explicit external axioms.
-The target is **Lean verification of the project's GGC power closure
-derivation relative to the registered literature axioms**.
-Do not re-axiomatize mathlib results. The active mathematical axiom is E-S1,
-which occurs in the main theorem. E-B1, E-B3, E-J2, E-J3 and E-T1 are
-local theorems. The bounded Markov-Krein formula is proved locally; the
-general E-J1 interface is retired and is not claimed as proved. E-B2/E-B4
-are not active inputs. The [external inventory](External/README.md) identifies
-the exact declarations, source provenance and adaptations.
-
-**Project scope:** E-S1 is retained as a literature assumption; its local
-formalization is outside this project. The accepted completion boundary is
-standard logic plus E-S1 as the sole external mathematical input. Existing
-external declarations remain assumptions until their local replacements are
-proved and accepted; the intended boundary does not change the current inventory.
-
-For every actual declaration, record its stable ID, full source and version,
-theorem/formula/page locator, original statement or derived interface, exact
-inputs and conclusion, consumers, local adaptation obligations and Blueprint
-node. Additional literature inputs require the same registration.
-
-**Source-review responsibilities (confirmed by the user, 2026-09-24):** the
-constructor locates the local references, checks the edition, original pages,
-hypotheses and Lean adaptations, and submits reproducible evidence in the
-construction report. The designer or independent auditor reviews that evidence
-and confirms closure; the independent audit report remains auditor-maintained.
-File availability, construction self-check and independent acceptance remain
-separate statuses.
-
-Prove local specializations by default. If a literature corollary is directly
-axiomatized, label it a **source-derived interface** and check every adaptation.
-Do not append conclusions the source does not supply.
-
-| ID | Permitted input and source locator | Work not supplied by that axiom |
+| Artifact | Purpose | Maintainer |
 |---|---|---|
-| E-B1 (local theorem) | Bondesson (1992), Section 3.1, printed p.29 and pp.34–35: realization of Thorin-admissible data by a nonnegative probability law | Gives `HasThorinRepresentation`; original-GGC membership uses the locally proved represented-law direction. No power closure input |
-| E-B3 (local theorem) | Same book, final paragraph of p.35: the declared interface approximates every represented law by laws with finite-atomic Thorin transforms | Identify approximants with actual finite gamma sums using their transforms and Laplace uniqueness. This gives the representation-to-original-definition direction, not finite-input power closure |
-| E-J1 (retired general interface) | James (2005), arXiv:math/0505606v1, reprint p.2, (1)–(3): original unbounded/log-integrable statement is no longer declared or whitelisted | The unchanged consumer uses the separately named local bounded Markov-Krein theorem; the general statement is not claimed as proved |
-| E-J2 (local theorem) | Same paper, pp.4–5, posterior formula and (8): nonnegative one-observation Palm/posterior identity for atomic, nonatomic and mixed bases | Absolute integrability before the signed version; arbitrary signed Fubini is not an input |
-| E-J3 (local theorem) | A source-derived interface from the posterior result and Gamma normalization: independent \(Q\sim DP(U)\), \(Z\sim\mathrm{Beta}(1,B)\) give \((1-Z)Q+Z\delta_b\sim DP(U+\delta_b)\); proved locally | Posterior logarithmic bounds and joint continuity; the original tangent coefficient stays \(\psi(B+1)\), not \(\psi(B+2)\) |
-| E-S1 | SSV (2010 first edition), Theorems 6.10 and 7.3, printed pp.58–60 and 63, with the 2022-12-01 errata: reciprocal representation for nonzero Stieltjes functions, bounded phase and a.e. uniqueness | Jointly measurable representatives, boundary-recovery adaptations, scaling, weak-star limits and generator continuity |
-| E-T1 (local theorem) | Sethuraman (1994), Section 2, (2.1), pp.642–643; Theorem 3.4, p.645: the DP law of stick-breaking with independent Beta break variables and independent base locations | Common-coordinate convergence as \(B,F,y\) vary, tail control and uniform integrability |
+| This README | Role permissions, handoffs, evidence states, maintenance and completion rules | Designer |
+| [Blueprint](Blueprint.md) | Current target, full contracts, dependency graph, module owners, construction order and acceptance gates | Designer; read-only during construction |
+| [Acceptance Report](AcceptanceReport.md) | Only unresolved project issues and currently valid acceptance conclusions | Designer |
+| [Audit Report](AuditReport.md) | Independent scope, findings, evidence, conclusions and auditor rechecks | Auditor |
+| [Mathlib API index](MathlibAPI.md) | Current reuse decisions, actual applications, compatibility and scoped gaps | Designer and constructor jointly |
+| [Checks rules and inventory](Checks/README.md) | Check-specific execution, ownership, evidence and retirement | Respective check maintainers under this README |
+| [External inventory](External/README.md) | Exact literature contracts, versions, source locators and adaptations | Constructor supplies provenance; designer maintains contract consistency; auditor owns audit judgments |
+| [Ledger](../ledger/README.md), [WIP](../WIP.md), [manuscript](../manuscript/ggc-power-closure.tex) | Written mathematics and presentation | Their existing owners |
+| [ResearchStatus](../ResearchStatus.md) | Mathematical research assessment | Its existing owner; report changes do not themselves change mathematics |
 
-These locators come from the retained
-[primary-interface audit](../notes/log-rate-power-proof-primary-interfaces.md)
-and [reference map](../ledger/references.md).
+Keep one authoritative home for each fact. Other files link to it. In particular,
+the Blueprint and API index do not maintain a second acceptance or audit ledger.
+Constructors deliver implementation and self-check evidence through the work
+handoff; permanent mathematical/API knowledge belongs in its owner module or
+index, rather than an accumulating construction diary.
 
-E-J2/E-J3 retain arbitrary Polish/Borel base spaces `E` and finite positive
-base measure U of real mass B>0. Current production consumers specialize E
-to positive rates; this is not a restriction on the registered interfaces.
-Preserve the following contract details:
+Both reports describe current effective records. Replace superseded text and
+remove resolved project issues from the pending list; do not append dated
+completion diaries. Keep supporting evidence within the relevant conclusion.
+Use stable IDs, including existing F-01/F-02, rather than renumbering each cycle.
+Retain effective conclusions and exact evidence boundaries when pruning.
 
-- **Local bounded Markov-Krein:** For \(P\sim DP(U)\) and measurable
-  \(0\le g\le C<\infty\), the proved formula is
-  \(\mathbb E(1+\int g\,dP)^{-B}=\exp(-\int\log(1+g)\,dU)\).
-  Boundedness supplies integrability for every probability P and finite U.
-  The unused general E-J1 statement is retired, not an active assumption.
-- **E-J2 (local theorem):** The nonnegative measurable identity is
-  \(\mathbb E_{DP(U)}\int\Phi(b,P)P(db)
-  =\int(U/B)(db)\,\mathbb E_{DP(U+\delta_b)}\Phi(b,P)\).
-  Make joint measurability and random-measure evaluation explicit.
-- **E-S1:** For \(s>0\), let \(M_P(s)=\int(s+b)^{-1}P(db)>0\).
-  The anchor-one interface is
-  \(\log M_P(s)-\log M_P(1)
-  =\int_0^\infty\xi_P(t)((s+t)^{-1}-(1+t)^{-1})\,dt\),
-  with \(0\le\xi_P\le1\) and a.e. uniqueness. Mark a directly registered
-  specialization as source-derived. If boundary recovery uses the complex
-  representation, retain its complex-domain contract; an insufficient
-  real-axis interface does not supply the boundary formula.
-- **E-T1 (local theorem):** For \(B>0\), take i.i.d. \(V_j\sim\mathrm{Beta}(1,B)\),
-  i.i.d. \(Y_j\sim F\), and independence of the two sequences.
-  Set \(W_j=V_j\prod_{i<j}(1-V_i)\), \(Q=\sum_jW_j\delta_{Y_j}\).
-  The weights \(W_j\) are not independent. Prove unit total mass or include
-  it in the precisely registered construction theorem. The residual-mass
-  expectation \((B/(B+1))^m\) can support a local proof.
+Full old records live in Git. The pre-reorganization reference is commit
+`4ddc3967c568ee99268f72ae8d443da7641d0fe1`; for example:
 
-Do not mix SSV editions and page numbers. First-edition errata correct the
-intermediate Herglotz measure's domain and finiteness and replace an equality
-in Remark 6.11 by an inclusion. Do not use the erroneous reverse inclusion
-or an additional zero-anchor formula. Any missing general boundary-recovery
-or compactness theorem needs a proof or a separate source registration;
-it is not automatically part of E-S1 or E-T1.
-
-### 4.1 Core deductions excluded from the whitelist
-
-The power tangent, posterior absolute drift bound, generator resolvent
-identity, joint generator continuity, positive Euler evolution, dynamic
-power-flow identification, finite Gamma power closure and final GGC power
-closure must be proved locally, including equivalent reformulations.
-
-Hiding these conclusions in typeclass instances, `ExternalFacts`,
-`PowerAdmissible`, structure fields, local variables or a solution-existence
-parameter still leaves the main proof incomplete.
-
-## 5. Engineering and collaboration rules
-
-### 5.1 Environment and API evidence
-
-The current configuration pins `leanprover/lean4:v4.32.2` and mathlib commit
-`905b95818eb32af7874a58b427f50c1711a5e96c` (the upstream `v4.32.2` tag).
-The [toolchain](lean-toolchain), [Lake configuration](lakefile.toml) and
-[manifest](lake-manifest.json) are source artifacts; `.lake/` is ignored.
-Check any reused dependency cache against the manifest and verify its source
-state before treating it as evidence for the pinned environment.
-
-Handle upgrades separately and rebuild affected proofs. Lake's manifest
-records concrete dependency versions and belongs in version control;
-see the [official Lake documentation](https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Lake/).
-
-Use four API evidence levels:
-`to_find → source_read → #check_passed → minimal_use_compiled`.
-Record revision, imports, full declaration name and verification result.
-Online `latest` documentation is a navigation aid. Prefer `rg` for searches;
-failure to find one guessed name does not establish that a theory is missing.
-
-### 5.2 Files and declarations
-
-<a id="external-interface-lifecycle"></a>
-#### Lifecycle of a formalized external interface
-
-**User instruction, 2026-09-25:** once an external mathematical axiom has been
-formalized as a project theorem, its public theorem and any compatibility
-wrapper must leave `External/` and the `GGC.External` namespace. Put them in the
-project module that owns the mathematics. Preserve the full mathematical
-contract, source provenance and appropriate public consumer types. A literature
-origin is not a reason to retain a locally proved interface under `External`.
-
-- Designate the destination module and public name in the Blueprint. For future
-  formalization deliveries, include this migration in the delivery and its
-  acceptance gates. Existing accepted proofs remain accepted; schedule any
-  remaining structural migration explicitly rather than claiming it already
-  happened.
-- Migrate callers, explicit imports, shared contract checks, audit requests and
-  current inventories together. Do not retain an old `GGC.External` alias or
-  forwarding wrapper/file. If a module still owns unproved axioms, keep those
-  axioms there and remove only the proved interface and its now-unused imports.
-  Delete a source module only when it has no remaining required declarations.
-- Preserve an acyclic, independent lower proof layer. Remaining External axioms
-  may import shared semantics but must not import consumer deductions or proved
-  interface modules merely to re-export them. A proof still using another
-  registered axiom must disclose that dependency; relocation alone never proves
-  standard-logic-only status or a main-theorem axiom reduction.
-- Keep literature citations and dated evidence. Distinguish a same-contract
-  local proof, retirement of an unused interface, and a narrower replacement.
-  Only the actual declaration inventory and transitive audit establish the
-  remaining trust boundary.
-- Synchronize current trust-boundary comments and documentation whenever that
-  boundary changes, including `main.lean`. Comments must not count locally
-  proved or retired interfaces as external axioms. Independent-audit findings
-  become explicit Blueprint construction items; the designer records their
-  disposition after checking the submitted correction. Auditor-owned reports
-  and probes remain under their original ownership.
-
-Locally proved wrappers have no exception to this rule. Do not delete
-still-used axioms or weaken a theorem to move its name.
-
-#### General module conventions
-
-- The Blueprint owns the module tree. The public namespace is
-  `GGC`, with external axioms only in `GGC.External`. Name files by
-  responsibility and theorems by content; put WIP IDs in docstrings.
-- Keep modules focused and imports specific. The human-audit entry point is
-  `main.lean`, containing `GGC.ggc_rpow : GGC.GGCPowerClosure` with
-  explicit approximation, finite-input closure, power-map convergence and
-  weak-closure steps and mathematical comments. The complete required definitions
-  and their construction proof fields belong in `Definitions.lean`, importing
-  mathlib only. Detailed assembly remains in `GGC/PowerClosure.lean`; auxiliary
-  lemmas keep their corresponding modules. No dependency of `main` may import
-  it.
-  External mathematical axioms must be placed in `External/` with complete
-  types and source records. Extract reusable analysis lemmas rather than
-  copying estimates.
-- `classical` and `noncomputable` are allowed; neither proves existence,
-  measurability or integrability. Automation must produce kernel-checkable
-  proofs. Do not expand the default trust boundary to native evaluation.
-- Do not globally suppress errors or material warnings. Split difficult
-  goals before raising resource limits; document necessary local settings.
-- Fix shared contracts and file ownership before parallel implementation.
-  Notify consumers of interface changes and preserve others' uncommitted
-  work. Formalization difficulty does not justify changing the conclusion.
-
-Record each major declaration in [ConstructionReport.md](ConstructionReport.md), not in the blueprint, using:
-
-```text
-Node ID / WIP ID:
-Mathematical statement and complete assumptions:
-Proposed or actual Lean name and file:
-Dependency nodes / external input IDs:
-Source (ledger, TeX label or literature):
-Status / exact remaining gap:
-MathlibAPI.md entry IDs / reuse decisions / retained local-proof justification:
-Verification commands, versions and results:
+```powershell
+git show 4ddc3967c568ee99268f72ae8d443da7641d0fe1:formalization/ConstructionReport.md
+git show 4ddc3967c568ee99268f72ae8d443da7641d0fe1:formalization/SemanticAudit-2026-09-25.md
 ```
 
-### 5.3 Incomplete proofs
+Historical citations use immutable commit/file/line references. New current
+references use the live reports and stable IDs. A renamed report or editorial
+consolidation does not constitute a new acceptance, independent review or
+transfer of report ownership. Ignored logs and local reference-library files
+are supplemental; retain commands, revisions, source identities and the
+essential evidence in tracked artifacts or their cited Git history.
 
-Use `sorry`, `admit` and temporary core assumptions only in marked drafts.
-Drafts must not enter the definition entry point, the verified helper/audit
-modules, or the proof entry point's transitive import closure, and
-must not count as completed nodes. The proof entry point is currently
-`main.lean`. A genuine reduction theorem saying “the finite
-Gamma case implies the general case” is useful early work, but must not use
-the final theorem's name before its premise is discharged. An unregistered
-axiom is not a substitute for completing a draft.
+<a id="roles-and-permissions"></a>
+## 2. Roles and permissions
 
-Treat the Blueprint as read-only during construction and follow its requirements.
-Record `planned / in_progress / blocked / verified` and actual progress in
-[ConstructionReport.md](ConstructionReport.md); do not update the Blueprint's status text.
-A blocked node records the exact obstacle. A verified node needs a complete
-proof, build evidence and a dependency audit. A file depending on an
-unfinished draft is not verified merely because it contains no `sorry` itself.
+| Role | Responsibilities | Permissions and limits |
+|---|---|---|
+| Designer | Specify and revise complete contracts, dependency/module boundaries and acceptance gates; address design defects; examine deliveries and necessary evidence; decide design acceptance and project disposition | Maintains this README, Blueprint and Acceptance Report. May maintain ordinary shared checks and API decisions. Assigns production implementation/repair to the constructor. Records responses to audits without editing auditor judgments or auditor-owned check logic |
+| Constructor | Implement proofs and interface migrations; search/reuse mathlib; establish side conditions; run affected self-checks; submit exact gaps, source snapshot and reproducible evidence | Edits authorized production modules and ordinary shared checks/API entries. Treats Blueprint as read-only; proposes contract revisions to the designer. Does not weaken the target, add unregistered assumptions, write acceptance decisions or claim independent audit completion |
+| Auditor | Choose independent methods and scope; inspect both design and implementation, definitions, hidden premises, axiom boundaries and source adaptations; record findings and actual rechecks | Maintains Audit Report and auditor-owned probes. Can challenge Blueprint and acceptance baselines. Does not take over implementation or design acceptance through an audit finding; sends proposed corrections and evidence to the designer |
 
-## 6. Verification and completion criteria
+Document the acting role and scope at handoff. Independence is relative to the
+work examined: designer reruns can be independent of construction while still
+examining the designer's own contract. They are **design acceptance**, not an
+auditor review of that contract. Disclose participation in the audited design or
+implementation; assigning a new role label does not make self-review independent.
+An independent conclusion for work in which the reviewer participated requires
+a reviewer who did not perform that work.
 
-For each module submitted for acceptance, include the
-[reuse evidence](#mathlib-reuse-workflow) alongside its mathematical and axiom
-checks. The designer checks the API mapping, preserved assumptions and the
-reason for any retained generic foundation. This is part of the normal review,
-not a separate permission step during construction.
+Designers and constructors may maintain ordinary shared checks with a stated
+reason. An auditor owns the judgment logic and conclusions of independent
+checks; other roles propose changes. Deleting or replacing auditor-owned
+evidence requires the auditor's confirmation unless the user explicitly directs
+the change. User human-check files retain their ownership. Shared maintenance
+never transfers an independent report or turns a check's creator into its reviewer.
 
-The current statement and external contracts are checked by the default
-library build. Run from `formalization`:
+<a id="evidence-states"></a>
+## 3. Separate evidence states
+
+| Layer | Conclusion owner | Meaning and required evidence |
+|---|---|---|
+| Construction self-check | Constructor | What the submitted implementation passed or failed at a specified snapshot; exact commands/results, dependency sets and remaining gaps |
+| Design acceptance | Designer | Whether that delivery satisfies the complete specified contract; scope, source snapshot, actual inspections/reruns, decision and limitations |
+| Independent audit | Auditor | What was independently examined at an identified snapshot, by which method, with which findings, conclusions and coverage limits |
+
+`verified`, if retained in a project status, means **design acceptance passed
+within its stated trust boundary**. It does not imply independent audit coverage.
+Construction uses self-check/submission language until the designer accepts it.
+Keep API evidence levels (`source_read`, `minimal_use_compiled`, etc.) separate
+from both design acceptance and audit judgments. File presence, successful
+compilation and a printed axiom list each establish only their actual scope.
+
+Every material conclusion identifies the source commit or working-tree hash
+snapshot, Lean version, mathlib revision, checked contracts and actual commands
+with exit statuses. Distinguish cached/default builds, project-only clean builds,
+direct source elaboration and clean dependency rebuilds. Match axiom requests
+and outputs by declaration and multiplicity and compare actual sets to the
+allowed boundary. Counts are observations for that snapshot, not permanent
+acceptance constants or proof-completion metrics.
+
+<a id="handoff-workflow"></a>
+## 4. Handoffs and findings
+
+1. **Design:** the designer publishes current contracts, owners and acceptance
+   gates in Blueprint. Contract questions or counterevidence go to the designer;
+   routine implementation and reuse choices within the contract need no new
+   permission step.
+2. **Construction:** the constructor implements and submits the affected files,
+   stable contract/API IDs, source snapshot, self-check commands/results,
+   actual axiom sets, boundary cases and exact remaining gaps. Mathematical
+   scope changes are explicit design items, not silent compilation fixes.
+3. **Acceptance:** the designer examines the actual types/semantics and sufficient
+   fresh evidence, then records accepted, partially accepted, returned or pending
+   evidence in Acceptance Report. Receiving a constructor log alone is not an
+   independently performed rerun.
+4. **Audit:** the auditor chooses scope and methods and records findings in
+   Audit Report. Audit can examine the design before, during or after construction;
+   it is not restricted to testing compliance with a possibly mistaken Blueprint.
+5. **Response and repair:** the designer records the project response and any
+   contract revision. The constructor repairs production/check implementations;
+   the designer checks the repair and records project disposition.
+6. **Auditor recheck:** the auditor records any actual re-examination against the
+   specified repaired snapshot and updates the audit conclusion. Never infer this
+   step from designer acceptance, document renaming or issue removal.
+
+<a id="finding-disposition"></a>
+### Project closure and auditor recheck
+
+These are two axes with different owners:
+
+| Axis | Examples | Authoritative record |
+|---|---|---|
+| Project disposition | Unresolved; repair awaiting acceptance; project closed after verified repair; explicitly withdrawn within scope | Acceptance Report, maintained by designer |
+| Auditor recheck | Not rechecked; rechecked with no remaining issue; rechecked with an issue still present; unable to verify | Audit Report, maintained by auditor |
+
+Designer closure must state the remedy and evidence, with a link to the audit
+finding. It does not erase the finding at its original snapshot, validate an
+earlier mistaken acceptance or mean that the auditor has rechecked it. This
+workflow does not require auditor sign-off for every project closure. Preserve
+the auditor's last actual conclusion and label missing post-repair coverage.
+
+Each pending issue records ID, precise statement and affected scope, severity,
+responsible role, next action and closure condition. Distinguish defects in the
+main result from interface, documentation and evidence defects. For substantive
+disagreement, retain the finding, response and counterevidence with the affected
+acceptance scope unresolved or qualified; administrative closure cannot settle
+a mathematical correctness or trust-boundary objection.
+
+<a id="report-maintenance"></a>
+### Rolling report maintenance
+
+Acceptance Report has only two substantive sections: **Unresolved issues** and
+**Current acceptance conclusions**. The designer replaces obsolete text each
+cycle, removes resolved items from the first section and retains still-valid
+acceptance conclusions with their evidence. Constructor delivery diaries,
+experiments and repeated full logs are excluded. Historical details use Git.
+
+Audit Report is one auditor-maintained Markdown document. It centralizes the
+latest recorded scope/verdict, findings and recheck states, necessary evidence
+and a compact index of earlier reviews. Replace superseded current summaries
+while preserving findings/limitations that remain relevant; full prior text
+stays in Git. Historical wording such as "current" is bound to its original
+snapshot. Only an actual auditor recheck changes an auditor conclusion.
+
+<a id="mathematical-standards"></a>
+## 5. Mathematical standards and trust boundary
+
+Use actual measures, integrals and distributions. `Definitions.lean` must import
+mathlib only and give complete gamma/product/sum, original GGC weak-limit and
+power-pushforward definitions. The target has every real q >= 1, includes zero
+and constant laws, drift and infinite Thorin mass, and adds no moment hypothesis.
+Keep Thorin representability separate from original membership. Definitions,
+typeclass instances and weak-solution fields must not assume the core result.
+
+Preserve full elaborated types, quantifier order, domains and endpoint cases.
+In particular, public E-J2/E-J3 require only `[MeasurableSpace E]`; the former
+Polish/Borel baseline was wrong. Prove all measurability, normalization,
+absolute-integrability, positivity and domination conditions used by Fubini,
+differentiation, logarithms and limit passages. Total real integrals or functions
+outside their meaningful domain do not discharge those conditions.
+
+Remove construction-only restrictions by proved extension steps. The current-law
+tangent, canonical measurable phase, specified generator, continuity, positive
+Euler evolution, dynamic identification and final power closure are local
+deductions. They cannot be registered as literature assumptions or hidden in
+structures, parameters or unconstructed instances. Finite computation and API
+probes prove only their stated bounded claims, not the analytic theorem.
+
+<a id="external-inputs"></a>
+### External inputs
+
+The sole active external mathematical axiom is
+`GGC.External.SSV.phase_representation` (E-S1), beyond `propext`,
+`Classical.choice` and `Quot.sound`. The exact contracts and source provenance
+are in [External/README.md](External/README.md). E-B1, E-B3, E-J2, E-J3 and E-T1
+are locally proved; the bounded Markov-Krein formula is a proved specialization.
+The general unbounded E-J1 interface, unused E-B2/converse/equivalence and E-B4
+fallback are retired/withdrawn, not claimed as local proofs. RV-1 is withdrawn.
+
+Precisely audited literature results may be registered only within authorized
+scope, with stable ID, complete source/version/page locator, full primitive
+type, consumers and adaptation obligations. Prove local specializations by
+default; label directly registered specializations as source-derived. Do not
+add conclusions absent from the source or re-axiomatize mathlib results.
+
+The constructor prepares source material and self-checks the edition, full
+hypotheses/conclusions, branches, signs, anchors and errata. The designer can
+review it for design acceptance; the auditor records independent source
+judgments in Audit Report. File availability and self-check do not certify
+source correspondence. E-S1 source review is recorded, but E-S1 remains an axiom.
+
+<a id="external-interface-lifecycle"></a>
+### Lifecycle of locally proved literature interfaces
+
+When an external input is proved locally, its public theorem and compatibility
+wrapper leave `External/` and `GGC.External`. The designer specifies the owner
+and contract; construction migrates callers, imports, shared checks, axiom
+requests and inventories together. Keep provenance and full consumer types.
+Do not retain old External aliases or forwarding files. Delete an empty old
+assumption module only after all required declarations move.
+
+Maintain an acyclic independent lower proof layer. Remaining assumptions must
+not import their consumer deductions or proved facades merely for re-export.
+Relocation does not establish axiom reduction: inspect actual transitive sets.
+Distinguish same-contract proofs, bounded specializations and retired interfaces.
+Update current trust-boundary comments while preserving immutable old evidence.
+
+<a id="mathlib-reuse-workflow"></a>
+## 6. Mathlib reuse and engineering
+
+Pin Lean/mathlib through `lean-toolchain`, `lakefile.toml` and the manifest.
+Use the installed pinned source as API evidence, with `rg --files` and `rg`.
+Before substantial implementation or a new generic foundation:
+
+1. State the full contract and decompose distribution semantics, measure
+   transport, regularity, integration and limit obligations.
+2. Search specific names, mathematical synonyms and general structures. Read
+   the closest pinned declarations and call sites; a failed guessed name does
+   not establish a library gap.
+3. Prefer standard objects and shared thin adapters. Preserve probability,
+   shape/rate and sign conventions, Giry/Borel structures and null-set scope.
+4. Read the full type and compile a real application to the project's objects.
+   A `#check` or an assumed target is not a proof that the API applies.
+5. Record candidate, owner, pin, exact mismatch, decision, tracked application
+   and evidence level in MathlibAPI. Scope negative search results and record
+   the next useful search trigger.
+6. Re-search when stalled by a plausible representation/API mismatch or before
+   duplicating a generic proof. Stop at a compiled use or a concrete gap and
+   justified local route. Search failure does not authorize extra hypotheses.
+
+Designer and constructor share MathlibAPI: constructors record searches and
+compiled uses; designers record compatibility/reuse decisions and acceptance
+references. Neither silently overwrites another role's evidence. Actual
+acceptance remains in Acceptance Report. Reuse counts and shorter proofs are
+not completion measures; use the [module gate](Blueprint.md#module-reuse-gate).
+
+<a id="checks-governance"></a>
+### Checks and source maintenance
+
+[Checks/README.md](Checks/README.md) supplies check-specific rules and inventory
+under this governance. Designer checks support design/API decisions; constructor
+checks support delivery and boundaries; auditor checks support independent
+judgments. Record creator separately from maintainer and reviewer. Production
+must not import Checks, which run by explicit commands outside default globs.
+Durable checks require purpose, scope, owner, command and evidence; no `sorry`
+or new axiom is allowed. A filename does not establish independent ownership.
+
+Prefer tracked production evidence to duplicate probes. Keep temporary work in
+`.lake/` or ignored `tmp/`; adopted design evidence needs a tracked application
+or reproducible command/source description. Retire redundant shared checks
+with replacement references while preserving historical results in Git.
+
+Agree contracts and file ownership before concurrent implementation. Preserve
+others' changes and notify consumers of interface revisions. Keep generic
+foundations separate from consumers, modules acyclic and declarations in their
+mathematical owners. Use local resource settings only when necessary and
+documented; do not suppress material errors/warnings globally.
+
+Marked drafts may contain incomplete work, but no draft, `sorry`, `admit`,
+unregistered axiom or equivalent assumption may enter the verified import
+closure of `main`. A reduction with an undischarged finite-input premise is
+not the final theorem. Formalization difficulty does not change the target.
+
+<a id="verification-and-completion"></a>
+## 7. Verification and completion
+
+Run relevant checks from `formalization` with the pinned toolchain:
 
 ```powershell
 lake env lean --version
 lake build
-lake env lean AxiomAudit.lean
+lake env lean -t 0 AxiomAudit.lean
+lake env lean ForHumanCheck.lean
+lake env lean Checks/E3BetaGammaContract.lean
+lake env lean Checks/E3GammaDirichletContract.lean
+lake env lean Checks/E3MarkovKreinContract.lean
+lake env lean Checks/E4SizeBiasContract.lean
+lake env lean Checks/E4StickBreakingContract.lean
+lake env lean Checks/E4PalmContract.lean
+lake env lean Checks/ThorinInterfacesContract.lean
 ```
 
-The existing [AxiomAudit.lean](AxiomAudit.lean) prints the full target,
-definitions, external contracts and axiom dependencies of the implemented lemmas.
-It imports `main` and checks the actual main theorem.
-Lake covers `main`, all `GGC` and `External` descendants, and the audit.
-The audit prints both membership predicates, the endpoint condition, finite
-Thorin data and the retained represented-law membership direction, and checks
-the declarations' dependencies. Keep its requests aligned with the actual
-declaration inventory.
+Default targets cover Definitions, main, all GGC/External descendants and
+AxiomAudit. Checks and the user human-check file are separate. Check
+`#check GGC.ggc_rpow`, `#print GGC.ggc_rpow` and `#print axioms GGC.ggc_rpow`
+against the full target and whitelist. Printing the proposition definition
+alone does not verify its proof. Match actual dependency sets, not only counts.
 
-`GGC.ggc_rpow` is included in the default build and the audit. The following
-commands inspect its type, proof and actual transitive dependencies:
+Completion requires the full original-definition theorem, actual law semantics
+and endpoint cases; local proofs for every required core deduction; removal of
+intermediate restrictions; reproducible checked source and dependencies; and
+no circular/vacuous premise, unfinished imported proof, unregistered axiom or
+extra native-evaluation trust dependency. Record design acceptance and
+independent audit coverage separately, with their material limits.
 
-```lean
-#check GGC.ggc_rpow
-#print GGC.ggc_rpow
-#print axioms GGC.ggc_rpow
-```
+Run checks appropriate to the change. Assess source/snapshot differences before
+carrying a conclusion forward. A documentation reorganization does not require
+rebuilding unrelated mathematics and does not constitute a new source-literature
+audit, clean rebuild or line-by-line independent mathematical rederivation.
 
-`#print axioms` reports transitive axiom dependencies, including `sorryAx`.
-It does not replace checking the theorem's meaning and hidden premises.
-See the [Lean axiom reference](https://lean-lang.org/doc/reference/latest/Axioms/)
-and [proof validation guide](https://lean-lang.org/doc/reference/latest/ValidatingProofs/).
-
-Completion requires all of the following:
-
-1. `GGC.ggc_rpow` retains the full target quantifiers. Its mathematical
-   assumptions are GGC membership and \(q\ge1\), with no core premise,
-   unconstructed instance or finite-moment restriction.
-2. `IsGGC` uses the original finite-gamma weak-limit definition, independently
-   of `HasThorinRepresentation`. Check actual product/sum and power-pushforward
-   semantics, the retained represented-law membership direction, and the
-   zero law, positive constant laws, \(q=1\) and a single Gamma law. A proof of
-   representability alone does not establish original-definition membership.
-3. Every required Blueprint node is recorded as `verified` in the construction
-   report with evidence; all project
-   core deductions have complete Lean proofs.
-4. The proof entry point (`main.lean`), its supporting
-   `GGC/PowerClosure.lean`, and `AxiomAudit.lean` build
-   reproducibly in the pinned environment. Default targets include the main
-   theorem and required modules; the audit additionally inspects the proof's
-   transitive dependencies. Record toolchain, mathlib commit, commands, exit statuses
-   and audit output.
-5. The actual axiom set is a subset of
-   `{propext, Classical.choice, Quot.sound}` and the registered, checked
-   external mathematical declarations. No `sorryAx`, unregistered axiom or
-   extra native-evaluation trust dependency is permitted.
-6. Inspect the full theorem type and dependent definitions: no circular
-   definitions, vacuous assumptions, default-integral loopholes or
-   function/typeclass parameters that merely assume the main result.
-
-An accurate completion statement is: “The project's GGC power closure
-derivation has been verified in Lean relative to the listed literature
-axioms.” Claiming a full formalization without external mathematical axioms
-also requires Lean proofs of those inputs.
+The accurate mathematical completion claim is: the project's GGC power-closure
+derivation is verified in Lean relative to E-S1. Publication, external mathematical
+peer review and elimination of E-S1 are separate claims requiring their own evidence.

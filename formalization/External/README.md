@@ -1,282 +1,144 @@
-# Literature interfaces and remaining mathematical axioms
+# Literature Interfaces and the Retained External Input
 
-Six retained literature interfaces remain across the project. E-B1, E-B3, E-J2,
-E-J3 and E-T1 are locally proved theorems. E-S1 is the sole explicit literature
-axiom used by the main theorem. E-B2 and its unused converse/equivalence
-consumers are removed. Compiling the SSV axiom checks its type, not its proof.
-No project core result is registered as an axiom.
+The sole explicit external mathematical axiom is **E-S1**,
+`GGC.External.SSV.phase_representation`, used by the main theorem beyond
+Lean's standard logical axioms. E-B1, E-B3, E-J2, E-J3 and E-T1 are local
+theorems; bounded Markov-Krein is a separately proved specialization.
+No project core deduction is registered as an axiom.
 
-Project scope retains E-S1 as the sole external mathematical input at
-completion. Its local formalization is excluded; `External/SSV.lean` and its
-complete audited contract remain required. Local proof checking and independent
-design acceptance are separate; the E4 construction evidence is recorded in
-[the construction report](../ConstructionReport.md#e4-construction-2026-09-25).
-The full local T1/J2 replacements have now passed
-[independent designer acceptance](../ConstructionReport.md#e4-design-acceptance-2026-09-25),
-including a clean build, complete type checks and the final single-axiom audit.
+The [README whitelist](../README.md#external-inputs) owns the trust policy;
+[Blueprint](../Blueprint.md#local-foundation-contracts) owns current contracts;
+[AcceptanceReport](../AcceptanceReport.md) owns design acceptance;
+[AuditReport](../AuditReport.md) owns independent source/semantic judgments.
+E-S1 remains an assumption even though its source correspondence was reviewed.
+Its local formalization is outside the agreed scope.
 
-[GGC/Thorin/Interfaces.lean](../GGC/Thorin/Interfaces.lean) now owns E-B1/E-B3
-and imports the independent `GGC.Thorin.Realization` layer. `External` contains
-only the retained SSV axiom. The same-type E-J3 theorem is
-`GGC.beta_atom_posterior` in [DirichletPosterior.lean](../GGC/DirichletPosterior.lean),
-which reuses [DirichletUpdate.lean](../GGC/Foundations/DirichletUpdate.lean),
-whose finite Gamma/Dirichlet proofs import no External input.
-That Thorin lower layer imports neither this interface
-nor any `External` input, `GGC.Thorin`, `Identification`, `PowerClosure` or `main`.
-SSV remains mathlib-only. The local James and Sethuraman interfaces import their
-independent finite Gamma/Dirichlet foundations. All retained primitive interface types retain actual measures,
-integrals, nonnegative probability laws and the original quantifier order.
+## Retained interfaces and owners
 
-E2's implementation and fresh verification are documented in the
-[construction report](../ConstructionReport.md#e2-construction-2026-09-24).
-E2 has passed [independent design acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24). E2-P subsequently removes E-B2 and its unused forward/equivalence interfaces;
-see [the cleanup record](../ConstructionReport.md#unused-axiom-cleanup-2026-09-24).
-## Independent source-review status
-
-The auditor's [2026-09-24 report](../SemanticAudit-2026-09-24.md) directly
-checked E-B1--3, E-J1--3 and E-T1 against the original pages. E-S1's formula,
-principal logarithm, anchor and official errata were checked without finding
-an error, but images of the specified 2010 first-edition pages were not
-obtained in that audit. The local copy has since been located at
-[literature/pdf/SSV.pdf](../../literature/pdf/SSV.pdf), through a directory
-junction to the local reference library. The earlier missing-file observation
-is superseded. The constructor has now completed the edition and original-page comparison; see [SSVSourceCheck](../SSVSourceCheck-2026-09-24.md). The designer independently rendered and inspected the same edition and errata, confirmed all interface adaptations, and closed **S1-SOURCE**; see [Section 34](../ConstructionReport.md#e2-design-acceptance-2026-09-24). E-S1 remains an axiom.
-The user confirmed that the constructor supplies the source comparison and
-evidence, and the designer or independent auditor reviews it before closure.
-Registration, file presence and passing Lean builds do not close this review.
-The independent report is preserved; designer follow-up is recorded in the
-[independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24).
-The confirmed assignment and local-file check are recorded in
-[the follow-up](../ConstructionReport.md#source-review-ownership-2026-09-24).
-
-## Introduced declarations
-
-| ID | Lean declaration | Contract and intended consumers |
+| ID | Current declaration / owner | Contract and boundary |
 |---|---|---|
-| E-B1 (local theorem) | `GGC.thorin_realization` | Realize every nonnegative drift and Thorin-admissible positive-rate measure as a nonnegative probability law with the displayed Laplace transform. Intended for Thorin/value-law construction, Blueprint M0/M1 and M6. |
-| E-B3 (local theorem) | `GGC.finite_atomic_approximation` | Approximate every represented law by nonnegative probability laws with zero-drift finite-atomic Thorin transforms. After local identification of these approximants with actual finite gamma sums, this can supply the representation-to-original-membership direction in M1. |
-| E-J1 (retired) | Former `GGC.External.James.markov_krein`, deleted | The unused general unbounded/log-integrable interface is retired. `GGC.RandomMeasure.markov_krein_of_bounded` is a distinct proved specialization used by the unchanged `dirichletMean_laplace`; it is not a same-type proof of the former interface. |
-| E-J2 (local theorem) | `GGC.posterior_palm_nonneg` in `GGC/DirichletPalm.lean` | Nonnegative one-observation disintegration for an explicitly measurable posterior kernel whose values have DP(U+δ_b) laws. Signed applications still require local L1 proofs. |
-| E-J3 (local theorem) | `GGC.beta_atom_posterior` in `GGC/DirichletPosterior.lean` | DP(U+δ_b) law of the actual independent-product atom mixture. The supplied weight law must push forward to mathlib's Beta(1,B) measure. M2 consumer: `posteriorMixture_isDirichlet`. |
-| E-T1 (local theorem) | `GGC.stick_breaking` in `GGC/DirichletStickBreaking.lean` | Actual independent beta/location input law; measurable probability-valued stick sum supplied by the caller. Gives the shared finite-partition DP law. Consumer: `dirichletLaw_isDirichlet`. |
-| E-S1 | `GGC.External.SSV.phase_representation` | Bounded measurable real phase with anchor-one representation, principal-log representation on the upper half-plane, absolute integrability, and a.e. uniqueness on `(0,∞)`. Consumer: `phase_anchor_one`, via a locally proved Poisson boundary recovery. |
+| E-B1, local | `GGC.thorin_realization`, [Thorin/Interfaces](../GGC/Thorin/Interfaces.lean) | Realizes arbitrary nonnegative drift and Thorin-admissible positive-rate measure as a nonnegative probability law with its Laplace transform |
+| E-B3, local | `GGC.finite_atomic_approximation`, [Thorin/Interfaces](../GGC/Thorin/Interfaces.lean) | One finite-gamma/finite-atomic approximation sequence for all positive Laplace parameters; no uniform moments |
+| Bounded Markov-Krein, local | `GGC.RandomMeasure.markov_krein_of_bounded`, [Foundations/MarkovKrein](../GGC/Foundations/MarkovKrein.lean) | Measurable nonnegative bounded test; does not prove the retired general unbounded J1 interface |
+| E-J2, local | `GGC.posterior_palm_nonneg`, [DirichletPalm](../GGC/DirichletPalm.lean) | Full measurable-only nonnegative one-observation disintegration with arbitrary supplied measurable posterior kernel and ENNReal joint test |
+| E-J3, local | `GGC.beta_atom_posterior`, [DirichletPosterior](../GGC/DirichletPosterior.lean) | DP(U + dirac b) law of the actual independent-product atom mixture, with supplied Beta(1,B) weight law |
+| E-T1, local | `GGC.stick_breaking`, [DirichletStickBreaking](../GGC/DirichletStickBreaking.lean) | Arbitrary-measurable-space finite-partition DP law of supplied independent Beta/location input and measurable probability-valued stick sum |
+| E-S1, axiom | `GGC.External.SSV.phase_representation`, [SSV](SSV.lean) | Bounded measurable phase, real and complex anchor-one formulas, absolute integrability and a.e. uniqueness on the positive half-line |
 
-The two active E-B theorem interfaces and retired E-B2 use L. Bondesson, *Generalized Gamma Convolutions and Related Classes
-of Distributions and Densities*, Lecture Notes in Statistics **76**, Springer,
-**1992**, [DOI 10.1007/978-1-4612-2948-3](https://doi.org/10.1007/978-1-4612-2948-3).
-The source locators are:
+E-B2 and its unused original-GGC-to-Thorin converse/equivalence are removed;
+E-B4 was never declared and is withdrawn. General unbounded/log-integrable
+E-J1 is retired. These retirements are not proofs of the omitted statements.
+The original GGC definition remains in Definitions; its weak closure is proved
+locally. The retained represented-law membership direction uses local E-B3.
 
-- **E-B1:** Section 3.1, printed p. 29 and pp. 34–35; retained PDF pp. 38, 43–44.
-- **E-B2 (retired):** Theorem 3.1.5, printed p. 34; retained PDF p. 43.
-- **E-B3:** Final paragraph of printed p. 35; retained PDF p. 44, using the
-  Section 3.1 representation to express the finite-gamma approximation by
-  its finite-atomic transform.
+## Source contracts and adaptations
 
-These are source-derived interfaces in primitive Lean notation, rather than
-verbatim encodings of the book's notation. The retained
-[primary-interface audit](../../notes/log-rate-power-proof-primary-interfaces.md)
-records the source review of 2026-09-05, updated 2026-09-06. The
-[reference map](../../ledger/references.md) and
-[project whitelist](../README.md#external-inputs) supply further provenance.
-The current scaffolding work does not constitute a new primary-text audit.
+**Bondesson:** L. Bondesson, *Generalized Gamma Convolutions and Related Classes
+of Distributions and Densities*, Lecture Notes in Statistics 76, Springer, 1992,
+[DOI](https://doi.org/10.1007/978-1-4612-2948-3). E-B1 locators: Section 3.1,
+printed p.29 and pp.34-35 (retained PDF pp.38,43-44). E-B3 locator: final
+paragraph of printed p.35 (PDF p.44). Retired E-B2 was Theorem 3.1.5, p.34.
 
-## Exact scope and local work
+Thorin rates are strictly positive but may approach zero. Admissibility is
+integrability of `log(1 + 1/b)`, with no finite-total-mass requirement. Drift
+may be positive and the measure may be zero. Positive-parameter transform
+identities require the displayed integrability. Local endpoint equivalence
+includes local finiteness, logarithmic integrability below one and reciprocal
+integrability above one. Identify actual finite gamma sums using the local
+Laplace formula and uniqueness; transform notation alone is not membership.
 
-Rates belong to `{b : ℝ // 0 < b}`; they may approach zero. Thorin admissibility
-is the integrability of `log (1 + 1 / b)`. There is **no finite-total-mass
-requirement** on the Thorin measure. The drift may be nonzero, and the zero
-measure is permitted. The represented law is explicitly a probability measure
-on the real line concentrated almost everywhere on nonnegative values.
+**James:** L. F. James (2005), *Annals of Statistics* 33, 647-660,
+[DOI](https://doi.org/10.1214/009053604000001237),
+[primary reprint math/0505606v1](https://arxiv.org/pdf/math/0505606).
+Reprint p.2, (1)-(3), supplies the transform context; reprint pp.4-5 and (8)
+supply posterior/disintegration context. Reprint pagination is not journal
+pagination. J3 is source-derived from Gamma normalization and the posterior
+construction, not quoted as a separately numbered source theorem.
 
-Every displayed Laplace identity is quantified over all real `s > 0`.
-`GGC.ThorinAdmissible.integrable_log` now proves integrability of
-`log (1 + s / b)` for every `s ≥ 0`. `GGC.thorinAdmissible_iff_endpoint`
-proves equivalence with local finiteness, absolute logarithmic integrability
-on rates at most one, and reciprocal-rate integrability on rates above one.
-The local-finiteness clause controls mass near rate one, where `log b` vanishes.
-`GGC.Laplace` proves Laplace integrability and uniqueness without moments.
+The current J2/J3 public Lean contracts require **only a measurable space**.
+Historical claims that Polish/Borel instances were original binders were
+corrected by F-01; see [designer acceptance](../AcceptanceReport.md#f01) and
+[the independent finding](../AuditReport.md#f01). Finite-partition DP semantics
+allow zero-mass cells, arbitrary finite positive base mass and atomic/mixed
+bases. J2 supplies a nonnegative identity; signed applications require local
+absolute-integrability/Fubini proofs. J3 supplies no logarithmic bounds or
+joint parameter continuity. Bounded Markov-Krein preserves its consumer's
+type while discharging the bound internally.
 
-E-B2 formerly asserted closure of Thorin representability at a probability
-limit. It is now retired with its unused characterization consumers. The
-locally proved original-GGC weak closure remains unchanged.
-
-E-B3 specifies an exponential of a finite sum of logarithms with positive
-shapes and rates. It allows an empty sum, representing the law concentrated
-at zero. The finite sum is connected locally to `finiteThorinMeasure` and to
-the actual independent gamma sum by `laplace_finiteGammaLaw`. Local Laplace
-uniqueness identifies E-B3's approximants. No moment bound uniform over the approximating
-sequence is assumed. E-B3 does not supply continuity of the power
-pushforward or power closure of the finite inputs.
-
-The contracts intentionally contain no power exponent, log-rate generator,
-Euler solution, or dynamic identification conclusion. Their use cannot by
-itself complete the project's main theorem.
-
-## Original definition and retained membership direction
-
-The [definition contract](../Blueprint.md#original-ggc-definition) requires
-`Definitions.lean` to define GGC by weak limits of actual finite Gamma sums.
-`HasThorinRepresentation` remains separate in `GGC/Thorin/Basic.lean`.
-The retained `HasThorinRepresentation.isGGC`, `isGGC_diracLaw` and realization
-adapters use locally proved E-B1/E-B3 and standard logic only.
-
-At the user's request, E2-P removes the unused E-B2 axiom,
-`IsGGC.hasThorinRepresentation` and `isGGC_iff_hasThorinRepresentation`.
-This is scope retirement, not a local proof of the converse. No production
-consumer or main-theorem hypothesis changes. The former E-B4 fallback was
-never declared and is now withdrawn from the active whitelist. It must not
-be added under the superseded authorization.
-
-The final reduction extracts approximants directly from the original
-`IsGGC` definition and applies locally proved weak closure. The finite-input
-proof uses the retained represented-law direction for its constructed laws.
-See [Section 35](../ConstructionReport.md#unused-axiom-cleanup-2026-09-24) for
-fresh validation and [Blueprint Section 19](../Blueprint.md#e3-james-reduction-plan)
-for the James reduction plan. J3 has an independently accepted complete local
-proof. E3.3 now proves the bounded Markov-Krein formula and retires the unused
-general J1 interface rather than claiming a same-type proof of it. Construction
-and validation are in [Section 45](../ConstructionReport.md#e3-three-construction-2026-09-25),
-independently accepted; see [Section 46](../ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
-
-## James registration — 2026-09-23
-
-E-J1–E-J3 were originally declared. E3.2 proves J3; E3.3 retires the general J1
-interface after proving its required bounded specialization. E4.2 proves J2 in
-`GGC/DirichletPalm.lean`, including the original explicit topology binders. The [primary reprint](https://arxiv.org/pdf/math/0505606)
-was read at its version-marked page 1 and reprint pp.2, 4–5. Bibliography:
-L. F. James (2005), *Annals of Statistics* 33, 647–660,
-[DOI 10.1214/009053604000001237](https://doi.org/10.1214/009053604000001237).
-These page numbers are reprint pages, not the journal pagination.
-
-E-J1 specializes (1)–(3) to a nonnegative real test and z=1. E-J2 uses the
-one-observation posterior discussion and (8), with the joint test made
-explicit. E-J3 is source-derived: add an independent shape-one gamma atom,
-then normalize; the gamma ratio supplies the Beta(1,B) weight. It is not
-presented as a separately numbered theorem in the paper.
-
-All three use actual finite-partition DP semantics on a Polish Borel space.
-Zero-mass partition cells are permitted. The base has finite positive mass;
-there is no nonatomicity or moment assumption. E-J2 supplies no signed Fubini
-rule or chosen measurable-kernel construction. E-J3 supplies no posterior
-logarithmic bounds. The local beta density adapter, product construction,
-mean estimates, and Laplace identification belong in proof modules. None
-supplies DP existence, a common parameterized realization, the power tangent,
-canonical phase, or a generator identity.
-
-## Sethuraman registration — 2026-09-24
-
-E-T1 is proved in [DirichletStickBreaking.lean](../GGC/DirichletStickBreaking.lean) as
-`GGC.stick_breaking`. The primary reprint was inspected
-at printed pp.642 and 645 (PDF pages 4 and 7); equation (2.1) continues on
-p.643. Source: J. Sethuraman, *Statistica Sinica* 4 (1994), 639–650,
+**Sethuraman:** J. Sethuraman (1994), *Statistica Sinica* 4, 639-650,
 [primary reprint](https://www.cs.princeton.edu/courses/archive/fall07/cos597C/readings/Sethuraman1994.pdf).
+Equation (2.1), printed pp.642-643, and Theorem 3.4, p.645. The input product
+encodes iid Beta(1,B) fractions, iid base locations and independence of those
+sequences, not independence of the stick weights. The caller supplies a
+measurable probability-valued Q equal a.s. to the explicit stick sum and
+proves unit mass/common-event/parameter properties locally. The full interface
+does not require topology, nonatomicity, a specific sampler or a DP tail.
 
-The source-derived contract uses the actual product law of an iid beta
-fraction sequence and an independent iid base-location sequence. Its
-conclusion is the existing normalized-gamma finite-partition DP law,
-including zero-mass cells, on an arbitrary measurable base space. It does
-not restrict the base to be nonatomic. A measurable probability-valued map
-equal a.s. to the explicit stick sum is a premise: the local constructor
-must establish its unit mass and all parameter measurability. Common-event
-convergence is proved separately in `GGC.CommonUniforms`. No continuity,
-uniform integrability, posterior identity or power theorem is included.
+**SSV:** R. L. Schilling, R. Song and Z. Vondracek, *Bernstein Functions:
+Theory and Applications*, **2010 first edition**, Theorems 6.10 and 7.3,
+printed pp.58-60 and 63, [publisher DOI](https://doi.org/10.1515/9783110215311),
+with the [official 2022-12-01 first-edition errata](https://www.motapa.de/bernstein_functions/misprints-ssv.pdf).
+E-S1 is a source-derived specialization for a probability on positive rates.
+For its nonzero Stieltjes transform M, apply the representation to 1/M,
+negate the logarithm and subtract at one. Retain the principal-log formula on
+`0 < z.im`, absolute integrability and only Lebesgue-a.e. uniqueness.
+No inverse moment at zero or zero-anchor condition is assumed. The corrected
+Herglotz measure is finite on [0,infinity); the erroneous reverse inclusion
+in Remark 6.11 is unused.
 
-## SSV registration — 2026-09-24
+Boundary recovery is local: ApproximateIdentity and PoissonBoundary use
+Lebesgue differentiation; StieltjesPhase transfers the complex formula to
+the canonical limsup representative. Joint measurability, weak/scaling phase
+continuity and generator conclusions remain local proofs, not axiom fields.
 
-E-S1 is declared in [SSV.lean](SSV.lean) as
-`GGC.External.SSV.phase_representation`. This is a source-derived
-specialization of *Bernstein Functions*, **2010 first edition**, Theorems
-6.10 and 7.3, printed pp.58–60 and 63, to the Stieltjes transform of a
-probability on positive rates. The source record and first-edition
-[2022-12-01 errata](https://www.motapa.de/bernstein_functions/misprints-ssv.pdf)
-are recorded in [the primary-interface audit](../../notes/log-rate-power-proof-primary-interfaces.md).
+<a id="ssv-source-provenance"></a>
+## SSV source identities and preparation evidence
 
-The interface applies the exponential representation to the reciprocal,
-negates the logarithm, and subtracts the value at one. Its `RealPhase` and
-`Phase` structures spell out ordinary measurable functions, `[0,1]` bounds,
-absolute integrability, and explicit real/complex integral formulas; they
-do not package project conclusions. The complex domain is `0 < z.im`,
-with the principal logarithm. Uniqueness is only modulo Lebesgue-null sets
-on the positive half-line. There is no inverse moment or zero-anchor premise.
-The corrected finite Herglotz measure is on `[0,∞)`; the erroneous reverse
-inclusion in Remark 6.11 is unused.
+The following preserves constructor preparation metadata from 2026-09-24;
+it is not a new inspection or an independent-audit conclusion. The former
+standalone source-preparation document is retained in
+[immutable Git history](https://github.com/vtejdn/generalized-gamma-convolution-power-problem/blob/4ddc3967c568ee99268f72ae8d443da7641d0fe1/formalization/SSVSourceCheck-2026-09-24.md). Independent judgments are in
+[AuditReport](../AuditReport.md#ssv-source-review), and designer source acceptance
+is in [AcceptanceReport](../AcceptanceReport.md#source-review).
 
-Boundary recovery is **not** an axiom: `GGC.Foundations.ApproximateIdentity`
-proves bounded-measurable approximate-identity convergence from mathlib's
-Lebesgue differentiation theorem, and `GGC.Foundations.PoissonBoundary`
-specializes it to the standard Cauchy density. `GGC.StieltjesPhase` takes
-the imaginary part of the complex formula, identifies the fixed-height
-limsup almost everywhere, and transfers the anchor formula and uniqueness.
-Joint Borel measurability and the narrow-Borel/Giry bridge are also local.
-No weak-star phase limit or generator continuity is supplied by E-S1.
+| Source | Recorded identity |
+|---|---|
+| Book | 2010 first edition, ISBN 978-3-11-021530-4; 328 PDF pages, 1,865,683 bytes |
+| Book SHA256 | `8A06BBC186F355C3A4475DAB588F65FE41E5E5552794D2C896A41BCA1CD36702` |
+| Original local reading copy | `literature/pdf/SSV.pdf`, through a junction to `E:\AI\GitHub\literature\ggcpp\SSV.pdf`; local/ignored availability is not guaranteed in a fresh clone |
+| Errata | Dated 2022-12-01, three pages, 163,098 bytes; page 2 inspected in the recorded preparation/reviews |
+| Errata SHA256 | `8B1A84D42F825BA4F6DC4EADF6C1EDEC9703D386E1F53ECA912A003328EB4A7C` |
 
-The E-B4 fallback is withdrawn and undeclared. No unused mathematical axiom
-is retained outside the main theorem's dependency set.
+The physical one-based PDF/printed-page mapping is: title 4, copyright 5,
+Definition 2.1 printed p.11 -> PDF 24, Theorem 6.10 printed pp.58-59 -> PDF
+71-72, Remark 6.11 printed p.60 -> PDF 73, and Theorem 7.3 printed p.63 ->
+PDF 76. The earlier preparation compared complete hypotheses, real/complex
+signs and branch, anchor-one subtraction, integrability, measurable versions,
+a.e. uniqueness and errata. Original rendered pages/logs were supplemental
+local artifacts; the source identities, locators and record remain in Git.
 
 ## Checking and extension rules
 
-From `formalization`, the declarations can be checked with:
+From `formalization`, use the pinned toolchain and relevant commands, including:
 
 ```powershell
 lake env lean GGC/Thorin/Interfaces.lean
 lake env lean Checks/ThorinInterfacesContract.lean
-lake env lean AxiomAudit.lean
+lake env lean -t 0 AxiomAudit.lean
 ```
 
-A successful check verifies the local theorem proofs and elaborates the
-remaining axiom types; it does not supply proofs of those assumptions.
-Build evidence and implementation status are maintained in the
-[Construction Report](../ConstructionReport.md). The [Blueprint](../Blueprint.md)
-is read-only during construction.
+These check local proofs and elaborate assumption types. The actual transitive
+dependency set of `GGC.ggc_rpow`, not a proposition definition or file move,
+establishes the remaining boundary. Apply the
+[interface lifecycle](../README.md#external-interface-lifecycle): locally proved
+wrappers leave External/GGC.External, with full caller/check/audit migration
+and no old-name alias or forwarding file. Preserve source citations and exact
+contracts. Remaining assumption modules must not import their consumers.
+Definitions imports mathlib only; main consumes proved helpers. New shared
+semantics belong in an independent lower foundation, not a target assumption.
 
-Every new axiom belongs in this folder, must be registered in the project
-whitelist and this inventory, and must carry a complete type and provenance
-docstring. Project proof modules import the external contracts they need;
-external assumption modules must not import `main` or consumer proof modules.
-The [external-interface lifecycle rule](../README.md#external-interface-lifecycle)
-requires locally proved interfaces and their public wrappers to leave this
-directory and the `GGC.External` namespace. The old Bondesson/James wrapper
-exceptions are superseded. Bondesson has already migrated; the remaining
-E-J3 wrapper has moved to `GGC.DirichletPosterior` under
-[Blueprint Section 24](../Blueprint.md#audit-r2-and-j3-relocation).
-There is no External alias or forwarding wrapper. E-J2 is now proved as
-`GGC.posterior_palm_nonneg` in [DirichletPalm.lean](../GGC/DirichletPalm.lean).
-The empty James and Sethuraman assumption modules have been deleted.
-Source provenance and historical audit records remain. Construction validation
-is in [Section 48](../ConstructionReport.md#r2-j3-closeout-2026-09-25);
-independent design acceptance is complete in
-[Section 49](../ConstructionReport.md#r2-j3-design-acceptance-2026-09-25),
-with the full primitive contract and unchanged three-axiom boundary verified.
-Under the [approved statement/proof separation](../Blueprint.md#statement-proof-separation),
-project proof modules import `Definitions` to use its complete definitions, while
-`Definitions` imports mathlib only; `main` consumes the proved helpers.
-If shared semantic definitions are later needed for Dirichlet
-processes or phases, put their actual definitions in the independently
-reviewable `GGC/Foundations/RandomMeasure.lean` layer, which imports mathlib
-only. This keeps external inputs independent of the target and its proof.
-
-`AxiomAudit.lean` now imports `main` and uses
-`#print axioms GGC.ggc_rpow` to check the genuine proof's transitive dependencies
-against this inventory. The E4 dependency list and construction evidence are recorded in the
-[E4 construction](../ConstructionReport.md#e4-construction-2026-09-25). Earlier
-verification evidence is recorded in the [E2 independent acceptance](../ConstructionReport.md#e2-design-acceptance-2026-09-24); the [M7 report](../ConstructionReport.md#m7-completion-2026-09-24) preserves the earlier seven-input result.
-A named target proposition alone is not a proof.
-
-
-### Relocated local Thorin interfaces
-
-The [Tidy-Thorin migration](../Blueprint.md#thorin-interface-migration) is
-implemented and independently accepted; see
-[Section 42](../ConstructionReport.md#tidy-thorin-design-acceptance-2026-09-25). E-B1/E-B3 now live in
-[GGC/Thorin/Interfaces.lean](../GGC/Thorin/Interfaces.lean), as
-`GGC.thorin_realization` and `GGC.finite_atomic_approximation`. Their complete
-primitive types, proof calls and Bondesson provenance are preserved.
-The former External module is deleted, with no forwarding file or old-name alias.
-See [Section 41](../ConstructionReport.md#tidy-thorin-construction-2026-09-25)
-for the original-type checks, build and audit. At that migration acceptance,
-five mathematical axioms remained. E3.2 subsequently proves E-J3 at its full
-original type, reducing the count to four at E3.2; see
-[Section 43](../ConstructionReport.md#e3-one-two-construction-2026-09-25).
-E3.1/E3.2 are independently accepted; see [Section 44](../ConstructionReport.md#e3-one-two-design-acceptance-2026-09-25). E3.3 reduced the count to three at that stage, independently accepted; see [Section 46](../ConstructionReport.md#e3-three-design-acceptance-2026-09-25).
-The original general J1 declaration is absent; the bounded replacement is in
-[MarkovKrein.lean](../GGC/Foundations/MarkovKrein.lean).
+The [primary-interface note](../../notes/log-rate-power-proof-primary-interfaces.md)
+and [reference map](../../ledger/references.md) preserve wider provenance.
+Project acceptance and independent audit statements remain in their separate
+owner reports; source preparation, a passing build and independent source
+review have distinct meanings.
